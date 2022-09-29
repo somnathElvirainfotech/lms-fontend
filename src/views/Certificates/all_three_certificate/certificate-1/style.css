@@ -1,0 +1,66 @@
+body {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.certificate-bg {
+  background: url(images/bg2.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  width: 600px;
+  margin: 40px auto;
+  height: 463px;
+  padding: 40px;
+  text-align: center;
+}
+.certificate-bg img {
+  padding: 0 0 20px;
+}
+.certificate-bg h1 {
+  font-size: 22px;
+  padding: 10px 0 20px;
+  font-weight: 300;
+  margin: 0;
+  text-transform: uppercase;
+}
+.certificate-bg h2 {
+  padding: 10px 0 0;
+  margin: 0;
+  font-weight: bold;
+  font-size: 24px;
+  text-transform: uppercase;
+}
+.certificate-bg h3 {
+  padding: 20px 0 0;
+  font-style: italic;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.certificate-bg h5 {
+  padding: 20px 0 0;
+  margin: 0;
+  text-transform: uppercase;
+}
+.sign1-sec {
+  display: flex;
+  justify-content: space-around;
+  padding: 40px 0;
+}
+.sign-sec-l,
+.sign-sec-r {
+  width: 20%;
+  padding-top: 5px;
+}
+.sign-sec-l .sign-text,
+.sign-sec-r .date-text {
+  border-top: 1px solid #000;
+}
+.sign-sec-l .sign-img,
+.sign-sec-r .date {
+  padding-bottom: 6px;
+}
+.sign-sec-l .sign-img img {
+  width: 63px;
+  padding-bottom: 4px;
+}

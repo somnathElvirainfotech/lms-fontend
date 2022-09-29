@@ -1,0 +1,67 @@
+body {
+    margin: 0;
+    box-sizing: border-box; 
+  }
+  
+    .certificate2-bg{
+  background: url(images/img.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+  width: 600px;
+      margin: 40px auto;
+      height: 463px;
+      padding: 40px;
+      text-align: center;
+      color: #a48a46;
+    }
+  .certificate2-bg img {
+      padding:  0 0 20px;
+  }
+  .certificate2-bg h1 {
+  font-size: 18px;
+  line-height: normal;
+      padding: 10px 0 20px;
+      font-weight: 200;
+      margin: 0;
+      text-transform: uppercase;
+  }
+  .certificate2-bg h2 {
+  padding: 20px 0 0;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 30px;
+      margin: 0;
+  }
+  .certificate2-bg h3 {
+      padding: 20px 0 10px;
+      font-style: italic;
+      font-weight: bold;
+      font-size: 24px;
+      margin: 0;
+  }
+  .certificate2-bg h5 {
+      padding: 20px 0 0;
+      margin: 0;
+  }
+  .sign2-sec {
+      display: flex;
+      justify-content: space-around;
+      padding: 20px 0;
+       
+  }
+  .sign2-sec-l, .sign2-sec-r {
+      width: 20%;
+      padding-top: 5px;
+  }
+  .sign-sec-l .sign-text, .sign-sec-r .date-text{
+     border-top: 1px solid #a48a46;
+  }
+  .sign-sec-l .sign-img, .sign-sec-r .date{
+     padding-bottom: 6px;
+  }
+  .sign2-sec .sign-sec-l .sign-img img {
+      width: 63px;
+      padding-bottom: 4px;
+     
+  }
