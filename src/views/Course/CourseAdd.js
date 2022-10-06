@@ -185,7 +185,7 @@ function CourseAdd() {
         setCourseType("regular");
       } else if (value == "xapi") {
         setCourseType("xapi");
-      }else{
+      } else {
         setCourseType("");
       }
     }
@@ -285,8 +285,9 @@ function CourseAdd() {
         data.append("image", image);
         data.append("avatar_image", avatar_image);
         data.append("course_type", cinputs.course_type);
-        data.append("certificate_id", cinputs.certificate_id);
+        data.append("certificate_id", cinputs.certificate_id); 
         data.append("xapi_file_name", cinputs.xapi_file_name);
+        data.append("course_certificate_name", cinputs.course_certificate_name);
 
         if (courseType == "regular") {
           data.append("attachment_file", attachment_file);
@@ -319,6 +320,7 @@ function CourseAdd() {
             cinputs.course_type = "";
             cinputs.certificate_id = "";
             cinputs.xapi_file_name = "";
+            cinputs.course_certificate_name="";
             setImage("");
             setAvatar_image("");
             setAttachment_file("");
@@ -589,9 +591,9 @@ function CourseAdd() {
                       )}
                     </div>
 
-                    
+
                     <div className="form-row mt-3">
-                    {courseType == "xapi" && (
+                      {courseType == "xapi" && (
                         <div className="col-md-6">
                           <div className="form-group">
                             <label>Xapi File name</label>
@@ -625,9 +627,8 @@ function CourseAdd() {
                                   creator.map((item) => (
                                     <option
                                       value={item.id}
-                                    >{`${item.firstname.toUpperCase()} ${item.lastname.toUpperCase()} (${
-                                      item.email
-                                    })`}</option>
+                                    >{`${item.firstname.toUpperCase()} ${item.lastname.toUpperCase()} (${item.email
+                                      })`}</option>
                                   ))}
                               </select>
                             </div>
@@ -641,13 +642,29 @@ function CourseAdd() {
                     {/** -------------- certificate ----------------- */}
 
                     <div className="form-row">
+
+                    <div className="col-md-6">
+                        <div className="form-group">
+                          <label>COURSE CERTIFICATE NAME</label>
+                          <input
+                            required
+                            type="text"
+                            className="form-control"
+                            name="course_certificate_name"
+                            value={cinputs.course_certificate_name}
+                            onChange={handleChange}
+                          />
+                        </div>
+                      </div>
+
+
                       <div className="col-md-6">
                         <div className="form-group">
                           <button
                             type="button"
                             data-toggle="modal"
                             data-target="#myModal"
-                            className="sec-btn"
+                            className="sec-btn mt-4"
                           >
                             Select Certificate
                           </button>
@@ -662,6 +679,7 @@ function CourseAdd() {
                           )}
                         </div>
                       </div>
+                      
                     </div>
 
                     {/** -------------- End certificate ----------------- */}

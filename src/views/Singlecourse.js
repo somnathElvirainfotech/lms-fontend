@@ -593,15 +593,15 @@ export default function Singlecourse() {
             <div className="single-course-bottom sec-bg">
                 <div className="container">
                     <div className="row">
-                        {enrollStatus != "completed" &&
-                            <>    {course.course_type == "xapi" && enrollment || course.course_type == "xapi" && user.user_role == 1 || course.course_type == "xapi" && user.user_role == 2 || course.course_type == "xapi" && user.user_role == 4 && user.user_id == creatorId ?
+                        
+                               {course.course_type == "xapi" && enrollment || course.course_type == "xapi" && user.user_role == 1 || course.course_type == "xapi" && user.user_role == 2 || course.course_type == "xapi" && user.user_role == 4 && user.user_id == creatorId ?
                                 <div className="col-sm-12 mb-3">
 
                                     {/**  <Link to="/singlexapi" className="sec-btn" state={{ vedio: course.xapi_attachment_file }} target="_blank" >dddddddddd</Link> */}
                                     <a href={`/singlexapi?link=${btoa(course.xapi_attachment_file)}`} target="__blank" className="sec-btn"  >VIEW COURSE</a>
 
                                 </div>
-                                : ''} </>}
+                                : ''} 
 
                         <div className="col-md-7">
 

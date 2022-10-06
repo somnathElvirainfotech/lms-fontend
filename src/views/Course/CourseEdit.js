@@ -124,7 +124,7 @@ function CourseEdit() {
         },
         {
           label: "No",
-          onClick: () => {},
+          onClick: () => { },
         },
       ],
     });
@@ -300,7 +300,8 @@ function CourseEdit() {
       data.append("attachment_file", attachment_file);
       data.append("id", courseId);
       data.append("certificate_id", cinputs.certificate_id);
-      data.append("xapi_file_name",cinputs.xapi_file_name)
+      data.append("xapi_file_name", cinputs.xapi_file_name)
+      data.append("course_certificate_name", cinputs.course_certificate_name)
 
       data.append("course_type", cinputs.course_type);
 
@@ -347,8 +348,8 @@ function CourseEdit() {
       cinputs.published_status = item.published_status;
       cinputs.course_level = item.course_level;
       cinputs.certificate_id = item.certificate_id;
-      cinputs.xapi_file_name =
-        item.xapi_file_name != null ? item.xapi_file_name : "";
+      cinputs.xapi_file_name = item.xapi_file_name != null ? item.xapi_file_name : "";
+      cinputs.course_certificate_name = item.course_certificate_name;
       setImage("");
       setAvatar_image("");
       setAttachment_file("");
@@ -736,7 +737,7 @@ function CourseEdit() {
                       )}
                     </div>
 
-                   
+
 
                     <div className="form-row mt-3">
                       {courseType == "xapi" && (
@@ -773,9 +774,8 @@ function CourseEdit() {
                                   creator.map((item) => (
                                     <option
                                       value={item.id}
-                                    >{`${item.firstname.toUpperCase()} ${item.lastname.toUpperCase()} (${
-                                      item.email
-                                    })`}</option>
+                                    >{`${item.firstname.toUpperCase()} ${item.lastname.toUpperCase()} (${item.email
+                                      })`}</option>
                                   ))}
                               </select>
                             </div>
@@ -789,13 +789,28 @@ function CourseEdit() {
                     {/** -------------- certificate ----------------- */}
 
                     <div className="form-row">
+
+                    <div className="col-md-6">
+                        <div className="form-group">
+                          <label>COURSE CERTIFICATE NAME</label>
+                          <input
+                            required
+                            type="text"
+                            className="form-control"
+                            name="course_certificate_name"
+                            value={cinputs.course_certificate_name}
+                            onChange={handleChange}
+                          />
+                        </div>
+                      </div>
+
                       <div className="col-md-6">
                         <div className="form-group">
                           <button
                             type="button"
                             data-toggle="modal"
                             data-target="#myModal"
-                            className="sec-btn"
+                            className="sec-btn mt-4"
                           >
                             Select Certificate
                           </button>
@@ -810,6 +825,7 @@ function CourseEdit() {
                           )}
                         </div>
                       </div>
+                     
                     </div>
 
                     {/** -------------- End certificate ----------------- */}

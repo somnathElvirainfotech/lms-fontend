@@ -352,7 +352,7 @@ export default function MyCourse() {
                                           geotoCertificate(
                                             user.username.toUpperCase(),
                                             user.email,
-                                            enrollmentcourse.course_details[0].course_name.toUpperCase(),
+                                            enrollmentcourse.course_details[0].course_certificate_name	.toUpperCase(),
                                             enrollmentcourse.updated_at,
                                             enrollmentcourse.course_details[0]
                                               .certificate_id

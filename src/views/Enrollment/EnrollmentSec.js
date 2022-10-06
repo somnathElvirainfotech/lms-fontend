@@ -860,7 +860,7 @@ export default function EnrollmentSec() {
                                                     <Link state={{
                                                         user_name: user.username.toUpperCase(),
                                                         email: user.email,
-                                                        course_name: item.course_details[0].course_name.toUpperCase(),
+                                                        course_name: item.course_details[0].course_certificate_name?item.course_details[0].course_certificate_name.toUpperCase():'',
                                                         date: item.updated_at,
                                                         certificate_id: item.course_details[0].certificate_id,
                                                         firstname:user.firstname,
