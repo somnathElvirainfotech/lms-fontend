@@ -20,11 +20,17 @@ import { AuthContext } from '../../index';
 // firebase
 import { auth, gprovider, mprovider } from '../Firebase'
 
+// loader 
+import Loader from "../Loader";
+
 
 
 export const Login2 = () => {
 
     const { user } = useContext(AuthContext);
+
+    // loader
+    const [showLoader, setShowLoader] = useState(false);
 
 
     const [inputs, setInputs] = useState({});
@@ -40,6 +46,7 @@ export const Login2 = () => {
         try {
             event.preventDefault();
 
+            setShowLoader(true);
 
 
             var response = await UserService.Login(inputs);
@@ -74,12 +81,16 @@ export const Login2 = () => {
 
                     setInputs({ email: "", password: "" })
 
+                    setShowLoader(false);
+
                     window.location.replace("/courses");
                     // navigate("/courses")
                 } else {
+                    setShowLoader(false);
                     toast.error("Invalid Login Type")
                 }
             } else {
+                setShowLoader(false);
                 toast.error(response.data.msg);
                 setInputs({ email: "", password: "" })
             }
@@ -110,14 +121,18 @@ export const Login2 = () => {
 
     // google
     var GoogleLoginHandler = (res) => {
-
+        setShowLoader(true);
         auth.signInWithPopup(gprovider)
             .then((res) => {
                 console.log(res.user.email)
                 //  window.Cookies.clear()
                 LoginType(res.user.email, "google")
+                setShowLoader(false);
             })
-            .catch((err) => { console.log(err) })
+            .catch((err) => { 
+                console.log(err)
+                setShowLoader(false);
+            })
 
 
 
@@ -125,13 +140,15 @@ export const Login2 = () => {
 
     // microsoft
     var MicrosoftLoginHandler = () => {
-
+        setShowLoader(true);
         auth.signInWithPopup(mprovider)
             .then((res) => {
                 console.log('m success ', res)
 
                 if ("user" in res)
                     LoginType(res.user.email, "ms")
+
+                    setShowLoader(false);
 
             })
             .catch((err) => {
@@ -140,12 +157,15 @@ export const Login2 = () => {
                 if ("email" in err)
                     LoginType(err.email, "ms")
 
+                    setShowLoader(false);
+
             })
 
     }
 
     var LoginType = async (email, l_type) => {
         deleteCookies()
+        setShowLoader(true);
         var response = await UserService.loginType({ email: email });
         if (response.data.status != false) {
             console.log("kkkkkkkkkkk", response.data);
@@ -179,19 +199,25 @@ export const Login2 = () => {
 
                 setInputs({ email: "", password: "" })
 
+                setShowLoader(false);
+
                 window.location.replace("/courses");
                 // navigate("/courses")
             } else {
-                toast.error("Invalid login type")
                 deleteCookies()
+                setShowLoader(false);
+                toast.error("Invalid login type")
             }
 
 
         } else {
-            toast.error(response.data.msg);
+
             setInputs({ email: "", password: "" })
             deleteCookies()
+            setShowLoader(false);
+            toast.error(response.data.msg);
         }
+        setShowLoader(false);
         console.log("login type ", response.data);
     }
 
@@ -219,10 +245,14 @@ export const Login2 = () => {
     const handleSubmit2 = async (event) => {
         try {
             event.preventDefault();
+            setShowLoader(true);
+
             var response = await UserService.ForgetPassword(inputs2);
             if (response.data.status) {
+                setShowLoader(false);
                 toast.success(response.data.msg)
             } else {
+                setShowLoader(false);
                 toast.error(response.data.msg)
             }
             setInputs2({ email: "" })
@@ -262,6 +292,9 @@ export const Login2 = () => {
 
     return (
         <>
+            {/** loader */}
+            {showLoader && <Loader />}
+
             <div className="center_screen" style={{ "backgroundColor": "#d4d6d5" }}>
                 <div className="card  mt-5" style={{ width: "28rem" }}>
                     <div className="card-body">

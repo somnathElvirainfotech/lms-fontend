@@ -266,7 +266,7 @@ export default function Header() {
                                     <span className="closebtn" onClick={closeNav}>&times;</span>
                                     <ul>
 
-                                        {user.token && user.user_role == 2 || user.token && user.user_role == 1 ? <> <li><a target="__blank" href={ADMIN_URL}>Admin</a></li> </> : ''}
+                                        {/* {user.token && user.user_role == 2 || user.token && user.user_role == 1 ? <> <li><a target="__blank" href={ADMIN_URL}>Admin</a></li> </> : ''} */}
 
                                         {user.token && <li><Link onClick={clerSearchText} to="/about-us">About</Link></li>}
 
