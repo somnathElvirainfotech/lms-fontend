@@ -102,47 +102,47 @@ export default function RoutesList() {
       <Routes>
         <Route path="/" element={<ActiveMaintenance data={data}><RequireAuthLogout><Navbar /></RequireAuthLogout></ActiveMaintenance>}>
           <Route index element={<RequireAuthLogout><Home /></RequireAuthLogout>} />
-          <Route path='/my-courses' element={<RequireAuth><MyCourses /></RequireAuth>} />
-          <Route path='/enrollments' element={<RequireAuth><Enrollment /></RequireAuth>} />
-          <Route path='/profile' element={<RequireAuth><Profile /></RequireAuth>} />
-          <Route path='/profile-edit' element={<RequireAuth><EditProfile /></RequireAuth>} />
-          <Route path='/courses' element={<RequireAuth><Courses /></RequireAuth>} />
-          <Route path='/singlecourse' element={<RequireAuth><Singlecourse /></RequireAuth>} />
-          <Route path='/allreview' element={<AllRating />} />
+          <Route path='my-courses' element={<RequireAuth><MyCourses /></RequireAuth>} />
+          <Route path='enrollments' element={<RequireAuth><Enrollment /></RequireAuth>} />
+          {/* <Route path='profile-edit' element={<RequireAuth><Profile /></RequireAuth>} />  design profile page */}
+          <Route path='profile' element={<RequireAuth><EditProfile /></RequireAuth>} />
+          <Route path='courses' element={<RequireAuth><Courses /></RequireAuth>} />
+          <Route path='courses/:name' element={<RequireAuth><Singlecourse /></RequireAuth>} />
+          <Route path='allreview' element={<AllRating />} />
 
-          <Route path='/course' element={<RequireAuth><CourseCreate /></RequireAuth>} />
-          <Route path='/course/add' element={<CourseAdd />} />
-          <Route path='/course/edit' element={<CourseEdit />} />
+          <Route path='course' element={<RequireAuth><CourseCreate /></RequireAuth>} />
+          <Route path='course/add' element={<CourseAdd />} />
+          <Route path='course/edit' element={<CourseEdit />} />
 
-          <Route path='/chapter' element={<ChapterCreate />} />
-          <Route path='/chapter/add' element={<ChapterAdd />} />
-          <Route path='/chapter/edit' element={<ChapterEdit />} />
+          <Route path='chapter' element={<ChapterCreate />} />
+          <Route path='chapter/add' element={<ChapterAdd />} />
+          <Route path='chapter/edit' element={<ChapterEdit />} />
 
-          <Route path='/lesson' element={<LessonCreate />} />
-          <Route path='/lesson/add' element={<LessonAdd />} />
-          <Route path='/lesson/edit' element={<LessonEdit />} />
+          <Route path='lesson' element={<LessonCreate />} />
+          <Route path='lesson/add' element={<LessonAdd />} />
+          <Route path='lesson/edit' element={<LessonEdit />} />
 
-          <Route path='/assignment-create' element={<AssignmentCreate />} />
+          <Route path='assignment-create' element={<AssignmentCreate />} />
 
 
-          <Route path='/task' element={<RequireAuth><Task /></RequireAuth>} />
-          <Route path='/task/add' element={<RequireAuth><TaskAdd /></RequireAuth>} />
-          <Route path='/task/edit' element={<RequireAuth><TaskEdit /></RequireAuth>} />
+          <Route path='task' element={<RequireAuth><Task /></RequireAuth>} />
+          <Route path='task/add' element={<RequireAuth><TaskAdd /></RequireAuth>} />
+          <Route path='task/edit' element={<RequireAuth><TaskEdit /></RequireAuth>} />
 
-          <Route path='/group' element={<RequireAuth><UserGroup /></RequireAuth>} />
-          <Route path='/language' element={<RequireAuth><Language /></RequireAuth>} />
-          <Route path='/qualification' element={<RequireAuth><Qualification /></RequireAuth>} />
-          <Route path='/category' element={<RequireAuth><Category /></RequireAuth>} />
+          <Route path='group' element={<RequireAuth><UserGroup /></RequireAuth>} />
+          <Route path='language' element={<RequireAuth><Language /></RequireAuth>} />
+          <Route path='qualification' element={<RequireAuth><Qualification /></RequireAuth>} />
+          <Route path='category' element={<RequireAuth><Category /></RequireAuth>} />
 
-          <Route path='/user' element={<UserCreate />} />
-          <Route path='/user/add' element={<UserAdd />} />
-          <Route path='/user/edit' element={<UserEdit />} />
+          <Route path='user' element={<UserCreate />} />
+          <Route path='user/add' element={<UserAdd />} />
+          <Route path='user/edit' element={<UserEdit />} />
 
-          <Route path='/activites' element={<Activites />} />
+          <Route path='activites' element={<Activites />} />
 
-          <Route path='/about-us' element={<AboutUs />} />
+          <Route path='about-us' element={<AboutUs />} />
 
-          <Route path='/view-result' element={<ViewResult />} />
+          <Route path='view-result' element={<ViewResult />} />
 
          
 
@@ -183,9 +183,6 @@ export default function RoutesList() {
         <Route path='/singletask' element={<SingleTask />} />
         <Route path="/singlexapi" element={<SingleXapi />} />
 
-
-
-        <Route path='/profile-edit' element={<RequireAuth><EditProfile /></RequireAuth>} />
 
 
 

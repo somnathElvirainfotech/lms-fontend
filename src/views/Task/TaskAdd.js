@@ -20,7 +20,7 @@ import Header from '../Common/Header/Header';
 import Footer from '../Common/Footer/Footer';
 import InnerBanner from '../Common/InnerBanner';
 import CourseService from "../../services/CourseService";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function TaskAdd() {
@@ -102,7 +102,7 @@ function TaskAdd() {
 
     const [courseId, setCourseId] = useState();
 
-    
+
 
 
 
@@ -180,7 +180,7 @@ function TaskAdd() {
         setCourse([...courseRes.data.data])
     }
 
- 
+
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -255,20 +255,36 @@ function TaskAdd() {
 
     return <>
 
+        <div className="inner-banner">
+            <img src="/images/inner-banner.png" alt="" />
+            <div className="desc">
+                <div className="container">
+                    <div className="text">
+                        <h1>User Task</h1>
+                        <div className="breadcrumb">
+                            <ul>
+                                <li><Link to="/">Home</Link></li>
+                                <li>Add</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
-        <div className=" enrollments-sec activites-sec " style={{ marginBottom: "50px" }} >
+        <div className=" enrollments-sec activites-sec " >
 
             <div className="container">
 
-                
+
 
                 <div className="row">
                     <div className="col-md-12 col-sm-6 pr-md-0">
 
 
                         <div className="container">
-                            <h2>Task Add <span><button type="button" className="sec-btn" onClick={previousPage}>Back</button></span></h2>
+                              <span><button type="button" className="sec-btn" onClick={previousPage}>Back</button></span> 
 
                             <div className="row" >
                                 <div className="col-sm-12 bg-white m-4 p-3">
@@ -350,8 +366,8 @@ function TaskAdd() {
                                             <div className="col-md-12">
                                                 <div className="form-group">
                                                     <label>TASK DESCRIPTION</label>
-                                                     
-                                                        <TextEditor setText={setText} inialvalue={Text} />
+
+                                                    <TextEditor setText={setText} inialvalue={Text} />
 
                                                     <small>120 character only.</small>
                                                 </div>

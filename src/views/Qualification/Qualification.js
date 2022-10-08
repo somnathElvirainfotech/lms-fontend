@@ -182,7 +182,7 @@ export default function Qualification() {
     return (
         <>
 
-            <InnerBanner title="Qualification" name="Create" linkName="Home" link="/" />
+            <InnerBanner title="Qualification" name="List" linkName="Home" link="/" />
 
             {/** list */}
 

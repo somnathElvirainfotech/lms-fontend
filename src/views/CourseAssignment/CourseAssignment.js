@@ -311,7 +311,7 @@ export default function CourseAssignment() {
 
       
         <InnerBanner title="Assignment" name="Create" linkName="Home" link="/" />
-        <div className=" enrollments-sec activites-sec " style={{ marginBottom: "50px" }} >
+        <div className=" enrollments-sec activites-sec "   >
 
             <div className="container">
 

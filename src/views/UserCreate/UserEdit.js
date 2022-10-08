@@ -242,7 +242,6 @@ function UserEdit() {
         data.append("user_hr_no", cinputs.hr_no);
         data.append("organization_unit", cinputs.organization_unit);
         data.append("login_type", cinputs.login_type);
-
         data.append("id", courseId);
 
 
@@ -267,7 +266,7 @@ function UserEdit() {
 
             setCourseId(id)
             var item = response.data.data[0];
-            console.log("apppppppppppp", response.data.data.group_details)
+            // console.log("apppppppppppp", response.data.data.group_details)
 
 
             cinputs.firstname = item.firstname;

@@ -671,297 +671,297 @@ export default function EnrollmentSec() {
 
 
                     <div className="enrollments-sec-table activites-table">
-                    {currentPageData.length>0 ? 
-                        <table className="table table-responsive">
-                            <thead>
-                                <tr>
-                                    <th width="10%">Date</th>
-                                    <th>Student Id</th>
-                                    <th>Student
-                                        Name</th>
-                                    <th>Course
-                                        Name</th>
-                                    {user.user_role != 5 && <th> Course Type </th>}
-                                    <th>Course Category</th>
-                                    <th>Course Status</th>
-                                    {user.user_role == 2 && <th>Course Total Number</th>}
-                                    {user.user_role == 2 && <th>Course Score Number</th>}
-                                    <th>User Progress</th>
-                                    {user.user_role != 4 && <th>Teacher’s Name</th>}
-                                    {/**    <th>Points
+                        {currentPageData.length > 0 ?
+                            <table className="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th width="10%">Date</th>
+                                        <th>Student Id</th>
+                                        <th>Student
+                                            Name</th>
+                                        <th>Course
+                                            Name</th>
+                                        {user.user_role != 5 && <th> Course Type </th>}
+                                        <th>Course Category</th>
+                                        <th>Course Status</th>
+                                        {user.user_role == 2 && <th>Course Total Number</th>}
+                                        {user.user_role == 2 && <th>Course Score Number</th>}
+                                        <th>User Progress</th>
+                                        {user.user_role != 4 && <th>Teacher’s Name</th>}
+                                        {/**    <th>Points
                                         Won</th> */}
-                                    <th>Assignment no </th>
+                                        <th>Assignment no </th>
 
-                                    <th>Assignment
-                                        deadline
-                                    </th>
-                                    <th>Rating</th>
-                                    <th>Comments</th>
-                                    <th>View</th>
-                                    {user.user_role == 5 && <th>Certificate</th>}
-                                    {user.user_role == 2 || user.user_role == 1 ? <th>Result</th> : ''}
-                                </tr>
-                            </thead>
-                            <tbody>
-
-
-                                {/** for creator */}
-                                {user.user_role == 4 &&
-                                    currentPageData.map((item) =>
-                                        <tr>
-                                            <td>{item.enrollment_create_date}</td>
-                                            <td>{item.user_details[0].user_hr_no}</td>
-                                            <td>{item.user_details[0].fullname.toUpperCase()} ({item.user_details[0].email})</td>
-                                            <td>{item.course_details[0].course_name.toUpperCase()}</td>
-                                            <td>{item.course_details[0].course_type.toUpperCase()}</td>
-                                            <td>{item.course_details[0].category_name.toUpperCase()}</td>
-                                            <td>{item.enrollment_status.toUpperCase()}</td>
-                                            <td>{item.course_progress ? item.course_progress : 0}%</td>
-
-                                            {/**  <td>0</td> */}
-                                            <td>{item.assignment_details ? item.assignment_details.length : 0}</td>
-                                            <td>{item.assignment_details && item.assignment_details[0].assignment_deadline}</td>
-                                            <td>
-
-                                                {item.rating_number &&
-
-                                                    <div>
-                                                        {item.rating_number == 1 &&
-                                                            <ul className="rating">
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                            </ul>
-                                                        }
-
-                                                        {item.rating_number == 2 &&
-                                                            <ul className="rating">
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                            </ul>
-                                                        }
-
-                                                        {item.rating_number == 3 &&
-                                                            <ul className="rating">
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                            </ul>
-                                                        }
-
-                                                        {item.rating_number == 4 &&
-                                                            <ul className="rating">
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                            </ul>
-                                                        }
+                                        <th>Assignment
+                                            deadline
+                                        </th>
+                                        <th>Rating</th>
+                                        <th>Comments</th>
+                                        <th>View</th>
+                                        {user.user_role == 5 && <th>Certificate</th>}
+                                        {user.user_role == 2 || user.user_role == 1 ? <th>Result</th> : ''}
+                                    </tr>
+                                </thead>
+                                <tbody>
 
 
-                                                        {item.rating_number == 5 &&
-                                                            <ul className="rating">
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                            </ul>
-                                                        }
+                                    {/** for creator */}
+                                    {user.user_role == 4 &&
+                                        currentPageData.map((item) =>
+                                            <tr>
+                                                <td>{item.enrollment_create_date}</td>
+                                                <td>{item.user_details[0].user_hr_no}</td>
+                                                <td>{item.user_details[0].fullname.toUpperCase()} ({item.user_details[0].email})</td>
+                                                <td>{item.course_details[0].course_name.toUpperCase()}</td>
+                                                <td>{item.course_details[0].course_type.toUpperCase()}</td>
+                                                <td>{item.course_details[0].category_name.toUpperCase()}</td>
+                                                <td>{item.enrollment_status.toUpperCase()}</td>
+                                                <td>{item.course_progress ? item.course_progress : 0}%</td>
+
+                                                {/**  <td>0</td> */}
+                                                <td>{item.assignment_details ? item.assignment_details.length : 0}</td>
+                                                <td>{item.assignment_details && item.assignment_details[0].assignment_deadline}</td>
+                                                <td>
+
+                                                    {item.rating_number &&
+
+                                                        <div>
+                                                            {item.rating_number == 1 &&
+                                                                <ul className="rating">
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                </ul>
+                                                            }
+
+                                                            {item.rating_number == 2 &&
+                                                                <ul className="rating">
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                </ul>
+                                                            }
+
+                                                            {item.rating_number == 3 &&
+                                                                <ul className="rating">
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                </ul>
+                                                            }
+
+                                                            {item.rating_number == 4 &&
+                                                                <ul className="rating">
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                </ul>
+                                                            }
 
 
-
-                                                    </div>
-
-                                                }
-                                            </td>
-                                            <td>{item.comment ? item.comment : ''}</td>
-                                            <td>
-
-                                                <Link to={`/singlecourse`} state={{ singleCourseId: item.course_details[0].id }} className="btn btn-info"><i className="fa fa-eye" aria-hidden="true"></i></Link>
-
-                                            </td>
-
-                                        </tr>
-                                    )
-                                }
-
-
-                                {/** for user */}
-                                {user.user_role == 5 &&
-                                    currentPageData.map((item) =>
-                                        <tr>
-                                            <td>{item.enrollment_create_date}</td>
-                                            <td>{item.user_details[0].user_hr_no}</td>
-                                            <td>{item.user_details[0].fullname.toUpperCase()}</td>
-                                            <td>{item.course_details[0].course_name.toUpperCase()}</td>
-
-                                            <td>{item.course_details[0].category_name.toUpperCase()}</td>
-                                            <td>{item.enrollment_status.toUpperCase()}</td>
-                                            <td>{item.course_progress ? item.course_progress : 0}%</td>
-                                            <td>{item.course_details[0].creator_name.toUpperCase()} ({item.course_details[0].creator_email})</td>
-                                            {/**  <td>0</td> */}
-                                            <td>{item.assignment_details ? item.assignment_details.length : 0}</td>
-                                            <td>{item.assignment_details && item.assignment_details[0].assignment_deadline}</td>
-                                            <td>
-
-                                                {item.rating_number &&
-
-                                                    <div>
-                                                        {item.rating_number == 1 &&
-                                                            <ul className="rating">
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                            </ul>
-                                                        }
-
-                                                        {item.rating_number == 2 &&
-                                                            <ul className="rating">
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                            </ul>
-                                                        }
-
-                                                        {item.rating_number == 3 &&
-                                                            <ul className="rating">
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                            </ul>
-                                                        }
-
-                                                        {item.rating_number == 4 &&
-                                                            <ul className="rating">
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                            </ul>
-                                                        }
-
-
-                                                        {item.rating_number == 5 &&
-                                                            <ul className="rating">
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                            </ul>
-                                                        }
+                                                            {item.rating_number == 5 &&
+                                                                <ul className="rating">
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                </ul>
+                                                            }
 
 
 
-                                                    </div>
+                                                        </div>
 
-                                                }
-                                            </td>
-                                            <td>{item.comment ? item.comment : ''}</td>
-                                            <td><Link to={`/singlecourse`} state={{ singleCourseId: item.course_details[0].id }} className="btn btn-info"><i className="fa fa-eye" aria-hidden="true"></i></Link></td>
-                                            <td>
-                                                {item.enrollment_status == "completed" && item.course_progress == 100 &&
-                                                    <Link state={{
-                                                        user_name: user.username.toUpperCase(),
-                                                        email: user.email,
-                                                        course_name: item.course_details[0].course_certificate_name?item.course_details[0].course_certificate_name.toUpperCase():'',
-                                                        date: item.updated_at,
-                                                        certificate_id: item.course_details[0].certificate_id,
-                                                        firstname:user.firstname,
-                                                        lastname:user.lastname
-                                                    }} to="/Certificate" className="btn btn-info"><i class="fa fa-download" aria-hidden="true"></i></Link>}
-                                            </td>
-                                        </tr>
-                                    )
-                                }
+                                                    }
+                                                </td>
+                                                <td>{item.comment ? item.comment : ''}</td>
+                                                <td>
 
-                                {/** for admin */}
-                                {user.user_role == 2 || user.user_role == 1 ?
-                                    currentPageData.map((item) =>
-                                        <tr>
-                                            <td>{item.enrollment_create_date}</td>
-                                            <td>{item.user_details[0].user_hr_no}</td>
-                                            <td>{item.user_details[0].fullname.toUpperCase()} ({item.user_details[0].email})</td>
-                                            <td>{item.course_details[0].course_name.toUpperCase()}</td>
-                                            <td>{item.course_details[0].course_type.toUpperCase()}</td>
-                                            <td>{item.course_details[0].category_name.toUpperCase()}</td>
-                                            {user.user_role == 2 && <td>{item.enrollment_status.toUpperCase()}</td>}
-                                            {user.user_role == 2 && <td>{item.total_number}</td>}
-                                            {user.user_role == 2 && <td>{item.score_number}</td>}
-                                            <td>{item.course_progress ? item.course_progress : 0}%</td>
-                                            <td>{item.course_details[0].creator_name.toUpperCase()} ({item.course_details[0].creator_email}) </td>
-                                            {/**  <td>0</td> */}
-                                            <td>{item.assignment_details ? item.assignment_details.length : 0}</td>
-                                            <td>{item.assignment_details && item.assignment_details[0].assignment_deadline}</td>
-                                            <td>
+                                                    <Link to={`/courses/${item.course_name}`} state={{ singleCourseId: item.course_details[0].id }} className="btn btn-info"><i className="fa fa-eye" aria-hidden="true"></i></Link>
 
-                                                {item.rating_number &&
+                                                </td>
 
-                                                    <div>
-                                                        {item.rating_number == 1 &&
-                                                            <ul className="rating">
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                            </ul>
-                                                        }
-
-                                                        {item.rating_number == 2 &&
-                                                            <ul className="rating">
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                            </ul>
-                                                        }
-
-                                                        {item.rating_number == 3 &&
-                                                            <ul className="rating">
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                            </ul>
-                                                        }
-
-                                                        {item.rating_number == 4 &&
-                                                            <ul className="rating">
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                            </ul>
-                                                        }
+                                            </tr>
+                                        )
+                                    }
 
 
-                                                        {item.rating_number == 5 &&
-                                                            <ul className="rating">
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                                <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                            </ul>
-                                                        }
+                                    {/** for user */}
+                                    {user.user_role == 5 &&
+                                        currentPageData.map((item) =>
+                                            <tr>
+                                                <td>{item.enrollment_create_date}</td>
+                                                <td>{item.user_details[0].user_hr_no}</td>
+                                                <td>{item.user_details[0].fullname.toUpperCase()}</td>
+                                                <td>{item.course_details[0].course_name.toUpperCase()}</td>
+
+                                                <td>{item.course_details[0].category_name.toUpperCase()}</td>
+                                                <td>{item.enrollment_status.toUpperCase()}</td>
+                                                <td>{item.course_progress ? item.course_progress : 0}%</td>
+                                                <td>{item.course_details[0].creator_name.toUpperCase()} ({item.course_details[0].creator_email})</td>
+                                                {/**  <td>0</td> */}
+                                                <td>{item.assignment_details ? item.assignment_details.length : 0}</td>
+                                                <td>{item.assignment_details && item.assignment_details[0].assignment_deadline}</td>
+                                                <td>
+
+                                                    {item.rating_number &&
+
+                                                        <div>
+                                                            {item.rating_number == 1 &&
+                                                                <ul className="rating">
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                </ul>
+                                                            }
+
+                                                            {item.rating_number == 2 &&
+                                                                <ul className="rating">
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                </ul>
+                                                            }
+
+                                                            {item.rating_number == 3 &&
+                                                                <ul className="rating">
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                </ul>
+                                                            }
+
+                                                            {item.rating_number == 4 &&
+                                                                <ul className="rating">
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                </ul>
+                                                            }
+
+
+                                                            {item.rating_number == 5 &&
+                                                                <ul className="rating">
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                </ul>
+                                                            }
 
 
 
-                                                    </div>
+                                                        </div>
 
-                                                }
-                                            </td>
-                                            <td>{item.comment ? item.comment : ''}</td>
-                                            <td>
+                                                    }
+                                                </td>
+                                                <td>{item.comment ? item.comment : ''}</td>
+                                                <td><Link to={`/courses/${item.course_name}`} state={{ singleCourseId: item.course_details[0].id }} className="btn btn-info"><i className="fa fa-eye" aria-hidden="true"></i></Link></td>
+                                                <td>
+                                                    {item.enrollment_status == "completed" && item.course_progress == 100 && item.course_details[0].certificate_id != 0 &&
+                                                        <Link state={{
+                                                            user_name: user.username.toUpperCase(),
+                                                            email: user.email,
+                                                            course_name: item.course_details[0].course_certificate_name ? item.course_details[0].course_certificate_name.toUpperCase() : '',
+                                                            date: item.updated_at,
+                                                            certificate_id: item.course_details[0].certificate_id,
+                                                            firstname: user.firstname,
+                                                            lastname: user.lastname
+                                                        }} to="/Certificate" className="btn btn-info"><i class="fa fa-download" aria-hidden="true"></i></Link>}
+                                                </td>
+                                            </tr>
+                                        )
+                                    }
 
-                                                <Link to={`/singlecourse`} state={{ singleCourseId: item.course_details[0].id }} className="btn btn-info"><i className="fa fa-eye" aria-hidden="true"></i></Link>
+                                    {/** for admin */}
+                                    {user.user_role == 2 || user.user_role == 1 ?
+                                        currentPageData.map((item) =>
+                                            <tr>
+                                                <td>{item.enrollment_create_date}</td>
+                                                <td>{item.user_details[0].user_hr_no}</td>
+                                                <td>{item.user_details[0].fullname.toUpperCase()} ({item.user_details[0].email})</td>
+                                                <td>{item.course_details[0].course_name.toUpperCase()}</td>
+                                                <td>{item.course_details[0].course_type.toUpperCase()}</td>
+                                                <td>{item.course_details[0].category_name.toUpperCase()}</td>
+                                                {user.user_role == 2 && <td>{item.enrollment_status.toUpperCase()}</td>}
+                                                {user.user_role == 2 && <td>{item.total_number}</td>}
+                                                {user.user_role == 2 && <td>{item.score_number}</td>}
+                                                <td>{item.course_progress ? item.course_progress : 0}%</td>
+                                                <td>{item.course_details[0].creator_name.toUpperCase()} ({item.course_details[0].creator_email}) </td>
+                                                {/**  <td>0</td> */}
+                                                <td>{item.assignment_details ? item.assignment_details.length : 0}</td>
+                                                <td>{item.assignment_details && item.assignment_details[0].assignment_deadline}</td>
+                                                <td>
 
-                                            </td>
-                                            <td>  {item.enrollment_status == "completed" && item.course_details[0].course_type == "xapi" &&
-                                                <Link className="btn btn-success" to="/view-result" state={{
-                                                    course_name: item.course_details[0].xapi_file_name,
-                                                    course_type: item.course_details[0].course_type,
-                                                    user_email: item.user_details[0].email,
-                                                }}> result </Link>
-                                            } </td>
-                                        </tr>
-                                    )
-                                    : ''}
+                                                    {item.rating_number &&
+
+                                                        <div>
+                                                            {item.rating_number == 1 &&
+                                                                <ul className="rating">
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                </ul>
+                                                            }
+
+                                                            {item.rating_number == 2 &&
+                                                                <ul className="rating">
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                </ul>
+                                                            }
+
+                                                            {item.rating_number == 3 &&
+                                                                <ul className="rating">
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                </ul>
+                                                            }
+
+                                                            {item.rating_number == 4 &&
+                                                                <ul className="rating">
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                </ul>
+                                                            }
 
 
-                            </tbody>
-                        </table>
-:<p style={{fontSize: "30px",textAlign: "center",fontWeight: "bold"}}>No record Found</p>}
+                                                            {item.rating_number == 5 &&
+                                                                <ul className="rating">
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                    <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
+                                                                </ul>
+                                                            }
+
+
+
+                                                        </div>
+
+                                                    }
+                                                </td>
+                                                <td>{item.comment ? item.comment : ''}</td>
+                                                <td>
+
+                                                    <Link to={`/courses/${item.course_name}`} state={{ singleCourseId: item.course_details[0].id }} className="btn btn-info"><i className="fa fa-eye" aria-hidden="true"></i></Link>
+
+                                                </td>
+                                                <td>  {item.enrollment_status == "completed" && item.course_details[0].course_type == "xapi" &&
+                                                    <Link className="btn btn-success" to="/view-result" state={{
+                                                        course_name: item.course_details[0].xapi_file_name,
+                                                        course_type: item.course_details[0].course_type,
+                                                        user_email: item.user_details[0].email,
+                                                    }}> result </Link>
+                                                } </td>
+                                            </tr>
+                                        )
+                                        : ''}
+
+
+                                </tbody>
+                            </table>
+                            : <p style={{ fontSize: "30px", textAlign: "center", fontWeight: "bold" }}>No record Found</p>}
 
                         {/**   <a href="#" className="esport-btn">Join for free</a> */}
                     </div>

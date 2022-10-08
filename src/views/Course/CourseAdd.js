@@ -285,9 +285,11 @@ function CourseAdd() {
         data.append("image", image);
         data.append("avatar_image", avatar_image);
         data.append("course_type", cinputs.course_type);
-        data.append("certificate_id", cinputs.certificate_id); 
+        data.append("certificate_id", cinputs.certificate_id);
         data.append("xapi_file_name", cinputs.xapi_file_name);
         data.append("course_certificate_name", cinputs.course_certificate_name);
+        data.append("author_name", cinputs.author_name);
+        data.append("author_email", cinputs.author_email);
 
         if (courseType == "regular") {
           data.append("attachment_file", attachment_file);
@@ -320,7 +322,9 @@ function CourseAdd() {
             cinputs.course_type = "";
             cinputs.certificate_id = "";
             cinputs.xapi_file_name = "";
-            cinputs.course_certificate_name="";
+            cinputs.course_certificate_name = "";
+            cinputs.author_email = '';
+            cinputs.author_name = '';
             setImage("");
             setAvatar_image("");
             setAttachment_file("");
@@ -331,6 +335,7 @@ function CourseAdd() {
 
             // console.log(response.data.msg)
           } else {
+            setShowLoader(false);
             toast.error(response.data.msg);
           }
 
@@ -350,25 +355,41 @@ function CourseAdd() {
       {/** loader */}
       {showLoader && <Loader />}
 
+      <div className="inner-banner">
+        <img src="/images/inner-banner.png" alt="" />
+        <div className="desc">
+          <div className="container">
+            <div className="text">
+              <h1>Course</h1>
+              <div className="breadcrumb">
+                <ul>
+                  <li><Link to="/">Home</Link></li>
+                  <li>Add</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div
         className=" enrollments-sec activites-sec "
-        style={{ marginBottom: "50px" }}
+
       >
         <div className="container">
           <div className="row">
             <div className="container">
-              <h2>
-                Course Add{" "}
-                <span>
-                  <button
-                    type="button"
-                    className="sec-btn m-2"
-                    onClick={previousPage}
-                  >
-                    Back
-                  </button>
-                </span>
-              </h2>
+
+              <span>
+                <button
+                  type="button"
+                  className="sec-btn m-2"
+                  onClick={previousPage}
+                >
+                  Back
+                </button>
+              </span>
+
 
               <div className="row">
                 <div className="col-sm-12 bg-white m-4 p-3">
@@ -405,6 +426,38 @@ function CourseAdd() {
                         </div>
                       </div>
                     </div>
+
+
+                    <div className="form-row">
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>Author Name</label>
+                          <input
+                            required
+                            type="text"
+                            className="form-control"
+                            name="author_name"
+                            value={cinputs.author_name}
+                            onChange={handleChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>Author Email</label>
+                          <input
+                            required
+                            type="email"
+                            className="form-control"
+                            name="author_email"
+                            value={cinputs.author_email}
+                            onChange={handleChange}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+
                     <div className="form-row">
                       <div className="col-md-6">
                         <div className="form-group">
@@ -561,7 +614,6 @@ function CourseAdd() {
                           <div className="form-group">
                             <label>FILE UPLOAD</label>
                             <input
-                              required
                               type="file"
                               name="attachment_file"
                               className="form-control"
@@ -642,20 +694,20 @@ function CourseAdd() {
                     {/** -------------- certificate ----------------- */}
 
                     <div className="form-row">
-
-                    <div className="col-md-6">
-                        <div className="form-group">
-                          <label>COURSE CERTIFICATE NAME</label>
-                          <input
-                            required
-                            type="text"
-                            className="form-control"
-                            name="course_certificate_name"
-                            value={cinputs.course_certificate_name}
-                            onChange={handleChange}
-                          />
-                        </div>
-                      </div>
+                      {cinputs.certificate_id != 0 &&
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label>COURSE CERTIFICATE NAME</label>
+                            <input
+                              required
+                              type="text"
+                              className="form-control"
+                              name="course_certificate_name"
+                              value={cinputs.course_certificate_name}
+                              onChange={handleChange}
+                            />
+                          </div>
+                        </div>}
 
 
                       <div className="col-md-6">
@@ -679,7 +731,7 @@ function CourseAdd() {
                           )}
                         </div>
                       </div>
-                      
+
                     </div>
 
                     {/** -------------- End certificate ----------------- */}
@@ -734,6 +786,30 @@ function CourseAdd() {
             {/* Modal body */}
             <div className="modal-body text-center">
               <form>
+
+                {/* default */}
+                <>
+                  <div className="form-check">
+                    <div className="form-group">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="certificate_id"
+                        id={`certificate_id`}
+                        value='0'
+                        onChange={handleChange}
+                        checked={0 == cinputs.certificate_id}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor={`certificate_id`}
+                      >
+                        No Certificate
+                      </label>
+                    </div>
+                  </div>
+                </>
+
                 {certificateList.map((item, i) => (
                   <>
                     <div className="form-check">

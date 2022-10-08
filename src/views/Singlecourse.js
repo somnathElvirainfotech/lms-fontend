@@ -556,14 +556,14 @@ export default function Singlecourse() {
             {showLoader && <Loader />}
 
             <div className="inner-banner">
-                <img src="images/inner-banner.png" alt="" />
+                <img src="/images/inner-banner.png" alt="" />
                 <div className="desc">
                     <div className="container">
                         <div className="text">
                             <h1>Single Courses</h1>
                             <div className="breadcrumb">
                                 <ul>
-                                    <li><a href="#">Home</a></li>
+                                    <li><Link to="/">Home</Link></li>
                                     <li>Single Courses</li>
                                 </ul>
                             </div>

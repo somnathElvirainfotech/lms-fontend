@@ -17,7 +17,7 @@ import InnerBanner from '../Common/InnerBanner';
 import CourseService from "../../services/CourseService";
 import validator from 'validator';
 import ReactPaginate from "react-paginate";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 // loader 
@@ -366,7 +366,24 @@ function LessonEdit() {
         {/** loader */}
         {showLoader && <Loader />}
 
-        <div className=" enrollments-sec activites-sec " style={{ marginBottom: "50px" }} >
+        <div className="inner-banner">
+                <img src="/images/inner-banner.png" alt="" />
+                <div className="desc">
+                    <div className="container">
+                        <div className="text">
+                            <h1>Lesson</h1>
+                            <div className="breadcrumb">
+                                <ul>
+                                    <li><Link to="/">Home</Link></li>
+                                    <li>Edit</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div className=" enrollments-sec activites-sec "   >
 
             <div className="container">
 
@@ -375,7 +392,7 @@ function LessonEdit() {
                 <div className="row">
                     <div className="container">
 
-                        <h2>Lesson Edit <span><button type="button" className="sec-btn m-2" onClick={previousPage}>Back</button></span></h2>
+                          <span><button type="button" className="sec-btn m-2" onClick={previousPage}>Back</button></span> 
 
                         <div className="row" >
                             <div className="col-sm-12 bg-white m-4 p-3">

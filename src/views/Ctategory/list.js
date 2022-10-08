@@ -10,7 +10,7 @@ export default function List() {
 
     return <>
         <Header />
-        <InnerBanner title="Category" name="Create" linkName="Home" link="/" />
+        <InnerBanner title="Category" name="List" linkName="Home" link="/" />
 
         <div className=" enrollments-sec activites-sec " style={{ marginBottom: "50px" }} >
             <div className="container">

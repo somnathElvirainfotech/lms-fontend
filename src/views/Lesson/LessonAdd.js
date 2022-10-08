@@ -17,7 +17,7 @@ import InnerBanner from '../Common/InnerBanner';
 import CourseService from "../../services/CourseService";
 import validator from 'validator';
 import ReactPaginate from "react-paginate";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 // loader 
@@ -543,28 +543,33 @@ function LessonAdd() {
         {/** loader */}
         {showLoader && <Loader />}
 
-        <div className=" enrollments-sec activites-sec " style={{ marginBottom: "50px" }} >
+        <div className="inner-banner">
+                <img src="/images/inner-banner.png" alt="" />
+                <div className="desc">
+                    <div className="container">
+                        <div className="text">
+                            <h1>Lesson</h1>
+                            <div className="breadcrumb">
+                                <ul>
+                                    <li><Link to="/">Home</Link></li>
+                                    <li>Add</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div className=" enrollments-sec activites-sec "   >
 
             <div className="container">
 
-                {error &&
-                    <div className="alert alert-danger alert-dismissible">
-                        <button type="button" className="close" data-dismiss="alert">&times;</button>
-                        {error}
-                    </div>
-                }
-
-                {success &&
-                    <div className="alert alert-success alert-dismissible">
-                        <button type="button" className="close" onClick={setMsg} data-dismiss="alert">&times;</button>
-                        {success}
-                    </div>
-                }
+                 
 
                 <div className="row">
                     <div className="container">
-                        <h2>Lesson Add <span> <button type="button" className="sec-btn m-2" onClick={previousPage}>Back</button>
-                        </span></h2>
+                       <span> <button type="button" className="sec-btn m-2" onClick={previousPage}>Back</button>
+                        </span> 
                         <div className="row" >
                             <div className="col-sm-12 bg-white m-4 p-3">
 

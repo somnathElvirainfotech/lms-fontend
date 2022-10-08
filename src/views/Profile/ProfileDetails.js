@@ -19,8 +19,8 @@ export default function ProfileDetails(userData) {
     const user = userData.userData;
     const navigate = useNavigate();
     const editUser = () => {
-        navigate('/profile-edit')
-        //window.location.replace('/profile-edit')
+        navigate('/profile')
+        //window.location.replace('/profile')
     }
 
     useEffect(() => {

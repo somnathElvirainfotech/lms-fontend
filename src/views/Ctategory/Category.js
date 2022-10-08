@@ -98,7 +98,7 @@ export default function Category() {
         e.preventDefault();
         var data = new FormData();
         data.append("c_name", input.c_name);
-        data.append("c_description", input.c_description);
+        data.append("c_description", input.c_description?input.c_description:null);
         data.append("c_parent_id", input.c_parent_id ? input.c_parent_id : 0);
         data.append("c_status", "active");
 
@@ -142,8 +142,9 @@ export default function Category() {
     var getOne = async (id) => {
         // console.log(3333333)
         var responce = await CategoryService.getOne(id);
+        console.log(responce.data)
         updateInput.c_name = responce.data.data[0].c_name;
-        updateInput.c_description = responce.data.data[0].c_description;
+        updateInput.c_description = responce.data.data[0].c_description==null?responce.data.data[0].c_description:'';
         updateInput.c_parent_id = responce.data.data[0].c_parent_id;
         setStatus(responce.data.data[0].c_status)
         //  console.log(responce.data.data[0].g_name);
@@ -193,7 +194,7 @@ export default function Category() {
     return (
         <>
 
-            <InnerBanner title="Category" name="Create" linkName="Home" link="/" />
+            <InnerBanner title="Category" name="List" linkName="Home" link="/" />
 
             {/** list */}
 
@@ -379,7 +380,7 @@ export default function Category() {
 
                                                     <td width="800px">
 
-                                                        <textarea required onChange={handler} value={input.c_description}
+                                                        <textarea  onChange={handler} value={input.c_description}
                                                             name="c_description" placeholder="category description" className="form-control" id="exampleFormControlTextarea1" rows="4" />
 
                                                     </td>

@@ -19,7 +19,9 @@ import English from "../../ConverLanguages/English";
 import SerbianCyrilic from "../../ConverLanguages/SerbianCyrilic";
 import SerbianLatin from "../../ConverLanguages/SerbianLatin";
 // end languages
-import { LangContext } from '../../../routes/routes'
+import { LangContext } from '../../../routes/routes';
+
+
 
 
 function openNav() {
@@ -30,13 +32,18 @@ function closeNav() {
     document.getElementById("myNav").style.width = "0%";
 }
 
-function Logout() {
-    TokenHelper.Logout();
-    removeCookie("user_info")
-}
+
 
 export default function Header() {
     const [ADMIN_URL, setADMIN_URL] = useState(process.env.REACT_APP_ADMIN_URL);
+   
+
+
+    function Logout() {
+        
+        TokenHelper.Logout();
+        removeCookie("user_info")
+    }
 
     //console.log(ADMIN_URL)
 
@@ -264,7 +271,7 @@ export default function Header() {
                                         {user.token && <li><Link onClick={clerSearchText} to="/about-us">About</Link></li>}
 
                                         {user.token && user.user_role == 5 ? <li><NavLink onClick={clerSearchText} to={"my-courses"}>{langObj.my_courses}</NavLink></li> : ''}
-                                        {user.token ? <> <li><Link onClick={clerSearchText} to="/profile-edit">{langObj.profile}</Link></li> </> : ''}
+                                        {user.token ? <> <li><Link onClick={clerSearchText} to="/profile">{langObj.profile}</Link></li> </> : ''}
 
                                         {/**  <li><a href="#" data-toggle="modal" data-target="#creatorloginform" >Creator</a></li> */}
                                         {user.user_role == 2 || user.user_role == 1 ? <li><Link onClick={clerSearchText} to="/activites">Activities</Link></li> : ''}

@@ -318,7 +318,7 @@ export default function Lesson() {
         {/** loader */}
         {showLoader && <Loader />}
 
-        <InnerBanner title="Lesson" name="Create" linkName="Home" link="/" />
+        <InnerBanner title="Lesson" name="List" linkName="Home" link="/" />
         {/** search field */}
         {courseList && <div className="user-list-form course">
             <div className="container">
@@ -361,7 +361,7 @@ export default function Lesson() {
 
             </div>
         </div>}
-        <div className=" enrollments-sec activites-sec " style={{ marginBottom: "50px" }} >
+        <div className=" enrollments-sec activites-sec "   >
 
             <div className="container">
 

@@ -354,7 +354,7 @@ export default function Chapter() {
     return <>
 
 
-        <InnerBanner title="Chapter" name="Create" linkName="Home" link="/" />
+        <InnerBanner title="Chapter" name="List" linkName="Home" link="/" />
         {/** search field */}
         {courseList && <div className="user-list-form course">
             <div className="container">
@@ -397,7 +397,7 @@ export default function Chapter() {
 
             </div>
         </div>}
-        <div className=" enrollments-sec activites-sec " style={{ marginBottom: "50px" }} >
+        <div className=" enrollments-sec activites-sec "  >
             <div className="container">
 
                 {error &&

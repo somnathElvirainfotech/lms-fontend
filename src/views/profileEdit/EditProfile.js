@@ -422,25 +422,26 @@ export const EditProfile = () => {
       {/** loader */}
       {showLoader && <Loader />}
 
+      <div className="inner-banner">
+        <img src="/images/inner-banner.png" alt="" />
+        <div className="desc">
+          <div className="container">
+            <div className="text">
+              <h1>Pofile</h1>
+              <div className="breadcrumb">
+                <ul>
+                  <li><Link to="/">Home</Link></li>
+                  <li>Profile</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="profile-edit-form" style={{ marginBottom: "50px" }}>
         <div className="container">
-          {error && (
-            <div className="alert alert-danger alert-dismissible">
-              <button type="button" className="close" data-dismiss="alert">
-                &times;
-              </button>
-              {error}
-            </div>
-          )}
-
-          {success && (
-            <div className="alert alert-success alert-dismissible">
-              <button type="button" className="close" data-dismiss="alert">
-                &times;
-              </button>
-              {success}
-            </div>
-          )}
+          
 
           <div className="row">
             <div className="col-lg-3 col-sm-4 pr-md-0  ">
@@ -455,15 +456,16 @@ export const EditProfile = () => {
                     />
                   ) : (
                     <img
-                      src="images/user.png"
+                      src="/images/user.png"
                       alt=""
                       width="170px"
                       height="170px"
                     />
                   )}
                 </div>
-                <h3>{userData.toUpperCase()} </h3>
-                <p className="text-white">{user.email}</p>
+                <h3> </h3>
+                {/* <h3>{userData.toUpperCase()} </h3> */}
+                {/* <p className="text-white">{user.email}</p> */}
 
                 {profile ? (
                   <a
@@ -585,6 +587,19 @@ export const EditProfile = () => {
                                 </option>
                               ))}
                           </select>
+                        </div>
+                      </div>
+
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>Email</label>
+                          <input
+                          disabled
+                            type="email"
+                            name=""
+                            className="form-control"
+                            value={user.email}
+                          />
                         </div>
                       </div>
 

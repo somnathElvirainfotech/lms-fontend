@@ -345,7 +345,7 @@ export default function MyCourse() {
                                     )}
 
                                     {enrollmentcourse.enrollment_status ==
-                                      "completed" && (
+                                      "completed" && enrollmentcourse.course_details[0].certificate_id != 0 && (
                                       <h5
                                         style={{ cursor: "pointer" }}
                                         onClick={(e) =>

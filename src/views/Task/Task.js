@@ -464,8 +464,8 @@ export default function Task() {
         {/** loader */}
         {showLoader && <Loader />}
 
-        <InnerBanner title="User Task" name="Create" linkName="Home" link="/" />
-        <div className=" enrollments-sec activites-sec " style={{ marginBottom: "50px" }} >
+        <InnerBanner title="User Task" name="List" linkName="Home" link="/" />
+        <div className=" enrollments-sec activites-sec "  >
 
             <div className="container">
 

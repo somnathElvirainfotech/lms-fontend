@@ -10,7 +10,7 @@ export default function index() {
     return (
         <>
              
-            <InnerBanner title="User groups" name="User groups" linkName="User add-edit page" link="#" />
+            <InnerBanner title="User groups" name="List" linkName="Home" link="/" />
             <UserGroup />
            
         </>

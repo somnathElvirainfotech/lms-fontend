@@ -8,11 +8,6 @@ import TokenHelper from '../../services/TokenHelper';
 import { setCookie, getCookie, removeCookie } from '../../middleware/CookieSetup';
 import { toast } from "react-toastify";
 
-import { GoogleLogin, GoogleLogout } from 'react-google-login';
-import { gapi } from 'gapi-script';
-
-import MicrosoftLogin from "react-microsoft-login";
-
 // languages
 import English from "../ConverLanguages/English";
 import SerbianCyrilic from "../ConverLanguages/SerbianCyrilic";
@@ -22,31 +17,24 @@ import { LangContext } from '../../routes/routes'
 
 import { AuthContext } from '../../index';
 
+// firebase
+import { auth, gprovider, mprovider } from '../Firebase'
+
+
+
 export const Login2 = () => {
 
     const { user } = useContext(AuthContext);
 
-    // google console client id
-    var googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-
-    // google console client id
-    var msClientId = process.env.REACT_APP_MS_CLIENT_ID;
 
     const [inputs, setInputs] = useState({});
     const [error, seterror] = useState('');
 
     const navigate = useNavigate();
 
-    function start() {
-        gapi.client.init({
-            clientId: googleClientId,
-            scope: 'email',
-        });
-    }
 
-    useEffect(() => {
-        gapi.load('client:auth2', start);
-    }, []);
+
+
 
     const handleSubmit = async (event) => {
         try {
@@ -56,7 +44,7 @@ export const Login2 = () => {
 
             var response = await UserService.Login(inputs);
 
-            console.log("kkkkkkkkkkk",response.data);
+            console.log("kkkkkkkkkkk", response.data);
             if (response.data.status != false) {
                 if (response.data.data.login_type == "local") {
                     TokenHelper.setToken(response.data.token);
@@ -84,9 +72,8 @@ export const Login2 = () => {
                     }
                     TokenHelper.setUserGroup(temp)
 
-                    inputs.email = '';
-                    inputs.password = '';
-                    
+                    setInputs({ email: "", password: "" })
+
                     window.location.replace("/courses");
                     // navigate("/courses")
                 } else {
@@ -94,8 +81,7 @@ export const Login2 = () => {
                 }
             } else {
                 toast.error(response.data.msg);
-                inputs.email = '';
-                inputs.password = '';
+                setInputs({ email: "", password: "" })
             }
 
 
@@ -111,7 +97,7 @@ export const Login2 = () => {
 
     }
 
-   
+
     const handleChange2 = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -121,18 +107,48 @@ export const Login2 = () => {
     const [formStatus, setFormStatus] = useState(false);
     const [inputs2, setInputs2] = useState({});
 
-    
+
     // google
-    var onSuccess = (res) => {
-        LoginType(res.profileObj.email, "google")
-        console.log("google login success", res);
+    var GoogleLoginHandler = (res) => {
+
+        auth.signInWithPopup(gprovider)
+            .then((res) => {
+                console.log(res.user.email)
+                //  window.Cookies.clear()
+                LoginType(res.user.email, "google")
+            })
+            .catch((err) => { console.log(err) })
+
+
+
+    }
+
+    // microsoft
+    var MicrosoftLoginHandler = () => {
+
+        auth.signInWithPopup(mprovider)
+            .then((res) => {
+                console.log('m success ', res)
+
+                if ("user" in res)
+                    LoginType(res.user.email, "ms")
+
+            })
+            .catch((err) => {
+                console.log('merr ', err.email)
+
+                if ("email" in err)
+                    LoginType(err.email, "ms")
+
+            })
+
     }
 
     var LoginType = async (email, l_type) => {
+        deleteCookies()
         var response = await UserService.loginType({ email: email });
-
         if (response.data.status != false) {
-            console.log("kkkkkkkkkkk",response.data);
+            console.log("kkkkkkkkkkk", response.data);
             if (response.data.data[0].login_type == l_type) {
 
                 TokenHelper.setToken(response.data.token);
@@ -160,10 +176,10 @@ export const Login2 = () => {
                 }
                 TokenHelper.setUserGroup(temp)
 
-                inputs.email = '';
-                inputs.password = '';
-             
-              window.location.replace("/courses");
+
+                setInputs({ email: "", password: "" })
+
+                window.location.replace("/courses");
                 // navigate("/courses")
             } else {
                 toast.error("Invalid login type")
@@ -173,46 +189,26 @@ export const Login2 = () => {
 
         } else {
             toast.error(response.data.msg);
-            inputs.email = '';
-            inputs.password = '';
+            setInputs({ email: "", password: "" })
             deleteCookies()
         }
-
         console.log("login type ", response.data);
     }
 
-    var onFailure = (res) => {
-        toast.error("google login failure");
-        // LoginType()
-        deleteCookies()
-    }
 
 
-    // microsoft
-    var authHandler = (err, data) => {
-        //LoginType(data.,"ms")
-        console.log("ms error ", err);
-        console.log("ms data ", data);
 
-        if (data !== undefined) {
-            if ("account" in data) {
-                LoginType(data.account.userName, "ms")
-            } else {
-                toast.error("Invalid user")
-                deleteCookies()
-            }
-        }
-    }
+
+
 
 
     var forgetPassword = () => {
         var status = !formStatus;
 
         if (status) {
-            inputs.email = '';
-            inputs.password = '';
+            setInputs({ email: "", password: "" })
         } else {
-            inputs2.email = '';
+            setInputs2({ email: "" })
         }
 
         setFormStatus(status)
@@ -229,6 +225,7 @@ export const Login2 = () => {
             } else {
                 toast.error(response.data.msg)
             }
+            setInputs2({ email: "" })
         } catch (error) {
             console.log(error);
         }
@@ -285,6 +282,7 @@ export const Login2 = () => {
                                     <div className="form-group text-left">
                                         <label htmlFor="email">{langObj.username}</label>
                                         <input
+                                            autoComplete="off"
                                             id="email"
                                             type="email"
                                             name="email"
@@ -297,6 +295,7 @@ export const Login2 = () => {
                                     <div className="form-group text-left">
                                         <label htmlFor="pwd">{langObj.password}</label>
                                         <input
+                                            autoComplete="off"
                                             id="pwd"
                                             type="password"
                                             name="password"
@@ -318,19 +317,15 @@ export const Login2 = () => {
 
 
                                 <div className="form-group">
-                                    <GoogleLogin
-                                        clientId={googleClientId}
-                                        buttonText="Sign in with Google"
-                                        onSuccess={onSuccess}
-                                        onFailure={onFailure}
-                                        cookiePolicy={'single_host_origin'}
-                                        style={{ marginTop: "15px", color: "#3b3d3d" }}
-                                    />
+
+
+                                    <button type="button" style={{ border: "1px solid " }} className="btn btn-light login-with-google-btn" onClick={GoogleLoginHandler}>Sign In with Google</button>
 
                                 </div>
 
                                 <div className="form-group">
-                                    <MicrosoftLogin clientId={msClientId} authCallback={authHandler} />
+
+                                    <button type="button" style={{ border: "1px solid " }} className="btn btn-light login-with-microsoft-btn" onClick={MicrosoftLoginHandler}>Sign In with Microsoft</button>
                                 </div>
 
                             </>
@@ -349,6 +344,7 @@ export const Login2 = () => {
                             <div className="form-group text-left">
                                 <label htmlFor="email">Email</label>
                                 <input
+                                    autoComplete="off"
                                     id="email"
                                     type="email"
                                     name="email"

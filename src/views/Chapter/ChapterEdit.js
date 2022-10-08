@@ -14,7 +14,7 @@ import Footer from '../Common/Footer/Footer';
 import InnerBanner from '../Common/InnerBanner';
 
 import ReactPaginate from "react-paginate";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 function ChapterEdit() {
@@ -210,7 +210,7 @@ function ChapterEdit() {
 
 
                         console.log(response.data.msg)
-                       
+
                     } else {
                         seterror(response.data.msg);
                     }
@@ -363,68 +363,73 @@ function ChapterEdit() {
     }
 
     return <>
-        <div className="container">
 
-            {error &&
-                <div className="alert alert-danger alert-dismissible">
-                    <button type="button" onClick={setMsg} className="close" data-dismiss="alert">&times;</button>
-                    {error}
-                </div>
-            }
-
-            {success &&
-                <div className="alert alert-success alert-dismissible">
-                    <button type="button" className="close" onClick={setMsg} data-dismiss="alert">&times;</button>
-                    {success}
-                </div>
-            }
-
-            <div className="row">
+        <div className="inner-banner">
+            <img src="/images/inner-banner.png" alt="" />
+            <div className="desc">
                 <div className="container">
-                    <h2>Chapter Edit <span><button type="button" className="sec-btn m-2" onClick={previousPage}>Back</button></span></h2>
-                    <div className="row" >
-                        <div className="col-sm-12 bg-white m-4 p-3">
-                            <form enctype="multipart/form-data" method="post" onSubmit={FormUpdate}>
-                                <div className="form-row">
+                    <div className="text">
+                        <h1>Chapter</h1>
+                        <div className="breadcrumb">
+                            <ul>
+                                <li><Link to="/">Home</Link></li>
+                                <li>Edit</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <label>COURSE
-                                            </label>
-                                            <select required className="form-control" id="exampleFormControlSelect1" onChange={handleChange} name="course_id" value={inputs.course_id}>
-                                                <option> -- Select course -- </option>
-                                                {course.length && course.map((item) => (item.course_type == "regular" ? <option value={item.id}>{item.course_name.toUpperCase()}</option> : ''))}
-                                            </select>
+        <div className=" enrollments-sec activites-sec "  >
+            <div className="container">
+                <div className="row">
+                    <div className="container">
+                        <span><button type="button" className="sec-btn m-2" onClick={previousPage}>Back</button></span>
+                        <div className="row" >
+                            <div className="col-sm-12 bg-white m-4 p-3">
+                                <form enctype="multipart/form-data" method="post" onSubmit={FormUpdate}>
+                                    <div className="form-row">
+
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label>COURSE
+                                                </label>
+                                                <select required className="form-control" id="exampleFormControlSelect1" onChange={handleChange} name="course_id" value={inputs.course_id}>
+                                                    <option> -- Select course -- </option>
+                                                    {course.length && course.map((item) => (item.course_type == "regular" ? <option value={item.id}>{item.course_name.toUpperCase()}</option> : ''))}
+                                                </select>
+                                            </div>
                                         </div>
+
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label>CHAPTER NAME</label>
+                                                <input required type="text" className="form-control" name="chapter_name" value={inputs.chapter_name}
+                                                    onChange={handleChange} />
+                                            </div>
+                                        </div>
+
+
+                                        <div className="col-md-6">
+                                            <div className="form-group">
+                                                <label>CHAPTER NO</label>
+                                                <input required type="number" className="form-control" name="chapter_no" value={inputs.chapter_no}
+                                                    onChange={handleChange} />
+                                            </div>
+                                        </div>
+
                                     </div>
 
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <label>CHAPTER NAME</label>
-                                            <input required type="text" className="form-control" name="chapter_name" value={inputs.chapter_name}
-                                                onChange={handleChange} />
+                                    <div className="form-row">
+                                        <div className="col-md-12 text-center">
+                                            <div className="form-group">
+                                                <button type="submit" className="btn btn-success">UPDATE</button>
+                                            </div>
                                         </div>
                                     </div>
-
-
-                                    <div className="col-md-6">
-                                        <div className="form-group">
-                                            <label>CHAPTER NO</label>
-                                            <input required type="number" className="form-control" name="chapter_no" value={inputs.chapter_no}
-                                                onChange={handleChange} />
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div className="form-row">
-                                    <div className="col-md-12 text-center">
-                                        <div className="form-group">
-                                            <button type="submit" className="btn btn-success">UPDATE</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -392,7 +392,7 @@ export default function Course() {
 
                             {currentPageData.map(course =>
                                 <div className="col-lg-3 col-md-6 col-sm-12" onChange={e => setSelectedCourse(e.target.value)}>
-                                    <Link to={`/singlecourse`} state={{ singleCourseId: course.id }}>
+                                    <Link to={`/courses/${course.course_name}`} state={{ singleCourseId: course.id }}>
                                         <div className="populer-box" >
                                             <div className="img-tham">
                                                 <img src={course.image} alt="" height="84px" width="97px" />

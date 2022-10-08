@@ -207,7 +207,7 @@ export default function Language() {
             {/** loader */}
             {showLoader && <Loader />}
 
-            <InnerBanner title="Language" name="Create" linkName="Home" link="/" />
+            <InnerBanner title="Language" name="List" linkName="Home" link="/" />
 
             {/** list */}
 

@@ -18,7 +18,7 @@ import Header from '../Common/Header/Header';
 import Footer from '../Common/Footer/Footer';
 import InnerBanner from '../Common/InnerBanner';
 import CourseService from "../../services/CourseService";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import TextEditor from "../TextEditor";
@@ -103,7 +103,7 @@ function TaskEdit() {
 
     const [courseId, setCourseId] = useState();
 
-   
+
 
 
 
@@ -187,7 +187,7 @@ function TaskEdit() {
     }
 
 
-    
+
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
@@ -197,9 +197,9 @@ function TaskEdit() {
     }
 
 
-    
 
-    
+
+
 
     const FormUpdate = async (e) => {
         e.preventDefault();
@@ -240,7 +240,7 @@ function TaskEdit() {
     const courseEditForm = async (id) => {
         var response = await TaskService.getOne(id);
         // console.log(response.data.data[0].course_languages_id)
-       
+
         if (response.data.status) {
 
             setCourseId(id)
@@ -273,9 +273,9 @@ function TaskEdit() {
 
     }
 
-    
 
-    
+
+
 
     const navigate = useNavigate();
     var previousPage = () => {
@@ -287,19 +287,35 @@ function TaskEdit() {
     return <>
 
 
+        <div className="inner-banner">
+            <img src="/images/inner-banner.png" alt="" />
+            <div className="desc">
+                <div className="container">
+                    <div className="text">
+                        <h1>User Task</h1>
+                        <div className="breadcrumb">
+                            <ul>
+                                <li><Link to="/">Home</Link></li>
+                                <li>Edit</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <div className=" enrollments-sec activites-sec " style={{ marginBottom: "50px" }} >
+        <div className=" enrollments-sec activites-sec "  >
 
             <div className="container">
 
-               
+
 
                 <div className="row">
                     <div className="col-md-12 col-sm-6 pr-md-0">
 
 
                         <div className="container">
-                            <h2>Task Edit <span><button type="button" className="sec-btn" onClick={previousPage}>Back</button></span></h2>
+                            <span><button type="button" className="sec-btn" onClick={previousPage}>Back</button></span>
 
                             <div className="row" >
                                 <div className="col-sm-12 bg-white m-4 p-3">

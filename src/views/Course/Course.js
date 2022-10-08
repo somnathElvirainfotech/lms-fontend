@@ -549,23 +549,11 @@ export default function Create() {
         {showLoader && <Loader />}
 
 
-        <InnerBanner title="Course" name="Create" linkName="Home" link="/" />
-        <div className=" enrollments-sec activites-sec " style={{ marginBottom: "50px" }} >
+        <InnerBanner title="Courses" name="List" linkName="Home" link="/" />
+        <div className=" enrollments-sec activites-sec "   >
             <div className="container">
 
-                {error &&
-                    <div className="alert alert-danger alert-dismissible">
-                        <button type="button" className="close" data-dismiss="alert">&times;</button>
-                        {error}
-                    </div>
-                }
-
-                {success &&
-                    <div className="alert alert-success alert-dismissible">
-                        <button type="button" className="close" onClick={setMsg} data-dismiss="alert">&times;</button>
-                        {success}
-                    </div>
-                }
+                 
 
                 <div className="row">
                     <div className="col-md-12 col-sm-6 pr-md-0">
@@ -617,7 +605,7 @@ export default function Create() {
 
                                             <td><Link className="btn btn-success" to="/course/edit" state={{ course_ID: item.id }} ><i className="fa fa-edit"></i></Link></td>
                                             <td><button className="btn btn-danger" onClick={e => deleteData(item.id)}><i className="fa fa-trash-o"></i></button></td>
-                                            <td><Link to={`/singlecourse`} state={{ singleCourseId: item.id }} className="btn btn-info"><i className="fa fa-eye" aria-hidden="true"></i></Link></td>
+                                            <td><Link to={`/courses/${item.course_name}`} state={{ singleCourseId: item.id }} className="btn btn-info"><i className="fa fa-eye" aria-hidden="true"></i></Link></td>
                                         </tr>
                                     )}
 

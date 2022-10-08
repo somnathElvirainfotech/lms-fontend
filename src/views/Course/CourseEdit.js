@@ -299,9 +299,11 @@ function CourseEdit() {
       data.append("avatar_image", avatar_image);
       data.append("attachment_file", attachment_file);
       data.append("id", courseId);
-      data.append("certificate_id", cinputs.certificate_id);
+      data.append("certificate_id", cinputs.certificate_id?cinputs.certificate_id:0);
       data.append("xapi_file_name", cinputs.xapi_file_name)
-      data.append("course_certificate_name", cinputs.course_certificate_name)
+      data.append("course_certificate_name", cinputs.course_certificate_name);
+      data.append("author_name", cinputs.author_name);
+      data.append("author_email", cinputs.author_email);
 
       data.append("course_type", cinputs.course_type);
 
@@ -349,7 +351,12 @@ function CourseEdit() {
       cinputs.course_level = item.course_level;
       cinputs.certificate_id = item.certificate_id;
       cinputs.xapi_file_name = item.xapi_file_name != null ? item.xapi_file_name : "";
-      cinputs.course_certificate_name = item.course_certificate_name;
+      cinputs.course_certificate_name = item.course_certificate_name=='undefined'?'':item.course_certificate_name;
+
+      cinputs.author_name = item.author_name;
+      cinputs.author_email = item.author_email;
+
+
       setImage("");
       setAvatar_image("");
       setAttachment_file("");
@@ -415,47 +422,39 @@ function CourseEdit() {
       {/** loader */}
       {showLoader && <Loader />}
 
-      <div
-        className=" enrollments-sec activites-sec "
-        style={{ marginBottom: "50px" }}
-      >
-        <div className="container">
-          {error && (
-            <div className="alert alert-danger alert-dismissible">
-              <button type="button" className="close" data-dismiss="alert">
-                &times;
-              </button>
-              {error}
+      <div className="inner-banner">
+        <img src="/images/inner-banner.png" alt="" />
+        <div className="desc">
+          <div className="container">
+            <div className="text">
+              <h1>Course</h1>
+              <div className="breadcrumb">
+                <ul>
+                  <li><Link to="/">Home</Link></li>
+                  <li>Edit</li>
+                </ul>
+              </div>
             </div>
-          )}
+          </div>
+        </div>
+      </div>
 
-          {success && (
-            <div className="alert alert-success alert-dismissible">
-              <button
-                type="button"
-                className="close"
-                onClick={setMsg}
-                data-dismiss="alert"
-              >
-                &times;
-              </button>
-              {success}
-            </div>
-          )}
+      <div className=" enrollments-sec activites-sec " >
+        <div className="container">
+
           <div className="row">
             <div className="container">
-              <h2>
-                Course Edit{" "}
-                <span>
-                  <button
-                    type="button"
-                    className="sec-btn m-2"
-                    onClick={previousPage}
-                  >
-                    Back
-                  </button>
-                </span>
-              </h2>
+
+              <span>
+                <button
+                  type="button"
+                  className="sec-btn m-2"
+                  onClick={previousPage}
+                >
+                  Back
+                </button>
+              </span>
+
 
               <div className="row">
                 <div className="col-sm-12 bg-white m-4 p-3">
@@ -490,6 +489,37 @@ function CourseEdit() {
                         </div>
                       </div>
                     </div>
+
+                    <div className="form-row">
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>Author Name</label>
+                          <input
+                            required
+                            type="text"
+                            className="form-control"
+                            name="author_name"
+                            value={cinputs.author_name}
+                            onChange={handleChange}
+                          />
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>Author Email</label>
+                          <input
+                            required
+                            type="email"
+                            className="form-control"
+                            name="author_email"
+                            value={cinputs.author_email}
+                            onChange={handleChange}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+
                     <div className="form-row">
                       <div className="col-md-6">
                         <div className="form-group">
@@ -790,19 +820,20 @@ function CourseEdit() {
 
                     <div className="form-row">
 
-                    <div className="col-md-6">
-                        <div className="form-group">
-                          <label>COURSE CERTIFICATE NAME</label>
-                          <input
-                            required
-                            type="text"
-                            className="form-control"
-                            name="course_certificate_name"
-                            value={cinputs.course_certificate_name}
-                            onChange={handleChange}
-                          />
-                        </div>
-                      </div>
+                      {cinputs.certificate_id != 0 &&
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label>COURSE CERTIFICATE NAME</label>
+                            <input
+                              required
+                              type="text"
+                              className="form-control"
+                              name="course_certificate_name"
+                              value={cinputs.course_certificate_name}
+                              onChange={handleChange}
+                            />
+                          </div>
+                        </div>}
 
                       <div className="col-md-6">
                         <div className="form-group">
@@ -815,17 +846,20 @@ function CourseEdit() {
                             Select Certificate
                           </button>
                           {"  "}
-                          {cinputs.certificate_id && (
+                          {cinputs.certificate_id || cinputs.certificate_id==0 ? (
                             <span style={{ color: "green" }}>
                               <i
                                 class="fa fa-check fa-lg"
                                 aria-hidden="true"
                               ></i>
                             </span>
-                          )}
+                          ):''}
+
+                           
+
                         </div>
                       </div>
-                     
+
                     </div>
 
                     {/** -------------- End certificate ----------------- */}
@@ -880,6 +914,31 @@ function CourseEdit() {
             {/* Modal body */}
             <div className="modal-body text-center">
               <form>
+
+                {/* default */}
+                <>
+                  <div className="form-check">
+                    <div className="form-group">
+                      <input
+                        className="form-check-input"
+                        type="radio"
+                        name="certificate_id"
+                        id={`certificate_id`}
+                        value='0'
+                        onChange={handleChange}
+                        checked={0 == cinputs.certificate_id}
+                      />
+                      <label
+                        className="form-check-label"
+                        htmlFor={`certificate_id`}
+                      >
+                        No Certificate
+                      </label>
+                    </div>
+                  </div>
+                </>
+
+
                 {certificateList.map((item, i) => (
                   <>
                     <div className="form-check">
