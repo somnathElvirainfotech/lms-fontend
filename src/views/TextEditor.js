@@ -5,19 +5,15 @@ import JoditEditor from "jodit-react";
 
 export default function TextEditor(props) {
 
-    var [ss, SS] = useState();
-
     var editor = useRef(null);
     const { inialvalue, setText } = props;
-    const config = {
-
-    };
+    const config = {};
 
     return useMemo(() => {
         return (<JoditEditor
             ref={editor}
-            value={ss}
-            onChange={(data) => SS(data)}
+            value={inialvalue}
+            onChange={(data) => setText(data)}
             config={config}
         />)
     }, [])
