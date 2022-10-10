@@ -7,7 +7,7 @@ export const setCookie = (cookiename, cookievalue) => {
     const exp = timestamp + (60 * 60 * 24 * 1000 * 5)
     console.log(exp);
     Cookies.set(cookiename, cookievalue, {
-        //  domain: process.env.REACT_APP_COOKIE_DOMAIN,
+         domain: process.env.REACT_APP_COOKIE_DOMAIN,
         secure: true,
         path: "/",
         expires: exp,
