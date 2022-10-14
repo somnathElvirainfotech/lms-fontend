@@ -2501,6 +2501,16 @@ select {
     border: 0;
 }
 
+
+#addgroupModal2 .modal-header {
+    border: 0;
+}
+
+#addgroupModal2 .modal-footer {
+    justify-content: space-between;
+    border: 0;
+}
+
 #editgroupModal .modal-header {
     border: 0;
 }
@@ -2539,6 +2549,15 @@ select {
 }
 
 #addgroupModal .close {
+    color: #fff;
+    opacity: 1;
+}
+
+#addgroupModal2 .modal-content {
+    background: #00000078;
+}
+
+#addgroupModal2 .close {
     color: #fff;
     opacity: 1;
 }

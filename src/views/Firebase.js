@@ -13,7 +13,7 @@ firebase.initializeApp(firebaseConfig);
 var auth = firebase.auth();
 var gprovider = new firebase.auth.GoogleAuthProvider();
 var mprovider = new firebase.auth.OAuthProvider('microsoft.com');
-export { auth, gprovider, mprovider };
+export { auth, gprovider, mprovider,firebase };
 
 
 

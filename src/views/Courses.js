@@ -23,6 +23,8 @@ import { LangContext } from "../routes/routes";
 import ReactPaginate from "react-paginate";
 // loader 
 import Loader from "./Loader";
+import EnrollmentService from "../services/EnrollmentService";
+import XapiService from "../services/XapiService";
 
 
 function useQuery() {
@@ -72,6 +74,161 @@ export default function Course() {
         }
     }
 
+    // xapi ----------------
+  var getXapiData = async (totalCourse) => {
+    // setShowLoader(true)
+
+    setShowLoader(true);
+
+    var agent = user.email;
+    var activity = "";
+    var verb = "";
+
+    var data = {
+      agent: '{"mbox": "mailto:' + agent + '"}',
+      activity: activity,
+      verb: "", //`http://adlnet.gov/expapi/verbs/${verb}`
+    };
+
+    // ------ xapi course total user enroll
+    //var totalCourse = ["practice1", "practice2"];
+
+    var xapiCourse = [];
+
+    // ------------- student all course setup -------------------------------
+    for (var y of totalCourse) {
+      var aa = {
+        enrollment_id:y.enrollment_id,
+        user_email:y.user_email,
+        course_type:y.course_type,
+        course_name: y.course_name,
+        user_id: user.user_id,
+        timestamp:y.timestamp,
+        updateTimestamp:"",
+        enrollment_status:y.enrollment_status,
+        xapi_course_id: "",
+        course_id: y.course_id,
+        enroll_id: y.enroll_id,
+        attempted: 0,
+        failed: false,
+        passed: false,
+        total_number: 0,
+        score_number: 0,
+      };
+
+      xapiCourse.push(aa);
+    }
+
+    // console.log(xapiCourse);
+
+    // --------------------------------------------
+
+    var tempArr = [];
+
+    var agent = user.email;
+    var activity = "";
+    var verb = "";
+
+    var data = {
+      agent: '{"mbox": "mailto:' + agent + '"}',
+      ascending: false,
+    };
+    var responce = await XapiService.getXapiStatements(data);
+
+    // ----- -----------------------------
+    for (var item of xapiCourse) {
+      var count = 0;
+
+      if (responce.data.statements.length > 0) {
+        for (var singleRes of responce.data.statements) {
+          // console.log(singleRes.object.definition.name);
+
+          if ("definition" in singleRes.object) {
+            if ("name" in singleRes.object.definition) {
+              if (
+                item.course_name == singleRes.object.definition.name.und &&
+                singleRes.timestamp > item.timestamp
+              ) {
+
+               // console.log("one");
+
+                
+
+                console.log("sssss");
+
+                if ("result" in singleRes) {
+                  if (
+                    "completion" in singleRes.result &&
+                    singleRes.result.completion == true
+                  ) {
+                    if ("success" in singleRes.result) {
+                      console.log("item  ", singleRes.result.success);
+
+                      if (singleRes.result.success) {
+                        item.passed = true;
+                        item.failed = false;
+                        item.total_number = singleRes.result.score.max;
+                        item.score_number = singleRes.result.score.raw;
+                        item.updateTimestamp=singleRes.timestamp
+                      } else {
+                        if (item.passed == false) {
+                          item.failed = true;
+                          item.passed = false;
+                          item.total_number = singleRes.result.score.max;
+                          item.score_number = singleRes.result.score.raw;
+                          item.updateTimestamp=singleRes.timestamp
+                        }
+                      }
+
+                      tempArr.push(item);
+                    }
+                  }
+                } else {
+                  item.attempted = count + 1;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    console.log("xapi data", xapiCourse);
+
+    setShowLoader(false);
+
+    if (xapiCourse.length > 0) {
+      console.log(xapiCourse);
+      
+      // enrollment status updated  ------------------
+    //   await EnrollmentService.enrollmentStatusUpdate(
+    //     xapiCourse
+    //   );
+    
+      // result save----------
+
+      for(var i of xapiCourse)
+      {
+          if(i.passed && i.updateTimestamp > i.timestamp)
+          {
+            if (item.enrollment_status == "completed") {
+              console.log("sub one");
+              await XapiService.saveResult({
+                enrollment_id: item.enrollment_id,
+                course_name: item.course_name,
+                course_type: item.course_type,
+                user_email: item.user_email,
+              });
+            }
+          }
+      }
+    }
+
+    
+  };
+
+
+
 
 
 
@@ -101,7 +258,7 @@ export default function Course() {
 
     const [noCourse, setNoCourse] = useState(0);
 
-    var groupChkCourseShow = (data) => {
+    var groupChkCourseShow = async(data) => {
 
         var temp = [];
         for (var item of data) {
@@ -110,11 +267,54 @@ export default function Course() {
             }
         }
 
+
+
         //console.log("zzzzzzzzz ",temp);
 
         setNoCourse(temp.length)
         setCourses([...temp]);
         getDataPagi(temp, (0 * PER_PAGE))
+
+
+      // -----------------------------------------------
+    
+            //var xresponce = await UserService.enrollmentcourse(user.user_id, "");
+    
+            var xresponce = await EnrollmentService.getUserEnrollmentList();
+            console.log("user enrollment", xresponce.data.data);
+    
+            var xdata = [];
+            for (var i of xresponce.data.data) {
+    
+            
+    
+              if (i.course_details[0].course_type == "xapi") {
+                var temp = {
+                    course_id: i.course_details[0].id,
+                    enroll_id: i.enroll_id,
+                    course_name: i.course_details[0].xapi_file_name,
+                    timestamp:
+                      i.course_details[0].updated_at == null
+                        ? i.course_details[0].created_at
+                        : i.course_details[0].updated_at,
+        
+                    enrollment_id: i.enroll_id,
+                    course_type: i.course_details[0].course_type,
+                    user_email: i.user_details[0].email,
+                    enrollment_status: i.enrollment_status,
+                };
+    
+                xdata.push(temp);
+              }
+            }
+    
+            // xapi
+            getXapiData(xdata);
+    
+            // ------------------------------------------------
+           
+            
+          
     }
 
 
@@ -136,7 +336,6 @@ export default function Course() {
             var responce = await CourseService.courseSearch(data);
 
             if (user.user_role == 5) {
-
                 groupChkCourseShow(responce.data.data)
             } else {
                 setNoCourse(responce.data.data.length)
@@ -392,7 +591,7 @@ export default function Course() {
 
                             {currentPageData.map(course =>
                                 <div className="col-lg-3 col-md-6 col-sm-12" onChange={e => setSelectedCourse(e.target.value)}>
-                                    <Link to={`/courses/${course.course_name}`} state={{ singleCourseId: course.id }}>
+                                    <Link to={`/courses/${course.course_name.replaceAll(" ","-")}`} state={{ singleCourseId: course.id }}>
                                         <div className="populer-box" >
                                             <div className="img-tham">
                                                 <img src={course.image} alt="" height="84px" width="97px" />

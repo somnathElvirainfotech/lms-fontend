@@ -52,7 +52,7 @@ export default function MyTask() {
     const [enroll, setEnroll] = useState(false);
 
 
-    var getCourse = async (courseId, taskId, no_attempted) => {
+    var getCourse = async (courseId, taskId, no_attempted,course_name) => {
 
 
         var enrollRes = await UserService.enrollmentcourse(user.user_id, courseId);
@@ -96,7 +96,7 @@ export default function MyTask() {
                 // navigate(`/singlexapi?link=${temp.xapi_attachment_file}`,{replace:true,target:'_blank'})
             } else {
                 //window.location.replace(`/singlecourse?id=${courseId}`)
-                navigate("/singlecourse", { state: { singleCourseId: courseId, taskId: taskId, courseType: temp.course_type } })
+                navigate(`/courses/${course_name.replaceAll(" ","-")}`, { state: { singleCourseId: courseId, taskId: taskId, courseType: temp.course_type } })
             }
 
         } else {
@@ -104,7 +104,7 @@ export default function MyTask() {
             var temp = cresponce.data.data;
 
             // window.location.replace(`/singlecourse?id=${courseId}`)
-            navigate("/singlecourse", { state: { singleCourseId: courseId, taskId: taskId, courseType: temp.course_type } })
+            navigate(`/courses/${course_name.replaceAll(" ","-")}`, { state: { singleCourseId: courseId, taskId: taskId, courseType: temp.course_type } })
 
         }
 
@@ -167,7 +167,7 @@ export default function MyTask() {
 
 
                                                             {assignment.user_task_status != 'passed' ?
-                                                                < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted)} > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link> : ''}
+                                                                < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted,assignment.course_name)} > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link> : ''}
                                                         </div>
                                                     </div>
                                                 </div>

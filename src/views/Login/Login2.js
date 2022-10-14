@@ -164,7 +164,7 @@ export const Login2 = () => {
     }
 
     var LoginType = async (email, l_type) => {
-        deleteCookies()
+      //  deleteCookies()
         setShowLoader(true);
         var response = await UserService.loginType({ email: email });
         if (response.data.status != false) {
@@ -204,7 +204,7 @@ export const Login2 = () => {
                 window.location.replace("/courses");
                 // navigate("/courses")
             } else {
-                deleteCookies()
+               deleteCookies()
                 setShowLoader(false);
                 toast.error("Invalid login type")
             }

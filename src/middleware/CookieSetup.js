@@ -21,6 +21,6 @@ export const getCookie = (cookiename) => {
 export const removeCookie = (cookiename) => {
 
     Cookies.remove(cookiename);
-    sessionStorage.clear();
+   // sessionStorage.clear();
     // Cookies.clear();
 }

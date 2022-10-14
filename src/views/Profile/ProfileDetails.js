@@ -54,7 +54,7 @@ export default function ProfileDetails(userData) {
             <div className="profile-details">
                 <div className="container">
                     <div className="profile-img">
-                        {user.image ? <img src={user.image} alt="" width="200px" height="200px" /> : <img src="images/user.png" width="200px" height="200px" alt="" />
+                        {user.image ? <img src={user.image} alt="" width="200px" height="200px" /> : <img src="/images/user.png" width="200px" height="200px" alt="" />
 
                         }
                     </div>

@@ -59,8 +59,14 @@ export default function MyCourse() {
     // ------------- student all course setup -------------------------------
     for (var y of totalCourse) {
       var aa = {
+        enrollment_id:y.enrollment_id,
+        user_email:y.user_email,
+        course_type:y.course_type,
         course_name: y.course_name,
         user_id: user.user_id,
+        timestamp:y.timestamp,
+        updateTimestamp:"",
+        enrollment_status:y.enrollment_status,
         xapi_course_id: "",
         course_id: y.course_id,
         enroll_id: y.enroll_id,
@@ -96,12 +102,20 @@ export default function MyCourse() {
 
       if (responce.data.statements.length > 0) {
         for (var singleRes of responce.data.statements) {
-          console.log(singleRes.object.definition.name);
+          // console.log(singleRes.object.definition.name);
 
           if ("definition" in singleRes.object) {
             if ("name" in singleRes.object.definition) {
-              if (item.course_name == singleRes.object.definition.name.und) {
-                // console.log("sss");
+              if (
+                item.course_name == singleRes.object.definition.name.und &&
+                singleRes.timestamp > item.timestamp
+              ) {
+
+               // console.log("one");
+
+                
+
+                console.log("sssss");
 
                 if ("result" in singleRes) {
                   if (
@@ -116,12 +130,14 @@ export default function MyCourse() {
                         item.failed = false;
                         item.total_number = singleRes.result.score.max;
                         item.score_number = singleRes.result.score.raw;
+                        item.updateTimestamp=singleRes.timestamp
                       } else {
                         if (item.passed == false) {
                           item.failed = true;
                           item.passed = false;
                           item.total_number = singleRes.result.score.max;
                           item.score_number = singleRes.result.score.raw;
+                          item.updateTimestamp=singleRes.timestamp
                         }
                       }
 
@@ -140,16 +156,36 @@ export default function MyCourse() {
 
     console.log("xapi data", xapiCourse);
 
+    setShowLoader(false);
+
     if (xapiCourse.length > 0) {
       console.log(xapiCourse);
+      
       // enrollment status updated  ------------------
-      var updteEnrollStatus = await EnrollmentService.enrollmentStatusUpdate(
+      await EnrollmentService.enrollmentStatusUpdate(
         xapiCourse
       );
-      // console.log(updteEnrollStatus.data)
+    
+      // result save----------
+
+      for(var i of xapiCourse)
+      {
+          if(i.passed && i.updateTimestamp > i.timestamp)
+          {
+            if (item.enrollment_status == "completed") {
+              console.log("sub one");
+              await XapiService.saveResult({
+                enrollment_id: item.enrollment_id,
+                course_name: item.course_name,
+                course_type: item.course_type,
+                user_email: item.user_email,
+              });
+            }
+          }
+      }
     }
 
-    setShowLoader(false);
+    
   };
 
   useEffect(() => {
@@ -168,10 +204,29 @@ export default function MyCourse() {
       var data = [];
       for (var i of responce.data.data) {
         if (i.course_details[0].course_type == "xapi") {
+
+          // if (i.enrollment_status == "completed") {
+          //   await XapiService.saveResult({
+          //     enrollment_id: i.enroll_id,
+          //     course_name: i.course_details[0].xapi_file_name,
+          //     course_type: i.course_details[0].course_type,
+          //     user_email: i.user_details[0].email,
+          //   });
+          // }
+
           var temp = {
             course_id: i.course_details[0].id,
             enroll_id: i.enroll_id,
             course_name: i.course_details[0].xapi_file_name,
+            timestamp:
+              i.course_details[0].updated_at == null
+                ? i.course_details[0].created_at
+                : i.course_details[0].updated_at,
+
+            enrollment_id: i.enroll_id,
+            course_type: i.course_details[0].course_type,
+            user_email: i.user_details[0].email,
+            enrollment_status: i.enrollment_status,
           };
 
           data.push(temp);
@@ -345,28 +400,30 @@ export default function MyCourse() {
                                     )}
 
                                     {enrollmentcourse.enrollment_status ==
-                                      "completed" && enrollmentcourse.course_details[0].certificate_id != 0 && (
-                                      <h5
-                                        style={{ cursor: "pointer" }}
-                                        onClick={(e) =>
-                                          geotoCertificate(
-                                            user.username.toUpperCase(),
-                                            user.email,
-                                            enrollmentcourse.course_details[0].course_certificate_name	.toUpperCase(),
-                                            enrollmentcourse.updated_at,
-                                            enrollmentcourse.course_details[0]
-                                              .certificate_id
-                                          )
-                                        }
-                                        className="course-status ml-3"
-                                      >
-                                        <i
-                                          class="fa fa-download"
-                                          aria-hidden="true"
-                                        ></i>{" "}
-                                        Download
-                                      </h5>
-                                    )}
+                                      "completed" &&
+                                      enrollmentcourse.course_details[0]
+                                        .certificate_id != 0 && (
+                                        <h5
+                                          style={{ cursor: "pointer" }}
+                                          onClick={(e) =>
+                                            geotoCertificate(
+                                              user.username.toUpperCase(),
+                                              user.email,
+                                              enrollmentcourse.course_details[0].course_certificate_name.toUpperCase(),
+                                              enrollmentcourse.updated_at,
+                                              enrollmentcourse.course_details[0]
+                                                .certificate_id
+                                            )
+                                          }
+                                          className="course-status ml-3"
+                                        >
+                                          <i
+                                            class="fa fa-download"
+                                            aria-hidden="true"
+                                          ></i>{" "}
+                                          Download
+                                        </h5>
+                                      )}
 
                                     {enrollmentcourse.course_details[0]
                                       .course_type != "xapi" && (

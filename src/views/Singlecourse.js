@@ -18,6 +18,7 @@ import CourseTrackService from "../services/CourseTrackService";
 import XapiService from '../services/XapiService';
 import UserTaskService from "../services/UserTaskService";
 import { toast } from "react-toastify";
+import QnsAnsComment from "./QnsAnsComment";
 
 // loader 
 import Loader from "./Loader";
@@ -609,7 +610,11 @@ export default function Singlecourse() {
 
                                 <div className="row mb-3">
                                     <div className="col-sm-12">
-                                        <ReactPlayer onSeek={e => playerSeek(e)} onDuration={e => setDuration(e)} onEnded={playerEnded} onPause={playerPaused} onProgress={playerProgress} url={vedioPlayer} playing={true} controls={true} width="100%" height="340px"></ReactPlayer>
+                                        <ReactPlayer config={{ file: {
+                                            attributes: {
+                                            controlsList: 'nodownload'
+                                            }
+                                            }}} onSeek={e => playerSeek(e)} onDuration={e => setDuration(e)} onEnded={playerEnded} onPause={playerPaused} onProgress={playerProgress} url={vedioPlayer} playing={true} controls={true} width="100%" height="340px"></ReactPlayer>
                                     </div>
                                 </div>
                             }
@@ -828,6 +833,8 @@ export default function Singlecourse() {
 
                                         {user.token && <div className="tab-pane fade show " id="q-a" role="tabpanel" aria-labelledby="q-a-tab">
                                             <h3>Question and Answers</h3>
+
+                                            <QnsAnsComment course_id={singleCourseId} />
 
                                         </div>
                                         }

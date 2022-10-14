@@ -33,6 +33,10 @@ class XapiService {
         return axios.post(REACT_APP_API_SERVICE_URL + `/xapi/question-answer`, payload, TokenHelper.getHeader());
     }
 
+    saveResult(payload){
+        return axios.post(REACT_APP_API_SERVICE_URL + `/xapi/result-save`, payload, TokenHelper.getHeader());
+    }
+
 
 }
 
