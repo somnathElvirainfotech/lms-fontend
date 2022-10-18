@@ -6,6 +6,8 @@ import htmlToPdfmake from "html-to-pdfmake";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
+
+
 import { useLocation, useNavigate } from "react-router-dom";
 import Certificate1 from "./all_three_certificate/certificate-1/Certificate1";
 import Certificate2 from "./all_three_certificate/certificate-2/Certificate2";
@@ -51,6 +53,9 @@ function Certificate() {
 
   return (
     <>
+
+
+
       {certificate_id == 1 && (
         <Certificate1
           user_name={user_name}

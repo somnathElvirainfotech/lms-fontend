@@ -68,8 +68,8 @@ export default function Create() {
 
 
     function getDataPagi(data, offset) {
-        var temp = [];
         console.log("offset", offset);
+        var temp = [];
         data.slice(offset, offset + PER_PAGE).map((item) => {
             temp.push(item);
         })

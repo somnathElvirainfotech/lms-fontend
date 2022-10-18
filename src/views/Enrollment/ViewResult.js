@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState,useRef } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import InnerBanner from "../Common/InnerBanner";
 import Loader from "../Loader";
 import XapiService from "../../services/XapiService";
 import { toast } from "react-toastify";
+import { useReactToPrint } from "react-to-print";
 
 function ViewResult() {
   const [showLoader, setShowLoader] = useState(false);
+  var [data, setData] = useState([]);
 
   var location = useLocation();
   var {  course_type, enrollment_id } = location.state;
 
-  var [data, setData] = useState([]);
 
   const navigate = useNavigate();
   var previousPage = () => {
@@ -88,6 +89,13 @@ function ViewResult() {
     return data;
   };
 
+
+  // printcomment
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
   return (
     <>
       {showLoader && <Loader />}
@@ -110,8 +118,26 @@ function ViewResult() {
           >
             Back
           </button>
+
+          {/* <Link
+            to="/print-result"
+            className="sec-btn add-grp-btn "
+            style={{marginLeft:"25px"}}
+            state={{
+                      enrollment_id: enrollment_id,
+                      course_type:course_type,
+                     
+                  }}
+          >
+           Print
+          </Link> */}
+
+          <button onClick={handlePrint} className="sec-btn add-grp-btn mt-4 mb-3" style={{marginLeft:"15px"}}>  Print </button>
+
           <div className="data-table backend-data-table">
-            <div className="row">
+           
+          <div ref={componentRef} className="data-table backend-data-table m-2"> 
+            <div className="row mt-2">
               {data &&
                 data.map((item, i) => (
                   <>
@@ -237,6 +263,7 @@ function ViewResult() {
                     </div>
                   </>
                 ))}
+            </div>
             </div>
           </div>
         </div>

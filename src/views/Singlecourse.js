@@ -882,7 +882,7 @@ export default function Singlecourse() {
                                                                                         {lessonItem.status == 'completed' && <>
                                                                                             , status: {lessonItem.status}
                                                                                         </>}
-                                                                                        {lessonItem.lesson_percentage != 100 &&
+                                                                                        {lessonItem.lesson_percentage < 90 &&
                                                                                             <span>
                                                                                                 , progress: {lessonItem.lesson_percentage}%
                                                                                             </span>
@@ -913,7 +913,7 @@ export default function Singlecourse() {
                                                                                         {lessonItem.status == 'completed' && <>
                                                                                             , status: {lessonItem.status}
                                                                                         </>}
-                                                                                        {lessonItem.lesson_percentage != 100 &&
+                                                                                        {lessonItem.lesson_percentage < 90 &&
                                                                                             <span>
                                                                                                 , progress: {lessonItem.lesson_percentage}%
                                                                                             </span>

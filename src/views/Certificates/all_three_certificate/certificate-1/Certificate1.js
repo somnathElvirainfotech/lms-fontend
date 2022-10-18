@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./style.css";
 
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 import { useLocation, useNavigate } from "react-router-dom";
 
+import SignatureService from "../../../../services/SignatureService";
+
 function Certificate1(props) {
   var navigate = useNavigate();
   var previousPage = () => {
     navigate(-1);
   };
+
+  var [signature,setSignature]=useState('');
 
   const printPDF = () => {
     const domElement = document.getElementById("divToPrint");
@@ -19,16 +23,29 @@ function Certificate1(props) {
       },
     }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png", 5.5);
-      const pdf = new jsPDF("landscape", "px", [600, 463], false);
-      pdf.addImage(imgData, "PNG", 95, 40, 450, 350);
+      const pdf = new jsPDF("landscape", "px", [520, 432], false);
+      pdf.addImage(imgData, "PNG", 0, 0, 520, 432);
       pdf.save(`${new Date().toISOString()}.pdf`);
     });
-  };
+  };{
+
+  useEffect(()=>{
+
+   (async()=>{
+    var responce=await SignatureService.getAll();
+      if(responce.data.status){
+        setSignature(responce.data.data[0].signature_name);
+      }else{
+        setSignature("/images/signature.png")
+      }
+   })();
+
+  },[])
 
   return (
     <>
       <div className="certificate-bg" id="divToPrint">
-        <div className="container-fluid">
+        
           <div className="row">
             <div className="col-sm-12 text-center">
               <img src="./images/logo.png" />
@@ -42,7 +59,7 @@ function Certificate1(props) {
               <div className="sign1-sec">
                 <div className="sign-sec-l">
                   <div className="sign-img">
-                    <img src="images/signature.png" alt="signature" />
+                    <img src={signature} alt="signature" />
                   </div>
                   <div className="sign-text">Direktor</div>
                 </div>
@@ -53,7 +70,7 @@ function Certificate1(props) {
               </div>
             </div>
           </div>
-        </div>
+         
       </div>
 
       <div className="container" style={{ marginLeft: "40%" }}>
@@ -77,6 +94,7 @@ function Certificate1(props) {
       </div>
     </>
   );
+}
 }
 
 export default Certificate1;

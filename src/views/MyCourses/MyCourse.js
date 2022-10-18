@@ -3,6 +3,10 @@ import { useState, useEffect, useContext } from "react";
 import UserService from "../../services/UserService";
 import { AuthContext } from "../../index";
 
+import OwlCarousel from "react-owl-carousel";
+import "owl.carousel/dist/assets/owl.carousel.css";
+import "owl.carousel/dist/assets/owl.theme.default.css";
+
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Header from "../Common/Header/Header";
 import Footer from "../Common/Footer/Footer";
@@ -24,6 +28,19 @@ function useQuery() {
 }
 
 export default function MyCourse() {
+
+  const options = {
+    margin: 30,
+    loop:true,
+    responsiveClass: true,
+    nav: false,
+    dots: true,
+    autoplay: false,
+    navText: ["Prev", "Next"],
+    smartSpeed: 1000,
+    items:1
+};
+
   // loader
   const [showLoader, setShowLoader] = useState(false);
 
@@ -196,9 +213,31 @@ export default function MyCourse() {
     if (user.user_role == 5) {
       setShowLoader(true);
       var responce = await UserService.enrollmentcourse(user.user_id, "");
+      
+
+      // var temp = [];
+
+      // var PER_PAGE=2;
+      // const pageCount = Math.ceil(responce.data.data.length / PER_PAGE);
+      
+      // console.log("dddd",pageCount)
+      // for(var i=0;i<pageCount;i++)
+      // {
+      //   var dtemp=[];
+      //   var offset=i===0?0:i+1
+      //   responce.data.data.slice(offset, offset + PER_PAGE).map((item) => {
+      //     dtemp.push(item);
+          
+      // })
+
+      
+      // temp.push(dtemp)
+
+      // }
+      
       setEnrollmentcourses(responce.data.data);
 
-      console.log("all courses", responce.data);
+      console.log("all courses", responce.data.data);
       setShowLoader(false);
 
       var data = [];
@@ -296,14 +335,7 @@ export default function MyCourse() {
                     <div className="item">
                       {user.user_role == 5 && (
                         <div className="item-header" id="headingOne">
-                          {/**       <h2>
-                                                    <button className="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                                        Last seen : (8.50 a.m.)
-                                                        <i className="fa fa-angle-down"></i>
-                                                    </button>
-
-
-                                                </h2> */}
+                          
                         </div>
                       )}
 
@@ -318,9 +350,13 @@ export default function MyCourse() {
                             setSelectedEnrollmentcourses(e.target.value)
                           }
                         >
-                          {enrollmentcourses.map((enrollmentcourse) => (
-                            <div className="my-course-details">
+                         <OwlCarousel className="slider-items owl-carousel" {...options} >
+
+                          {enrollmentcourses.map((enrollmentcourse)=>(
+                            
+                            <div className="my-course-details ">
                               <div className="row align-items-center">
+
                                 <div className="col-md-4">
                                   <div className="my-course-img">
                                     <img
@@ -444,110 +480,20 @@ export default function MyCourse() {
                                     )}
                                   </div>
                                 </div>
+
+
                               </div>
                             </div>
-                          ))}
+                            ))}
+                          </OwlCarousel>
                         </div>
                       )}
                     </div>
-                    {/* <div className="item">
-                                        <div className="item-header" id="headingTwo">
-                                            <h2 className="mb-0">
-                                                <button className="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                    Yesterday seen :
-                                                    <i className="fa fa-angle-down"></i>
-                                                </button>
-                                            </h2>
-                                        </div>
-                                        <div id="collapseTwo" className="collapse show" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                                            <div className="my-course-details">
-                                                <div className="row align-items-center">
-                                                    <div className="col-md-4">
-                                                        <div className="my-course-img">
-                                                            <img src="images/my-course1.png" className="img-fluid" alt="" />
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-8">
-                                                        <div className="my-course-content">
-                                                            <h4>Data Analytics</h4>
-                                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-                                                            <h5 className="course-status">Not completed</h5>
-                                                            <a href="#">Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> */}
+                    
                   </div>
                 </div>
               </div>
-              {/* <div className="slider-item">
-                            <div className="my-course-list">
-                                <div className="accordion" id="accordionExample2">
-                                    <div className="item">
-                                        <div className="item-header" id="headingThree">
-                                            <h2>
-                                                <button className="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                                    Last seen : (8.50 a.m.)
-                                                    <i className="fa fa-angle-down"></i>
-                                                </button>
-                                            </h2>
-                                        </div>
-                                        <div id="collapseThree" className="collapse show" aria-labelledby="headingThree" data-parent="#accordionExample">
-                                            <div className="my-course-details">
-                                                <div className="row align-items-center">
-                                                    <div className="col-md-4">
-                                                        <div className="my-course-img">
-                                                            <img src="images/my-course1.png" className="img-fluid" alt="" />
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-8">
-                                                        <div className="my-course-content">
-                                                            <h4>Data Analytics</h4>
-                                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-                                                            <h5 className="course-status">Not completed</h5>
-                                                            <a href="#">Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                           
-                                        </div>
-                                    </div>
-                                    <div className="item">
-                                        <div className="item-header" id="headingFour">
-                                            <h2 className="mb-0">
-                                                <button className="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                                    Yesterday seen :
-                                                    <i className="fa fa-angle-down"></i>
-                                                </button>
-                                            </h2>
-                                        </div>
-                                        <div id="collapseFour" className="collapse show" aria-labelledby="headingFour" data-parent="#accordionExample">
-                                            <div className="my-course-details">
-                                                <div className="row align-items-center">
-                                                    <div className="col-md-4">
-                                                        <div className="my-course-img">
-                                                            <img src="images/my-course1.png" className="img-fluid" alt="" />
-                                                        </div>
-                                                    </div>
-                                                    <div className="col-md-8">
-                                                        <div className="my-course-content">
-                                                            <h4>Data Analytics</h4>
-                                                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.</p>
-                                                            <h5 className="course-status">Not completed</h5>
-                                                            <a href="#">Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div> */}
+             
             </div>
           </div>
         </div>

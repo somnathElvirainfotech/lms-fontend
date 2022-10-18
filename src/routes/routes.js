@@ -1,5 +1,12 @@
 import React, { useEffect, useState, createContext } from 'react'
-import { useRoutes, Navigate, Route, Routes, exact } from 'react-router-dom'
+import { useRoutes, Navigate, Route, Routes, exact } from 'react-router-dom';
+import '../links/font-awesome/css/font-awesome.min.css';
+import '../links/css/style.css';
+import '../links/css/responsive.css';
+
+
+import $ from 'jquery';
+import "jquery-ui-dist/jquery-ui";
 
 import Home from '../views/Home/Home';
 import AboutUs from '../views/AboutUs';
@@ -64,6 +71,9 @@ import ViewResult from '../views/Enrollment/ViewResult';
 import Certificate1 from '../views/Certificates/all_three_certificate/certificate-1/Certificate1';
 import Certificate2 from '../views/Certificates/all_three_certificate/certificate-2/Certificate2';
 import Certificate3 from '../views/Certificates/all_three_certificate/certificate-3/Certificate3';
+import PrintResult from '../views/Enrollment/PrintResult';
+
+
 
 export const LangContext = createContext();
 
@@ -71,6 +81,39 @@ export const LangContext = createContext();
 export default function RoutesList() {
 
   var [data, setData] = useState({});
+
+
+  useEffect(()=>{
+
+
+     /*mega menu*/
+     $('#mega-menu-fresher li').on('mouseenter', function () {
+      //alert("2!");
+      if ($(this).siblings().children().hasClass('active-mega-menu')) {
+          $(this).siblings().children().removeClass('active-mega-menu');
+      }
+      $(this).children().addClass('active-mega-menu');
+  });
+  $('#mega-menu-fresher').hover(function () {
+      $('#mega-menu-fresher li').children().removeClass('active-mega-menu');
+      $('#mega-menu-fresher li:first-child').children().addClass('active-mega-menu');
+  });
+
+  $('.cat-menu ul.menu-list li#mega-menu-parent').hover(function () {
+      //alert("3!");
+      $('#mega-menu-fresher').toggle();
+  });
+  $('#mega-menu-fresher ul li.vegies').hover(function () {
+      $(this).children('a.active-mega-menu').css('color', '#000');
+  });
+  $('#mega-menu-fresher ul li.vegies').hover(function () {
+      $(this).children('a.active-mega-menu').css('color', '#000');
+  });
+   
+
+  },[])
+
+
 
   useEffect(() => {
     (async () => {
@@ -144,9 +187,10 @@ export default function RoutesList() {
 
           <Route path='view-result' element={<ViewResult />} />
 
-         
-
+          
         </Route>
+
+        <Route path='/print-result' element={<RequireAuth><PrintResult /></RequireAuth>}  />
 
         <Route path='/certificate' element={<RequireAuth><Certificate /></RequireAuth>} />
 
