@@ -1,4 +1,4 @@
-import React, { useEffect, useState,useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import InnerBanner from "../Common/InnerBanner";
 import Loader from "../Loader";
@@ -11,8 +11,16 @@ function ViewResult() {
   var [data, setData] = useState([]);
 
   var location = useLocation();
-  var {  course_type, enrollment_id } = location.state;
-
+  var {
+    course_type,
+    enrollment_id,
+    courseName,
+    userName,
+    userEmail,
+    totalPoint,
+    userPoint,
+    e_status,
+  } = location.state;
 
   const navigate = useNavigate();
   var previousPage = () => {
@@ -35,13 +43,13 @@ function ViewResult() {
       setShowLoader(true);
       var responce = await XapiService.readQuestionAndAns({
         course_type: course_type,
-        enrollment_id:enrollment_id
+        enrollment_id: enrollment_id,
       });
 
       console.log("result lms ", responce.data);
 
       if (responce.data.status) {
-       setData(responce.data.data);
+        setData(responce.data.data);
         setShowLoader(false);
       } else {
         setShowLoader(false);
@@ -89,11 +97,12 @@ function ViewResult() {
     return data;
   };
 
-
   // printcomment
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
+    documentTitle:`${userEmail}_${courseName}`,
+    
   });
 
   return (
@@ -132,115 +141,98 @@ function ViewResult() {
            Print
           </Link> */}
 
-          <button onClick={handlePrint} className="sec-btn add-grp-btn mt-4 mb-3" style={{marginLeft:"15px"}}>  Print </button>
+          <button
+            onClick={handlePrint}
+            className="sec-btn add-grp-btn mt-4 mb-3"
+            style={{ marginLeft: "15px" }}
+          >
+            {" "}
+            Print{" "}
+          </button>
 
-          <div className="data-table backend-data-table">
-           
-          <div ref={componentRef} className="data-table backend-data-table m-2"> 
-            <div className="row mt-2">
-              {data &&
-                data.map((item, i) => (
-                  <>
-                    <div className="col-sm-12 m-2">
-                      <div class="card">
-                        <div class="card-header">{i + 1}. Question</div>
-                        <div class="card-body">
-                          <h5 class="card-title">
-                            {item.question_name}
-                          </h5>
+         
+            <div
+              ref={componentRef}
+              className="backend-data-table m-2"
+            >
+              <div className="row mt-2">
+                <div className="col-sm-12 m-3">
+                  <div class="card">
+                    
 
-                          {/** choices ans */}
-                          {item.option_type == "choices" && (
-                            <>
-                              <ul class="list-group">
-                                {item.options.choices.map(
-                                  (ans) => (
+                    <table
+                      className="table text-dark"
+                     style={{fontSize:"20px"}}
+                      cell-padding={10}
+                      cell-spacing={10}
+                    >
+
+                    
+
+                      <tbody  style={{ border: "none" }}>
+                        <tr>
+                          <td width={"20%"}>Name</td>
+                          <td  >{userName}</td>
+                        </tr>
+
+                        <tr>
+                        <td width={"20%"}>Course Name</td>
+                        <td  >{courseName}</td>
+                      </tr>
+
+                      <tr>
+                      <td width={"20%"}>Total Point</td>
+                      <td  >{totalPoint}</td>
+                    </tr>
+
+                    <tr>
+                    <td width={"20%"}>Score Point</td>
+                    <td  >{userPoint}</td>
+                  </tr>
+
+                  <tr>
+                  <td width={"20%"}>Status</td>
+                  <td  >{e_status == "completed" ? "Pass" : "Failed"}</td>
+                </tr>
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                {data &&
+                  data.map((item, i) => (
+                    <>
+                      <div className="col-sm-12 m-3">
+                        <div class="card">
+                          <div class="card-header">{i + 1}. Question</div>
+                          <div class="card-body">
+                            <h5 class="card-title">{item.question_name}</h5>
+
+                            {/** choices ans */}
+                            {item.option_type == "choices" && (
+                              <>
+                                <ul class="list-group">
+                                  {item.options.choices.map((ans) => (
                                     <li class="list-group-item">
                                       {ans.option_name}
                                     </li>
-                                  )
-                                )}
-                              </ul>
-
-                              {/** answer */}
-                              <div className="p-4">
-                                <h5>
-                                  Result:{" "}
-                                  {item.user_answer_name}
-
-                                  {!("user_answer_name" in item) && stringSplit(
-                                    item.user_answer,
-                                    item.options.choices,
-                                    null,
-                                    "choices"
-                                  )}
-                                  
-                                  &nbsp;&nbsp;&nbsp;&nbsp;
-                                  <span>
-                                    {item.answer_status == "true" ? (
-                                      <i
-                                        style={{ color: "green" }}
-                                        class="fa fa-check fa-lg"
-                                        aria-hidden="true"
-                                      ></i>
-                                    ) : (
-                                      <i
-                                        style={{ color: "red" }}
-                                        class="fa fa-times fa-lg"
-                                        aria-hidden="true"
-                                      ></i>
-                                    )}
-                                  </span>
-                                </h5>
-                              </div>
-                            </>
-                          )}
-
-                          {/** matching ans */}
-                          { item.option_type == "source" ||
-                             item.option_type ==  "target" ? (
-                              <>
-                                <ul class="list-group">
-                                  {item.options.source.map(
-                                    (ans, s) => (
-                                      <>
-                                        <div className="row">
-
-                                         
-                                          <div className="col-sm-6">
-                                            <li class="list-group-item">
-                                              {ans.option_name}
-                                            </li>
-                                          </div>
-
-                                          <div className="col-sm-6">
-                                          <li class="list-group-item">
-                                            {
-                                              item.options.target[s].option_name
-                                            }
-                                          </li>
-                                        </div>
-                                          
-                                         
-                                        </div>
-                                      </>
-                                    )
-                                  )}
+                                  ))}
                                 </ul>
 
                                 {/** answer */}
                                 <div className="p-4">
                                   <h5>
-                                    Result:{" "}
-                                    {stringSplit(
-                                      item.user_answer,
-                                      item.options.source,
-                                      item.options.target,
-                                      "matching"
-                                    )}
+                                    Result: {item.user_answer_name}
+                                    {!("user_answer_name" in item) &&
+                                      stringSplit(
+                                        item.user_answer,
+                                        item.options.choices,
+                                        null,
+                                        "choices"
+                                      )}
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                     <span>
-                                      {item.answer_status == "true"  ? (
+                                      {item.answer_status == "true" ? (
                                         <i
                                           style={{ color: "green" }}
                                           class="fa fa-check fa-lg"
@@ -257,15 +249,72 @@ function ViewResult() {
                                   </h5>
                                 </div>
                               </>
-                            ) : '' }
+                            )}
+
+                            {/** matching ans */}
+                            {item.option_type == "source" ||
+                            item.option_type == "target" ? (
+                              <>
+                                <ul class="list-group">
+                                  {item.options.source.map((ans, s) => (
+                                    <>
+                                      <div className="row">
+                                        <div className="col-sm-6">
+                                          <li class="list-group-item">
+                                            {ans.option_name}
+                                          </li>
+                                        </div>
+
+                                        <div className="col-sm-6">
+                                          <li class="list-group-item">
+                                            {item.options.target[s].option_name}
+                                          </li>
+                                        </div>
+                                      </div>
+                                    </>
+                                  ))}
+                                </ul>
+
+                                {/** answer */}
+                                <div className="p-4">
+                                  <h5>
+                                    Result:{" "}
+                                    {stringSplit(
+                                      item.user_answer,
+                                      item.options.source,
+                                      item.options.target,
+                                      "matching"
+                                    )}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span>
+                                      {item.answer_status == "true" ? (
+                                        <i
+                                          style={{ color: "green" }}
+                                          class="fa fa-check fa-lg"
+                                          aria-hidden="true"
+                                        ></i>
+                                      ) : (
+                                        <i
+                                          style={{ color: "red" }}
+                                          class="fa fa-times fa-lg"
+                                          aria-hidden="true"
+                                        ></i>
+                                      )}
+                                    </span>
+                                  </h5>
+                                </div>
+                              </>
+                            ) : (
+                              ""
+                            )}
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </>
-                ))}
+                    </>
+                  ))}
+              </div>
             </div>
-            </div>
-          </div>
+         
         </div>
       </div>
     </>

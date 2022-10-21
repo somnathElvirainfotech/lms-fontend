@@ -560,7 +560,7 @@ export default function Create() {
                         {/** Course List */}
 
 
-                        <Link to="/course/add" className="sec-btn" onClick={CreateFrom}>Course Add</Link>
+                        <Link to="/course/add" className="sec-btn" >Course Add</Link>
 
                         <Link to="/chapter"> <button className="sec-btn ml-3 ">Chapter</button> </Link>
                         <Link to="/lesson"> <button className="sec-btn ml-3 ">Lesson</button> </Link>

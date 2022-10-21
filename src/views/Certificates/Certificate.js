@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import pdfMake from "pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import htmlToPdfmake from "html-to-pdfmake";
@@ -12,6 +12,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Certificate1 from "./all_three_certificate/certificate-1/Certificate1";
 import Certificate2 from "./all_three_certificate/certificate-2/Certificate2";
 import Certificate3 from "./all_three_certificate/certificate-3/Certificate3";
+import SignatureService from "../../services/SignatureService";
 
 function Certificate() {
   var location = useLocation();
@@ -29,6 +30,21 @@ function Certificate() {
   var previousPage = () => {
     navigate(-1);
   };
+
+  var [signature,setSignature]=useState('');
+
+  useEffect(()=>{
+
+    (async()=>{
+     var responce=await SignatureService.getAll();
+       if(responce.data.status){
+         setSignature(responce.data.data[0].signature_name);
+       }else{
+         setSignature("/images/signature.png")
+       }
+    })();
+ 
+   },[])
 
   const printPDF = () => {
     const domElement = document.getElementById("divToPrint");
@@ -63,6 +79,7 @@ function Certificate() {
           course_name={course_name}
           date={date}
           certificate_id={certificate_id}
+          signature={signature}
         />
       )}
 
@@ -73,6 +90,7 @@ function Certificate() {
           course_name={course_name}
           date={date}
           certificate_id={certificate_id}
+          signature={signature}
         />
       )}
 
@@ -85,6 +103,7 @@ function Certificate() {
           certificate_id={certificate_id}
           firstname={firstname}
           lastname={lastname}
+          signature={signature}
         />
       )}
 

@@ -113,7 +113,7 @@ export default function Language() {
 
         if (responce.data.status) {
 
-            document.getElementById("myForm").reset();
+           
             toast.success(responce.data.msg)
             input.name = '';
         }
@@ -121,6 +121,8 @@ export default function Language() {
             toast.error(responce.data.msg)
             input.name = '';
         }
+
+        //document.getElementById("myForm").reset();
 
         GetAll();
 

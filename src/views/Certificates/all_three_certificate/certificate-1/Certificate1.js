@@ -23,24 +23,13 @@ function Certificate1(props) {
       },
     }).then((canvas) => {
       const imgData = canvas.toDataURL("image/png", 5.5);
+      console.log(canvas.toDataURL("pdf"));
       const pdf = new jsPDF("landscape", "px", [520, 432], false);
       pdf.addImage(imgData, "PNG", 0, 0, 520, 432);
       pdf.save(`${new Date().toISOString()}.pdf`);
     });
-  };{
+  };
 
-  useEffect(()=>{
-
-   (async()=>{
-    var responce=await SignatureService.getAll();
-      if(responce.data.status){
-        setSignature(responce.data.data[0].signature_name);
-      }else{
-        setSignature("/images/signature.png")
-      }
-   })();
-
-  },[])
 
   return (
     <>
@@ -59,7 +48,7 @@ function Certificate1(props) {
               <div className="sign1-sec">
                 <div className="sign-sec-l">
                   <div className="sign-img">
-                    <img src={signature} alt="signature" />
+                    <img src={props.signature} alt="signature" />
                   </div>
                   <div className="sign-text">Direktor</div>
                 </div>
@@ -95,6 +84,6 @@ function Certificate1(props) {
     </>
   );
 }
-}
+
 
 export default Certificate1;

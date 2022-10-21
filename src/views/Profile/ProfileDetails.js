@@ -38,11 +38,11 @@ export default function ProfileDetails(userData) {
 
     useEffect(() => {
 
-        if (languageList.language_name === "english") {
+        if (languageList.language_name === "1") {
             setLangObj(English)
-        } else if (languageList.language_name === "СРБ") {
+        } else if (languageList.language_name === "2") {
             setLangObj(SerbianCyrilic)
-        } else if (languageList.language_name === "SRB") {
+        } else if (languageList.language_name === "3") {
             setLangObj(SerbianLatin)
         }
 

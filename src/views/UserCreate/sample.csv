@@ -1,1 +1,2 @@
-firstname,lastname,password,role,is_active,group_id,social_link_1,social_link_2,email,user_hr_no
+firstname,lastname,password,role,is_active,group_id,social_link_1,social_link_2,email,user_hr_no,login_type,language_id,,Group Details,,User Role Details,,Status Details,,LOGIN TYPE, LANGUAGE 
+,,,,,,,,,,,,," ACCOUNTING=3 ,  STUDENT=2 ,  MARKETING=1 ",," supervisor=2 , manager=3 , creator=4 , user=5 ",," approve=1 , disapprove=0 ",," local , google , ms ","English=1  , Serbian Cyrilic =2 , Serbian Latin=3"

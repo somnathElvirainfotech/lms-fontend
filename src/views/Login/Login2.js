@@ -61,6 +61,7 @@ export const Login2 = () => {
                     TokenHelper.setUserRoll(response.data.data.role);
                     TokenHelper.setFristName(response.data.data.firstname);
                     TokenHelper.setLastName(response.data.data.lastname);
+                    TokenHelper.setLanguage(response.data.data.language_id)
 
 
 
@@ -166,9 +167,9 @@ export const Login2 = () => {
     var LoginType = async (email, l_type) => {
       //  deleteCookies()
         setShowLoader(true);
-        var response = await UserService.loginType({ email: email });
+        var response = await UserService.loginType({ email: email,l_type:l_type });
         if (response.data.status != false) {
-            console.log("kkkkkkkkkkk", response.data);
+            // console.log("kkkkkkkkkkk", response.data);
             if (response.data.data[0].login_type == l_type) {
 
                 TokenHelper.setToken(response.data.token);
@@ -178,6 +179,7 @@ export const Login2 = () => {
                 TokenHelper.setUserRoll(response.data.data[0].role);
                 TokenHelper.setFristName(response.data.data[0].firstname);
                 TokenHelper.setLastName(response.data.data[0].lastname);
+                TokenHelper.setLanguage(response.data.data.language_id)
 
 
 
@@ -279,11 +281,11 @@ export const Login2 = () => {
 
     useEffect(() => {
 
-        if (languageList.language_name === "english") {
+        if (languageList.language_name === "1") {
             setLangObj(English)
-        } else if (languageList.language_name === "СРБ") {
+        } else if (languageList.language_name === "2") {
             setLangObj(SerbianCyrilic)
-        } else if (languageList.language_name === "SRB") {
+        } else if (languageList.language_name === "3") {
             setLangObj(SerbianLatin)
         }
 

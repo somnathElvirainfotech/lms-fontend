@@ -23,7 +23,8 @@ import SerbianCyrilic from "../../ConverLanguages/SerbianCyrilic";
 import SerbianLatin from "../../ConverLanguages/SerbianLatin";
 // end languages
 import { LangContext } from "../../../routes/routes";
-import { auth, gprovider, mprovider,firebase } from "../../Firebase";
+import { auth, gprovider, mprovider, firebase } from "../../Firebase";
+import LanguageService from "../../../services/LanguageService";
 
 function openNav() {
   document.getElementById("myNav").style.width = "100%";
@@ -47,7 +48,9 @@ export default function Header() {
   }
 
   function Logout() {
-    firebase.auth().signOut()
+    firebase
+      .auth()
+      .signOut()
       .then((e) => {
         console.log("Sign-out successful. ", e);
         TokenHelper.Logout();
@@ -58,7 +61,6 @@ export default function Header() {
         console.log(" An error happened. ", error);
       });
   }
-
 
   //console.log(ADMIN_URL)
 
@@ -153,20 +155,50 @@ export default function Header() {
     document.getElementById("myNav").style.width = "0%";
   };
 
+  const [langData, setLangData] = useState([]);
+  var GetAllLang = async () => {
+    var responce = await LanguageService.getAll();
+    if (responce.data.status) {
+      setLangData(responce.data.data);
+    }
+  };
+
+  var GetProfileData = async () => {
+    
+    var response = await UserService.getProfileData({email:user.email});
+    
+    if (response.data.status) {
+      languageList.set_language(response.data.data.language_id);
+    }
+  
+  };
+
+  var profileUpdateLang=async (data)=>{
+    var response = await UserService.updateUserProfile(data);
+  }
+
   const { languageList } = useContext(LangContext);
   const [langObj, setLangObj] = useState({});
 
   var languageHandler = (e) => {
     var a = e.target.value;
     languageList.set_language(a);
+    if(user.token) profileUpdateLang({language_id:a,email:user.email})
   };
 
+
+
   useEffect(() => {
-    if (languageList.language_name === "english") {
+    GetAllLang();
+    //alert(user.language_type)
+   if (user.token)  GetProfileData();
+  
+
+    if (languageList.language_name === "1") {
       setLangObj(English);
-    } else if (languageList.language_name === "СРБ") {
+    } else if (languageList.language_name === "2") {
       setLangObj(SerbianCyrilic);
-    } else if (languageList.language_name === "SRB") {
+    } else if (languageList.language_name === "3") {
       setLangObj(SerbianLatin);
     }
 
@@ -180,7 +212,7 @@ export default function Header() {
           <div className="header-wrap">
             <div className="logo">
               <Link onClick={clerSearchText} to="/courses">
-                <img src="images/logo.png" alt="header image" />
+                <img src="/images/logo.png" alt="header image" />
               </Link>
             </div>
             <div className="hd-sec">
@@ -254,13 +286,11 @@ export default function Header() {
                       onChange={languageHandler}
                       id="language_type"
                       name="language_type"
+                      value={languageList.language_name}
                     >
-                      <option selected value="english">
-                        {" "}
-                        English{" "}
-                      </option>
-                      <option value="SRB">Serbian Latin</option>
-                      <option value="СРБ">Serbian Cyrilic</option>
+                      {langData.map((item) => (
+                        <option value={item.id}>{item.name}</option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -388,12 +418,12 @@ export default function Header() {
                       {(user.token && user.user_role == 2) ||
                       (user.token && user.user_role == 1) ? (
                         <>
-                          {" "}
+                          {/** 
                           <li>
                             <Link onClick={clerSearchText} to="/language">
                               Language
                             </Link>
-                          </li>{" "}
+                          </li> */}
                         </>
                       ) : (
                         ""

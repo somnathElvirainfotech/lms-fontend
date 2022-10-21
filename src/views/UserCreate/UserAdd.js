@@ -182,6 +182,12 @@ function UserAdd() {
                 //    setLanguage([...languageRes.data.data]);
                 // }
 
+                var languageRes = await UserService.languages();
+                // console.log(languageRes.data)
+                if (languageRes.data.status != false) {
+                    setLanguage([...languageRes.data.data]);
+                }
+
                 var qualificationRes = await QualificationService.getAll();
                 if (qualificationRes.data.status != false) {
                     setQualification([...qualificationRes.data.data]);
@@ -303,6 +309,7 @@ function UserAdd() {
         data.append("user_hr_no", cinputs.hr_no);
         data.append("organization_unit", cinputs.organization_unit);
         data.append("login_type", cinputs.login_type)
+        data.append("language_id",cinputs.language)
 
 
 
@@ -314,17 +321,22 @@ function UserAdd() {
                 setShowLoader(false)
                 toast.success(response.data.msg);
 
-                cinputs.firstname = "";
-                cinputs.lastname = "";
-                cinputs.role = "";
-                cinputs.group_id = "";
-                cinputs.email = "";
-                cinputs.password1 = "";
-                cinputs.password2 = "";
-                cinputs.qualification = "";
-                cinputs.hr_no = "";
-                cinputs.organization_unit = "";
-                cinputs.login_type = "";
+                
+
+                setCInputs({
+                   firstname : "",
+                   lastname :"",
+                   role : "",
+                   group_id : "",
+                   email : "",
+                   password1 : "",
+                   password2 : "",
+                   qualification : "",
+                   hr_no : "",
+                   organization_unit : "",
+                   login_type : "",
+                   language:''
+                })
 
                 // setImage("");
                 // setAvatar_image("");
@@ -792,6 +804,17 @@ function UserAdd() {
                                                     </select>
                                                 </div>
                                             </div>
+
+                                            <div className="col-md-6">
+                                                <div className="form-group">
+                                                    <label>LANGUAGE</label>
+                                                    <select required className="form-control" id="exampleFormControlSelect1" onChange={handleChange} name="language" value={cinputs.language}>
+                                                        <option value="" > -- Select language -- </option>
+                                                        {language.length && language.map((item) => (<option value={item.id}>{item.name.toUpperCase()}</option>))}
+                                                    </select>
+                                                </div>
+                                            </div>
+
                                         </div>
 
 

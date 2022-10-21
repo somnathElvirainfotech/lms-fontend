@@ -28,18 +28,7 @@ function Certificate3(props) {
     });
   };
 
-  useEffect(()=>{
-
-    (async()=>{
-     var responce=await SignatureService.getAll();
-       if(responce.data.status){
-         setSignature(responce.data.data[0].signature_name);
-       }else{
-         setSignature("/images/signature.png")
-       }
-    })();
- 
-   },[])
+  
   
 
   return (
@@ -63,7 +52,7 @@ function Certificate3(props) {
               <div className="sign3-sec">
                 <div className="sign-sec-l">
                   <div className="sign-img">
-                    <img src={signature} alt="signature" />
+                    <img src={props.signature} alt="signature" />
                   </div>
                   <div className="sign-text">Direktor</div>
                 </div>

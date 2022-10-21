@@ -95,6 +95,7 @@ export default function Create() {
     { label: "social_link_1", key: "social_link_1" },
     { label: "social_link_2", key: "social_link_2" },
     { label: "email", key: "email" },
+    {label: "language_id", key:"language_id"},
     { label: "user_hr_no", key: "hr_no" },
     { label: "login_type", key: "login_type" },
     { label: "", key: "blank_1" },
@@ -106,6 +107,7 @@ export default function Create() {
     { label: "Status Details", key: "status_details" },
     { label: "", key: "blank_5" },
     { label: "LOGIN TYPE", key: "login_type_details" },
+    { label: "LANGUAGE", key: "language_id_details" },
   ];
 
   // react pagination  //////////////////////////
@@ -181,6 +183,7 @@ export default function Create() {
         social_link_2: item.social_link_2,
         is_active: item.is_active ? "1" : "0",
         login_type: item.login_type,
+        language_id:item.language_id
       };
 
       data.push(temp);
@@ -205,6 +208,9 @@ export default function Create() {
 
     //login type
     data[0].login_type_details = ` local , google , ms `;
+
+    // language_id_details
+    data[0].language_id_details=` English=1  , Serbian Cyrilic =2 , Serbian Latin=3 `;
 
     console.log("csv222vvvvvv", temp2);
     setCsvData2([...data]);
@@ -640,6 +646,8 @@ export default function Create() {
       toast.error(response.data.msg);
     }
 
+    document.getElementById("form1").reset();
+    document.getElementById("form2").reset();
     setAttachment_file({});
     // cinputs.csvFile({});
     setAttachment_file({});
@@ -814,7 +822,8 @@ export default function Create() {
                       </div>
 
                       <div className="col-md-8">
-                        <form
+                        <form 
+                        id="form1"
                           encType="multipart/form-data"
                           method="post"
                           onSubmit={csvUpload}
@@ -856,7 +865,7 @@ export default function Create() {
                       </div>
 
                       <div className="col-md-8">
-                        <form
+                        <form id="form2"
                           encType="multipart/form-data"
                           method="post"
                           onSubmit={csvUpload}

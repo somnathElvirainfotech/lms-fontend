@@ -25,7 +25,7 @@ const userData = {
   user_id: TokenHelper.getUserId(),
   user_role: TokenHelper.getUserRoll(),
   user_groups: TokenHelper.getUserGroup(),
-  language_type: "english",
+  language_type: TokenHelper.getLanguage(),
   firstname: TokenHelper.getFristName(),
   lastname: TokenHelper.getLastName(),
 };
@@ -52,7 +52,8 @@ root.render(
           <Routes />
         </CookiesProvider>
       </AuthContext.Provider>
-    </BrowserRouter>
+      </BrowserRouter>
+    
   </>
 );
 

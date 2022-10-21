@@ -11,7 +11,7 @@ function Certificate2(props) {
     navigate(-1);
   };
 
-  var [signature,setSignature]=useState('');
+
 
   const printPDF = () => {
     const domElement = document.getElementById("divToPrint");
@@ -20,25 +20,15 @@ function Certificate2(props) {
         document.getElementById("print").style.visibility = "hidden";
       },
     }).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png", 5.5);
-      const pdf = new jsPDF("landscape", "px", [432, 432], false);
+      console.log(canvas);
+      const imgData = canvas.toDataURL("image/png",5.5);
+      const pdf = new jsPDF("landscape", "px", [520, 432], false);
       pdf.addImage(imgData, "PNG", 0, 0, 520, 432);
       pdf.save(`${new Date().toISOString()}.pdf`);
     });
   };
 
-  useEffect(()=>{
-
-    (async()=>{
-     var responce=await SignatureService.getAll();
-       if(responce.data.status){
-         setSignature(responce.data.data[0].signature_name);
-       }else{
-         setSignature("/images/signature.png")
-       }
-    })();
- 
-   },[])
+  
 
   return (
     <>
@@ -57,7 +47,7 @@ function Certificate2(props) {
               <div className="sign2-sec">
                 <div className="sign-sec-l">
                   <div className="sign-img">
-                    <img src={signature} alt="signature" />
+                    <img src={props.signature} alt="signature" />
                   </div>
                   <div className="sign-text">Direktor</div>
                 </div>

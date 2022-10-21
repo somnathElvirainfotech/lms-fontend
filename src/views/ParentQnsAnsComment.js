@@ -172,7 +172,7 @@ function ParentQnsAnsComment(props) {
           <span className="p-2" >{item.total_replies}</span> <span onClick={()=>(showReply(`${label}${i+1}`,item.id))}>REPLIES</span>
 
           {item.user_id != user.user_id &&    <span  data-toggle="modal" className="ml-5"
-          data-target={`#addgroupModal3${label}`}  title="Reply" style={{ cursor: "pointer" }} 
+          data-target={`.addgroupModal3${label}`}  title="Reply" style={{ cursor: "pointer" }} 
           onClick={()=>{setAnsId(item.id)}}
           >REPLY</span>  }
 
@@ -197,8 +197,8 @@ function ParentQnsAnsComment(props) {
 
      {/**  modal */}
      <div
-     className="modal fade"
-     id={`addgroupModal3${label}`}
+     className={`modal fade addgroupModal3${label}`}
+     id={`addgroupModal`}
      tabIndex="-1"
      role="dialog"
      aria-labelledby="addgroupModalLabel"

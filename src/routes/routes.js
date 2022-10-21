@@ -1,5 +1,5 @@
 import React, { useEffect, useState, createContext } from 'react'
-import { useRoutes, Navigate, Route, Routes, exact } from 'react-router-dom';
+import { useRoutes, Navigate, Route, Routes, exact,BrowserRouter } from 'react-router-dom';
 import '../links/font-awesome/css/font-awesome.min.css';
 import '../links/css/style.css';
 import '../links/css/responsive.css';
@@ -130,7 +130,7 @@ export default function RoutesList() {
 
 
 
-  const [lang, setLang] = useState("english");
+  const [lang, setLang] = useState("1");
   var languageFun=()=>setLang()
 
   const langData = {
@@ -142,6 +142,7 @@ export default function RoutesList() {
   return (
     <LangContext.Provider value={{ languageList: langData }}>
 
+    
       <Routes>
         <Route path="/" element={<ActiveMaintenance data={data}><RequireAuthLogout><Navbar /></RequireAuthLogout></ActiveMaintenance>}>
           <Route index element={<RequireAuthLogout><Home /></RequireAuthLogout>} />
@@ -151,11 +152,12 @@ export default function RoutesList() {
           <Route path='profile' element={<RequireAuth><EditProfile /></RequireAuth>} />
           <Route path='courses' element={<RequireAuth><Courses /></RequireAuth>} />
           <Route path='courses/:name' element={<RequireAuth><Singlecourse /></RequireAuth>} />
+
           <Route path='allreview' element={<AllRating />} />
 
           <Route path='course' element={<RequireAuth><CourseCreate /></RequireAuth>} />
-          <Route path='course/add' element={<CourseAdd />} />
-          <Route path='course/edit' element={<CourseEdit />} />
+          <Route path='course/add' element={<RequireAuth><CourseAdd /></RequireAuth>} />
+          <Route path='course/edit' element={<RequireAuth><CourseEdit /></RequireAuth>} />
 
           <Route path='chapter' element={<ChapterCreate />} />
           <Route path='chapter/add' element={<ChapterAdd />} />
@@ -187,7 +189,9 @@ export default function RoutesList() {
 
           <Route path='view-result' element={<ViewResult />} />
 
-          
+          {/** error page handler */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+
         </Route>
 
         <Route path='/print-result' element={<RequireAuth><PrintResult /></RequireAuth>}  />
@@ -227,10 +231,12 @@ export default function RoutesList() {
         <Route path='/singletask' element={<SingleTask />} />
         <Route path="/singlexapi" element={<SingleXapi />} />
 
-
+         {/** error page handler */}
+        <Route path="*" element={<Navigate to="/" replace />} />
 
 
       </Routes>
+    
 
     </LangContext.Provider>
 

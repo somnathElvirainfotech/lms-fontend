@@ -45,7 +45,12 @@ export default function Singlecourse() {
 
     let query = useQuery();
     var location = useLocation();
-    var { singleCourseId, taskId, courseType } = location.state;
+   var { singleCourseId, taskId, courseType } = location.state;
+
+//    var singleCourseId=1;
+//    var taskId=1;
+
+    // alert(singleCourseId)
 
     //console.log(query.get("id"));
     const { user } = useContext(AuthContext);
@@ -94,6 +99,8 @@ export default function Singlecourse() {
 
     useEffect(() => {
 
+        console.log("course id ==== ",singleCourseId);
+       
         (async () => {
             setShowLoader(true)
             var course = query.get("id");
@@ -539,11 +546,11 @@ export default function Singlecourse() {
 
     useEffect(() => {
 
-        if (languageList.language_name === "english") {
+        if (languageList.language_name === "1") {
             setLangObj(English)
-        } else if (languageList.language_name === "СРБ") {
+        } else if (languageList.language_name === "2") {
             setLangObj(SerbianCyrilic)
-        } else if (languageList.language_name === "SRB") {
+        } else if (languageList.language_name === "3") {
             setLangObj(SerbianLatin)
         }
 
@@ -736,7 +743,7 @@ export default function Singlecourse() {
 
 
                                                         </ul>
-                                                        <h5>{item.fullname.toUpperCase()}, {new Date(item.date_at).toDateString()} <span className="btn btn-danger" onClick={e => delReview(item.id)} > <i className="fa fa-trash-o" aria-hidden="true"></i> </span> </h5>
+                                                        <h5>{item.fullname && item.fullname.toUpperCase()}, {new Date(item.date_at).toDateString()} <span className="btn btn-danger" onClick={e => delReview(item.id)} > <i className="fa fa-trash-o" aria-hidden="true"></i> </span> </h5>
                                                         <p>{item.comment}.</p>
                                                     </div>
 
@@ -793,7 +800,7 @@ export default function Singlecourse() {
 
 
                                                             </ul>
-                                                            <h5>{item.fullname.toUpperCase()}, {new Date(item.date_at).toDateString()}</h5>
+                                                            <h5>{item.fullname && item.fullname.toUpperCase()}, {new Date(item.date_at).toDateString()}</h5>
                                                             <p>{item.comment}.</p>
                                                         </div> : ''
 
@@ -822,7 +829,7 @@ export default function Singlecourse() {
 
                                             </div>
                                             <div className="tab-btnarea">
-                                                {chkComment && enrollment ? <button href="#" className="sec-btn comment-add-btn" data-toggle="modal" data-target="#addgroupModal">Add Comment</button> : ''}
+                                                {chkComment && enrollment ? <button href="#" className="sec-btn comment-add-btn" data-toggle="modal" data-target=".raddgroupModal">Add Comment</button> : ''}
                                                 <Link to={`/allreview`} state={{ coure_ID: courseID }} className="sec-btn sec-btn-border">{langObj.view_all_reviews}</Link>
                                             </div>
 
@@ -1037,7 +1044,7 @@ export default function Singlecourse() {
             {/** rating */}
 
             {
-                chkComment && <div className="modal fade" id="addgroupModal" tabIndex="-1" role="dialog" aria-labelledby="addgroupModalLabel" aria-hidden="true">
+                chkComment && <div className="modal fade raddgroupModal" id="addgroupModal" tabIndex="-1" role="dialog" aria-labelledby="addgroupModalLabel" aria-hidden="true">
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
                             <div className="modal-header">

@@ -86,7 +86,7 @@ export const EditProfile = () => {
         }
 
         // xapi
-        getXapiData(data);
+        // getXapiData(data);
         // -------------------------------------------------------------------------
 
         var response = await UserService.getProfileData(users);
@@ -277,6 +277,7 @@ export const EditProfile = () => {
       var response = await UserService.updateUserProfile(inputs);
       if (response.data.status != false) {
         toast.success(response.data.msg);
+        languageList.set_language(inputs.language_id);
         setUserData(inputs.firstname + " " + inputs.lastname);
       } else {
         toast.error(response.data.msg);
@@ -408,11 +409,11 @@ export const EditProfile = () => {
   const [langObj, setLangObj] = useState({});
 
   useEffect(() => {
-    if (languageList.language_name === "english") {
+    if (languageList.language_name === "1") {
       setLangObj(English);
-    } else if (languageList.language_name === "СРБ") {
+    } else if (languageList.language_name === "2") {
       setLangObj(SerbianCyrilic);
-    } else if (languageList.language_name === "SRB") {
+    } else if (languageList.language_name === "3") {
       setLangObj(SerbianLatin);
     }
   }, [languageList.language_name]);

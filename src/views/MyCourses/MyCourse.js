@@ -22,6 +22,7 @@ import SerbianCyrilic from "../ConverLanguages/SerbianCyrilic";
 import SerbianLatin from "../ConverLanguages/SerbianLatin";
 // end languages
 import { LangContext } from "../../routes/routes";
+import MyTask from "./MyTask";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -125,14 +126,14 @@ export default function MyCourse() {
             if ("name" in singleRes.object.definition) {
               if (
                 item.course_name == singleRes.object.definition.name.und &&
-                singleRes.timestamp > item.timestamp
+                Date.parse(singleRes.timestamp) > Date.parse(item.timestamp)
               ) {
 
-               // console.log("one");
+              //  console.log("one");
 
                 
 
-                console.log("sssss");
+              //   console.log("sssss");
 
                 if ("result" in singleRes) {
                   if (
@@ -173,10 +174,10 @@ export default function MyCourse() {
 
     console.log("xapi data", xapiCourse);
 
-    setShowLoader(false);
+    
 
     if (xapiCourse.length > 0) {
-      console.log(xapiCourse);
+      // console.log(xapiCourse);
       
       // enrollment status updated  ------------------
       await EnrollmentService.enrollmentStatusUpdate(
@@ -187,21 +188,33 @@ export default function MyCourse() {
 
       for(var i of xapiCourse)
       {
+        console.log("x course ", i.course_name);
           if(i.passed && i.updateTimestamp > i.timestamp)
           {
-            if (item.enrollment_status == "completed") {
+            if (i.enrollment_status == "completed") {
               console.log("sub one");
               await XapiService.saveResult({
-                enrollment_id: item.enrollment_id,
-                course_name: item.course_name,
-                course_type: item.course_type,
-                user_email: item.user_email,
+                enrollment_id: i.enrollment_id,
+                course_name: i.course_name,
+                course_type: i.course_type,
+                user_email: i.user_email,
               });
             }
+            
           }
+
+          
+          
       }
     }
 
+    setShowLoader(false);
+
+    // mycourse
+    // var responce = await UserService.enrollmentcourse(user.user_id, "");
+    // setEnrollmentcourses(responce.data.data);
+   
+   
     
   };
 
@@ -213,29 +226,9 @@ export default function MyCourse() {
     if (user.user_role == 5) {
       setShowLoader(true);
       var responce = await UserService.enrollmentcourse(user.user_id, "");
-      
-
-      // var temp = [];
-
-      // var PER_PAGE=2;
-      // const pageCount = Math.ceil(responce.data.data.length / PER_PAGE);
-      
-      // console.log("dddd",pageCount)
-      // for(var i=0;i<pageCount;i++)
-      // {
-      //   var dtemp=[];
-      //   var offset=i===0?0:i+1
-      //   responce.data.data.slice(offset, offset + PER_PAGE).map((item) => {
-      //     dtemp.push(item);
-          
-      // })
-
-      
-      // temp.push(dtemp)
-
-      // }
-      
       setEnrollmentcourses(responce.data.data);
+
+      
 
       console.log("all courses", responce.data.data);
       setShowLoader(false);
@@ -273,7 +266,8 @@ export default function MyCourse() {
       }
 
       // xapi
-      getXapiData(data);
+      //getXapiData(data);
+
     } else if (user.user_role == 4) {
       setShowLoader(true);
       var responce = await UserService.allCourses();
@@ -303,15 +297,19 @@ export default function MyCourse() {
     });
   };
 
+  var goSinglePage=(cname,cid)=>{
+    navigate(`/courses/${cname.replaceAll(" ","-")}`,{state:{singleCourseId:cid}});
+  }
+
   const { languageList } = useContext(LangContext);
   const [langObj, setLangObj] = useState({});
 
   useEffect(() => {
-    if (languageList.language_name === "english") {
+    if (languageList.language_name === "1") {
       setLangObj(English);
-    } else if (languageList.language_name === "СРБ") {
+    } else if (languageList.language_name === "2") {
       setLangObj(SerbianCyrilic);
-    } else if (languageList.language_name === "SRB") {
+    } else if (languageList.language_name === "3") {
       setLangObj(SerbianLatin);
     }
   }, [languageList.language_name]);
@@ -350,19 +348,25 @@ export default function MyCourse() {
                             setSelectedEnrollmentcourses(e.target.value)
                           }
                         >
-                         <OwlCarousel className="slider-items owl-carousel" {...options} >
 
+                        {/** 
+                        <OwlCarousel className="slider-items owl-carousel" {...options} >
+*/}
                           {enrollmentcourses.map((enrollmentcourse)=>(
                             
                             <div className="my-course-details ">
                               <div className="row align-items-center">
 
                                 <div className="col-md-4">
-                                  <div className="my-course-img">
-                                    <img
+                                  <div className="my-course-img" style={{cursor: "pointer"}}  onClick={()=>goSinglePage(enrollmentcourse.course_details[0]
+                                    .course_name,enrollmentcourse.course_details[0]
+                                    .id)} >
+                                    <img                                
+
                                       src={
                                         enrollmentcourse.course_details[0].image
                                       }
+
                                       className="img-fluid"
                                       alt=""
                                     />
@@ -371,10 +375,13 @@ export default function MyCourse() {
 
                                 <div className="col-md-8">
                                   <div className="my-course-content">
-                                    <h4>
+                                    <h4 style={{cursor: "pointer"}} onClick={()=>goSinglePage(enrollmentcourse.course_details[0]
+                                      .course_name,enrollmentcourse.course_details[0]
+                                      .id)} >
                                       {
                                         enrollmentcourse.course_details[0]
-                                          .course_name
+                                          .course_name &&  enrollmentcourse.course_details[0]
+                                          .course_name.toUpperCase()
                                       }
                                     </h4>
                                     <p>
@@ -461,10 +468,13 @@ export default function MyCourse() {
                                         </h5>
                                       )}
 
+
+                                      {/** remove contimue */}
                                     {enrollmentcourse.course_details[0]
-                                      .course_type != "xapi" && (
+                                      .course_type == "hidden" && (
                                       <Link
-                                        to={`/singlecourse`}
+                                        to={`/courses/${ enrollmentcourse.course_details[0]
+                                          .course_name.replaceAll(" ","-")}`}
                                         state={{
                                           singleCourseId:
                                             enrollmentcourse.course_details[0]
@@ -477,7 +487,8 @@ export default function MyCourse() {
                                           aria-hidden="true"
                                         ></i>
                                       </Link>
-                                    )}
+                                    )} 
+
                                   </div>
                                 </div>
 
@@ -485,7 +496,11 @@ export default function MyCourse() {
                               </div>
                             </div>
                             ))}
+
+                            
+                            {/** 
                           </OwlCarousel>
+                        */}
                         </div>
                       )}
                     </div>
