@@ -20,7 +20,7 @@ doc.image("./images/certificate.png", 0, 0, { width: 842 });
 
 // Remember to download the font
 // Set the font to Dancing Script
-doc.font("fonts/DancingScript-VariableFont_wght.txt");
+doc.font("./fonts/DancingScript-VariableFont_wght.txt");
 
 // Draw the name
 doc.fontSize(60).text(name, 20, 265, {

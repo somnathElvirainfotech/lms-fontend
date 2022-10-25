@@ -17,6 +17,10 @@ import InnerBanner from '../Common/InnerBanner';
 import ReactPaginate from "react-paginate";
 import { toast } from "react-toastify";
 
+import $ from "jquery";
+import "jquery-ui-dist/jquery-ui";
+import "jquery-validation";
+
 function ChapterAdd() {
 
     const [course, setCourse] = useState([]);
@@ -358,6 +362,48 @@ function ChapterAdd() {
     }
 
 
+    //  form validation
+  useEffect(() => {
+    $("#myForm").validate({
+      errorElement: "span",
+      errorClass: "help-block",
+      highlight: function (element, errorClass, validClass) {
+        $(element).closest(".form-group").addClass("has-error");
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).closest(".form-group").removeClass("has-error");
+      },
+
+      rules: {
+        course_id: {
+          required: true,
+        },
+        chapter_name: {
+          required: true,
+        },
+        chapter_no: {
+            required: true,
+          },
+          
+         
+      },
+
+      messages: {
+        course_id: {
+          required: "Course Name Required",
+        },
+        chapter_name: {
+          required: "Chapter Name Required",
+        },
+        chapter_no: {
+            required: "Chapter Name Required",
+          },
+       
+      },
+    });
+  }, []);
+
+
     return <>
 
         <div className="inner-banner">
@@ -395,8 +441,8 @@ function ChapterAdd() {
                                             <div className="form-group">
                                                 <label>COURSE
                                                 </label>
-                                                <select required className="form-control" id="exampleFormControlSelect1" onChange={handleChange} name="course_id" value={inputs.course_id}>
-                                                    <option> -- Select course -- </option>
+                                                <select required className="form-control" id="course_id" onChange={handleChange} name="course_id" value={inputs.course_id}>
+                                                    <option value={""}> -- Select course -- </option>
                                                     {course.length && course.map((item) => (item.course_type == "regular" ? <option value={item.id}>{item.course_name.toUpperCase()}</option> : ''))}
                                                 </select>
                                             </div>
@@ -405,7 +451,7 @@ function ChapterAdd() {
                                         <div className="col-md-6">
                                             <div className="form-group">
                                                 <label>CHAPTER NAME</label>
-                                                <input required type="text" className="form-control" name="chapter_name" value={inputs.chapter_name}
+                                                <input required type="text" className="form-control" id="chapter_name" name="chapter_name" value={inputs.chapter_name}
                                                     onChange={handleChange} />
                                             </div>
                                         </div>
@@ -413,7 +459,7 @@ function ChapterAdd() {
                                         <div className="col-md-6">
                                             <div className="form-group">
                                                 <label>CHAPTER NO</label>
-                                                <input required type="number" className="form-control" name="chapter_no" value={inputs.chapter_no}
+                                                <input required type="number" className="form-control" id="chapter_no" name="chapter_no" value={inputs.chapter_no}
                                                     onChange={handleChange} />
                                             </div>
                                         </div>

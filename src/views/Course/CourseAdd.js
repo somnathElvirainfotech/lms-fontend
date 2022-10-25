@@ -20,6 +20,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import CategoryService from "../../services/CertificateService";
 
+import $ from "jquery";
+import "jquery-ui-dist/jquery-ui";
+import "jquery-validation";
+
 // loader
 import Loader from "../Loader";
 
@@ -323,8 +327,8 @@ function CourseAdd() {
             cinputs.certificate_id = "";
             cinputs.xapi_file_name = "";
             cinputs.course_certificate_name = "";
-            cinputs.author_email = '';
-            cinputs.author_name = '';
+            cinputs.author_email = "";
+            cinputs.author_name = "";
             setImage("");
             setAvatar_image("");
             setAttachment_file("");
@@ -350,6 +354,115 @@ function CourseAdd() {
     }
   };
 
+  //  form validation
+  useEffect(() => {
+    $("#myForm").validate({
+      errorElement: "span",
+      errorClass: "help-block",
+      highlight: function (element, errorClass, validClass) {
+        $(element).closest(".form-group").addClass("has-error");
+      },
+      unhighlight: function (element, errorClass, validClass) {
+        $(element).closest(".form-group").removeClass("has-error");
+      },
+
+      rules: {
+        course_name: {
+          required: true,
+        },
+        author_name: {
+          required: true,
+        },
+        author_email: {
+          required: true,
+          email: true,
+        },
+        category_id: {
+          required: true,
+        },
+        lang: {
+          required: true,
+        },
+        course_level: {
+          required: true,
+        },
+        published_status: {
+          required: true,
+        },
+        image: {
+          required: true,
+        },
+        avatar_image: {
+          required: true,
+        },
+        course_type: {
+          required: true,
+        },
+        attachment_file: {
+          extension: "pdf|xls|xlsx|doc|docx",
+        },
+        xapi_attachment_file: {
+          required: true,
+          extension: "zip",
+        },
+        xapi_file_name: {
+          required: true,
+        },
+        course_certificate_name: {
+          required: true,
+        },
+        creator: {
+          required: true,
+        },
+      },
+
+      messages: {
+        course_name: {
+          required: "Course Name Required",
+        },
+        author_name: {
+          required: "Author Name Required",
+        },
+        author_email: {
+          required: "Author Email Required",
+        },
+        category_id: {
+          required: "Category Required",
+        },
+        lang: {
+          required: "Language Required",
+        },
+        course_level: {
+          required: "Course Level Required",
+        },
+        published_status: {
+          required: "Published Status Required",
+        },
+        image: {
+          required: "Image Required",
+        },
+        avatar_image: {
+          required: "Avatar Image Required",
+        },
+        course_type: {
+          required: "Course Type Required",
+        },
+        xapi_attachment_file: {
+          required: "Xapi File Required",
+        },
+        xapi_file_name: {
+          required: "Xapi File Name Required",
+        },
+        course_certificate_name: {
+          required: "Course Certificate Name Required",
+        },
+        creator: {
+          required: "Creator Required",
+        },
+      },
+    });
+  }, []);
+
   return (
     <>
       {/** loader */}
@@ -363,7 +476,9 @@ function CourseAdd() {
               <h1>Course</h1>
               <div className="breadcrumb">
                 <ul>
-                  <li><Link to="/">Home</Link></li>
+                  <li>
+                    <Link to="/">Home</Link>
+                  </li>
                   <li>Add</li>
                 </ul>
               </div>
@@ -372,14 +487,10 @@ function CourseAdd() {
         </div>
       </div>
 
-      <div
-        className=" enrollments-sec activites-sec "
-
-      >
+      <div className=" enrollments-sec activites-sec ">
         <div className="container">
           <div className="row">
             <div className="container">
-
               <span>
                 <button
                   type="button"
@@ -389,7 +500,6 @@ function CourseAdd() {
                   Back
                 </button>
               </span>
-
 
               <div className="row">
                 <div className="col-sm-12 bg-white m-4 p-3">
@@ -408,6 +518,7 @@ function CourseAdd() {
                             type="text"
                             className="form-control"
                             name="course_name"
+                            id="course_name"
                             value={cinputs.course_name}
                             onChange={handleChange}
                           />
@@ -427,7 +538,6 @@ function CourseAdd() {
                       </div>
                     </div>
 
-
                     <div className="form-row">
                       <div className="col-md-6">
                         <div className="form-group">
@@ -437,6 +547,7 @@ function CourseAdd() {
                             type="text"
                             className="form-control"
                             name="author_name"
+                            id="author_name"
                             value={cinputs.author_name}
                             onChange={handleChange}
                           />
@@ -450,13 +561,13 @@ function CourseAdd() {
                             type="email"
                             className="form-control"
                             name="author_email"
+                            id="author_email"
                             value={cinputs.author_email}
                             onChange={handleChange}
                           />
                         </div>
                       </div>
                     </div>
-
 
                     <div className="form-row">
                       <div className="col-md-6">
@@ -465,12 +576,12 @@ function CourseAdd() {
                           <select
                             required
                             className="form-control"
-                            id="exampleFormControlSelect1"
+                            id="category_id"
                             onChange={handleChange}
                             name="category_id"
                             value={cinputs.category_id}
                           >
-                            <option> -- Select category -- </option>
+                            <option value="" > -- Select category -- </option>
                             {category.length &&
                               category.map((pitem) => (
                                 <>
@@ -504,12 +615,12 @@ function CourseAdd() {
                           <select
                             required
                             className="form-control"
-                            id="exampleFormControlSelect1"
+                            id="lang"
                             onChange={handleChange}
                             name="lang"
                             value={cinputs.lang}
                           >
-                            <option> -- Select language -- </option>
+                            <option value={""} > -- Select language -- </option>
                             {language.length &&
                               language.map((item) => (
                                 <option value={item.id}>
@@ -528,12 +639,15 @@ function CourseAdd() {
                           <select
                             required
                             className="form-control"
-                            id="exampleFormControlSelect1"
+                            id="course_level"
                             onChange={handleChange}
                             name="course_level"
                             value={cinputs.course_level}
                           >
-                            <option> -- Select course level -- </option>
+                            <option value="">
+                              {" "}
+                              -- Select course level --{" "}
+                            </option>
                             <option value="beginner">Beginner</option>
                             <option value="intermediate">Intermediate</option>
                             <option value="advanced">Advanced</option>
@@ -547,12 +661,15 @@ function CourseAdd() {
                           <select
                             required
                             className="form-control"
-                            id="exampleFormControlSelect1"
+                            id="published_status"
                             onChange={handleChange}
                             name="published_status"
                             value={cinputs.published_status}
                           >
-                            <option> -- Select publist status -- </option>
+                            <option value="">
+                              {" "}
+                              -- Select publist status --{" "}
+                            </option>
                             <option value="active">Active</option>
                             <option value="inactive">In-Active</option>
                           </select>
@@ -565,8 +682,10 @@ function CourseAdd() {
                         <div className="form-group">
                           <label>IMAGE</label>
                           <input
+                            required
                             type="file"
                             name="image"
+                            id="image"
                             className="form-control"
                             value={cinputs.image}
                             onChange={ImageHAndler}
@@ -579,8 +698,10 @@ function CourseAdd() {
                         <div className="form-group">
                           <label>AVATAR IMAGE</label>
                           <input
+                            required
                             type="file"
                             name="avatar_image"
+                            id="avatar_image"
                             className="form-control"
                             value={cinputs.avatar_image}
                             onChange={ImageHAndler}
@@ -597,7 +718,7 @@ function CourseAdd() {
                           <select
                             required
                             className="form-control"
-                            id="exampleFormControlSelect1"
+                            id="course_type"
                             onChange={handleChange}
                             name="course_type"
                             value={cinputs.course_type}
@@ -615,6 +736,7 @@ function CourseAdd() {
                             <label>FILE UPLOAD</label>
                             <input
                               type="file"
+                              id="attachment_file"
                               name="attachment_file"
                               className="form-control"
                               value={cinputs.attachment_file}
@@ -633,6 +755,7 @@ function CourseAdd() {
                               required
                               type="file"
                               name="xapi_attachment_file"
+                              id="xapi_attachment_file"
                               className="form-control"
                               value={cinputs.xapi_attachment_file}
                               onChange={FileHandler2}
@@ -643,7 +766,6 @@ function CourseAdd() {
                       )}
                     </div>
 
-
                     <div className="form-row mt-3">
                       {courseType == "xapi" && (
                         <div className="col-md-6">
@@ -653,6 +775,7 @@ function CourseAdd() {
                               required
                               type="text"
                               name="xapi_file_name"
+                              id="xapi_file_name"
                               className="form-control"
                               value={cinputs.xapi_file_name}
                               onChange={handleChange}
@@ -669,7 +792,7 @@ function CourseAdd() {
                               <select
                                 required
                                 className="form-control"
-                                id="exampleFormControlSelect1"
+                                id="creator"
                                 onChange={handleChange}
                                 name="creator"
                                 value={cinputs.creator}
@@ -679,8 +802,9 @@ function CourseAdd() {
                                   creator.map((item) => (
                                     <option
                                       value={item.id}
-                                    >{`${item.firstname.toUpperCase()} ${item.lastname.toUpperCase()} (${item.email
-                                      })`}</option>
+                                    >{`${item.firstname.toUpperCase()} ${item.lastname.toUpperCase()} (${
+                                      item.email
+                                    })`}</option>
                                   ))}
                               </select>
                             </div>
@@ -694,7 +818,7 @@ function CourseAdd() {
                     {/** -------------- certificate ----------------- */}
 
                     <div className="form-row">
-                      {cinputs.certificate_id != 0 &&
+                      {cinputs.certificate_id != 0 && (
                         <div className="col-md-6">
                           <div className="form-group">
                             <label>COURSE CERTIFICATE NAME</label>
@@ -703,12 +827,13 @@ function CourseAdd() {
                               type="text"
                               className="form-control"
                               name="course_certificate_name"
+                              id="course_certificate_name"
                               value={cinputs.course_certificate_name}
                               onChange={handleChange}
                             />
                           </div>
-                        </div>}
-
+                        </div>
+                      )}
 
                       <div className="col-md-6">
                         <div className="form-group">
@@ -731,7 +856,6 @@ function CourseAdd() {
                           )}
                         </div>
                       </div>
-
                     </div>
 
                     {/** -------------- End certificate ----------------- */}
@@ -786,7 +910,6 @@ function CourseAdd() {
             {/* Modal body */}
             <div className="modal-body text-center">
               <form>
-
                 {/* default */}
                 <>
                   <div className="form-check">
@@ -796,7 +919,7 @@ function CourseAdd() {
                         type="radio"
                         name="certificate_id"
                         id={`certificate_id`}
-                        value='0'
+                        value="0"
                         onChange={handleChange}
                         checked={0 == cinputs.certificate_id}
                       />

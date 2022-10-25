@@ -14,6 +14,8 @@ import Certificate2 from "./all_three_certificate/certificate-2/Certificate2";
 import Certificate3 from "./all_three_certificate/certificate-3/Certificate3";
 import SignatureService from "../../services/SignatureService";
 
+// import imageCertificate from "./all_three_certificate/ImageCertificate/certifiate";
+
 function Certificate() {
   var location = useLocation();
   var {
@@ -73,7 +75,7 @@ function Certificate() {
 
 
       {certificate_id == 1 && (
-        <Certificate1
+       <Certificate1
           user_name={user_name}
           email={email}
           course_name={course_name}
