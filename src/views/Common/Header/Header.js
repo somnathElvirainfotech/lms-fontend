@@ -25,6 +25,8 @@ import SerbianLatin from "../../ConverLanguages/SerbianLatin";
 import { LangContext } from "../../../routes/routes";
 import { auth, gprovider, mprovider, firebase } from "../../Firebase";
 import LanguageService from "../../../services/LanguageService";
+import XapiService from "../../../services/XapiService";
+import EnrollmentService from "../../../services/EnrollmentService";
 
 function openNav() {
   document.getElementById("myNav").style.width = "100%";
@@ -164,26 +166,26 @@ export default function Header() {
   };
 
   var GetProfileData = async () => {
-    
-    var response = await UserService.getProfileData({email:user.email});
-    
+
+    var response = await UserService.getProfileData({ email: user.email });
+
     if (response.data.status) {
       languageList.set_language(response.data.data.language_id);
     }
-  
+
   };
 
-  var profileUpdateLang=async (data)=>{
+  var profileUpdateLang = async (data) => {
     var response = await UserService.updateUserProfile(data);
   }
 
-  const { languageList } = useContext(LangContext);
+  const { languageList, xapi_result } = useContext(LangContext);
   const [langObj, setLangObj] = useState({});
 
   var languageHandler = (e) => {
     var a = e.target.value;
     languageList.set_language(a);
-    if(user.token) profileUpdateLang({language_id:a,email:user.email})
+    if (user.token) profileUpdateLang({ language_id: a, email: user.email })
   };
 
 
@@ -191,8 +193,8 @@ export default function Header() {
   useEffect(() => {
     GetAllLang();
     //alert(user.language_type)
-   if (user.token)  GetProfileData();
-  
+    if (user.token) GetProfileData();
+
 
     if (languageList.language_name === "1") {
       setLangObj(English);
@@ -204,6 +206,12 @@ export default function Header() {
 
     // console.log(languageList.language_name);
   }, [languageList.language_name]);
+
+
+
+
+
+ 
 
   return (
     <>
@@ -365,7 +373,7 @@ export default function Header() {
                         ""
                       )}
                       {(user.token && user.user_role == 2) ||
-                      (user.token && user.user_role == 1) ? (
+                        (user.token && user.user_role == 1) ? (
                         <li>
                           <Link onClick={clerSearchText} to="/user">
                             User List
@@ -376,7 +384,7 @@ export default function Header() {
                       )}
 
                       {(user.token && user.user_role == 2) ||
-                      (user.token && user.user_role == 1) ? (
+                        (user.token && user.user_role == 1) ? (
                         <>
                           {" "}
                           <li>
@@ -390,8 +398,8 @@ export default function Header() {
                       )}
 
                       {user.user_role == 4 ||
-                      user.user_role == 2 ||
-                      user.user_role == 1 ? (
+                        user.user_role == 2 ||
+                        user.user_role == 1 ? (
                         <li>
                           <Link onClick={clerSearchText} to="/course">
                             {" "}
@@ -402,7 +410,7 @@ export default function Header() {
                         ""
                       )}
                       {(user.token && user.user_role == 2) ||
-                      (user.token && user.user_role == 1) ? (
+                        (user.token && user.user_role == 1) ? (
                         <>
                           {" "}
                           <li>
@@ -416,7 +424,7 @@ export default function Header() {
                       )}
                       {/** {user.token && user.user_role == 2 || user.token && user.user_role == 1 ? <> <li><a href="#">Tag</a></li> </> : ''}  */}
                       {(user.token && user.user_role == 2) ||
-                      (user.token && user.user_role == 1) ? (
+                        (user.token && user.user_role == 1) ? (
                         <>
                           {/** 
                           <li>
@@ -429,7 +437,7 @@ export default function Header() {
                         ""
                       )}
                       {(user.token && user.user_role == 2) ||
-                      (user.token && user.user_role == 1) ? (
+                        (user.token && user.user_role == 1) ? (
                         <>
                           {" "}
                           <li>
@@ -442,8 +450,8 @@ export default function Header() {
                         ""
                       )}
                       {(user.token && user.user_role == 2) ||
-                      (user.token && user.user_role == 1) ||
-                      (user.token && user.user_role == 4) ? (
+                        (user.token && user.user_role == 1) ||
+                        (user.token && user.user_role == 4) ? (
                         <>
                           {" "}
                           <li>

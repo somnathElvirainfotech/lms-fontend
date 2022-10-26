@@ -5,7 +5,7 @@ import Header from './Common/Header/Header';
 import Footer from './Common/Footer/Footer';
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import UserService from '../services/UserService'
 import { AuthContext } from '../index';
 import ReactStars from "react-rating-stars-component";
@@ -19,6 +19,7 @@ import XapiService from '../services/XapiService';
 import UserTaskService from "../services/UserTaskService";
 import { toast } from "react-toastify";
 import QnsAnsComment from "./QnsAnsComment";
+import { setCookie, getCookie, removeCookie } from '../middleware/CookieSetup';
 
 // loader 
 import Loader from "./Loader";
@@ -45,10 +46,24 @@ export default function Singlecourse() {
 
     let query = useQuery();
     var location = useLocation();
-   var { singleCourseId, taskId, courseType } = location.state;
+    var params = useParams();
+    var paramsvalue = params.name.replaceAll("-", " ")
 
-//    var singleCourseId=1;
-//    var taskId=1;
+// const [singleCourseId,setSingleCourseId]=useState('');
+// const [taskId,setTaskId]=useState('');
+// const [courseType,setcourseType]=useState(''); 
+
+
+ var { singleCourseId, taskId, courseType } = location.state != null?location.state:{singleCourseId:1};
+
+    
+
+
+
+    console.log("params --- ", location.state)
+
+    //    var singleCourseId=1;
+    //    var taskId=1;
 
     // alert(singleCourseId)
 
@@ -95,14 +110,32 @@ export default function Singlecourse() {
         setInput(values => ({ ...values, [name]: value }))
     }
 
+     
+
 
 
     useEffect(() => {
 
-        console.log("course id ==== ",singleCourseId);
-       
+        console.log("course id ==== ", singleCourseId);
+
+        
+
+        
+
         (async () => {
+
+           
+            
             setShowLoader(true)
+
+            if(location.state==null)
+            {
+                var data = await UserService.singlecourseByName(paramsvalue);
+                singleCourseId=data.data.data.id
+            }
+
+            
+
             var course = query.get("id");
 
             setCourseID(singleCourseId);
@@ -144,7 +177,7 @@ export default function Singlecourse() {
             var responce = await UserService.singlecourse(singleCourseId);
             var temp = responce.data.data;
 
-            console.log(responce.data)
+            console.log("course details",responce.data)
 
             setCreatorId(temp.creator_id)
             setCourses(temp);
@@ -177,6 +210,8 @@ export default function Singlecourse() {
 
             setShowLoader(false)
         })()
+        
+        
 
 
 
@@ -329,6 +364,7 @@ export default function Singlecourse() {
                         setShowLoader(false);
                 }
 
+                 setCookie("xapi_result_name",course.xapi_file_name)
                 window.open(`/singlexapi?link=${btoa(file_path)}`, '_blank');
             }
         }
@@ -601,15 +637,15 @@ export default function Singlecourse() {
             <div className="single-course-bottom sec-bg">
                 <div className="container">
                     <div className="row">
-                        
-                               {course.course_type == "xapi" && enrollment || course.course_type == "xapi" && user.user_role == 1 || course.course_type == "xapi" && user.user_role == 2 || course.course_type == "xapi" && user.user_role == 4 && user.user_id == creatorId ?
-                                <div className="col-sm-12 mb-3">
 
-                                    {/**  <Link to="/singlexapi" className="sec-btn" state={{ vedio: course.xapi_attachment_file }} target="_blank" >dddddddddd</Link> */}
-                                    <a href={`/singlexapi?link=${btoa(course.xapi_attachment_file)}`} target="__blank" className="sec-btn"  >VIEW COURSE</a>
+                        {course.course_type == "xapi" && enrollment || course.course_type == "xapi" && user.user_role == 1 || course.course_type == "xapi" && user.user_role == 2 || course.course_type == "xapi" && user.user_role == 4 && user.user_id == creatorId ?
+                            <div className="col-sm-12 mb-3">
 
-                                </div>
-                                : ''} 
+                                {/**  <Link to="/singlexapi" className="sec-btn" state={{ vedio: course.xapi_attachment_file }} target="_blank" >dddddddddd</Link> */}
+                                <a href={`/singlexapi?link=${btoa(course.xapi_attachment_file)}`} target="__blank" className="sec-btn" onClick={()=>{setCookie("xapi_result_name",course.xapi_file_name)}}  >VIEW COURSE</a>
+
+                            </div>
+                            : ''}
 
                         <div className="col-md-7">
 
@@ -617,11 +653,13 @@ export default function Singlecourse() {
 
                                 <div className="row mb-3">
                                     <div className="col-sm-12">
-                                        <ReactPlayer config={{ file: {
-                                            attributes: {
-                                            controlsList: 'nodownload'
+                                        <ReactPlayer config={{
+                                            file: {
+                                                attributes: {
+                                                    controlsList: 'nodownload'
+                                                }
                                             }
-                                            }}} onSeek={e => playerSeek(e)} onDuration={e => setDuration(e)} onEnded={playerEnded} onPause={playerPaused} onProgress={playerProgress} url={vedioPlayer} playing={true} controls={true} width="100%" height="340px"></ReactPlayer>
+                                        }} onSeek={e => playerSeek(e)} onDuration={e => setDuration(e)} onEnded={playerEnded} onPause={playerPaused} onProgress={playerProgress} url={vedioPlayer} playing={true} controls={true} width="100%" height="340px"></ReactPlayer>
                                     </div>
                                 </div>
                             }

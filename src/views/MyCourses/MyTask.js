@@ -7,6 +7,7 @@ import { Markup } from 'interweave';
 import TaskService from '../../services/TaskService';
 import { useNavigate, Link } from 'react-router-dom';
 import UserTaskService from '../../services/UserTaskService';
+import { setCookie, getCookie, removeCookie } from '../../middleware/CookieSetup';
 
 
 
@@ -92,6 +93,7 @@ export default function MyTask() {
 
             if (temp.course_type == "xapi") {
                 var authdata = { username: user.username, email: user.email }
+                setCookie("xapi_result_name",temp.xapi_file_name)
                 window.open(`/singlexapi?link=${btoa(temp.xapi_attachment_file)}`, '_blank');
                 // navigate(`/singlexapi?link=${temp.xapi_attachment_file}`,{replace:true,target:'_blank'})
             } else {

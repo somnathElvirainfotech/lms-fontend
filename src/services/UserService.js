@@ -79,6 +79,10 @@ class UserService {
         return axios.get(REACT_APP_API_SERVICE_URL + '/web-course/' + course, TokenHelper.getHeader());
     }
 
+    singlecourseByName(course) {
+        return axios.get(REACT_APP_API_SERVICE_URL + '/web-course-name/' + course, TokenHelper.getHeader());
+    }
+
     assignment(user_id) {
 
         return axios.get(REACT_APP_API_SERVICE_URL + '/assignment-user/' + user_id, TokenHelper.getHeader());

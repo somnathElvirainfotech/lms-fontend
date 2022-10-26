@@ -78,6 +78,7 @@ import PrintResult from '../views/Enrollment/PrintResult';
 export const LangContext = createContext();
 
 
+
 export default function RoutesList() {
 
   var [data, setData] = useState({});
@@ -131,6 +132,7 @@ export default function RoutesList() {
 
 
   const [lang, setLang] = useState("1");
+  const [xapiName, setXapiName] = useState("");
   var languageFun=()=>setLang()
 
   const langData = {
@@ -138,9 +140,15 @@ export default function RoutesList() {
     set_language:setLang
   }
 
+  const xapiData={
+    xapiName:xapiName,
+    setXapiName,setXapiName
+  }
+
 
   return (
-    <LangContext.Provider value={{ languageList: langData }}>
+    <LangContext.Provider value={{ languageList: langData,xapi_result:xapiData }}>
+
 
     
       <Routes>
