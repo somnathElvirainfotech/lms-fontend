@@ -72,6 +72,7 @@ import Certificate1 from '../views/Certificates/all_three_certificate/certificat
 import Certificate2 from '../views/Certificates/all_three_certificate/certificate-2/Certificate2';
 import Certificate3 from '../views/Certificates/all_three_certificate/certificate-3/Certificate3';
 import PrintResult from '../views/Enrollment/PrintResult';
+import SingleXapiModal from '../views/SingleXapiModal';
 
 
 
@@ -196,6 +197,8 @@ export default function RoutesList() {
           <Route path='about-us' element={<AboutUs />} />
 
           <Route path='view-result' element={<ViewResult />} />
+
+          <Route path="single-api-modal" element={<SingleXapiModal />} />
 
           {/** error page handler */}
           <Route path="*" element={<Navigate to="/" replace />} />

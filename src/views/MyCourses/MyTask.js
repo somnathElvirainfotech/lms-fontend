@@ -5,9 +5,10 @@ import { AuthContext } from '../../index';
 import { Markup } from 'interweave';
 
 import TaskService from '../../services/TaskService';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import UserTaskService from '../../services/UserTaskService';
 import { setCookie, getCookie, removeCookie } from '../../middleware/CookieSetup';
+import SingleXapiModal from '../SingleXapiModal';
 
 
 
@@ -18,8 +19,12 @@ export default function MyTask() {
     const [enrollment, setEnrollments] = useState();
     const navigate = useNavigate();
     const [dataLen, setDataLen] = useState(0);
+    const location=useLocation();
+    const pathname=location.pathname;
 
     useEffect(() => {
+
+       // console.log("location ............... ",location)
         // if (user.user_role == 5) {
         //     var responce = await UserService.assignment(user.user_id);
         //     setAssignments(responce.data.data);
@@ -37,7 +42,7 @@ export default function MyTask() {
                 user_id: user.user_id
             };
             var responce = await TaskService.search(data);
-            console.log(responce.data.data);
+            console.log("assignment ............ ",responce.data.data);
             setAssignments([...responce.data.data])
             setCount(responce.data.data.length);
 
@@ -51,9 +56,12 @@ export default function MyTask() {
 
 
     const [enroll, setEnroll] = useState(false);
+    const[xapiLink,setxapiLink]=useState('')
+    const[xapFileName,setxapFileName]=useState('')
+    const[xapCourse,setxapCourse]=useState('')
 
 
-    var getCourse = async (courseId, taskId, no_attempted,course_name) => {
+    var getCourse = async (courseId, taskId, no_attempted, course_name) => {
 
 
         var enrollRes = await UserService.enrollmentcourse(user.user_id, courseId);
@@ -93,12 +101,15 @@ export default function MyTask() {
 
             if (temp.course_type == "xapi") {
                 var authdata = { username: user.username, email: user.email }
-                setCookie("xapi_result_name",temp.xapi_file_name)
-                window.open(`/singlexapi?link=${btoa(temp.xapi_attachment_file)}`, '_blank');
+                setxapiLink(temp.xapi_attachment_file);
+                setxapFileName(temp.xapi_file_name);
+                setxapCourse(course_name?course_name.toUpperCase():'');
+                // setCookie("xapi_result_name", temp.xapi_file_name)
+                // window.open(`/singlexapi?link=${btoa(temp.xapi_attachment_file)}`, '_blank');
                 // navigate(`/singlexapi?link=${temp.xapi_attachment_file}`,{replace:true,target:'_blank'})
             } else {
                 //window.location.replace(`/singlecourse?id=${courseId}`)
-                navigate(`/courses/${course_name.replaceAll(" ","-")}`, { state: { singleCourseId: courseId, taskId: taskId, courseType: temp.course_type } })
+                navigate(`/courses/${course_name.replaceAll(" ", "-")}`, { state: { singleCourseId: courseId, taskId: taskId, courseType: temp.course_type } })
             }
 
         } else {
@@ -106,7 +117,7 @@ export default function MyTask() {
             var temp = cresponce.data.data;
 
             // window.location.replace(`/singlecourse?id=${courseId}`)
-            navigate(`/courses/${course_name.replaceAll(" ","-")}`, { state: { singleCourseId: courseId, taskId: taskId, courseType: temp.course_type } })
+            navigate(`/courses/${course_name.replaceAll(" ", "-")}`, { state: { singleCourseId: courseId, taskId: taskId, courseType: temp.course_type } })
 
         }
 
@@ -132,7 +143,7 @@ export default function MyTask() {
                                 <div className="assignment-item">
                                     {assignments.map((assignment, i) =>
                                         <>{
-                                            assignment.user_task_status != 'passed' && 
+                                            assignment.user_task_status != 'passed' &&
                                             <div className="my-course-details">
                                                 <div className="row align-items-center">
                                                     <div className="col-md-4">
@@ -168,8 +179,25 @@ export default function MyTask() {
                                                                 <h5 className="course-status ml-2"> Failed</h5>}
 
 
-                                                            {assignment.user_task_status != 'passed' ?
-                                                                < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted,assignment.course_name)} > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link> : ''}
+                                                            {assignment.user_task_status != 'passed' && assignment.user_task_status !='No Attempted' ?
+                                                            < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted, assignment.course_name)} data-toggle="modal"
+                                                            data-target="#modal-fullscreen-xl" > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link>
+                                                                 : ''}
+
+                                                                 {assignment.user_task_status != 'passed' && assignment.user_task_status =='No Attempted' ?
+                                                            < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted, assignment.course_name)} > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link>
+                                                                 : ''}
+
+                                                                 {/** < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted, assignment.course_name)} > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link> */}
+
+                                                            {/* <button
+                                                                className="sec-btn"
+                                                                data-toggle="modal"
+                                                                data-target="#modal-fullscreen-xl"
+                                                                onClick={() => setXapiLink(course.xapi_attachment_file)}
+                                                            >
+                                                                VIEW COURSE
+                                                            </button> */}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -185,6 +213,8 @@ export default function MyTask() {
                         </div>
 
                     </div>
+
+                    <SingleXapiModal xapi_link={xapiLink} course_name={xapCourse} xapi_course_name={xapFileName} />
                 </div>
                 : ''
             }

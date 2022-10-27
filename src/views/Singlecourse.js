@@ -20,6 +20,7 @@ import UserTaskService from "../services/UserTaskService";
 import { toast } from "react-toastify";
 import QnsAnsComment from "./QnsAnsComment";
 import { setCookie, getCookie, removeCookie } from '../middleware/CookieSetup';
+import SingleXapiModal from "./SingleXapiModal";
 
 // loader 
 import Loader from "./Loader";
@@ -48,15 +49,16 @@ export default function Singlecourse() {
     var location = useLocation();
     var params = useParams();
     var paramsvalue = params.name.replaceAll("-", " ")
+    const pathname = location.pathname;
 
-// const [singleCourseId,setSingleCourseId]=useState('');
-// const [taskId,setTaskId]=useState('');
-// const [courseType,setcourseType]=useState(''); 
+    // const [singleCourseId,setSingleCourseId]=useState('');
+    // const [taskId,setTaskId]=useState('');
+    // const [courseType,setcourseType]=useState(''); 
 
 
- var { singleCourseId, taskId, courseType } = location.state != null?location.state:{singleCourseId:1};
+    var { singleCourseId, taskId, courseType } = location.state != null ? location.state : { singleCourseId: 1 };
 
-    
+
 
 
 
@@ -110,7 +112,7 @@ export default function Singlecourse() {
         setInput(values => ({ ...values, [name]: value }))
     }
 
-     
+
 
 
 
@@ -118,23 +120,22 @@ export default function Singlecourse() {
 
         console.log("course id ==== ", singleCourseId);
 
-        
 
-        
+
+
 
         (async () => {
 
-           
-            
+
+
             setShowLoader(true)
 
-            if(location.state==null)
-            {
+            if (location.state == null) {
                 var data = await UserService.singlecourseByName(paramsvalue);
-                singleCourseId=data.data.data.id
+                singleCourseId = data.data.data.id
             }
 
-            
+
 
             var course = query.get("id");
 
@@ -177,7 +178,7 @@ export default function Singlecourse() {
             var responce = await UserService.singlecourse(singleCourseId);
             var temp = responce.data.data;
 
-            console.log("course details",responce.data)
+            console.log("course details", responce.data)
 
             setCreatorId(temp.creator_id)
             setCourses(temp);
@@ -210,8 +211,8 @@ export default function Singlecourse() {
 
             setShowLoader(false)
         })()
-        
-        
+
+
 
 
 
@@ -364,8 +365,10 @@ export default function Singlecourse() {
                         setShowLoader(false);
                 }
 
-                 setCookie("xapi_result_name",course.xapi_file_name)
-                window.open(`/singlexapi?link=${btoa(file_path)}`, '_blank');
+                setXapiLink(file_path)
+
+                // setCookie("xapi_result_name", course.xapi_file_name)
+                // window.open(`/singlexapi?link=${btoa(file_path)}`, '_blank');
             }
         }
 
@@ -592,6 +595,11 @@ export default function Singlecourse() {
 
     }, [languageList.language_name]);
 
+    var [xapiLink, setxapiLink] = useState('');
+    var setXapiLink = (link) => {
+        setxapiLink(link)
+    }
+
 
     return (
         <React.Fragment>
@@ -642,10 +650,23 @@ export default function Singlecourse() {
                             <div className="col-sm-12 mb-3">
 
                                 {/**  <Link to="/singlexapi" className="sec-btn" state={{ vedio: course.xapi_attachment_file }} target="_blank" >dddddddddd</Link> */}
-                                <a href={`/singlexapi?link=${btoa(course.xapi_attachment_file)}`} target="__blank" className="sec-btn" onClick={()=>{setCookie("xapi_result_name",course.xapi_file_name)}}  >VIEW COURSE</a>
+
+                                {/**    <a href={`/singlexapi?link=${btoa(course.xapi_attachment_file)}`} target="__blank" className="sec-btn" onClick={() => { setCookie("xapi_result_name", course.xapi_file_name) }}  >VIEW COURSE</a> */}
+
+                                <button
+                                    className="sec-btn"
+                                    data-toggle="modal"
+                                    data-target="#modal-fullscreen-xl"
+                                    onClick={() => setXapiLink(course.xapi_attachment_file)}
+                                >
+                                    VIEW COURSE
+                                </button>
 
                             </div>
                             : ''}
+
+
+
 
                         <div className="col-md-7">
 
@@ -715,7 +736,8 @@ export default function Singlecourse() {
                                             <div className="enroll-sec">
 
                                                 {user.token ?
-                                                    (user.user_role == 5 && (chkGroups && (!enrollment && <button className="sec-btn" onClick={e => enrollmentid(course.xapi_attachment_file, course.course_type)}>Enroll Now</button>)))
+                                                    (user.user_role == 5 && (chkGroups && (!enrollment && <button className="sec-btn" data-toggle="modal"
+                                                        data-target="#modal-fullscreen-xl" onClick={e => enrollmentid(course.xapi_attachment_file, course.course_type)}>Enroll Now</button>)))
                                                     : (<a data-toggle="modal" data-target="#loginform" href="#" className="sec-btn">Enroll Now</a>
 
                                                     )
@@ -1021,8 +1043,11 @@ export default function Singlecourse() {
                         </div> : ''}
                     </div>
 
+                    <SingleXapiModal xapi_link={xapiLink} course_name={course.course_name && course.course_name.toUpperCase()} xapi_course_name={course.xapi_file_name} />
+
                 </div>
             </div>
+
 
 
             {
@@ -1131,7 +1156,11 @@ export default function Singlecourse() {
                             </div>
                         </div>
                     </div>
+
+
+
                 </div>
+
             }
 
 
