@@ -11,43 +11,43 @@ function ParentQnsAnsComment(props) {
   // loader
   const [showLoader, setShowLoader] = useState(false);
   const { user } = useContext(AuthContext);
-  const { course_id,parent_id,label } = props;
-    
-    var [comments, setComments] = useState([]);
+  const { course_id, parent_id, label } = props;
+
+  var [comments, setComments] = useState([]);
   const [Text, setText] = useState({ comment: "" });
-  const [ansId,setAnsId]=useState();
-  const [parent,setParent]=useState(false);
+  const [ansId, setAnsId] = useState();
+  const [parent, setParent] = useState(false);
 
 
 
-  var showReply=async(did,id)=>{
+  var showReply = async (did, id) => {
 
-    var subAns= document.getElementById(did);
+    var subAns = document.getElementById(did);
 
- 
+
     if (subAns.style.display === "none") {
-     subAns.style.display = "block";
-     setParent(true)
-    //subAns.innerHTML=htmlData;
-   } else {
-     subAns.style.display = "none";
-     setParent(false)
-    //subAns.innerHTML='';
-   }
+      subAns.style.display = "block";
+      setParent(true)
+      //subAns.innerHTML=htmlData;
+    } else {
+      subAns.style.display = "none";
+      setParent(false)
+      //subAns.innerHTML='';
+    }
 
- 
- 
-   }
 
-   useEffect(()=>{  
 
-    commentSearch(course_id,parent_id)
+  }
 
-   },[])
+  useEffect(() => {
 
-   
+    commentSearch(course_id, parent_id)
 
-   var commentSearch = async (courseID, ID) => {
+  }, [])
+
+
+
+  var commentSearch = async (courseID, ID) => {
     var responce = await QnsAnsCommentService.search({
       course_id: courseID,
       id: ID,
@@ -71,7 +71,7 @@ function ParentQnsAnsComment(props) {
     console.log(Text);
   };
 
-  var handelSubmit2=async()=>{
+  var handelSubmit2 = async () => {
 
     setShowLoader(true);
 
@@ -103,161 +103,162 @@ function ParentQnsAnsComment(props) {
 
 
 
-  var showReply=async(did,id)=>{
+  var showReply = async (did, id) => {
 
-    var subAns= document.getElementById(did);
- 
-    var responce=await QnsAnsCommentService.search({course_id:course_id,id:id})
-     
- 
+    var subAns = document.getElementById(did);
+
+    var responce = await QnsAnsCommentService.search({ course_id: course_id, id: id })
+
+
     if (subAns.style.display === "none") {
-     subAns.style.display = "block";
-     setParent(true)
-    //subAns.innerHTML=htmlData;
-   } else {
-     subAns.style.display = "none";
-     setParent(false)
-
-     
-    //subAns.innerHTML='';
-   }
- 
-  
- 
- 
-   }
+      subAns.style.display = "block";
+      setParent(true)
+      //subAns.innerHTML=htmlData;
+    } else {
+      subAns.style.display = "none";
+      setParent(false)
 
 
-  return <> 
-   {/** loader */}
-   {showLoader && <Loader />}
+      //subAns.innerHTML='';
+    }
 
-  {comments &&
-    comments.map((item,i) => (
-      <div key={`pare${i}`} className="review-box mb-3" style={{ borderBottom: "none" }}>
-        <h5>
-          {item.user_image ? (
-            <img
-              src={item.user_image}
-              className=" float-left mr-2 "
-              style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "50%",
-              }}
-              alt="..."
-            ></img>
-          ) : (
-            <img
-              src="/images/user.png"
-              className="rounded float-left mr-2 "
-              style={{ width: "30px", height: "30px" }}
-              alt="..."
-            ></img>
-          )}
-          <span>{item.user_name.toUpperCase()}</span>
-          <span className="text-secondary" style={{ fontSize: "14px" }}>
+
+
+
+  }
+
+
+  return <>
+    {/** loader */}
+    {showLoader && <Loader />}
+
+    {comments &&
+      comments.map((item, i) => (
+        <div key={`pare${i}`} className="review-box mb-3" style={{ borderBottom: "none" }}>
+          <h5>
+            {item.user_image ? (
+              <img
+                src={item.user_image}
+                className=" float-left mr-2 "
+                style={{
+                  width: "40px",
+                  height: "40px",
+                  borderRadius: "50%",
+                }}
+                alt="..."
+              ></img>
+            ) : (
+              <img
+                src="/images/user.png"
+                className="rounded float-left mr-2 "
+                style={{ width: "30px", height: "30px" }}
+                alt="..."
+              ></img>
+            )}
+            <span>{item.user_name.toUpperCase()}</span>
+            <span className="text-secondary" style={{ fontSize: "14px" }}>
+              {" "}
+              <Moment fromNow>{item.created_at}</Moment>
+              {" "}
+            </span>
+
+          </h5>
+          <p className="ml-5">{item.comment}</p>
+          <h6
+            className="ml-5 text-primary font-weight-bold "
+            style={{ cursor: "pointer" }}
+          >
             {" "}
-            <Moment fromNow>{item.created_at}</Moment>
-            {" "}
-          </span>
-           
-        </h5>
-        <p className="ml-5">{item.comment}</p>
-        <h6
-          className="ml-5 text-primary font-weight-bold "
-          style={{ cursor: "pointer" }}
-        >
-          {" "}
-          <span className="p-2" >{item.total_replies}</span> <span onClick={()=>(showReply(`${label}${i+1}`,item.id))}>REPLIES</span>
+            <span className="p-2" >{item.total_replies}</span> <span onClick={() => (showReply(`${label}${i + 1}`, item.id))}>REPLIES</span>
 
-          {item.user_id != user.user_id &&    <span  data-toggle="modal" className="ml-5"
-          data-target={`.addgroupModal3${label}`}  title="Reply" style={{ cursor: "pointer" }} 
-          onClick={()=>{setAnsId(item.id)}}
-          >REPLY</span>  }
+            {item.user_id != user.user_id && <span data-toggle="modal" data-backdrop="static"
+              data-keyboard="false" className="ml-5"
+              data-target={`.addgroupModal3${label}`} title="Reply" style={{ cursor: "pointer" }}
+              onClick={() => { setAnsId(item.id) }}
+            >REPLY</span>}
 
 
-        </h6>
+          </h6>
 
-        
 
-        {/** ---------------------------------------------- */}
 
-        <div className="container mt-3 ml-5" id={`${label}${i+1}`} style={{display:"none"}}>
-        {parent && <ChildQnsAnsComment course_id={course_id} parent_id={item.id} />}
+          {/** ---------------------------------------------- */}
+
+          <div className="container mt-3 ml-5" id={`${label}${i + 1}`} style={{ display: "none" }}>
+            {parent && <ChildQnsAnsComment course_id={course_id} parent_id={item.id} />}
+          </div>
+
+          {/** ---------------------------------------------- */}
+
+
         </div>
-      
-        {/** ---------------------------------------------- */}
+      ))}
 
 
+
+    {/**  modal */}
+    <div
+      className={`modal fade addgroupModal3${label}`}
+      id={`addgroupModal`}
+      tabIndex={-1}
+      role="dialog"
+      aria-labelledby="addgroupModalLabel"
+      aria-hidden="true"
+    >
+      <div className="modal-dialog" role="document">
+        <div className="modal-content">
+          <div className="modal-header">
+            <button
+              onClick={closeModal}
+              type="button"
+              className="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div className="modal-body">
+            <div className="data-table user-table">
+              <div className="table-responsive">
+                <form id="myForm">
+                  <textarea
+                    onChange={handleText}
+                    value={Text.comment}
+                    name="comment"
+                    required
+                    placeholder="Question & Answer "
+                    className="form-control"
+                    id="comment"
+                    rows="10"
+                  />
+                </form>
+              </div>
+            </div>
+          </div>
+          <div className="modal-footer">
+            <button
+              onClick={handelSubmit2}
+              type="button"
+              className="edit-btn"
+              data-dismiss="modal"
+            >
+              Submit{" "}
+            </button>
+            <button
+              onClick={closeModal}
+              type="button"
+              className="delete-btn"
+              data-dismiss="modal"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
       </div>
-    ))}
+    </div>
 
-
-
-     {/**  modal */}
-     <div
-     className={`modal fade addgroupModal3${label}`}
-     id={`addgroupModal`}
-     tabIndex="-1"
-     role="dialog"
-     aria-labelledby="addgroupModalLabel"
-     aria-hidden="true"
-   >
-     <div className="modal-dialog" role="document">
-       <div className="modal-content">
-         <div className="modal-header">
-           <button
-             onClick={closeModal}
-             type="button"
-             className="close"
-             data-dismiss="modal"
-             aria-label="Close"
-           >
-             <span aria-hidden="true">&times;</span>
-           </button>
-         </div>
-         <div className="modal-body">
-           <div className="data-table user-table">
-             <div className="table-responsive">
-               <form id="myForm">
-                 <textarea
-                   onChange={handleText}
-                   value={Text.comment}
-                   name="comment"
-                   required
-                   placeholder="Question & Answer "
-                   className="form-control"
-                   id="comment"
-                   rows="10"
-                 />
-               </form>
-             </div>
-           </div>
-         </div>
-         <div className="modal-footer">
-           <button
-             onClick={handelSubmit2}
-             type="button"
-             className="edit-btn"
-             data-dismiss="modal"
-           >
-             Submit{" "}
-           </button>
-           <button
-             onClick={closeModal}
-             type="button"
-             className="delete-btn"
-             data-dismiss="modal"
-           >
-             Cancel
-           </button>
-         </div>
-       </div>
-     </div>
-     </div>
-
-    </>
+  </>
 }
 
 export default ParentQnsAnsComment

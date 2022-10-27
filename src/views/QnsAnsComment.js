@@ -16,8 +16,8 @@ function QnsAnsComment(props) {
 
   var [comments, setComments] = useState([]);
   const [Text, setText] = useState({ comment: "" });
-  const [ansId,setAnsId]=useState();
-  const [parent,setParent]=useState(false);
+  const [ansId, setAnsId] = useState();
+  const [parent, setParent] = useState(false);
 
   useEffect(() => {
     commentSearch(course_id, "");
@@ -60,13 +60,13 @@ function QnsAnsComment(props) {
       setShowLoader(false);
       toast.error(responce.data.msg);
     }
-  
+
 
     commentSearch(course_id, "");
 
   };
 
-  var handelSubmit2=async()=>{
+  var handelSubmit2 = async () => {
 
     setShowLoader(true);
 
@@ -103,36 +103,36 @@ function QnsAnsComment(props) {
     });
     // console.log("comments ",responce.data.data);
     var resData = responce.data.data;
-    setComments(resData.data); 
+    setComments(resData.data);
 
-    
+
 
   };
 
 
-  var showReply=async(did,id)=>{
+  var showReply = async (did, id) => {
 
-   var subAns= document.getElementById(did);
+    var subAns = document.getElementById(did);
 
-   var responce=await QnsAnsCommentService.search({course_id:course_id,id:id})
-    
+    var responce = await QnsAnsCommentService.search({ course_id: course_id, id: id })
 
-   if (subAns.style.display === "none") {
-    subAns.style.display = "block";
-    setParent(true)
-   //subAns.innerHTML=htmlData;
-  } else {
-    subAns.style.display = "none";
-    setParent(false)
-   //subAns.innerHTML='';
+
+    if (subAns.style.display === "none") {
+      subAns.style.display = "block";
+      setParent(true)
+      //subAns.innerHTML=htmlData;
+    } else {
+      subAns.style.display = "none";
+      setParent(false)
+      //subAns.innerHTML='';
+    }
+
+
+
+
   }
 
- 
-
-
-  }
-
-  var viewParent=()=>{
+  var viewParent = () => {
     return <ParentQnsAnsComment />
   }
 
@@ -151,6 +151,8 @@ function QnsAnsComment(props) {
             className="sec-btn comment-add-btn"
             data-toggle="modal"
             data-target="#addgroupModal"
+            data-backdrop="static"
+            data-keyboard="false"
           >
             Add Question & Answer
           </button>
@@ -159,7 +161,7 @@ function QnsAnsComment(props) {
         {/** reviews  section */}
 
         {comments &&
-          comments.map((item,i) => (
+          comments.map((item, i) => (
             <div className="review-box mb-3" style={{ borderBottom: "none" }}>
               <h5>
                 {item.user_image ? (
@@ -218,25 +220,26 @@ function QnsAnsComment(props) {
                 style={{ cursor: "pointer" }}
               >
                 {" "}
-                <span className="p-2" >{item.total_replies}</span> <span onClick={()=>(showReply(`subAns${i+1}`,item.id))}>REPLIES</span>
+                <span className="p-2" >{item.total_replies}</span> <span onClick={() => (showReply(`subAns${i + 1}`, item.id))}>REPLIES</span>
 
-            {item.user_id != user.user_id &&  <span  data-toggle="modal" className="ml-5"
-                data-target="#addgroupModal2"  title="Reply" style={{ cursor: "pointer" }} 
-                onClick={()=>{setAnsId(item.id)}}
-                >REPLY</span> }
+                {item.user_id != user.user_id && <span data-toggle="modal" data-backdrop="static"
+                  data-keyboard="false" className="ml-5"
+                  data-target="#addgroupModal2" title="Reply" style={{ cursor: "pointer" }}
+                  onClick={() => { setAnsId(item.id) }}
+                >REPLY</span>}
 
 
               </h6>
 
-              
 
-               {/** ---------------------------------------------- */}
 
-               <div className="container mt-3 ml-5" id={`subAns${i+1}`} style={{display:"none"}}>
-               {parent && <ParentQnsAnsComment course_id={course_id} parent_id={item.id} label={`${i+1}childAns`} />}
-               </div>
-             
-               {/** ---------------------------------------------- */}
+              {/** ---------------------------------------------- */}
+
+              <div className="container mt-3 ml-5" id={`subAns${i + 1}`} style={{ display: "none" }}>
+                {parent && <ParentQnsAnsComment course_id={course_id} parent_id={item.id} label={`${i + 1}childAns`} />}
+              </div>
+
+              {/** ---------------------------------------------- */}
 
 
             </div>
@@ -251,7 +254,7 @@ function QnsAnsComment(props) {
       <div
         className="modal fade"
         id="addgroupModal"
-        tabIndex="-1"
+        tabIndex={-1}
         role="dialog"
         aria-labelledby="addgroupModalLabel"
         aria-hidden="true"

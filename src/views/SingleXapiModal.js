@@ -6,25 +6,28 @@ import { AuthContext } from '../index';
 // loader 
 import Loader from "./Loader";
 import { useNavigate } from 'react-router-dom';
+// import $ from 'jquery';
+// import "jquery-ui-dist/jquery-ui";
+// import 'bootstrap';
 
 function SingleXapiModal(props) {
 
-    const {xapi_link,course_name,xapi_course_name,redirect_link}=props;
+    const { xapi_link, course_name, xapi_course_name, redirect_link } = props;
 
-     // loader
-     const [showLoader, setShowLoader] = useState(false);
+    // loader
+    const [showLoader, setShowLoader] = useState(false);
 
-     const { user } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
-     var navigate = useNavigate();
-     var goTo = () => {
+    var navigate = useNavigate();
+    var goTo = () => {
         navigate(0)
     }
 
 
-     // xapi ----------------
+    // xapi ----------------
 
-     var chkDuplicate = (arr, valu) => {
+    var chkDuplicate = (arr, valu) => {
 
         for (var i of arr) {
             if (i.viewId == valu) {
@@ -341,10 +344,10 @@ function SingleXapiModal(props) {
 
     // end xapi ----------------
 
-    var xapiCourseSubmit=async()=>{
+    var xapiCourseSubmit = async () => {
         // -----------------------------------------------
 
-        alert(xapi_course_name)
+        //alert(xapi_course_name)
 
         if (xapi_course_name && user.user_role == 5) {
 
@@ -387,22 +390,22 @@ function SingleXapiModal(props) {
 
 
 
-    var formSubmit=()=>{
-       document.getElementById('xapi_iframe').src=xapi_link;
-    //    document.getElementById('xapi_iframe').src=xapi_link;
-    //   iframe.contentWindow.location.reload(); 
+    var formSubmit = () => {
+        document.getElementById('xapi_iframe').src = xapi_link;
+        //    document.getElementById('xapi_iframe').src=xapi_link;
+        //   iframe.contentWindow.location.reload(); 
 
-    xapiCourseSubmit();
-
-    
+        xapiCourseSubmit();
 
     }
 
 
+   
+
     return <>
 
-    {/** loader */}
-    {showLoader && <Loader />}
+        {/** loader */}
+        {showLoader && <Loader />}
 
         {/* <!-- Modal Fullscreen xl --> */}
         <div
@@ -442,7 +445,7 @@ function SingleXapiModal(props) {
                             Close
                         </button>
                         <button type="button" onClick={formSubmit} className="btn btn-primary" data-dismiss="modal" >
-                           Submit
+                            Submit
                         </button>
                     </div>
                 </div>

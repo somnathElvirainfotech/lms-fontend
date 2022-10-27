@@ -657,6 +657,8 @@ export default function Singlecourse() {
                                     className="sec-btn"
                                     data-toggle="modal"
                                     data-target="#modal-fullscreen-xl"
+                                    data-backdrop="static"
+                                    data-keyboard="false"
                                     onClick={() => setXapiLink(course.xapi_attachment_file)}
                                 >
                                     VIEW COURSE
@@ -736,8 +738,8 @@ export default function Singlecourse() {
                                             <div className="enroll-sec">
 
                                                 {user.token ?
-                                                    (user.user_role == 5 && (chkGroups && (!enrollment && <button className="sec-btn" data-toggle="modal"
-                                                        data-target="#modal-fullscreen-xl" onClick={e => enrollmentid(course.xapi_attachment_file, course.course_type)}>Enroll Now</button>)))
+                                                    (user.user_role == 5 && (chkGroups && (!enrollment && (course.course_type == 'xapi' ? <button className="sec-btn" data-toggle="modal"
+                                                        data-target="#modal-fullscreen-xl" onClick={e => enrollmentid(course.xapi_attachment_file, course.course_type)}>Enroll Now</button> : <button className="sec-btn" onClick={e => enrollmentid(course.xapi_attachment_file, course.course_type)}>Enroll Now</button>))))
                                                     : (<a data-toggle="modal" data-target="#loginform" href="#" className="sec-btn">Enroll Now</a>
 
                                                     )
@@ -889,7 +891,11 @@ export default function Singlecourse() {
 
                                             </div>
                                             <div className="tab-btnarea">
-                                                {chkComment && enrollment ? <button href="#" className="sec-btn comment-add-btn" data-toggle="modal" data-target=".raddgroupModal">Add Comment</button> : ''}
+                                                {chkComment && enrollment ? <button href="#" className="sec-btn comment-add-btn"
+                                                    data-toggle="modal"
+                                                    data-target=".raddgroupModal"
+                                                    data-backdrop="static"
+                                                    data-keyboard="false" >Add Comment</button> : ''}
                                                 <Link to={`/allreview`} state={{ coure_ID: courseID }} className="sec-btn sec-btn-border">{langObj.view_all_reviews}</Link>
                                             </div>
 
@@ -1107,7 +1113,8 @@ export default function Singlecourse() {
             {/** rating */}
 
             {
-                chkComment && <div className="modal fade raddgroupModal" id="addgroupModal" tabIndex="-1" role="dialog" aria-labelledby="addgroupModalLabel" aria-hidden="true">
+                chkComment && <div className="modal fade raddgroupModal" tabIndex={-1}
+                    role="dialog" id="addgroupModal" aria-labelledby="addgroupModalLabel" aria-hidden="true">
                     <div className="modal-dialog" role="document">
                         <div className="modal-content">
                             <div className="modal-header">
