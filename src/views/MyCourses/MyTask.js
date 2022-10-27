@@ -19,12 +19,12 @@ export default function MyTask() {
     const [enrollment, setEnrollments] = useState();
     const navigate = useNavigate();
     const [dataLen, setDataLen] = useState(0);
-    const location=useLocation();
-    const pathname=location.pathname;
+    const location = useLocation();
+    const pathname = location.pathname;
 
     useEffect(() => {
 
-       // console.log("location ............... ",location)
+        // console.log("location ............... ",location)
         // if (user.user_role == 5) {
         //     var responce = await UserService.assignment(user.user_id);
         //     setAssignments(responce.data.data);
@@ -42,7 +42,7 @@ export default function MyTask() {
                 user_id: user.user_id
             };
             var responce = await TaskService.search(data);
-            console.log("assignment ............ ",responce.data.data);
+            console.log("assignment ............ ", responce.data.data);
             setAssignments([...responce.data.data])
             setCount(responce.data.data.length);
 
@@ -56,9 +56,9 @@ export default function MyTask() {
 
 
     const [enroll, setEnroll] = useState(false);
-    const[xapiLink,setxapiLink]=useState('')
-    const[xapFileName,setxapFileName]=useState('')
-    const[xapCourse,setxapCourse]=useState('')
+    const [xapiLink, setxapiLink] = useState('')
+    const [xapFileName, setxapFileName] = useState('')
+    const [xapCourse, setxapCourse] = useState('')
 
 
     var getCourse = async (courseId, taskId, no_attempted, course_name) => {
@@ -103,7 +103,7 @@ export default function MyTask() {
                 var authdata = { username: user.username, email: user.email }
                 setxapiLink(temp.xapi_attachment_file);
                 setxapFileName(temp.xapi_file_name);
-                setxapCourse(course_name?course_name.toUpperCase():'');
+                setxapCourse(course_name ? course_name.toUpperCase() : '');
                 // setCookie("xapi_result_name", temp.xapi_file_name)
                 // window.open(`/singlexapi?link=${btoa(temp.xapi_attachment_file)}`, '_blank');
                 // navigate(`/singlexapi?link=${temp.xapi_attachment_file}`,{replace:true,target:'_blank'})
@@ -179,16 +179,19 @@ export default function MyTask() {
                                                                 <h5 className="course-status ml-2"> Failed</h5>}
 
 
-                                                            {assignment.user_task_status != 'passed' && assignment.user_task_status !='No Attempted' ?
-                                                            < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted, assignment.course_name)} data-toggle="modal"
-                                                            data-target="#modal-fullscreen-xl" > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link>
-                                                                 : ''}
+                                                            {assignment.user_task_status != 'passed' && assignment.user_task_status != 'No Attempted' ?
+                                                                < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted, assignment.course_name)} data-toggle="modal"
+                                                                    data-target="#modal-fullscreen-xl"
+                                                                    data-backdrop="static"
+                                                                    data-keyboard="false"
+                                                                > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link>
+                                                                : ''}
 
-                                                                 {assignment.user_task_status != 'passed' && assignment.user_task_status =='No Attempted' ?
-                                                            < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted, assignment.course_name)} > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link>
-                                                                 : ''}
+                                                            {assignment.user_task_status != 'passed' && assignment.user_task_status == 'No Attempted' ?
+                                                                < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted, assignment.course_name)} > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link>
+                                                                : ''}
 
-                                                                 {/** < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted, assignment.course_name)} > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link> */}
+                                                            {/** < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted, assignment.course_name)} > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link> */}
 
                                                             {/* <button
                                                                 className="sec-btn"

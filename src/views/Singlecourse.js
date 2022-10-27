@@ -739,7 +739,8 @@ export default function Singlecourse() {
 
                                                 {user.token ?
                                                     (user.user_role == 5 && (chkGroups && (!enrollment && (course.course_type == 'xapi' ? <button className="sec-btn" data-toggle="modal"
-                                                        data-target="#modal-fullscreen-xl" onClick={e => enrollmentid(course.xapi_attachment_file, course.course_type)}>Enroll Now</button> : <button className="sec-btn" onClick={e => enrollmentid(course.xapi_attachment_file, course.course_type)}>Enroll Now</button>))))
+                                                        data-target="#modal-fullscreen-xl" data-backdrop="static"
+                                                    data-keyboard="false"  onClick={e => enrollmentid(course.xapi_attachment_file, course.course_type)}>Enroll Now</button> : <button className="sec-btn" onClick={e => enrollmentid(course.xapi_attachment_file, course.course_type)}>Enroll Now</button>))))
                                                     : (<a data-toggle="modal" data-target="#loginform" href="#" className="sec-btn">Enroll Now</a>
 
                                                     )
