@@ -21,8 +21,8 @@ import { toast } from "react-toastify";
 import CategoryService from "../../services/CertificateService";
 
 import $ from "jquery";
-import "jquery-ui-dist/jquery-ui";
-import "jquery-validation";
+// import "jquery-ui-dist/jquery-ui";
+// import "jquery-validation";
 
 // loader
 import Loader from "../Loader";

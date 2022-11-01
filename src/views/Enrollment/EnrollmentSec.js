@@ -29,6 +29,18 @@ export default function EnrollmentSec() {
   const [input, setInput] = useState({});
   const [csv_data, setCsvData] = useState([]);
 
+  var formatDate=(date)=>{
+    var d = new Date(date);
+    var month = "" + (d.getMonth() + 1);
+    var day = "" + d.getDate();
+    var year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [day,month,year].join("/");
+  }
+
   // xapi ----------------
 
 
@@ -1569,6 +1581,8 @@ export default function EnrollmentSec() {
                                   totalPoint: item.total_number,
                                   userPoint: item.score_number,
                                   e_status: item.enrollment_status,
+
+                                  pass_date:item.updated_at == null? formatDate(item.created_at):formatDate(item.updated_at),
 
                                 }}
                               >

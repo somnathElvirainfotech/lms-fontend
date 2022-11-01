@@ -84,8 +84,9 @@ export const Login2 = () => {
 
                     setShowLoader(false);
 
-                    window.location.replace("/courses");
-                    // navigate("/courses")
+                   window.location.replace("/courses");
+                    // navigate("/courses",{ replace:true,refresh: true })
+                     
                 } else {
                     setShowLoader(false);
                     toast.error("Invalid Login Type")

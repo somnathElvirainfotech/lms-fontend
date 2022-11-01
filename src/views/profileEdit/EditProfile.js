@@ -10,6 +10,10 @@ import { toast } from "react-toastify";
 import EnrollmentService from "../../services/EnrollmentService";
 import XapiService from "../../services/XapiService";
 
+import $ from "jquery";
+import "jquery-ui-dist/jquery-ui";
+import "jquery-validation";
+
 // languages
 import English from "../ConverLanguages/English";
 import SerbianCyrilic from "../ConverLanguages/SerbianCyrilic";
@@ -336,9 +340,11 @@ export const EditProfile = () => {
     const data = new FormData();
     data.append("email", inputs.email);
     data.append("image", imageUpload);
-    // console.log(imageUpload)
+    // console.log("imageUpload ------- ",imageUpload)
 
     try {
+     if(imageUpload != null)
+     {
       setShowLoader(true);
       var response = await UserService.updateUserProfileImage(data);
       if (response.data.status != false) {
@@ -363,6 +369,7 @@ export const EditProfile = () => {
           };
 
           setInputs(data);
+          setimageUpload(null);
 
           setPass({
             email: response.data.data.email,
@@ -382,6 +389,9 @@ export const EditProfile = () => {
         toast.error(response.data.msg);
       }
       setShowLoader(false);
+     }else{
+      toast.error("Please Select Image");
+     }
     } catch (error) {
       console.log(error);
     }
@@ -418,10 +428,52 @@ export const EditProfile = () => {
     }
   }, [languageList.language_name]);
 
+
+     //  form validation
+     useEffect(() => {
+      $("#securityForm").validate({
+        errorElement: "span",
+        errorClass: "help-block",
+        highlight: function (element, errorClass, validClass) {
+          $(element).closest(".form-group").addClass("has-error");
+        },
+        unhighlight: function (element, errorClass, validClass) {
+          $(element).closest(".form-group").removeClass("has-error");
+        },
+  
+        rules: {
+          cpassword: {
+            required: true,
+          },
+          password1: {
+            required: true,
+          },
+          password2: {
+            required: true,
+          },
+           
+        },
+  
+        messages: {
+          cpassword: {
+            required: "Current Password Required",
+          },
+          password1: {
+            required: "New Password Required",
+          },
+          password2: {
+            required: "Confirm Password Required",
+          },
+          
+        },
+      });
+    }, []);
+
   return (
     <>
       {/** loader */}
       {showLoader && <Loader />}
+      
 
       <div className="inner-banner">
         <img src="/images/inner-banner.png" alt="" />
@@ -440,7 +492,7 @@ export const EditProfile = () => {
         </div>
       </div>
 
-      <div className="profile-edit-form" style={{ marginBottom: "50px" }}>
+      <div className="profile-edit-form" >
         <div className="container">
           
 
@@ -688,14 +740,16 @@ export const EditProfile = () => {
 
               {security && (
                 <div className="profile-edit-form-right  " id="security">
-                  <form method="post" onSubmit={PasswordChange}>
+                  <form id="securityForm" method="post" onSubmit={PasswordChange}>
                     <div className="form-row">
                       <div className="col-md-8">
                         <div className="form-group">
                           <label>{langObj.enter_current_password}</label>
                           <input
+                          required
                             type="password"
                             name="cpassword"
+                            id="cpassword"
                             className="form-control"
                             value={inputs.cpassword}
                             onChange={Passwordhandle}
@@ -706,7 +760,9 @@ export const EditProfile = () => {
                         <div className="form-group">
                           <label>{langObj.enter_new_password}</label>
                           <input
+                          required
                             type="password"
+                            id="password1"
                             name="password1"
                             className="form-control"
                             value={inputs.password1}
@@ -721,8 +777,10 @@ export const EditProfile = () => {
                         <div className="form-group">
                           <label>{langObj.re_enter_new_password}</label>
                           <input
+                          required
                             type="password"
                             name="password2"
+                            id="password2"
                             className="form-control"
                             value={inputs.password2}
                             onChange={Passwordhandle}
@@ -781,7 +839,7 @@ export const EditProfile = () => {
                           {image && (
                             <button
                               className="removeImage mt-2"
-                              onClick={() => setImage(null)}
+                              onClick={() => {setImage(null);setimageUpload(null)}}
                             >
                               Remove
                             </button>
@@ -801,6 +859,7 @@ export const EditProfile = () => {
                   </form>
                 </div>
               )}
+
             </div>
           </div>
         </div>

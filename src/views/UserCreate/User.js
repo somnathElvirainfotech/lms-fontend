@@ -772,7 +772,6 @@ export default function Create() {
 
       <div
         className=" enrollments-sec activites-sec "
-        style={{ marginBottom: "50px" }}
       >
         <div className="container">
           {error && (

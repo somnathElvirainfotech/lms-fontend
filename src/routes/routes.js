@@ -198,12 +198,14 @@ export default function RoutesList() {
 
           <Route path='view-result' element={<ViewResult />} />
 
-          <Route path="single-api-modal" element={<SingleXapiModal />} />
+          
 
           {/** error page handler */}
           <Route path="*" element={<Navigate to="/" replace />} />
 
         </Route>
+
+        <Route path="xapicourse" element={<RequireAuth><SingleXapiModal /></RequireAuth>} />
 
         <Route path='/print-result' element={<RequireAuth><PrintResult /></RequireAuth>}  />
 

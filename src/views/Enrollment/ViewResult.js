@@ -20,6 +20,7 @@ function ViewResult() {
     totalPoint,
     userPoint,
     e_status,
+    pass_date,
   } = location.state;
 
   const navigate = useNavigate();
@@ -171,9 +172,16 @@ function ViewResult() {
 
                       <tbody  style={{ border: "none" }}>
                         <tr>
-                          <td width={"20%"}>Name</td>
+                          <td width={"20%"} >Name</td>
                           <td  >{userName}</td>
                         </tr>
+
+                        <tr>
+                        
+                        <td width={"10%"}>Email</td>
+                        <td  >{userEmail}</td>
+                        </tr>
+                        
 
                         <tr>
                         <td width={"20%"}>Course Name</td>
@@ -188,6 +196,11 @@ function ViewResult() {
                     <tr>
                     <td width={"20%"}>Score Point</td>
                     <td  >{userPoint}</td>
+                  </tr>
+
+                  <tr>
+                  <td width={"20%"}>Date</td>
+                    <td  >{pass_date}</td>
                   </tr>
 
                   <tr>

@@ -500,7 +500,7 @@ function UserEdit() {
                             >
                               <option value=""> -- Select user type -- </option>
                               <option value="2">Supervisor</option>
-                              <option value="3">Manager</option>
+                              {/**  <option value="3">Manager</option>  */} 
                               <option value="4">Creator</option>
                               <option value="5">User</option>
                             </select>

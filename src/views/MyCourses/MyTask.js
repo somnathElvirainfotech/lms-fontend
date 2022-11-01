@@ -37,11 +37,12 @@ export default function MyTask() {
         (async () => {
 
             var data = {
-                group_id: user.user_group_id,
+                group_id: '',
                 created_by: '',
                 user_id: user.user_id
             };
             var responce = await TaskService.search(data);
+            console.log("object ------- ",data);
             console.log("assignment ............ ", responce.data.data);
             setAssignments([...responce.data.data])
             setCount(responce.data.data.length);
@@ -91,7 +92,7 @@ export default function MyTask() {
 
         if (status) {
 
-            var chk = await UserTaskService.create({ user_id: user.user_id, task_id: taskId, no_attempted: (no_attempted + 1) })
+            var chk = await UserTaskService.create({ user_id: user.user_id, task_id: taskId, no_attempted: (no_attempted + 1) });
             // console.log(chk.data)
 
             var cresponce = await UserService.singlecourse(courseId);
@@ -101,9 +102,14 @@ export default function MyTask() {
 
             if (temp.course_type == "xapi") {
                 var authdata = { username: user.username, email: user.email }
-                setxapiLink(temp.xapi_attachment_file);
-                setxapFileName(temp.xapi_file_name);
-                setxapCourse(course_name ? course_name.toUpperCase() : '');
+                // setxapiLink(temp.xapi_attachment_file);
+                // setxapFileName(temp.xapi_file_name);
+                // setxapCourse(course_name ? course_name.toUpperCase() : '');
+
+                setXapiLink(temp.xapi_attachment_file,course_name,temp.xapi_file_name)
+
+                // xapi_link={xapiLink} course_name={xapCourse} xapi_course_name={xapFileName}
+
                 // setCookie("xapi_result_name", temp.xapi_file_name)
                 // window.open(`/singlexapi?link=${btoa(temp.xapi_attachment_file)}`, '_blank');
                 // navigate(`/singlexapi?link=${temp.xapi_attachment_file}`,{replace:true,target:'_blank'})
@@ -122,6 +128,18 @@ export default function MyTask() {
         }
 
     }
+
+    var setXapiLink = (link, course_name, xapi_course_name) => {
+        // setxapiLink(link)
+        navigate("/xapicourse", {
+          state: {
+            xapi_link: link,
+            course_name: course_name,
+            xapi_course_name: xapi_course_name,
+            redirect_link:location.pathname
+          },
+        });
+      };
 
 
     return (
@@ -179,17 +197,17 @@ export default function MyTask() {
                                                                 <h5 className="course-status ml-2"> Failed</h5>}
 
 
-                                                            {assignment.user_task_status != 'passed' && assignment.user_task_status != 'No Attempted' ?
+                                                          {/**   {assignment.user_task_status != 'passed' && assignment.user_task_status != 'No Attempted' ?
                                                                 < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted, assignment.course_name)} data-toggle="modal"
                                                                     data-target="#modal-fullscreen-xl"
                                                                     data-backdrop="static"
                                                                     data-keyboard="false"
                                                                 > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link>
-                                                                : ''}
+                                                                : ''} */}
 
-                                                            {assignment.user_task_status != 'passed' && assignment.user_task_status == 'No Attempted' ?
+                                                             {assignment.user_task_status != 'passed'  ?
                                                                 < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted, assignment.course_name)} > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link>
-                                                                : ''}
+                                                                : ''}  
 
                                                             {/** < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted, assignment.course_name)} > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link> */}
 
@@ -217,7 +235,7 @@ export default function MyTask() {
 
                     </div>
 
-                    <SingleXapiModal xapi_link={xapiLink} course_name={xapCourse} xapi_course_name={xapFileName} />
+                   {/**  <SingleXapiModal xapi_link={xapiLink} course_name={xapCourse} xapi_course_name={xapFileName} /> */}
                 </div>
                 : ''
             }

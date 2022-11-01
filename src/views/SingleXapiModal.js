@@ -5,14 +5,18 @@ import XapiService from '../services/XapiService';
 import { AuthContext } from '../index';
 // loader 
 import Loader from "./Loader";
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 // import $ from 'jquery';
 // import "jquery-ui-dist/jquery-ui";
 // import 'bootstrap';
 
-function SingleXapiModal(props) {
+function SingleXapiModal() {
 
-    const { xapi_link, course_name, xapi_course_name, redirect_link } = props;
+    var location=useLocation()
+    var obj={
+        xapi_link:'', course_name:'', xapi_course_name:'',redirect_link:''
+    }
+    const { xapi_link, course_name, xapi_course_name,redirect_link } = location.state!=null?location.state:obj;
 
     // loader
     const [showLoader, setShowLoader] = useState(false);
@@ -21,7 +25,7 @@ function SingleXapiModal(props) {
 
     var navigate = useNavigate();
     var goTo = () => {
-        navigate(0)
+        navigate(redirect_link)
     }
 
 
@@ -383,6 +387,8 @@ function SingleXapiModal(props) {
             // xapi
             getXapiData(xdata);
 
+        }else{
+            goTo();
         }
 
         // ------------------------------------------------
@@ -399,6 +405,11 @@ function SingleXapiModal(props) {
 
     }
 
+    useEffect(()=>{
+        if(location.state == null)
+        navigate(-1)
+    })
+
 
    
 
@@ -408,49 +419,47 @@ function SingleXapiModal(props) {
         {showLoader && <Loader />}
 
         {/* <!-- Modal Fullscreen xl --> */}
-        <div
+     <div
             className="modal modal-fullscreen-xl"
             id="modal-fullscreen-xl"
             tabIndex={-1}
             role="dialog"
             aria-hidden="true"
+            style={{display:"block"}}
         >
             <div className="modal-dialog modal-dialog-1" role="document">
                 <div className="modal-content modal-content-1">
                     <div className="modal-header">
                         <h5 className="modal-title">{course_name}</h5>
-                        <button
-                            type="button"
-                            className="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                            onClick={formSubmit}
-                        >
-                            <span aria-hidden="true">×</span>
-                        </button>
+                        
                     </div>
                     <div className="modal-body modal-body-1">
                         <p><iframe id='xapi_iframe' src={xapi_link}
-                            width="100%"
-                            height="700rem"
+                        frameBorder={0}
+                        style={{
+                          overflow: "hidden",
+                          height: "100%",
+                          width: "100%",
+                          position: "absolute"
+                        }}
                         ></iframe></p>
                     </div>
                     <div className="modal-footer">
                         <button
-                            type="button"
-                            className="btn btn-secondary"
+                            type="submit"
+                            className="btn btn-danger"
                             data-dismiss="modal"
                             onClick={formSubmit}
                         >
                             Close
                         </button>
-                        <button type="button" onClick={formSubmit} className="btn btn-primary" data-dismiss="modal" >
-                            Submit
-                        </button>
+                        
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
+
+        
 
 
     </>
