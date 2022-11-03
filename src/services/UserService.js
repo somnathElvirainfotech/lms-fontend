@@ -9,6 +9,10 @@ class UserService {
         return axios.post(REACT_APP_API_SERVICE_URL + '/login', payload, TokenHelper.getHeader());
     }
 
+    LoginStatus(payload) {
+        return axios.post(REACT_APP_API_SERVICE_URL + '/login-status', payload, TokenHelper.getHeader());
+    }
+
 
 
     CreatorLogin(payload) {

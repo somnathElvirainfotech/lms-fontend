@@ -97,15 +97,17 @@ export default function Singlecourse() {
 
   const [trackLessions, setTrackLessions] = useState([]);
 
+  const [enroll_id,setEnroll_id]=useState(0);
+
   var handler = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     setInput((values) => ({ ...values, [name]: value }));
   };
 
-  var [taskId,setTaskId]=useState('');
-  var [noAttemp,setNoAttemp]=useState(0);
-
+  var taskId=0;
+  var noAttemp=0;
+ 
   var setTask=async(cdata)=>{
     var data = {
       group_id: '',
@@ -118,9 +120,13 @@ export default function Singlecourse() {
     {
       if(i.course_id==cdata.id)
       {
-        setTaskId(i.id)
+
+        // setTaskId(Number(i.id))
+        taskId=Number(i.id)
         var a=i.no_attempted+1;
-        setNoAttemp(a)
+        console.log(a);
+        // setNoAttemp(a)
+        noAttemp=a
       }
     }
 
@@ -189,7 +195,11 @@ export default function Singlecourse() {
       var responce = await UserService.singlecourse(singleCourseId);
       var temp = responce.data.data;
 
-      setTask(responce.data.data)
+      if(user.user_role==5)
+      {
+ 
+       await setTask(responce.data.data)
+      }
       
 
       console.log("course details", responce.data);
@@ -219,6 +229,7 @@ export default function Singlecourse() {
           );
           if (enrollRes.data.data[0].user_enroll_status == "active") {
             status = true;
+            setEnroll_id(enrollRes.data.data[0].enroll_id)
           }
         }
 
@@ -405,10 +416,13 @@ export default function Singlecourse() {
 
         //setXapiLink(file_path);
 
-        setXapiLink(file_path,course.course_name,course.xapi_file_name)
+        //setXapiLink(file_path,course.course_name,course.xapi_file_name)
 
         // setCookie("xapi_result_name", course.xapi_file_name)
-        // window.open(`/singlexapi?link=${btoa(file_path)}`, '_blank');
+
+        await taskAdd();
+
+        window.open(`/singlexapi?link=${btoa(file_path+"?USER_ID="+user.user_id+"&ENROLL_ID="+enroll_id+"&TASK_ID="+taskId+"&USER_ROLE="+user.user_role+"&USER_EMAIL="+user.email+"&USER_NAME="+user.username)}`, '_blank');
       }
     }
 
@@ -633,8 +647,7 @@ export default function Singlecourse() {
   var setXapiLink =async (link, course_name, xapi_course_name) => {
     // setxapiLink(link)
 
-    console.log("noAttemp ----",noAttemp);
-    await UserTaskService.create({ user_id: user.user_id, task_id: taskId, no_attempted: noAttemp });
+    
 
     navigate("/xapicourse", {
       state: {
@@ -646,6 +659,18 @@ export default function Singlecourse() {
     });
 
   };
+
+  var taskAdd=async()=>{
+    console.log("noAttemp ----",noAttemp);
+    if(user.user_role==5){
+
+      var responce = await UserService.singlecourse(singleCourseId);
+
+     await setTask(responce.data.data)
+     console.log("noAttemp ----",noAttemp);
+      await UserTaskService.create({ user_id: user.user_id, task_id: taskId, no_attempted: noAttemp });
+    }
+  }
 
   return (
     <React.Fragment>
@@ -695,9 +720,9 @@ export default function Singlecourse() {
               <div className="col-sm-12 mb-3">
                 {/**  <Link to="/singlexapi" className="sec-btn" state={{ vedio: course.xapi_attachment_file }} target="_blank" >dddddddddd</Link> */}
 
-                {/**    <a href={`/singlexapi?link=${btoa(course.xapi_attachment_file)}`} target="__blank" className="sec-btn" onClick={() => { setCookie("xapi_result_name", course.xapi_file_name) }}  >VIEW COURSE</a> */}
+                 <a href={`/singlexapi?link=${btoa(course.xapi_attachment_file+"?USER_ID="+user.user_id+"&ENROLL_ID="+enroll_id+"&TASK_ID="+taskId+"&USER_ROLE="+user.user_role+"&USER_EMAIL="+user.email+"&USER_NAME="+user.username)}`} target="__blank" className="sec-btn" onClick={taskAdd}  >VIEW COURSE</a>  
 
-                <button
+              {/**   <button
                   className="sec-btn"
                   data-toggle="modal"
                   data-target="#modal-fullscreen-xl"
@@ -712,7 +737,7 @@ export default function Singlecourse() {
                   }
                 >
                   VIEW COURSE
-                </button>
+                </button> */}
               </div>
             ) : (
               ""

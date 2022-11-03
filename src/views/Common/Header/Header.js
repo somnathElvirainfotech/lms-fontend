@@ -49,7 +49,10 @@ export default function Header() {
         allCookies[i] + "=;expires=" + new Date(0).toUTCString();
   }
 
-  function Logout() {
+ async function Logout() {
+
+    await UserService.LoginStatus({email:user.email,status:"inactive"})
+
     firebase
       .auth()
       .signOut()

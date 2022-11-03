@@ -91,6 +91,7 @@ class TokenHelper {
 
   Logout() {
     localStorage.clear();
+    
   window.location.replace('/')
 
   }

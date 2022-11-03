@@ -66,12 +66,12 @@ export const Login2 = () => {
 
 
 
-                    var cdata = {
-                        username: response.data.data.username,
-                        email: response.data.data.email
-                    }
+                    // var cdata = {
+                    //     username: response.data.data.username,
+                    //     email: response.data.data.email
+                    // }
 
-                    setCookie('user_info', JSON.stringify(cdata))
+                    // setCookie('user_info', JSON.stringify(cdata))
 
 
                     var temp = [];
@@ -82,7 +82,10 @@ export const Login2 = () => {
 
                     setInputs({ email: "", password: "" })
 
+                    await UserService.LoginStatus({email:response.data.data.email,status:"active"})
+                    
                     setShowLoader(false);
+
 
                    window.location.replace("/courses");
                     // navigate("/courses",{ replace:true,refresh: true })
@@ -185,12 +188,12 @@ export const Login2 = () => {
 
 
 
-                var cdata = {
-                    username: response.data.data[0].username,
-                    email: response.data.data[0].email
-                }
+                // var cdata = {
+                //     username: response.data.data[0].username,
+                //     email: response.data.data[0].email
+                // }
 
-                setCookie('user_info', JSON.stringify(cdata))
+                // setCookie('user_info', JSON.stringify(cdata))
 
 
                 var temp = [];
@@ -202,6 +205,7 @@ export const Login2 = () => {
 
                 setInputs({ email: "", password: "" })
 
+                await UserService.LoginStatus({email:response.data.data.email,status:"active"})
                 setShowLoader(false);
 
                 window.location.replace("/courses");

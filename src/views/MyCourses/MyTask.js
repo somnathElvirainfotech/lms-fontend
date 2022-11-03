@@ -98,6 +98,9 @@ export default function MyTask() {
             var cresponce = await UserService.singlecourse(courseId);
             var temp = cresponce.data.data;
 
+            console.log("asd vcvsf ================ ",temp)
+
+
 
 
             if (temp.course_type == "xapi") {
@@ -106,13 +109,20 @@ export default function MyTask() {
                 // setxapFileName(temp.xapi_file_name);
                 // setxapCourse(course_name ? course_name.toUpperCase() : '');
 
-                setXapiLink(temp.xapi_attachment_file,course_name,temp.xapi_file_name)
+                // setXapiLink(temp.xapi_attachment_file,course_name,temp.xapi_file_name)
 
                 // xapi_link={xapiLink} course_name={xapCourse} xapi_course_name={xapFileName}
 
                 // setCookie("xapi_result_name", temp.xapi_file_name)
-                // window.open(`/singlexapi?link=${btoa(temp.xapi_attachment_file)}`, '_blank');
+
+                
+                var task_id=taskId != undefined?Number(taskId):0;
+                var enroll_id=enrollRes.data.data[0].enroll_id != undefined?Number(enrollRes.data.data[0].enroll_id):0;
+
+                window.open(`/singlexapi?link=${btoa(temp.xapi_attachment_file+"?USER_ID="+user.user_id+"&ENROLL_ID="+enroll_id+"&TASK_ID="+task_id+"&USER_ROLE="+user.user_role+"&USER_EMAIL="+user.email+"&USER_NAME="+user.username)}`, '_blank');
+
                 // navigate(`/singlexapi?link=${temp.xapi_attachment_file}`,{replace:true,target:'_blank'})
+
             } else {
                 //window.location.replace(`/singlecourse?id=${courseId}`)
                 navigate(`/courses/${course_name.replaceAll(" ", "-")}`, { state: { singleCourseId: courseId, taskId: taskId, courseType: temp.course_type } })
@@ -203,13 +213,13 @@ export default function MyTask() {
                                                                     data-backdrop="static"
                                                                     data-keyboard="false"
                                                                 > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link>
-                                                                : ''} */}
+                                                                : ''} 
 
                                                              {assignment.user_task_status != 'passed'  ?
                                                                 < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted, assignment.course_name)} > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link>
-                                                                : ''}  
+                                                                : ''}   */}
 
-                                                            {/** < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted, assignment.course_name)} > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link> */}
+                                                                {assignment.user_task_status != 'passed' ?  < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted, assignment.course_name)} > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link> :''}
 
                                                             {/* <button
                                                                 className="sec-btn"
