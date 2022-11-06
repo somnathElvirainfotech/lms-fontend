@@ -222,7 +222,7 @@ function ViewResult() {
                             <h5 class="card-title">{item.question_name}</h5>
 
                             {/** choices ans */}
-                            {item.option_type == "choices" && (
+                            {item.option_type == "choice" && (
                               <>
                                 <ul class="list-group">
                                   {item.options.choices.map((ans) => (
@@ -235,17 +235,10 @@ function ViewResult() {
                                 {/** answer */}
                                 <div className="p-4">
                                   <h5>
-                                    Result: {item.user_answer_name}
-                                    {!("user_answer_name" in item) &&
-                                      stringSplit(
-                                        item.user_answer,
-                                        item.options.choices,
-                                        null,
-                                        "choices"
-                                      )}
+                                    Result: {item.user_answer}
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                     <span>
-                                      {item.answer_status == "true" ? (
+                                      {item.answer_status == "correct" ? (
                                         <i
                                           style={{ color: "green" }}
                                           class="fa fa-check fa-lg"
@@ -265,8 +258,8 @@ function ViewResult() {
                             )}
 
                             {/** matching ans */}
-                            {item.option_type == "source" ||
-                            item.option_type == "target" ? (
+                            {item.option_type == "matching_premise" ||
+                            item.option_type == "matching_response" ? (
                               <>
                                 <ul class="list-group">
                                   {item.options.source.map((ans, s) => (
@@ -291,16 +284,10 @@ function ViewResult() {
                                 {/** answer */}
                                 <div className="p-4">
                                   <h5>
-                                    Result:{" "}
-                                    {stringSplit(
-                                      item.user_answer,
-                                      item.options.source,
-                                      item.options.target,
-                                      "matching"
-                                    )}
+                                    Result: {item.user_answer}
                                     &nbsp;&nbsp;&nbsp;&nbsp;
                                     <span>
-                                      {item.answer_status == "true" ? (
+                                      {item.answer_status == "correct" ? (
                                         <i
                                           style={{ color: "green" }}
                                           class="fa fa-check fa-lg"

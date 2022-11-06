@@ -420,9 +420,17 @@ export default function Singlecourse() {
 
         // setCookie("xapi_result_name", course.xapi_file_name)
 
-        await taskAdd();
+        setShowLoader(true);
 
-        window.open(`/singlexapi?link=${btoa(file_path+"?USER_ID="+user.user_id+"&ENROLL_ID="+enroll_id+"&TASK_ID="+taskId+"&USER_ROLE="+user.user_role+"&USER_EMAIL="+user.email+"&USER_NAME="+user.username)}`, '_blank');
+        await taskAdd();
+        var enrollRes = await UserService.enrollmentcourse(
+            user.user_id,
+            singleCourseId
+          );
+          
+          setShowLoader(false);
+
+        window.open(`/singlexapi?link=${btoa(file_path+"?USER_ID="+user.user_id+"&ENROLL_ID="+enrollRes.data.data[0].enroll_id+"&TASK_ID="+taskId+"&USER_ROLE="+user.user_role+"&USER_EMAIL="+user.email+"&USER_NAME="+user.username)}`, '_blank');
       }
     }
 
