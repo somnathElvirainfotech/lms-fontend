@@ -1580,6 +1580,7 @@ export default function EnrollmentSec() {
                                   userEmail: item.user_details[0].email,
                                   totalPoint: item.total_number,
                                   userPoint: item.score_number,
+                                  passPoint:item.pass_number,
                                   e_status: item.enrollment_status,
 
                                   pass_date:item.updated_at == null? formatDate(item.created_at):formatDate(item.updated_at),

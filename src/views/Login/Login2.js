@@ -205,7 +205,7 @@ export const Login2 = () => {
 
                 setInputs({ email: "", password: "" })
 
-                await UserService.LoginStatus({email:response.data.data.email,status:"active"})
+                await UserService.LoginStatus({email:response.data.data[0].email,status:"active"})
                 setShowLoader(false);
 
                 window.location.replace("/courses");

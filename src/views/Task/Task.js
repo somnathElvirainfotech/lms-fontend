@@ -496,15 +496,16 @@ export default function Task() {
                             <table className="table table-responsive">
                                 <thead>
                                     <tr>
-                                        <th width="5%">No</th>
-                                        <th width="15.5%">Task Name</th>
-                                        <th width="15%">Start Date</th>
-                                        <th width="15%">End Date</th>
-                                        <th width="18%">Groups Name</th>
+                                        <th width="5%" >No</th>
+                                        <th width="15.5%" >Task Name</th>
+                                        <th width="15%" >Start Date</th>
+                                        <th width="15%" >End Date</th>
+                                        <th width="18%" >Groups Name</th>
                                         {user.user_role != 4 && <th width="15%">Creator Name</th>}
-                                        <th width="21%">Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </th>
-                                        <th width="5%">Edit</th>
-                                        <th width="5%">Delete</th>
+                                        <th width="21%" >Status&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </th>
+                                        <th width="5%" >Edit</th>
+                                        <th width="5%" >Delete</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -515,13 +516,14 @@ export default function Task() {
                                             <td>{new Date(item.task_start_date).toLocaleDateString()}</td>
                                             <td>{new Date(item.task_end_date).toLocaleDateString()}</td>
                                             <td>{item.group_name.toUpperCase()}</td>
-                                            {user.user_role != 4 && <td>{item.creator_name.toUpperCase()} ({item.creator_email})</td>}
+                                            {user.user_role != 4 && <td>{item.creator_name  && item.creator_name.toUpperCase()} ({item.creator_email})</td>}
 
                                             <td>
                                                 {item.task_status == 'pending' && <span className="text-center" style={{ color: "white", backgroundColor: "blue" }}>Pending</span>}
                                                 {item.task_status == 'approve' && <span className="text-center" style={{ color: "white", backgroundColor: "green" }}>Approve</span>}
                                                 {item.task_status == 'disapprove' && <span className="text-center" style={{ color: "white", backgroundColor: "red" }}>Dis-Approve</span>}
                                             </td>
+
                                             <td><Link className="btn btn-success" to={"/task/edit"} state={{ task_ID: item.id }} ><i className="fa fa-edit"></i></Link> </td>
                                             <td><button className="btn btn-danger" onClick={e => deleteData(item.id)}><i className="fa fa-trash-o"></i></button></td>
                                         </tr>

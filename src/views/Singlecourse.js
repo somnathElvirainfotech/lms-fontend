@@ -685,6 +685,8 @@ export default function Singlecourse() {
       {/** loader */}
       {showLoader && <Loader />}
 
+      {chkGroups ? <>
+        
       <div className="inner-banner">
         <img src="/images/inner-banner.png" alt="" />
         <div className="desc">
@@ -707,7 +709,7 @@ export default function Singlecourse() {
       <div className="single-course-top">
         <div className="container">
           <div className="media align-items-center">
-            <img src="images/university-logo.png" alt="" />
+            <img src="/images/university-logo.png" alt="" />
             <div className="media-body ml-3">
               <span>Professional Certificate in I Last updated 01-2022</span>
               <h5>{course.course_name && course.course_name.toUpperCase()}</h5>
@@ -1655,6 +1657,22 @@ export default function Singlecourse() {
           </div>
         </div>
       )}
+
+      </>:<>
+      
+      <div className="single-course-top">
+        <div className="container">
+          <div className="media align-items-center">
+            <div className="media-body ml-3">
+              
+              <h5> Page Not Found </h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      </>}
+
     </React.Fragment>
   );
 }

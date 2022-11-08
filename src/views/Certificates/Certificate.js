@@ -14,6 +14,8 @@ import Certificate2 from "./all_three_certificate/certificate-2/Certificate2";
 import Certificate3 from "./all_three_certificate/certificate-3/Certificate3";
 import SignatureService from "../../services/SignatureService";
 
+import NewCertificate_1 from "./all_three_certificate/newCertificate-1/NewCertificate_1";
+
 // import imageCertificate from "./all_three_certificate/ImageCertificate/certifiate";
 
 function Certificate() {
@@ -72,17 +74,23 @@ function Certificate() {
   return (
     <>
 
+   {/** <NewCertificate_1 /> */}
 
 
       {certificate_id == 1 && (
-       <Certificate1
+     
+
+      
+
+        <Certificate1
           user_name={user_name}
           email={email}
           course_name={course_name}
           date={date}
           certificate_id={certificate_id}
           signature={signature}
-        />
+      />  
+
       )}
 
       {certificate_id == 2 && (

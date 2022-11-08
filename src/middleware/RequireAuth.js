@@ -47,6 +47,7 @@ export const CheckENV = ({ children }) => {
 
 export const ActiveMaintenance = ({ children, data }) => {
 
+    console.log(data);
 
     if (data.status == "active") {
         return <Navigate to="/maintenance" state={{ data: data }} />
@@ -55,6 +56,7 @@ export const ActiveMaintenance = ({ children, data }) => {
     return children;
 
 }
+
 
 export const DisableMaintenance = ({ children, data }) => {
 

@@ -7,6 +7,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 import SignatureService from "../../../../services/SignatureService";
 
+
+
 function Certificate1(props) {
   var navigate = useNavigate();
   var previousPage = () => {
@@ -81,6 +83,7 @@ function Certificate1(props) {
           </button>
         </div>
       </div>
+      
     </>
   );
 }
