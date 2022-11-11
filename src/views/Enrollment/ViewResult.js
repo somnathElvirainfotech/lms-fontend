@@ -307,6 +307,197 @@ function ViewResult() {
                             ) : (
                               ""
                             )}
+
+                            {/* type_in ans */}
+                            {item.option_type == "type_in" && (
+                              <>
+                                {/* <ul class="list-group">
+                                  {item.options.choices.map((ans) => (
+                                    <li class="list-group-item">
+                                      {ans.option_name}
+                                    </li>
+                                  ))}
+                                </ul> */}
+
+                                {/** answer */}
+                                <div className="p-4">
+                                  <h5>
+                                    Result: {item.user_answer}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span>
+                                      {item.answer_status == "correct" ? (
+                                        <i
+                                          style={{ color: "green" }}
+                                          class="fa fa-check fa-lg"
+                                          aria-hidden="true"
+                                        ></i>
+                                      ) : (
+                                        <i
+                                          style={{ color: "red" }}
+                                          class="fa fa-times fa-lg"
+                                          aria-hidden="true"
+                                        ></i>
+                                      )}
+                                    </span>
+                                  </h5>
+                                </div>
+                              </>
+                            )}
+
+                            {/* sequence ans */}
+                            {item.option_type == "sequence" && (
+                              <>
+                                <ul class="list-group">
+                                  {item.options.sequence.map((ans) => (
+                                    <li class="list-group-item">
+                                      {ans.option_name}
+                                    </li>
+                                  ))}
+                                </ul>
+
+                                {/** answer */}
+                                <div className="p-4">
+                                  <h5>
+                                    Result: {item.user_answer}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span>
+                                      {item.answer_status == "correct" ? (
+                                        <i
+                                          style={{ color: "green" }}
+                                          class="fa fa-check fa-lg"
+                                          aria-hidden="true"
+                                        ></i>
+                                      ) : (
+                                        <i
+                                          style={{ color: "red" }}
+                                          class="fa fa-times fa-lg"
+                                          aria-hidden="true"
+                                        ></i>
+                                      )}
+                                    </span>
+                                  </h5>
+                                </div>
+                              </>
+                            )}
+
+                            {/* multiple_choice_text ans */}
+                            {item.option_type == "multiple_choice_text" && (
+                              <>
+                               <p>{item.question_name_2}</p>
+                                
+                                <ul class="list-group mt-2">
+                                  {item.options.multiple_choice_text.map((ans) => (
+                                    <li class="list-group-item">
+                                      {ans.option_name}
+                                    </li>
+                                  ))}
+                                </ul>
+
+                                {/** answer */}
+                                <div className="p-4">
+                                  <h5>
+                                    Result: {item.user_answer}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span>
+                                      {item.answer_status == "correct" ? (
+                                        <i
+                                          style={{ color: "green" }}
+                                          class="fa fa-check fa-lg"
+                                          aria-hidden="true"
+                                        ></i>
+                                      ) : (
+                                        <i
+                                          style={{ color: "red" }}
+                                          class="fa fa-times fa-lg"
+                                          aria-hidden="true"
+                                        ></i>
+                                      )}
+                                    </span>
+                                  </h5>
+                                </div>
+                              </>
+                            )}
+                            
+
+                            {/* word_bank ans */}
+                            {item.option_type == "word_bank" && (
+                              <>
+
+                              <p>{item.question_name_2}</p>
+
+                                <ul class="list-group mt-2">
+                                  {item.options.word_bank.map((ans) => (
+                                    <li class="list-group-item">
+                                      {ans.option_name}
+                                    </li>
+                                  ))}
+                                </ul>
+
+                                {/** answer */}
+                                <div className="p-4">
+                                  <h5>
+                                    Result: {item.user_answer}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span>
+                                      {item.answer_status == "correct" ? (
+                                        <i
+                                          style={{ color: "green" }}
+                                          class="fa fa-check fa-lg"
+                                          aria-hidden="true"
+                                        ></i>
+                                      ) : (
+                                        <i
+                                          style={{ color: "red" }}
+                                          class="fa fa-times fa-lg"
+                                          aria-hidden="true"
+                                        ></i>
+                                      )}
+                                    </span>
+                                  </h5>
+                                </div>
+                              </>
+                            )}
+
+
+                            {/* hotspot_dnd ans */}
+                            {item.option_type == "hotspot_dnd" && (
+                              <>
+
+                              {/* {item.option_name_2}
+
+                                <ul class="list-group mt-2">
+                                  {item.options.word_bank.map((ans) => (
+                                    <li class="list-group-item">
+                                      {ans.option_name}
+                                    </li>
+                                  ))}
+                                </ul> */}
+
+                                {/** answer */}
+                                <div className="p-4">
+                                  <h5>
+                                    Result: {item.answer_status}
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span>
+                                      {item.answer_status == "correct" ? (
+                                        <i
+                                          style={{ color: "green" }}
+                                          class="fa fa-check fa-lg"
+                                          aria-hidden="true"
+                                        ></i>
+                                      ) : (
+                                        <i
+                                          style={{ color: "red" }}
+                                          class="fa fa-times fa-lg"
+                                          aria-hidden="true"
+                                        ></i>
+                                      )}
+                                    </span>
+                                  </h5>
+                                </div>
+                              </>
+                            )}
+
                           </div>
                         </div>
                       </div>

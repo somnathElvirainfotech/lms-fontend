@@ -15,6 +15,11 @@ class CourseTrackService {
 
     getCurrentLession(payload) {
         return axios.post(REACT_APP_API_SERVICE_URL + '/regular/course/current/lesson', payload, TokenHelper.getHeader());
+    } 
+
+    lastLessonUpdate(payload)
+    {
+        return axios.post(REACT_APP_API_SERVICE_URL + '/last-lesson-update', payload, TokenHelper.getHeader());
     }
 
 }

@@ -322,6 +322,7 @@ export const Login2 = () => {
                                     <div className="form-group text-left">
                                         <label htmlFor="email">{langObj.username}</label>
                                         <input
+                                        key={"email"}
                                             autoComplete="off"
                                             id="email"
                                             type="email"
@@ -335,6 +336,7 @@ export const Login2 = () => {
                                     <div className="form-group text-left">
                                         <label htmlFor="pwd">{langObj.password}</label>
                                         <input
+                                        key={"password"}
                                             autoComplete="off"
                                             id="pwd"
                                             type="password"
@@ -384,6 +386,7 @@ export const Login2 = () => {
                             <div className="form-group text-left">
                                 <label htmlFor="email">Email</label>
                                 <input
+                                key={"email2"}
                                     autoComplete="off"
                                     id="email"
                                     type="email"

@@ -27,6 +27,7 @@ import { auth, gprovider, mprovider, firebase } from "../../Firebase";
 import LanguageService from "../../../services/LanguageService";
 import XapiService from "../../../services/XapiService";
 import EnrollmentService from "../../../services/EnrollmentService";
+import Loader from "../../Loader";
 
 function openNav() {
   document.getElementById("myNav").style.width = "100%";
@@ -37,7 +38,9 @@ function closeNav() {
 }
 
 export default function Header() {
-  const [ADMIN_URL, setADMIN_URL] = useState(process.env.REACT_APP_ADMIN_URL);
+  //const [ADMIN_URL, setADMIN_URL] = useState(process.env.REACT_APP_ADMIN_URL);
+
+  const [showLoader,setShowLoader]=useState(false);
 
   function deleteCookies() {
     var allCookies = document.cookie.split(";");
@@ -88,8 +91,10 @@ export default function Header() {
   const [selectedCategory, setSelectedCategory] = useState("");
   useEffect(() => {
     (async () => {
+      setShowLoader(true)
       var responce = await UserService.category();
       setCategorys(responce.data.data);
+      setShowLoader(false)
     })();
   }, [selectedCategory]);
 
@@ -162,10 +167,16 @@ export default function Header() {
 
   const [langData, setLangData] = useState([]);
   var GetAllLang = async () => {
+
+    setShowLoader(true)
+
     var responce = await LanguageService.getAll();
     if (responce.data.status) {
       setLangData(responce.data.data);
     }
+
+    setShowLoader(false)
+
   };
 
   var GetProfileData = async () => {
@@ -218,6 +229,10 @@ export default function Header() {
 
   return (
     <>
+
+{/** loader */}
+{showLoader && <Loader />}
+
       <header className="header">
         <div className="container-fluid">
           <div className="header-wrap">
@@ -328,15 +343,28 @@ export default function Header() {
                       {/* {user.token && user.user_role == 2 || user.token && user.user_role == 1 ? <> <li><a target="__blank" href={ADMIN_URL}>Admin</a></li> </> : ''} */}
 
                       {user.token && (
-                        <li>
+                        <li key={"list1"} >
                           <Link onClick={clerSearchText} to="/about-us">
                             About
                           </Link>
                         </li>
                       )}
 
+                      {user.token && user.user_role ==5 ? (
+                        <>
+                          {" "}
+                          <li key={"list2"}>
+                            <Link onClick={clerSearchText} to="/courses">
+                              {langObj.courses}
+                            </Link>
+                          </li>{" "}
+                        </>
+                      ) : (
+                        ""
+                      )}
+
                       {user.token && user.user_role == 5 ? (
-                        <li>
+                        <li key={"list3"} >
                           <NavLink onClick={clerSearchText} to={"my-courses"}>
                             {langObj.my_courses}
                           </NavLink>
@@ -344,10 +372,10 @@ export default function Header() {
                       ) : (
                         ""
                       )}
-                      {user.token ? (
+                      {user.token && user.user_role !=5 ? (
                         <>
                           {" "}
-                          <li>
+                          <li key={"list4"} >
                             <Link onClick={clerSearchText} to="/profile">
                               {langObj.profile}
                             </Link>
@@ -357,9 +385,11 @@ export default function Header() {
                         ""
                       )}
 
+                      
+
                       {/**  <li><a href="#" data-toggle="modal" data-target="#creatorloginform" >Creator</a></li> */}
                       {user.user_role == 2 || user.user_role == 1 ? (
-                        <li>
+                        <li key={"list5"} >
                           <Link onClick={clerSearchText} to="/activites">
                             Activities
                           </Link>
@@ -367,8 +397,8 @@ export default function Header() {
                       ) : (
                         ""
                       )}
-                      {user.token ? (
-                        <li>
+                      {user.token && user.user_role !=5 ? (
+                        <li key={"list6"} >
                           <NavLink onClick={clerSearchText} to={"enrollments"}>
                             Enrollments
                           </NavLink>
@@ -378,7 +408,7 @@ export default function Header() {
                       )}
                       {(user.token && user.user_role == 2) ||
                         (user.token && user.user_role == 1) ? (
-                        <li>
+                        <li key={"list7"} >
                           <Link onClick={clerSearchText} to="/user">
                             User List
                           </Link>
@@ -391,7 +421,7 @@ export default function Header() {
                         (user.token && user.user_role == 1) ? (
                         <>
                           {" "}
-                          <li>
+                          <li key={"list8"} >
                             <Link onClick={clerSearchText} to="/group">
                               Group
                             </Link>
@@ -404,7 +434,7 @@ export default function Header() {
                       {user.user_role == 4 ||
                         user.user_role == 2 ||
                         user.user_role == 1 ? (
-                        <li>
+                        <li key={"list9"} >
                           <Link onClick={clerSearchText} to="/course">
                             {" "}
                             {langObj.courses}{" "}
@@ -417,7 +447,7 @@ export default function Header() {
                         (user.token && user.user_role == 1) ? (
                         <>
                           {" "}
-                          <li>
+                          <li key={"list10"} >
                             <Link onClick={clerSearchText} to="/category">
                               Category
                             </Link>
@@ -444,7 +474,7 @@ export default function Header() {
                         (user.token && user.user_role == 1) ? (
                         <>
                           {" "}
-                          <li>
+                          <li key={"list11"} >
                             <Link onClick={clerSearchText} to="/qualification">
                               Qualification
                             </Link>
@@ -458,7 +488,7 @@ export default function Header() {
                         (user.token && user.user_role == 4) ? (
                         <>
                           {" "}
-                          <li>
+                          <li key={"list12"} >
                             <Link onClick={clerSearchText} to="/task">
                               Task
                             </Link>
@@ -472,7 +502,7 @@ export default function Header() {
                   <div className="hd-loging-sign">
                     {!user.token && (
                       <ul>
-                        <li>
+                        <li key={"list13"} >
                           <a
                             data-toggle="modal"
                             data-target="#loginform"
@@ -486,7 +516,7 @@ export default function Header() {
                     )}
                     {user.token && (
                       <ul>
-                        <li>
+                        <li key={"list14"} >
                           <Link to="#" onClick={Logout}>
                             {langObj.logout}
                           </Link>

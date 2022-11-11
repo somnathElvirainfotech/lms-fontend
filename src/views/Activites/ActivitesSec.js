@@ -377,9 +377,9 @@ export default function ActivitesSec() {
                                         <td>{item.total_chapter}</td>
                                         <td>{item.total_lesson}</td>
                                         <td>{item.total_enroll}</td>
-                                        <td><img src="images/comment.png" alt="" /> <span>{item.total_comment}</span></td>
-                                        <td><img src="images/question.png" alt="" /> <span>120 Questions?</span></td>
-                                        <td><img src="images/download.png" alt="" /> <span>10 certificate download</span></td>
+                                        <td><img src="/images/comment.png" alt="" /> <span>{item.total_comment}</span></td>
+                                        <td><img src="/images/question.png" alt="" /> <span>120 Questions?</span></td>
+                                        <td><img src="/images/download.png" alt="" /> <span>10 certificate download</span></td>
                                         <td>{item.creator_name.toUpperCase()} ({item.creator_email})</td>
 
                                     </tr>

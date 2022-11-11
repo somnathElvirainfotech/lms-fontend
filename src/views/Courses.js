@@ -27,6 +27,8 @@ import Loader from "./Loader";
 import EnrollmentService from "../services/EnrollmentService";
 import XapiService from "../services/XapiService";
 
+import ProgressBar from "@ramonak/react-progress-bar";
+
 
 function useQuery() {
     return new URLSearchParams(useLocation().search);
@@ -306,7 +308,7 @@ export default function Course() {
                                                 if ("success" in singleRes.result) {
                                                     // console.log("item  ", singleRes.result.success);
 
-                                                    if (singleRes.result.success==false) {
+                                                    if (singleRes.result.success == false) {
                                                         item.passed = false;
                                                         item.failed = true;
                                                         item.total_number = singleRes.result.score.max;
@@ -418,6 +420,7 @@ export default function Course() {
         data.slice(offset, offset + PER_PAGE).map((item) => {
             temp.push(item);
         })
+        console.log("course all ====== ", temp)
         setCurrentPageData(temp)
         setShowLoader(false)
 
@@ -504,6 +507,7 @@ export default function Course() {
                 course_level: input.course_level != undefined ? input.course_level : '',
                 lang_id: input.language != undefined ? input.language : '',
                 search_text: search_text,
+                user_id: user.user_id
             }
 
             var responce = await CourseService.courseSearch(data);
@@ -536,7 +540,8 @@ export default function Course() {
                 group_id: '',
                 course_level: '',
                 lang_id: '',
-                search_text: search_text
+                search_text: search_text,
+                user_id: user.user_id
             }
 
             var responce = await CourseService.courseSearch(data);
@@ -621,6 +626,7 @@ export default function Course() {
             course_level: input.course_level != undefined ? input.course_level : '',
             lang_id: input.language != undefined ? input.language : '',
             search_text: search_text,
+            user_id: user.user_id
         }
 
         console.log(data);
@@ -775,12 +781,329 @@ export default function Course() {
                                                 <div className="clg-box">
                                                     <img src={course.avatar_image} alt="" width="174px" height="72px" />
                                                 </div>
+                                                <p className="courseText">{course.creator_name}</p>
                                                 <h3>{course.course_name}</h3>
                                                 <p className="courseText"><Markup content={course.short_description} /></p>
 
 
-                                                <span className="viwers">{course.total_enroll_no} Viewers</span>
+                                                <p className="courseText mt-1" style={{ fontSize: "13px" }}>Last Updated Date: {course.updated_at != null ? new Date(course.updated_at).toLocaleDateString() : new Date(course.created_at).toLocaleDateString()}</p>
+
+                                                {course.rating_details &&
+                                                    course.rating_details.map((item) => (
+                                                        <div className="">
+                                                            <ul className="rating">
+
+                                                                {item.rating_number == 1 && (
+                                                                    <>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star-o"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star-o"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star-o"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star-o"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                    </>
+                                                                )}
+
+                                                                {item.rating_number == 2 && (
+                                                                    <>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star-o"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star-o"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star-o"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                    </>
+                                                                )}
+
+                                                                {item.rating_number == 3 && (
+                                                                    <>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star-o"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star-o"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                    </>
+                                                                )}
+
+                                                                {item.rating_number == 4 && (
+                                                                    <>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star-o"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+
+                                                                    </>
+                                                                )}
+
+                                                                {item.rating_number == 5 && (
+                                                                    <>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                    </>
+                                                                )}
+
+                                                                {item.rating_number == 0 && (
+                                                                    <>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star-o"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star-o"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star-o"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star-o"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                                <i
+                                                                                    className="fa fa-star-o"
+                                                                                    aria-hidden="true"
+                                                                                ></i>
+                                                                            </a>{" "}
+                                                                        </li>
+                                                                    </>
+                                                                )}
+
+                                                                <span style={{ fontSize: "15px", color: "#707070" }} className="ml-2" >{item.rating_number} ({item.total_rating})</span>
+
+                                                            </ul>
+
+
+
+                                                        </div>
+                                                    ))}
+
+                                                <p className="courseText mt-1" style={{ fontSize: "13px" }}>Language: {course.language_details.length > 0 && course.language_details[0].name}</p>
+
+                                                {course.certificate_id != 0 && <span className="viwers" style={{
+                                                    display: "-webkit-box",
+                                                    marginLeft: "70%"
+                                                }} > <img src="/images/download.png" alt="" /> </span>}
+
+                                                {/* <span className="viwers">{course.total_enroll_no} Viewers</span> */}
+
                                             </div>
+
+                                            {course.enrollment_details.length > 0 && user.user_role == 5 &&
+                                                <>
+                                                    {course.enrollment_details[0].course_progress != 0 &&
+                                                        <ProgressBar completed={course.enrollment_details[0].course_progress} bgColor={course.enrollment_details[0].course_progress == 100 ? "green" : "#023e86"} borderRadius={"0px"} height={"18px"} />
+                                                    }
+                                                </>
+
+                                            }
+
+
+
                                         </div>
                                     </Link>
                                 </div>

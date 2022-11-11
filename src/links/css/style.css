@@ -2843,7 +2843,17 @@ input:checked+.slider:before {
     cursor: pointer;
 }
 
-.active_lesson:focus {
+/* .active_lesson:focus {
+    background-color: #ed4034;
+    color: white;
+} */
+
+/* .active_lesson:active {
+    background-color: #ed4034;
+    color: white;
+} */
+
+.active_lesson_selected {
     background-color: #ed4034;
     color: white;
 }
@@ -3015,4 +3025,8 @@ input:checked+.slider:before {
   }
   
   
-  
+
+  /* progress bar */
+  .barCompleted {
+    background-color: blue;
+  }
