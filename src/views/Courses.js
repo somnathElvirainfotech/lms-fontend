@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import UserService from '../services/UserService';
 import { useLocation } from "react-router-dom";
 import { Markup } from 'interweave';
-
+import moment from "moment";
 import CourseService from "../services/CourseService";
 import { setCookie, getCookie, removeCookie } from '../middleware/CookieSetup';
 
@@ -792,12 +792,12 @@ export default function Course() {
                                                 <div className="clg-box">
                                                     <img src={course.avatar_image} alt="" width="174px" height="72px" />
                                                 </div>
-                                             {/**   <p className="courseText">{course.creator_name}</p>  */} 
-                                                <h3 style={{height:"40px"}} className="mt-2" >{course.course_name}</h3>
-                                             {/**   <p style={{height:"40px"}}  className="courseText"><Markup content={`${course.short_description && textShort(course.short_description)}`} /></p> */}
+                                               <p className="courseText mt-2">{course.creator_name}</p>   
+                                                <h3 style={{height:"40px"}} className="" >{course.course_name}</h3>
+                                            <p style={{height:"40px"}}  className="courseText"><Markup content={`${course.short_description && textShort(course.short_description)}`} /></p>  
 
 
-                                                <p className="courseText mt-1" style={{ fontSize: "13px" }}> {course.updated_at != null ? new Date(course.updated_at).toLocaleDateString() : new Date(course.created_at).toLocaleDateString()}</p>
+                                                <p className="courseText mt-1" style={{ fontSize: "13px" }}> {course.updated_at != null ? moment(course.updated_at).format("DD-MM-YYYY") :  moment(course.created_at).format("DD-MM-YYYY")}</p>
 
                                                 {course.rating_details &&
                                                     course.rating_details.map((item) => (
@@ -809,7 +809,7 @@ export default function Course() {
 
                                                                     <span style={{ fontSize: "15px", color: "#707070",position: "absolute",
                                                                     right: "10%",
-                                                                    bottom: "31%" }} className="ml-2" >{item.rating_number} ({item.total_rating})</span>
+                                                                    bottom: "24%" }} className="ml-2" >{item.rating_number} ({item.total_rating})</span>
 
                                                                  </li>
                                                                
@@ -821,7 +821,7 @@ export default function Course() {
                                                         </div>
                                                     ))}
 
-                                                <p className="courseText mt-1" style={{ fontSize: "13px" }}>Language: {course.language_details.length > 0 && course.language_details[0].name}</p>
+                                                <p className="courseText mt-1" style={{ fontSize: "13px" }}>{course.language_details.length > 0 && course.language_details[0].name}</p>
 
                                                 {course.certificate_id != 0 && <span className="viwers" style={{
                                                     display: "-webkit-box",

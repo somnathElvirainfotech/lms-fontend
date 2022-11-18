@@ -843,7 +843,7 @@ export default function Singlecourse() {
 
       {chkGroups ? (
         <>
-          <div className="inner-banner">
+        {/**   <div className="inner-banner">
             <img src="/images/inner-banner.png" alt="" />
             <div className="desc">
               <div className="container">
@@ -860,9 +860,9 @@ export default function Singlecourse() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
-          <div className="single-course-top">
+     {/**   <div className="single-course-top">
             <div className="container">
               <div className="media align-items-center">
                 <img src="/images/university-logo.png" alt="" />
@@ -876,7 +876,7 @@ export default function Singlecourse() {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */} 
 
           <div className="single-course-bottom sec-bg">
             <div className="container">
@@ -1691,12 +1691,11 @@ export default function Singlecourse() {
 
                     <div className="course-details">
                       <p>
-                        <b>Author Name </b>: {course.author_name && course.author_name}
+                        <b> </b> {course.author_name && course.author_name}
                       </p>
                       <p>
-                        <b> Email Address </b> : {course.author_email && course.author_email}
-                      </p>
-
+                        <b> </b> {course.author_email && course.author_email}
+                      </p> 
                       <div className="review-area">
                         <ul className="review-stat rating ">
  

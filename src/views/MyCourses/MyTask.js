@@ -285,14 +285,14 @@ export default function MyTask() {
                                     ).toLocaleDateString()}
                                   </p>
 
-                                  <div width="30px">
+                                 {/**  <div width="30px">
                                     <b> DESCRIPTION : </b>
                                     <p>
                                       <Markup
                                         content={assignment.task_describtion}
                                       />{" "}
                                     </p>
-                                  </div>
+                                  </div> */}
 
                                   {assignment.no_attempted == 0 && (
                                     <h5 className="course-status">
