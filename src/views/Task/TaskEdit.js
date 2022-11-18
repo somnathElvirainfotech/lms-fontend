@@ -147,7 +147,7 @@ function TaskEdit() {
 
                 courseEditForm(task_ID)
 
-                getAllCourse();
+                // getAllCourse();
 
                 if (user.user_role == 4) {
                     listAssignment()
@@ -180,13 +180,28 @@ function TaskEdit() {
 
 
     // get course
-    var getAllCourse = async () => {
+    var getAllCourse = async (c_id) => {
         var courseRes = await CourseService.getAll();
 
         setCourse([...courseRes.data.data])
+
+        if ( courseRes.data.data.length > 0 && c_id != '') {
+            for (var i of courseRes.data.data) {
+                if (i.id == c_id) {
+                  setSelectCourse({
+                    image: i.image,
+                  });
+                }
+              }
+          }
     }
 
 
+
+
+    const [selectCourse, setSelectCourse] = useState({
+        image: "",
+      }); 
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -194,6 +209,23 @@ function TaskEdit() {
         setInputs(values => ({ ...values, [name]: value }))
         // seterror('');
         console.log(inputs)
+
+        if (name === "course_id" && course.length > 0 && value != '') {
+            for (var i of course) {
+              if (i.id == value) {
+                setSelectCourse({
+                  image: i.image,
+                });
+              }
+            }
+          }
+          else if(value == '' && name === "course_id")
+          {
+            setSelectCourse({
+              image: "",
+            });
+          }
+
     }
 
 
@@ -239,7 +271,7 @@ function TaskEdit() {
 
     const courseEditForm = async (id) => {
         var response = await TaskService.getOne(id);
-        // console.log(response.data.data[0].course_languages_id)
+        console.log(response.data.data)
 
         if (response.data.status) {
 
@@ -254,6 +286,11 @@ function TaskEdit() {
             inputs.task_status = item.task_status;
             inputs.task_name = item.task_name;
             setText(item.task_describtion);
+
+            await  getAllCourse(item.course_id)
+
+            
+              
 
             // // var aa = [1, 2];
             // setSelected([{value:2,label:""},]);
@@ -315,7 +352,22 @@ function TaskEdit() {
 
 
                         <div className="container">
-                            <span><button type="button" className="sec-btn" onClick={previousPage}>Back</button></span>
+                           
+                        <span className="row">
+                 <div className="col-sm-4">
+                 <button
+                 type="button"
+                 className="sec-btn"
+                 onClick={previousPage}
+               >
+                 Back
+               </button>
+                 </div>
+
+                 <div className="col-sm-4"></div>
+                 <div className="col-sm-4"></div>
+                 
+                </span>
 
                             <div className="row" >
                                 <div className="col-sm-12 bg-white m-4 p-3">
@@ -336,7 +388,7 @@ function TaskEdit() {
 
 
                                             <div className="col-md-6">
-                                                <div className="form-group">
+                                                <div className="form-group multi-group">
                                                     <label>GROUP
                                                     </label>
                                                     <MultiSelect
@@ -388,6 +440,17 @@ function TaskEdit() {
                                                 </div>
                                             </div>
 
+                                            {selectCourse.image &&   <div className="col-md-6">
+                                            <div className="form-group">
+                                              <img
+                                                src={selectCourse.image}
+                                                alt=""
+                                                height="85px"
+                                                width="40%"
+                                              />
+                                            </div>
+                                          </div> }
+
                                         </div>
 
                                         {user.user_role != 4 && <div className="form-row">
@@ -418,11 +481,13 @@ function TaskEdit() {
 
 
                                         <div className="form-row">
-                                            <div className="col-md-12 text-center">
+                                        <div className="col-md-4"></div>
+                                            <div className="col-md-4 text-center">
                                                 <div className="form-group">
                                                     <button type="submit" className="btn btn-success">UPDATE</button>
                                                 </div>
                                             </div>
+                                            <div className="col-md-4"></div>
                                         </div>
                                     </form>
 

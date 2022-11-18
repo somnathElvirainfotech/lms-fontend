@@ -111,7 +111,7 @@ export default function Create() {
   ];
 
   // react pagination  //////////////////////////
-  const PER_PAGE = 10;
+  const PER_PAGE = 50;
   const [currentPageData, setCurrentPageData] = useState([]);
   const pageCount = Math.ceil(course.length / PER_PAGE);
 
@@ -771,39 +771,13 @@ export default function Create() {
       {/** cvs or add new  */}
 
       <div
-        className=" enrollments-sec activites-sec "
+        className="enrollments-sec activites-sec "
       >
-        <div className="container">
-          {error && (
-            <div className="alert alert-danger alert-dismissible">
-              <button
-                type="button"
-                className="close"
-                onClick={setMsg}
-                data-dismiss="alert"
-              >
-                &times;
-              </button>
-              {error}
-            </div>
-          )}
-
-          {success && (
-            <div className="alert alert-success alert-dismissible">
-              <button
-                type="button"
-                className="close"
-                onClick={setMsg}
-                data-dismiss="alert"
-              >
-                &times;
-              </button>
-              {success}
-            </div>
-          )}
+        <div className="container-fluid ">
+          
 
           <div className="row">
-            <div className="col-md-12 col-sm-6 pr-md-0">
+            <div className="col-md-12 col-sm-6  ">
               {/** Course List */}
               {courseList && (
                 <>
@@ -912,18 +886,18 @@ export default function Create() {
                     </div>
                   </div>
 
-                  <div className=" enrollments-sec-table activites-table ">
+                  <div className=" enrollments-sec-table activites-table  tableFont">
                     <table className="table table-responsive">
                       <thead>
                         <tr>
                           <th width="10.5%">No</th>
                           <th width="20.5%">HR NO</th>
-                          <th width="12.5%">LOGIN COUNT</th>
-                          <th width="12.5%">LOGIN TYPE</th>
+                          <th width="12.5%">Login Count</th>
+                          <th width="12.5%">Login Type</th>
                           <th width="21%">Email</th>
                           <th width="22.5%">Last Sign IN Date</th>
                           <th width="21%">Created Date</th>
-                          <th width="21%">Updated Date</th>
+                       {/**   <th width="21%">Updated Date</th> */}
                           <th width="26%">User Name</th>
                           <th width="21%">User Type</th>
                           <th width="21%">Course Count</th>
@@ -937,35 +911,36 @@ export default function Create() {
                       <tbody>
                         {currentPageData.map((item, i) => (
                           <tr>
-                            <td>{i + 1}</td>
-                            <td>{item.user_hr_no}</td>
-                            <td>{item.login_count}</td>
-                            <td>{item.login_type.toUpperCase()}</td>
-                            <td>{item.email}</td>
-                            <td>
+                            <td style={{fontSize:"13px"}} >{i + 1}</td>
+                            <td style={{fontSize:"13px"}} >{item.user_hr_no}</td>
+                            <td style={{fontSize:"13px"}} >{item.login_count}</td>
+                            <td style={{fontSize:"13px"}}>{item.login_type.toUpperCase()}</td>
+                            <td style={{fontSize:"13px"}} >{item.email}</td>
+                            <td style={{fontSize:"13px"}} >
                               {item.last_sign_date
                                 ? new Date(
                                     item.last_sign_date
                                   ).toLocaleDateString()
                                 : ""}
                             </td>
-                            <td>
+                            <td style={{fontSize:"13px"}} >
                               {new Date(item.created_at).toLocaleDateString()}
                             </td>
-                            <td>
+                           {/**    <td style={{fontSize:"13px"}} >
                               {item.updated_at
                                 ? new Date(item.updated_at).toLocaleDateString()
                                 : ""}
-                            </td>
-                            <td>{item.fullname.toUpperCase()}</td>
-                            <td>{item.user_type.toUpperCase()}</td>
-                            <td>{item.course_count ? item.course_count : 0}</td>
-                            <td>
+                            </td> */}
+                            <td style={{fontSize:"13px"}} >{item.fullname.toUpperCase()}</td>
+                            <td style={{fontSize:"13px"}} >{item.user_type.toUpperCase()}</td>
+                            <td  style={{fontSize:"13px"}} >{item.course_count ? item.course_count : 0}</td>
+                            <td  style={{fontSize:"13px"}} >
                               {item.is_active == 1 ? (
                                 <button
                                   onClick={(e) =>
                                     statusUpdate(item.email, item.is_active)
                                   }
+                                  style={{fontSize:"13px"}}
                                   className="btn btn-success"
                                 >
                                   Approve
@@ -981,9 +956,10 @@ export default function Create() {
                                 </button>
                               )}
                             </td>
-                            <td>
+                            <td  style={{fontSize:"13px"}} >
                               <Link
                                 className="btn btn-success"
+                                style={{fontSize:"13px"}}
                                 to={"/user/edit"}
                                 state={{ user_ID: item.id }}
                               >
@@ -994,6 +970,7 @@ export default function Create() {
                             <td>
                               <button
                                 type="button"
+                                style={{fontSize:"13px"}}
                                 onClick={(e) => setEmail(item.email)}
                                 class="btn btn-info btn-lg"
                                 data-toggle="modal"
@@ -1006,6 +983,7 @@ export default function Create() {
                             <td>
                               <button
                                 type="button"
+                                style={{fontSize:"13px"}}
                                 onClick={(e) => generatePass(item.email)}
                                 class="btn btn-info btn-lg"
                               >
@@ -1020,7 +998,7 @@ export default function Create() {
 
                   {/** pagination */}
                   <div className="pagination-sec">
-                    {course.length > 10 && (
+                    {course.length > 50 && (
                       <ReactPaginate
                         previousLabel={"← Previous"}
                         nextLabel={"Next →"}

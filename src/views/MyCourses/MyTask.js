@@ -17,6 +17,13 @@ import SingleXapiModal from "../SingleXapiModal";
 // loader
 import Loader from "../Loader";
 
+// languages
+import English from "../ConverLanguages/English";
+import SerbianCyrilic from "../ConverLanguages/SerbianCyrilic";
+import SerbianLatin from "../ConverLanguages/SerbianLatin";
+// end languages
+import { LangContext } from "../../routes/routes";
+
 export default function MyTask() {
   const [assignments, setAssignments] = useState([]);
   const [count, setCount] = useState(0);
@@ -48,15 +55,16 @@ export default function MyTask() {
       console.log("object ------- ", data);
       console.log("assignment ............ ", responce.data.data);
       // setAssignments([...responce.data.data]);
-      chkAllGroups(responce.data.data)
+      chkAllGroups(responce.data.data);
       setCount(responce.data.data.length);
 
-      var chk = 0;
-      for (var i of responce.data.data) {
-        if (i.user_task_status != "passed") chk += 1;
-      }
-      console.log(chk);
-      setCass(chk);
+      // var chk = 0;
+      // for (var i of responce.data.data) {
+      //   if (i.user_task_status != "passed") chk += 1;
+      // }
+      // console.log(chk);
+      // setCass(chk);
+      // alert(chk)
     })();
   }, []);
 
@@ -176,8 +184,8 @@ export default function MyTask() {
     });
   };
 
-   // loader
-   const [showLoader, setShowLoader] = useState(false);
+  // loader
+  const [showLoader, setShowLoader] = useState(false);
 
   const [chkGroups, setChkGroup] = useState(false);
 
@@ -188,9 +196,13 @@ export default function MyTask() {
     setShowLoader(true);
     console.log("user group", userGroup);
 
-    var data=[];
+    var data = [];
 
-    for(var p of taskData){
+    for (var p of taskData) {
+
+      if (p.user_task_status != "passed")
+      {
+
       for (var item of p.group_details) {
         if (userGroup.includes(item.group_id)) {
           // console.log(userGroup.includes(item.group_id));
@@ -201,103 +213,116 @@ export default function MyTask() {
       }
     }
 
+    }
+
     setAssignments([...data]);
 
     setShowLoader(false);
-    console.log("new task data ",data);
+    console.log("new task data ", data);
   };
+
+
+  const { languageList } = useContext(LangContext);
+  const [langObj, setLangObj] = useState({});
+
+  useEffect(() => {
+    if (languageList.language_name === "1") {
+      setLangObj(English);
+    } else if (languageList.language_name === "2") {
+      setLangObj(SerbianCyrilic);
+    } else if (languageList.language_name === "3") {
+      setLangObj(SerbianLatin);
+    }
+  }, [languageList.language_name]);
+
 
   return (
     <>
-     {/** loader */}
-     {showLoader && <Loader />}
+      {/** loader */}
+      {showLoader && <Loader />}
 
-      {cAss > 0 ? (
-        <div>
-          <div className="my-assignment">
-            <div className="container">
-              <div className="inner-sec-head">
-                <h2>My Tasks </h2>
-              </div>
+      <div>
+        <div className="my-assignment">
+          <div className="container">
+            <div className="inner-sec-head">
+              <h2>{langObj.my_task} </h2>
+            </div>
 
-              <div id="task-list-slider" className="owl-carousel1">
-                <div className="assignment-item">
-                  {assignments.map((assignment, i) => (
-                    <>
-                      {assignment.user_task_status != "passed" && ( Date.parse(new Date().toISOString().slice(0,10))<=Date.parse(assignment.task_end_date))  ? (
-                        <div className="my-course-details">
-                          <div className="row align-items-center">
-                            <div className="col-md-4">
-                              <div className="my-course-img">
-                                {/**     <img src={assignment.image} className="img-fluid" alt="" /> */}
-                              </div>
-                            </div>
-                            <div className="col-md-8">
-                              <div className="my-course-content">
-                                <h4>{assignment.task_name.toUpperCase()} </h4>
-                                <p>
-                                  {" "}
-                                  <b>CREATOR NAME :</b>{" "}
-                                  {assignment.creator_name &&
-                                    assignment.creator_name}{" "}
-                                  ({assignment.creator_email})
-                                </p>
-                                <p>
-                                  {" "}
-                                  <b>COURSE NAME :</b>{" "}
-                                  {assignment.course_name &&
-                                    assignment.course_name.toUpperCase()}{" "}
-                                </p>
-                                <p>
-                                  {" "}
-                                  <b>START DATE :</b>{" "}
-                                  {new Date(
-                                    assignment.task_start_date
-                                  ).toLocaleDateString()}{" "}
-                                  &nbsp; &nbsp; &nbsp; <b>END DATE :</b>{" "}
-                                  {new Date(
-                                    assignment.task_end_date
-                                  ).toLocaleDateString()}
-                                </p>
-
-                                <div width="30px">
-                                  <b> DESCRIPTION : </b>
-                                  <p>
-                                    <Markup
-                                      content={assignment.task_describtion}
-                                    />{" "}
-                                  </p>
+            <div id="task-list-slider" className="owl-carousel1">
+              <div className="assignment-item">
+                 
+                    {assignments.map((assignment, i) => (
+                      <>
+                        {assignment.user_task_status != "passed" &&
+                        Date.parse(new Date().toISOString().slice(0, 10)) <=
+                          Date.parse(assignment.task_end_date) ? (
+                          <div className="my-course-details">
+                            <div className="row align-items-center">
+                              <div className="col-md-4">
+                                <div className="my-course-img">
+                                      <img src={assignment.course_image && assignment.course_image} className="img-fluid" alt="" /> 
                                 </div>
-
-                                {assignment.no_attempted == 0 && (
-                                  <h5 className="course-status">
+                              </div>
+                              <div className="col-md-8">
+                                <div className="my-course-content">
+                                  <h4>{assignment.task_name.toUpperCase()} </h4>
+                                  
+                                  <p>
                                     {" "}
-                                    {assignment.user_task_status}
-                                  </h5>
-                                )}
-
-                                {assignment.no_attempted != 0 && (
-                                  <h5 className="course-status">
+                                    <b>COURSE NAME :</b>{" "}
+                                    {assignment.course_name &&
+                                      assignment.course_name.toUpperCase()}{" "}
+                                  </p>
+                                  <p>
                                     {" "}
-                                    Attempted {assignment.no_attempted}
-                                  </h5>
-                                )}
+                                    <b>START DATE :</b>{" "}
+                                    {new Date(
+                                      assignment.task_start_date
+                                    ).toLocaleDateString()}{" "}
+                                    &nbsp; &nbsp; &nbsp; <b>END DATE :</b>{" "}
+                                    {new Date(
+                                      assignment.task_end_date
+                                    ).toLocaleDateString()}
+                                  </p>
 
-                                {assignment.user_task_status == "passed" && (
-                                  <h5 className="course-status ml-2">
-                                    {" "}
-                                    Passed
-                                  </h5>
-                                )}
+                                  <div width="30px">
+                                    <b> DESCRIPTION : </b>
+                                    <p>
+                                      <Markup
+                                        content={assignment.task_describtion}
+                                      />{" "}
+                                    </p>
+                                  </div>
 
-                                {assignment.user_task_status == "failed" && (
-                                  <h5 className="course-status ml-2">
-                                    {" "}
-                                    Failed
-                                  </h5>
-                                )}
+                                  {assignment.no_attempted == 0 && (
+                                    <h5 className="course-status">
+                                      {" "}
+                                      {assignment.user_task_status}
+                                    </h5>
+                                  )}
 
-                                {/**   {assignment.user_task_status != 'passed' && assignment.user_task_status != 'No Attempted' ?
+                                  {assignment.no_attempted != 0 && (
+                                    <h5 className="course-status">
+                                      {" "}
+                                      Attempted {assignment.no_attempted}
+                                    </h5>
+                                  )}
+
+                                  {assignment.user_task_status == "passed" && (
+                                    <h5 className="course-status ml-2">
+                                      {" "}
+                                      Passed
+                                    </h5>
+                                  )}
+
+                                  {assignment.user_task_status == "failed" && (
+                                    <h5 className="course-status ml-2">
+                                      {" "}
+                                      Failed
+                                    </h5>
+                                  )}
+
+                                  {/**   {assignment.user_task_status != 'passed' && assignment.user_task_status != 'No Attempted' ?
                                                                 < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted, assignment.course_name)} data-toggle="modal"
                                                                     data-target="#modal-fullscreen-xl"
                                                                     data-backdrop="static"
@@ -309,30 +334,30 @@ export default function MyTask() {
                                                                 < Link to="" onClick={e => getCourse(assignment.course_id, assignment.id, assignment.no_attempted, assignment.course_name)} > Continue <i className="fa fa-arrow-right" aria-hidden="true"></i></Link>
                                                                 : ''}   */}
 
-                                {assignment.user_task_status != "passed" ? (
-                                  <Link
-                                    to=""
-                                    onClick={(e) =>
-                                      getCourse(
-                                        assignment.course_id,
-                                        assignment.id,
-                                        assignment.no_attempted,
-                                        assignment.course_name
-                                      )
-                                    }
-                                  >
-                                    {" "}
-                                    Continue{" "}
-                                    <i
-                                      className="fa fa-arrow-right"
-                                      aria-hidden="true"
-                                    ></i>
-                                  </Link>
-                                ) : (
-                                  ""
-                                )}
+                                  {assignment.user_task_status != "passed" ? (
+                                    <Link
+                                      to=""
+                                      onClick={(e) =>
+                                        getCourse(
+                                          assignment.course_id,
+                                          assignment.id,
+                                          assignment.no_attempted,
+                                          assignment.course_name
+                                        )
+                                      }
+                                    >
+                                      {" "}
+                                      Continue{" "}
+                                      <i
+                                        className="fa fa-arrow-right"
+                                        aria-hidden="true"
+                                      ></i>
+                                    </Link>
+                                  ) : (
+                                    ""
+                                  )}
 
-                                {/* <button
+                                  {/* <button
                                                                 className="sec-btn"
                                                                 data-toggle="modal"
                                                                 data-target="#modal-fullscreen-xl"
@@ -340,23 +365,39 @@ export default function MyTask() {
                                                             >
                                                                 VIEW COURSE
                                                             </button> */}
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ):''}
-                    </>
-                  ))}
-                </div>
+                        ) : (
+                          ""
+                        )}
+                      </>
+                    ))} 
+
+                    {assignments.length==0 && <>
+                      <div className="my-course-details">
+                            <div className="row align-items-center">
+                              <div className="col-md-4">
+                                <div className="my-course-img">
+                                </div>
+                              </div>
+                              <div className="col-md-8">
+                                <div className="my-course-content">
+                                  <h4> No active tasks </h4>                               
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                      </>}
+                 
               </div>
             </div>
           </div>
-
-          {/**  <SingleXapiModal xapi_link={xapiLink} course_name={xapCourse} xapi_course_name={xapFileName} /> */}
         </div>
-      ) : (
-        ""
-      )}
+
+        {/**  <SingleXapiModal xapi_link={xapiLink} course_name={xapCourse} xapi_course_name={xapFileName} /> */}
+      </div>
     </>
   );
 }

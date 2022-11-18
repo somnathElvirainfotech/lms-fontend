@@ -363,9 +363,7 @@ export default function MyCourse() {
                                     .id)} >
                                     <img                                
 
-                                      src={
-                                        enrollmentcourse.course_details[0].image
-                                      }
+                                      src={enrollmentcourse.course_details.length>0 && enrollmentcourse.course_details[0].image}
 
                                       className="img-fluid"
                                       alt=""
@@ -378,7 +376,7 @@ export default function MyCourse() {
                                     <h4 style={{cursor: "pointer"}} onClick={()=>goSinglePage(enrollmentcourse.course_details[0]
                                       .course_name,enrollmentcourse.course_details[0]
                                       .id)} >
-                                      {
+                                      {enrollmentcourse.course_details.length>0 &&
                                         enrollmentcourse.course_details[0]
                                           .course_name &&  enrollmentcourse.course_details[0]
                                           .course_name.toUpperCase()
@@ -387,13 +385,13 @@ export default function MyCourse() {
                                     <p>
                                       <Markup
                                         content={
-                                          enrollmentcourse.course_details[0]
+                                          enrollmentcourse.course_details.length>0 && enrollmentcourse.course_details[0]
                                             .short_description
                                         }
                                       />
                                     </p>
 
-                                    {enrollmentcourse.course_details[0]
+                                    {enrollmentcourse.course_details.length>0 && enrollmentcourse.course_details[0]
                                       .course_type == "regular" && (
                                       <>
                                         {" "}

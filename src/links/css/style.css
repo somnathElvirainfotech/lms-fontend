@@ -168,8 +168,45 @@ p {
 }
 
 .header .header-wrap .hd-sec .rt-side .menu-sec ul li a:hover {
-    color: #ed4034;
+    color: #023e86;
 }
+
+
+/* -------------------- */
+
+
+.header .header-wrap .hd-sec .rt-side .menu-sec2 {
+    padding: 0;
+    margin: 0 30px 0 0;
+}
+
+.header .header-wrap .hd-sec .rt-side .menu-sec2 ul li {
+    display: inline-block;
+    padding: 0;
+    margin: 0 25px 0 0;
+}
+
+.header .header-wrap .hd-sec .rt-side .menu-sec2 ul li:last-child {
+    margin-right: 0;
+}
+
+.header .header-wrap .hd-sec .rt-side .menu-sec2 ul li a {
+    font-size: 16px;
+    line-height: 1.2;
+    color: #000;
+    padding: 0;
+    margin: 0;
+    transition: all 300ms ease-in-out;
+}
+
+.header .header-wrap .hd-sec .rt-side .menu-sec2 ul li a:hover {
+    color: #023e86;
+}
+
+
+/* -------------------------- */
+
+
 
 .header .header-wrap .hd-sec .rt-side .hd-loging-sign {
     padding: 0;
@@ -271,8 +308,8 @@ p {
     font-size: 15px;
     line-height: 1.2;
     color: #fff;
-    background: #ed4034;
-    border: 1px solid #ed4034;
+    background: #023e86;
+    border: 1px solid #023e86;
     font-weight: 400;
     padding: 15px 45px;
     margin: 0;
@@ -281,17 +318,17 @@ p {
 
 .banner .desc .desc-text a:last-child {
     background: #fff;
-    color: #ed4034;
+    color: #023e86;
 }
 
 .banner .desc .desc-text a:hover {
     background: #fff;
-    color: #ed4034;
+    color: #023e86;
 }
 
 .banner .desc .desc-text a:last-child:hover {
     color: #fff;
-    background: #ed4034;
+    background: #023e86;
 }
 
 .banner .desc .desc-text .desc-btn a:last-child {
@@ -315,7 +352,7 @@ p {
 
 .partner-sec h2 strong {
     font-weight: 600;
-    color: #ed4034;
+    color: #023e86;
 }
 
 .partner-sec .partne-logo {
@@ -423,7 +460,7 @@ p {
 
 .populer-box .text-box {
     position: relative;
-    padding: 45px 15px 40px;
+    padding: 35px 15px 30px;
     margin: 0;
     min-height: 220px;
 }
@@ -458,7 +495,7 @@ p {
 .populer-box .text-box span.viwers {
     position: absolute;
     left: 15px;
-    bottom: 10px;
+    bottom: 25px;
     font-size: 15px;
     color: #707070;
 }
@@ -529,7 +566,7 @@ p {
     font-size: 16px;
     line-height: 1.2;
     color: #fff;
-    background: #ed4034;
+    background: #023e86;
     padding: 12px 34px;
     transition: all 300ms ease-in-out;
 }
@@ -592,7 +629,7 @@ p {
     font-size: 16px;
     line-height: 1.2;
     color: #fff;
-    background: #ed4034;
+    background: #023e86;
     padding: 12px 34px;
     transition: all 300ms ease-in-out;
 }
@@ -652,8 +689,8 @@ p {
     font-size: 15px;
     line-height: 1.2;
     color: #fff;
-    background: #ed4034;
-    border: 1px solid #ed4034;
+    background: #023e86;
+    border: 1px solid #023e86;
     font-weight: 400;
     padding: 15px 45px;
     margin: 0;
@@ -662,17 +699,17 @@ p {
 
 .join-for-free-sec .text-block ul li a:hover {
     background: #fff;
-    color: #ed4034;
+    color: #023e86;
 }
 
 .join-for-free-sec .text-block ul li:last-child a {
     background: #fff;
-    color: #ed4034;
+    color: #023e86;
 }
 
 .join-for-free-sec .text-block ul li:last-child a:hover {
     color: #fff;
-    background: #ed4034;
+    background: #023e86;
 }
 
 .enrolled-sec {
@@ -720,7 +757,7 @@ p {
     font-size: 30px;
     line-height: 1.2;
     font-weight: bold;
-    color: #ed4034;
+    color: #023e86;
     padding: 0;
     margin: 0;
 }
@@ -966,7 +1003,7 @@ p {
     font-size: 16px;
     line-height: 1.2;
     color: #fff;
-    background: #ed4034;
+    background: #023e86;
     padding: 12px 34px;
     transition: all 300ms ease-in-out;
 }
@@ -977,8 +1014,9 @@ p {
 
 .footer {
     background: #f2f0ef;
-    padding: 40px 0 30px;
+    padding: 10px 0 10px;
     margin: 0;
+    font-size: 13px;
 }
 
 .footer .ft-box h3 {
@@ -1012,7 +1050,7 @@ p {
 }
 
 .footer .ft-box {
-    margin: 0 0 40px;
+    /* margin: 0 0 40px; */
 }
 
 .footer .ft-box .app-link {
@@ -1021,8 +1059,8 @@ p {
 }
 
 .copy-rigt-sec {
-    border-top: 1px solid #ccc;
-    padding: 30px 0 0 0;
+    /* border-top: 1px solid #ccc; */
+    padding: 10px 0 0 0;
 }
 
 .cat-menu {
@@ -1211,7 +1249,7 @@ ul.vegies li ul.vegies-submenu li ul li {
 }
 
 .breadcrumb ul li a:hover {
-    color: #ed4034;
+    color: #023e86;
 }
 
 .breadcrumb ul li:after {
@@ -1415,7 +1453,7 @@ ul.vegies li ul.vegies-submenu li ul li {
     content: '';
     width: 65px;
     height: 2px;
-    background: #ed4034;
+    background: #023e86;
     position: absolute;
     left: 0;
     bottom: 0;
@@ -1497,7 +1535,7 @@ textarea {
     font-size: 16px;
     line-height: 1.2;
     color: #fff;
-    background: #ed4034;
+    background: #023e86;
     padding: 12px 34px;
     transition: all 300ms ease-in-out;
     border-radius: 0;
@@ -1519,7 +1557,8 @@ textarea {
 /********* course ***************/
 
 .course {
-    background: #023e86;
+    /* background: #023e86; */
+    background: #e2e2e2;
     padding: 30px 0;
 }
 
@@ -1563,7 +1602,8 @@ textarea {
     font-size: 16px;
     line-height: 1.2;
     color: #fff;
-    background: #ed4034;
+    /* background: #023e86; */
+     background:#023e86;
     padding: 12px 34px;
     transition: all 300ms ease-in-out;
     border-radius: 0;
@@ -1575,6 +1615,7 @@ textarea {
 .course-inner form button:hover {
     background: #ffffff;
     color: #000;
+    border:1px solid #000;
 }
 
 .courses-sec {
@@ -1659,11 +1700,11 @@ textarea {
 
 [data-pagination] a:focus,
 [data-pagination] a:hover {
-    color: #ed4034;
+    color: #023e86;
 }
 
 [data-pagination] li.current {
-    background: #ed4034;
+    background: #023e86;
 }
 
 [data-pagination] li.current a {
@@ -1764,7 +1805,7 @@ textarea {
 
 .activites-table table thead,
 .data-table table thead {
-    background: #f05c52;
+    background: #023e86;
     color: #fff;
 }
 
@@ -1781,7 +1822,8 @@ textarea {
 
 .enrollments-sec,
 .sec-bg {
-    background: #ffdcd9;
+    /* background: #ffdcd9; */
+    background: #e2e2e2;
 }
 
 .enrollments-form-inner .form-group {
@@ -1807,7 +1849,7 @@ textarea {
 .enrollments-sec-table table thead tr th,
 .data-table table tbody tr td,
 .data-table table thead tr th {
-    border: 1px solid #023e86 !important;
+    border: 1px solid #000 !important;
     vertical-align: middle;
 }
 
@@ -1839,7 +1881,7 @@ textarea {
 }
 
 .esport-btn:hover {
-    background: #ed4034 !important;
+    background: #023e86 !important;
 }
 
 
@@ -1879,7 +1921,7 @@ textarea {
 
 .my-course-content h5 {
     display: inline-block;
-    background: #ed4034;
+    background: #023e86;
     color: #fff;
     font-size: 17px;
     padding: 10px 27px;
@@ -1897,7 +1939,8 @@ textarea {
 }
 
 .my-assignment {
-    background: #ffdcd9;
+    /* background: #ffdcd9; */
+    background-color: #e2e2e2;
     padding: 50px 0;
 }
 
@@ -1995,7 +2038,7 @@ textarea {
 }
 
 .certificate-box p span {
-    color: #ed4034;
+    color: #023e86;
 }
 
 .certificate-box h5 {
@@ -2032,7 +2075,7 @@ textarea {
 }
 
 .user-content ul li span {
-    color: #ed4034;
+    color: #023e86;
 }
 
 #target {
@@ -2138,10 +2181,14 @@ select {
     margin-bottom: 30px;
     font-weight: 500;
     border: 0;
+    
 }
 
 .sec-btn:hover {
-    background: #ed4034;
+    /* background: #023e86; */
+    background: #fff;
+    color: #000 !important;
+    border: 1px solid #000;
 }
 
 .add-new-assignment-sec table>tbody>tr>td:first-child {
@@ -2158,7 +2205,7 @@ select {
 }
 
 .table-action-btn .cancel-btn {
-    background: #ed4034;
+    background: #023e86;
 }
 
 .table-action-btn .cancel-btn:hover {
@@ -2228,7 +2275,8 @@ select {
 
 .single-course-tab .nav-tabs .nav-item.show .nav-link,
 .single-course-tab .nav-tabs .nav-link.active {
-    background-color: #ed4034;
+    /* background-color: #023e86; */
+    background-color: #023e86;
     color: #fff;
     border: 0;
     border-radius: 0;
@@ -2264,18 +2312,19 @@ select {
 }
 
 .single-course-tab .tab-content .tab-pane ul li i {
-    color: #ed4034;
+    color: #023e86;
     margin-right: 10px;
 }
 
 .enroll-btn,
 .comment-add-btn {
-    background: #ed4034;
+    /* background: #023e86; */
+    background: #023e86;
     margin-bottom: 15px;
 }
 
 .sec-btn-orange {
-    background: #ed4034;
+    background: #023e86;
 }
 
 .single-course-tab .tab-content .tab-pane h6 {
@@ -2345,9 +2394,9 @@ select {
     text-align: left;
     color: #222;
     padding: 12px 20px;
-    border: 1px solid #ed4034;
+    border: 1px solid #023e86;
     color: #fff;
-    background: #ed4034;
+    background: #023e86;
     border-radius: 0;
 }
 
@@ -2844,17 +2893,17 @@ input:checked+.slider:before {
 }
 
 /* .active_lesson:focus {
-    background-color: #ed4034;
+    background-color: #023e86;
     color: white;
 } */
 
 /* .active_lesson:active {
-    background-color: #ed4034;
+    background-color: #023e86;
     color: white;
 } */
 
 .active_lesson_selected {
-    background-color: #ed4034;
+    background-color: #023e86;
     color: white;
 }
 
@@ -3030,3 +3079,147 @@ input:checked+.slider:before {
   .barCompleted {
     background-color: blue;
   }
+
+  .progressBarPosition{
+     /* position: absolute; */
+   /* left: 15px;
+    bottom: 10px;
+    font-size: 15px;
+    color: #707070; */
+    /* bottom: 0%;
+    width: 100%;
+    margin-right: 0%;
+    margin-left: -15px; */
+
+    padding: 0;
+    margin: 0 0 30px;
+    -webkit-box-shadow: 0px 5px 13px 0px rgba(0, 0, 0, 0.23);
+    -moz-box-shadow: 0px 5px 13px 0px rgba(0, 0, 0, 0.23);
+    box-shadow: 0px 5px 13px 0px rgba(0, 0, 0, 0.23);
+  }
+
+  .textLmit{
+    display:block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 15ch;
+  }
+
+  .tableFont table th,td{
+    font-size: 13px;
+
+  }
+
+
+  /********* KP *******/
+
+  
+.image-course 
+{
+    height: 400px; 
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.image-course img 
+{
+    width: 100%;
+}
+
+.cou-cate 
+{
+    display: flex; 
+}
+
+.cou-cate a 
+{
+    font-weight: 600; 
+    color: #000;
+}
+
+
+.cou-cate li 
+{
+    margin-right: 10px;
+}
+
+.cou-cate li:last-child 
+{
+    margin-right: 0;
+}
+
+.review-stat 
+{
+    display: flex; 
+}
+
+.course-avator-image 
+{
+    margin: 15px 0;
+    height: 200px;
+    overflow: hidden;
+}
+
+.course-avator-image img 
+{
+    width: 100%;
+}
+ 
+
+.review-area {
+    display: flex;
+    padding: 5px 0;
+}
+
+.review-area span {
+    /* padding-left: 15px; */
+}
+
+.enroll-full a
+{
+    width: 100%;
+    text-align: center; 
+    font-size: 18px; 
+    font-weight: 600; 
+    letter-spacing: 1px; 
+    text-transform: uppercase;
+}
+
+
+.enroll-full button
+{
+    width: 100%;
+    text-align: center; 
+    font-size: 18px; 
+    font-weight: 600; 
+    letter-spacing: 1px; 
+    text-transform: uppercase;
+}
+
+.course-details 
+{
+    margin-bottom: 30px;
+}
+
+.catego-area b 
+{
+    margin-bottom: 10px; 
+    font-size: 18px; 
+}
+
+.tab-pane p a  
+{
+    word-break: break-all;
+}
+.full-w100 
+{
+    width: 100%;
+}
+
+/* .multi-group .rmsc .dropdown-heading .dropdown-heading-value{
+    overflow: initial;
+}
+.multi-group .multi-select.rmsc .clear-selected-button{
+    justify-content: flex-end;
+} */

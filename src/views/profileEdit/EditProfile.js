@@ -492,7 +492,7 @@ export const EditProfile = () => {
         </div>
       </div>
 
-      <div className="profile-edit-form" >
+      <div className="profile-edit-form" style={{marginBottom: "50px"}} >
         <div className="container">
           
 
@@ -564,7 +564,7 @@ export const EditProfile = () => {
                     {langObj.photo}
                   </a>
                 )}
-                {security ? (
+            {user.login_type=="local" &&    <> {security  ? (
                   <a
                     href="#"
                     className="active"
@@ -585,7 +585,7 @@ export const EditProfile = () => {
                   >
                     {langObj.security}
                   </a>
-                )}
+                )} </> }
 
                 {/**  <a href="#" onClick={e => e.preventDefault()}>Notification</a> */}
               </div>
@@ -605,6 +605,7 @@ export const EditProfile = () => {
                             name="firstname"
                             value={inputs.firstname}
                             onChange={handleChange}
+                            readOnly
                           />
                         </div>
                       </div>
@@ -617,6 +618,7 @@ export const EditProfile = () => {
                             className="form-control"
                             value={inputs.lastname}
                             onChange={handleChange}
+                            readOnly
                           />
                         </div>
                       </div>
@@ -731,14 +733,14 @@ export const EditProfile = () => {
                         </div>
                       </div>
                     </div>
-                    <button type="submit" className="btn">
+                    <button style={{width:"40%"}} type="submit" className="btn">
                       SAVE
                     </button>
                   </form>
                 </div>
               )}
 
-              {security && (
+              {security && user.login_type=="local" && (
                 <div className="profile-edit-form-right  " id="security">
                   <form id="securityForm" method="post" onSubmit={PasswordChange}>
                     <div className="form-row">
@@ -789,7 +791,7 @@ export const EditProfile = () => {
                       </div>
                     </div>
 
-                    <button type="submit" className="btn">
+                    <button style={{width:"20%"}} type="submit" className="btn">
                       CHANGE
                     </button>
                   </form>
@@ -862,6 +864,7 @@ export const EditProfile = () => {
 
             </div>
           </div>
+
         </div>
       </div>
     </>

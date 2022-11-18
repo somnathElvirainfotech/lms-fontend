@@ -392,7 +392,15 @@ function LessonEdit() {
                 <div className="row">
                     <div className="container">
 
-                          <span><button type="button" className="sec-btn m-2" onClick={previousPage}>Back</button></span> 
+                          <span className="row">
+                          
+                         <div className="col-sm-4">
+                         <button type="button" className="sec-btn m-2" onClick={previousPage}>Back</button>
+                         </div>
+                          
+                          <div className="col-sm-4"></div>
+                          <div className="col-sm-4"></div>
+                          </span> 
 
                         <div className="row" >
                             <div className="col-sm-12 bg-white m-4 p-3">
@@ -526,11 +534,13 @@ function LessonEdit() {
 
 
                                     <div className="form-row">
-                                        <div className="col-md-12 text-center">
+                                    <div className="col-md-4"></div>
+                                        <div className="col-md-4 text-center">
                                             <div className="form-group">
                                                 <button type="submit" className="btn btn-success">UPDATE</button>
                                             </div>
                                         </div>
+                                        <div className="col-md-4"></div>
                                     </div>
 
 

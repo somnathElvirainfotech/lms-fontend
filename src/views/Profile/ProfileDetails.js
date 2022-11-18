@@ -68,7 +68,7 @@ export default function ProfileDetails(userData) {
                         </div>
                         <div className="col-md-5 offset-md-1">
                             <div className="user-content">
-                                <button onClick={editUser} className="edit-pro-btn toggle">Edit Profile
+                                <button style={{width:"40%"}} onClick={editUser} className="edit-pro-btn toggle">Edit Profile
                                     <i className="fa fa-pencil" aria-hidden="true"></i></button>
 
 

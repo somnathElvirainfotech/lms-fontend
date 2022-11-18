@@ -562,9 +562,9 @@ export default function Create() {
 
                         <Link to="/course/add" className="sec-btn" >Course Add</Link>
 
-                        <Link to="/chapter"> <button className="sec-btn ml-3 ">Chapter</button> </Link>
-                        <Link to="/lesson"> <button className="sec-btn ml-3 ">Lesson</button> </Link>
-                        <Link to="/assignment-create"> <button className="sec-btn ml-3 ">Assignment</button> </Link>
+                        <Link to="/chapter" className="sec-btn ml-3 " > Chapter </Link>
+                        <Link to="/lesson" className="sec-btn ml-3 " > Lesson </Link>
+                        <Link to="/assignment-create" className="sec-btn ml-3 " > Assignment </Link>
 
                         <div className=" enrollments-sec-table activites-table ">
                             <table className="table table-responsive">

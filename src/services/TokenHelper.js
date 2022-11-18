@@ -123,6 +123,15 @@ class TokenHelper {
     return localStorage.getItem("last_name");
   }
 
+  setLoginType(data){
+    localStorage.setItem('login_type', data)
+  }
+
+  getLoginType()
+  {
+    return localStorage.getItem("login_type");
+  }
+
 }
 
 export default new TokenHelper();

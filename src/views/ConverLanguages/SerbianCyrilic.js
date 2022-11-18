@@ -1,6 +1,10 @@
 
 var SerbianCyrilic = {
 
+
+    // courses page---------------------
+    sub_courses:"Интерни портал за обуку",
+
     // main menu--------------
     courses: "Курсеви",
     profile: "Мој профил",
@@ -45,7 +49,13 @@ var SerbianCyrilic = {
     your_online_courses: "Твоји курсеви",
     number_of_enrolled_courses: "Започети курсеви",
     number_of_finished_courses: "Завршени курсеви",
-    number_of_certificates: "Сертификати"
+    number_of_certificates: "Сертификати",
+    my_task:"Твоји задаци",
+
+    // footer language --------------------------
+    copyright_item1:"Електропривреда Србије",
+    copyright_item2:"Интерни портал за обуку",
+    support_text:"Контакт за корисничку подршку:"
 
 }
 

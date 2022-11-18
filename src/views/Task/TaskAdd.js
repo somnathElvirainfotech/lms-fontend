@@ -23,6 +23,8 @@ import InnerBanner from "../Common/InnerBanner";
 import CourseService from "../../services/CourseService";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import Courses from "../Activites/Courses";
+import Course from "../Courses";
 
 function TaskAdd() {
   const [Text, setText] = useState("");
@@ -162,12 +164,33 @@ function TaskAdd() {
     setCourse([...courseRes.data.data]);
   };
 
+  const [selectCourse, setSelectCourse] = useState({
+    image: "",
+  });
+
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
     // seterror('');
     console.log(inputs);
+
+    if (name === "course_id" && course.length > 0 && value != '') {
+      for (var i of course) {
+        if (i.id == value) {
+          setSelectCourse({
+            image: i.image,
+          });
+        }
+      }
+    }
+    else if(value == '' && name === "course_id")
+    {
+      setSelectCourse({
+        image: "",
+      });
+    }
+    
   };
 
   const FormSubmit = async (e) => {
@@ -246,7 +269,6 @@ function TaskAdd() {
         task_end_date: {
           required: true,
         },
-        
       },
 
       messages: {
@@ -262,7 +284,6 @@ function TaskAdd() {
         task_end_date: {
           required: "End Date Required",
         },
-        
       },
     });
   }, []);
@@ -293,14 +314,20 @@ function TaskAdd() {
           <div className="row">
             <div className="col-md-12 col-sm-6 pr-md-0">
               <div className="container">
-                <span>
-                  <button
-                    type="button"
-                    className="sec-btn"
-                    onClick={previousPage}
-                  >
-                    Back
-                  </button>
+                <span className="row">
+                 <div className="col-sm-4">
+                 <button
+                 type="button"
+                 className="sec-btn"
+                 onClick={previousPage}
+               >
+                 Back
+               </button>
+                 </div>
+
+                 <div className="col-sm-4"></div>
+                 <div className="col-sm-4"></div>
+                 
                 </span>
 
                 <div className="row">
@@ -328,7 +355,7 @@ function TaskAdd() {
                         </div>
 
                         <div className="col-md-6">
-                          <div className="form-group">
+                          <div className="form-group multi-group">
                             <label>GROUP</label>
 
                             <MultiSelect
@@ -396,6 +423,16 @@ function TaskAdd() {
                             </select>
                           </div>
                         </div>
+                    {selectCourse.image &&   <div className="col-md-6">
+                          <div className="form-group">
+                            <img
+                              src={selectCourse.image}
+                              alt=""
+                              height="85px"
+                              width="40%"
+                            />
+                          </div>
+                        </div> }
                       </div>
 
                       <div className="form-row">
@@ -411,13 +448,15 @@ function TaskAdd() {
                       </div>
 
                       <div className="form-row">
-                        <div className="col-md-12 text-center">
+                      <div className="col-md-4"></div>
+                        <div className="col-md-4 text-center">
                           <div className="form-group">
                             <button type="submit" className="btn btn-success">
                               CREATE
                             </button>
                           </div>
                         </div>
+                        <div className="col-md-4"></div>
                       </div>
                     </form>
                   </div>

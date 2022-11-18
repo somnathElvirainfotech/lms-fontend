@@ -3,7 +3,7 @@ import ReactStars from "react-rating-stars-component";
 
 function RatingBar(props) {
 
-    alert(props.value)
+    //alert(props.value)
 
     var thirdExample = {
         size: 40,

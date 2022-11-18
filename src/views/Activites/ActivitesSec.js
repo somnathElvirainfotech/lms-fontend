@@ -31,7 +31,7 @@ export default function ActivitesSec() {
     const [course, setCourse] = useState([]);
 
     // react pagination  //////////////////////////
-    const PER_PAGE = 10;
+    const PER_PAGE = 50;
     const [currentPageData, setCurrentPageData] = useState([]);
     const pageCount = Math.ceil(data.length / PER_PAGE);
 
@@ -342,7 +342,7 @@ export default function ActivitesSec() {
 
             {/** table section */}
             <div className="activites-sec">
-                <div className="container">
+                <div className="container-fluid">
                     <div className="activites-ttl">
                         <h2>Activities</h2>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,</p>
@@ -475,7 +475,7 @@ export default function ActivitesSec() {
 
                         {/** total comment */}
                         {searchType == "total_comment" && <div style={{ overflowY: "auto" }}>
-                            <button className='sec-btn' onClick={e => back('singleCourse')}>Back</button> <h1 className='p-3'>Total Comments </h1>
+                            <button className='sec-btn' style={{width:"20%"}} onClick={e => back('singleCourse')}>Back</button> <h1 className='p-3'>Total Comments </h1>
                             <table className="table table-hover">
                                 <thead>
                                     <tr>

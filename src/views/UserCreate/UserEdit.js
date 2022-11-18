@@ -427,6 +427,7 @@ function UserEdit() {
             <div className="col-md-12 col-sm-6 pr-md-0">
               <div className="container">
                 <button
+                style={{width:"20%"}}
                   type="button"
                   className="sec-btn"
                   onClick={previousPage}
@@ -476,7 +477,7 @@ function UserEdit() {
 
                       <div className="form-row">
                         <div className="col-md-6">
-                          <div className="form-group">
+                          <div className="form-group multi-group">
                             <label>GROUP</label>
                             <MultiSelect
                               options={group}
@@ -690,7 +691,7 @@ function UserEdit() {
                       <div className="form-row">
                         <div className="col-md-12 text-center">
                           <div className="form-group">
-                            <button type="submit" className="btn btn-success">
+                            <button type="submit" style={{width:"20%"}} className="btn btn-success">
                               UPDATE
                             </button>
                           </div>

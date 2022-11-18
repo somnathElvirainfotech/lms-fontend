@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import { Link } from "react-router-dom";
 
@@ -30,17 +30,24 @@ import EnrollmentService from "../../../services/EnrollmentService";
 import Loader from "../../Loader";
 
 function openNav() {
+   
   document.getElementById("myNav").style.width = "100%";
+  document.getElementById("myNav").style.display = "block";
+  
 }
 
 function closeNav() {
   document.getElementById("myNav").style.width = "0%";
+  document.getElementById("myNav").style.display = "none";
 }
 
 export default function Header() {
   //const [ADMIN_URL, setADMIN_URL] = useState(process.env.REACT_APP_ADMIN_URL);
 
-  const [showLoader,setShowLoader]=useState(false);
+  const location = useLocation()
+    
+
+  const [showLoader, setShowLoader] = useState(false);
 
   function deleteCookies() {
     var allCookies = document.cookie.split(";");
@@ -52,9 +59,8 @@ export default function Header() {
         allCookies[i] + "=;expires=" + new Date(0).toUTCString();
   }
 
- async function Logout() {
-
-    await UserService.LoginStatus({email:user.email,status:"inactive"})
+  async function Logout() {
+    await UserService.LoginStatus({ email: user.email, status: "inactive" });
 
     firebase
       .auth()
@@ -91,10 +97,10 @@ export default function Header() {
   const [selectedCategory, setSelectedCategory] = useState("");
   useEffect(() => {
     (async () => {
-      setShowLoader(true)
+      setShowLoader(true);
       var responce = await UserService.category();
       setCategorys(responce.data.data);
-      setShowLoader(false)
+      setShowLoader(false);
     })();
   }, [selectedCategory]);
 
@@ -162,36 +168,36 @@ export default function Header() {
 
   var clerSearchText = () => {
     search.search_text = "";
-    document.getElementById("myNav").style.width = "0%";
+    // alert(1)
+    // alert(document.getElementsByClassName("mb-hum").style.width)
+    // document.getElementById("myNav").style.width = "100%";
+    // if(document.getElementById("myNav").style.display=="")
+    // document.getElementById("myNav").style.display = "none";
   };
 
   const [langData, setLangData] = useState([]);
   var GetAllLang = async () => {
-
-    setShowLoader(true)
+    setShowLoader(true);
 
     var responce = await LanguageService.getAll();
     if (responce.data.status) {
       setLangData(responce.data.data);
     }
 
-    setShowLoader(false)
-
+    setShowLoader(false);
   };
 
   var GetProfileData = async () => {
-
     var response = await UserService.getProfileData({ email: user.email });
 
     if (response.data.status) {
       languageList.set_language(response.data.data.language_id);
     }
-
   };
 
   var profileUpdateLang = async (data) => {
     var response = await UserService.updateUserProfile(data);
-  }
+  };
 
   const { languageList, xapi_result } = useContext(LangContext);
   const [langObj, setLangObj] = useState({});
@@ -199,16 +205,13 @@ export default function Header() {
   var languageHandler = (e) => {
     var a = e.target.value;
     languageList.set_language(a);
-    if (user.token) profileUpdateLang({ language_id: a, email: user.email })
+    if (user.token) profileUpdateLang({ language_id: a, email: user.email });
   };
-
-
 
   useEffect(() => {
     GetAllLang();
     //alert(user.language_type)
     if (user.token) GetProfileData();
-
 
     if (languageList.language_name === "1") {
       setLangObj(English);
@@ -221,17 +224,10 @@ export default function Header() {
     // console.log(languageList.language_name);
   }, [languageList.language_name]);
 
-
-
-
-
- 
-
   return (
     <>
-
-{/** loader */}
-{showLoader && <Loader />}
+      {/** loader */}
+      {showLoader && <Loader />}
 
       <header className="header">
         <div className="container-fluid">
@@ -244,6 +240,56 @@ export default function Header() {
             <div className="hd-sec">
               <div className="lt-side">
                 <div className="cat-menu">
+
+                {user.user_role==5 && user.token && <>
+                  
+
+                  <div id="myNav" className="menu-sec2">
+                  
+                  <ul>
+                   
+                   
+
+                    {user.token && user.user_role == 5 ? (
+                      <>
+                        {" "}
+                        <li key={"list2"}>
+                          <Link style={{color:location.pathname=="/courses"?"#023e86":"",}}  onClick={clerSearchText} to="/courses">
+                            {langObj.courses}
+                          </Link>
+                        </li>{" "}
+                      </>
+                    ) : (
+                      ""
+                    )}
+
+                    {user.token && user.user_role == 5 ? (
+                      <li key={"list3"}>
+                        <NavLink style={{color:location.pathname=="/my-courses"?"#023e86":"",}} onClick={clerSearchText} to={"my-courses"}>
+                          {langObj.my_courses}
+                        </NavLink>
+                      </li>
+                    ) : (
+                      ""
+                    )}
+
+
+                    {user.token && (
+                      <li key={"list1"}>
+                        <Link style={{color:location.pathname=="/about-us"?"#023e86":"",}}  onClick={clerSearchText} to="/about-us">
+                          About
+                        </Link>
+                      </li>
+                    )}
+                
+                    
+                  </ul>
+                  
+                </div>
+                  
+                  </>}
+
+
                   {/**      <ul className="menu-list" >
                                         <li id="mega-menu-parent" ><a href="">Courses <i className="fa fa-angle-down"></i></a>
                                             <div className="mega-menu">
@@ -281,12 +327,13 @@ export default function Header() {
 
                                     </ul>  */}
                 </div>
-                
+
                 {user.token && (
                   <div className="hd-src">
                     <form onSubmit={(e) => e.preventDefault()} action="#">
                       <input
                         value={search.search_text}
+                        style={{ fontSize: "14px" }}
                         onChange={searchhandler}
                         type="text"
                         name="search_text"
@@ -295,6 +342,7 @@ export default function Header() {
                         onKeyDown={(e) => eneterSearch(e)}
                       />
                       <button
+                        style={{ width: "20%" }}
                         type="button"
                         onClick={textSearch}
                         className="btn"
@@ -306,7 +354,13 @@ export default function Header() {
                 )}
 
                 <div className="hd-src">
-                  <div style={{ marginTop: "2px", marginLeft: "15px" }}>
+                  <div
+                    style={{
+                      marginTop: "2px",
+                      marginLeft: "15px",
+                      marginRight: "15px",
+                    }}
+                  >
                     <select
                       required
                       className="form-control"
@@ -321,8 +375,11 @@ export default function Header() {
                     </select>
                   </div>
                 </div>
+                
               </div>
-              {user.token && (
+
+
+              {user.token && user.user_role != 5 && (
                 <div className="rt-side">
                   <div className="mb-hum">
                     <div
@@ -335,7 +392,9 @@ export default function Header() {
                       <span className="line"></span>
                     </div>
                   </div>
-                  <div id="myNav" className="menu-sec">
+
+                  {/* ------------------------ admin route ------------------------ */}
+                 {user.user_role == 2 && <div id="myNav" className="menu-sec">
                     <span className="closebtn" onClick={closeNav}>
                       &times;
                     </span>
@@ -343,18 +402,18 @@ export default function Header() {
                       {/* {user.token && user.user_role == 2 || user.token && user.user_role == 1 ? <> <li><a target="__blank" href={ADMIN_URL}>Admin</a></li> </> : ''} */}
 
                       {user.token && (
-                        <li key={"list1"} >
-                          <Link onClick={clerSearchText} to="/about-us">
+                        <li key={"list1"}>
+                          <Link style={{color:location.pathname=="/about-us"?"#023e86":"",}}  onClick={clerSearchText} to="/about-us">
                             About
                           </Link>
                         </li>
                       )}
 
-                      {user.token && user.user_role ==5 ? (
+                      {user.token && user.user_role == 5 ? (
                         <>
                           {" "}
                           <li key={"list2"}>
-                            <Link onClick={clerSearchText} to="/courses">
+                            <Link style={{color:location.pathname=="/courses"?"#023e86":"",}}  onClick={clerSearchText} to="/courses">
                               {langObj.courses}
                             </Link>
                           </li>{" "}
@@ -364,19 +423,19 @@ export default function Header() {
                       )}
 
                       {user.token && user.user_role == 5 ? (
-                        <li key={"list3"} >
-                          <NavLink onClick={clerSearchText} to={"my-courses"}>
+                        <li key={"list3"}>
+                          <NavLink style={{color:location.pathname=="/my-courses"?"#023e86":"",}} onClick={clerSearchText} to={"my-courses"}>
                             {langObj.my_courses}
                           </NavLink>
                         </li>
                       ) : (
                         ""
                       )}
-                      {user.token && user.user_role !=5 ? (
+                      {user.token && user.user_role != 5 ? (
                         <>
                           {" "}
-                          <li key={"list4"} >
-                            <Link onClick={clerSearchText} to="/profile">
+                          <li key={"list4"}>
+                            <Link style={{color:location.pathname=="/profile"?"#023e86":"",}} onClick={clerSearchText} to="/profile">
                               {langObj.profile}
                             </Link>
                           </li>{" "}
@@ -385,21 +444,19 @@ export default function Header() {
                         ""
                       )}
 
-                      
-
                       {/**  <li><a href="#" data-toggle="modal" data-target="#creatorloginform" >Creator</a></li> */}
                       {user.user_role == 2 || user.user_role == 1 ? (
-                        <li key={"list5"} >
-                          <Link onClick={clerSearchText} to="/activites">
+                        <li key={"list5"}>
+                          <Link style={{color:location.pathname=="/activites"?"#023e86":"",}} onClick={clerSearchText} to="/activites">
                             Activities
                           </Link>
                         </li>
                       ) : (
                         ""
                       )}
-                      {user.token && user.user_role !=5 ? (
-                        <li key={"list6"} >
-                          <NavLink onClick={clerSearchText} to={"enrollments"}>
+                      {user.token && user.user_role != 5 ? (
+                        <li key={"list6"}>
+                          <NavLink style={{color:location.pathname=="/enrollments"?"#023e86":"",}} onClick={clerSearchText} to={"enrollments"}>
                             Enrollments
                           </NavLink>
                         </li>
@@ -407,9 +464,9 @@ export default function Header() {
                         ""
                       )}
                       {(user.token && user.user_role == 2) ||
-                        (user.token && user.user_role == 1) ? (
-                        <li key={"list7"} >
-                          <Link onClick={clerSearchText} to="/user">
+                      (user.token && user.user_role == 1) ? (
+                        <li key={"list7"}>
+                          <Link style={{color:location.pathname=="/user"?"#023e86":"",}} onClick={clerSearchText} to="/user">
                             User List
                           </Link>
                         </li>
@@ -418,11 +475,11 @@ export default function Header() {
                       )}
 
                       {(user.token && user.user_role == 2) ||
-                        (user.token && user.user_role == 1) ? (
+                      (user.token && user.user_role == 1) ? (
                         <>
                           {" "}
-                          <li key={"list8"} >
-                            <Link onClick={clerSearchText} to="/group">
+                          <li key={"list8"}>
+                            <Link style={{color:location.pathname=="/group"?"re#023e86d":"",}} onClick={clerSearchText} to="/group">
                               Group
                             </Link>
                           </li>{" "}
@@ -432,10 +489,10 @@ export default function Header() {
                       )}
 
                       {user.user_role == 4 ||
-                        user.user_role == 2 ||
-                        user.user_role == 1 ? (
-                        <li key={"list9"} >
-                          <Link onClick={clerSearchText} to="/course">
+                      user.user_role == 2 ||
+                      user.user_role == 1 ? (
+                        <li key={"list9"}>
+                          <Link style={{color:location.pathname=="/course"?"#023e86":"",}} onClick={clerSearchText} to="/course">
                             {" "}
                             {langObj.courses}{" "}
                           </Link>
@@ -444,11 +501,11 @@ export default function Header() {
                         ""
                       )}
                       {(user.token && user.user_role == 2) ||
-                        (user.token && user.user_role == 1) ? (
+                      (user.token && user.user_role == 1) ? (
                         <>
                           {" "}
-                          <li key={"list10"} >
-                            <Link onClick={clerSearchText} to="/category">
+                          <li key={"list10"}>
+                            <Link style={{color:location.pathname=="/category"?"#023e86":"",}} onClick={clerSearchText} to="/category">
                               Category
                             </Link>
                           </li>{" "}
@@ -458,7 +515,7 @@ export default function Header() {
                       )}
                       {/** {user.token && user.user_role == 2 || user.token && user.user_role == 1 ? <> <li><a href="#">Tag</a></li> </> : ''}  */}
                       {(user.token && user.user_role == 2) ||
-                        (user.token && user.user_role == 1) ? (
+                      (user.token && user.user_role == 1) ? (
                         <>
                           {/** 
                           <li>
@@ -471,11 +528,11 @@ export default function Header() {
                         ""
                       )}
                       {(user.token && user.user_role == 2) ||
-                        (user.token && user.user_role == 1) ? (
+                      (user.token && user.user_role == 1) ? (
                         <>
                           {" "}
-                          <li key={"list11"} >
-                            <Link onClick={clerSearchText} to="/qualification">
+                          <li key={"list11"}>
+                            <Link style={{color:location.pathname=="/qualification"?"#023e86":"",}}  onClick={clerSearchText} to="/qualification">
                               Qualification
                             </Link>
                           </li>{" "}
@@ -484,12 +541,12 @@ export default function Header() {
                         ""
                       )}
                       {(user.token && user.user_role == 2) ||
-                        (user.token && user.user_role == 1) ||
-                        (user.token && user.user_role == 4) ? (
+                      (user.token && user.user_role == 1) ||
+                      (user.token && user.user_role == 4) ? (
                         <>
                           {" "}
-                          <li key={"list12"} >
-                            <Link onClick={clerSearchText} to="/task">
+                          <li key={"list12"}>
+                            <Link style={{color:location.pathname=="/task"?"#023e86":"",}} onClick={clerSearchText} to="/task">
                               Task
                             </Link>
                           </li>{" "}
@@ -498,11 +555,116 @@ export default function Header() {
                         ""
                       )}
                     </ul>
-                  </div>
+                  </div> }
+                  {/* ------------------------ end admin route ------------------------ */}
+
+                  {/* -------------------    creator  ----------------- */}
+
+                  {user.user_role == 4 && <div id="myNav" className="menu-sec">
+                  <span className="closebtn" onClick={closeNav}>
+                    &times;
+                  </span>
+                  <ul>
+                   
+
+                    {user.token && (
+                      <li key={"list1"}>
+                        <Link style={{color:location.pathname=="/about-us"?"#023e86":"",}}  onClick={clerSearchText} to="/about-us">
+                          About
+                        </Link>
+                      </li>
+                    )}
+
+                    {user.token && user.user_role == 5 ? (
+                      <>
+                        {" "}
+                        <li key={"list2"}>
+                          <Link style={{color:location.pathname=="/courses"?"#023e86":"",}}  onClick={clerSearchText} to="/courses">
+                            {langObj.courses}
+                          </Link>
+                        </li>{" "}
+                      </>
+                    ) : (
+                      ""
+                    )}
+
+                    {user.token && user.user_role == 5 ? (
+                      <li key={"list3"}>
+                        <NavLink style={{color:location.pathname=="/my-courses"?"#023e86":"",}} onClick={clerSearchText} to={"my-courses"}>
+                          {langObj.my_courses}
+                        </NavLink>
+                      </li>
+                    ) : (
+                      ""
+                    )}
+                    {user.token && user.user_role == 4 ? (
+                      <>
+                        {" "}
+                        <li key={"list4"}>
+                          <Link style={{color:location.pathname=="/profile"?"#023e86":"",}} onClick={clerSearchText} to="/profile">
+                            {langObj.profile}
+                          </Link>
+                        </li>{" "}
+                      </>
+                    ) : (
+                      ""
+                    )}
+
+                    
+
+                    {user.token && user.user_role == 4 ? (
+                      <li key={"list6"}>
+                        <NavLink style={{color:location.pathname=="/enrollments"?"#023e86":"",}} onClick={clerSearchText} to={"enrollments"}>
+                          Enrollments
+                        </NavLink>
+                      </li>
+                    ) : (
+                      ""
+                    )}
+
+                     
+ 
+
+                    {user.user_role == 4  ? (
+                      <li key={"list9"}>
+                        <Link style={{color:location.pathname=="/course"?"#023e86":"",}} onClick={clerSearchText} to="/course">
+                          {" "}
+                          {langObj.courses}{" "}
+                        </Link>
+                      </li>
+                    ) : (
+                      ""
+                    )}
+
+                     
+
+               
+                   
+
+                   
+                    { (user.token && user.user_role == 4) ? (
+                      <>
+                        {" "}
+                        <li key={"list12"}>
+                          <Link style={{color:location.pathname=="/task"?"#023e86":"",}} onClick={clerSearchText} to="/task">
+                            Task
+                          </Link>
+                        </li>{" "}
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </ul>
+
+                </div>
+               }
+
+                  {/* ------------------------ end  creator ------------------------ */}
+
                   <div className="hd-loging-sign">
                     {!user.token && (
                       <ul>
-                        <li key={"list13"} >
+                        <li key={"list13"}>
                           <a
                             data-toggle="modal"
                             data-target="#loginform"
@@ -516,7 +678,7 @@ export default function Header() {
                     )}
                     {user.token && (
                       <ul>
-                        <li key={"list14"} >
+                        <li key={"list14"}>
                           <Link to="#" onClick={Logout}>
                             {langObj.logout}
                           </Link>
@@ -526,6 +688,54 @@ export default function Header() {
                   </div>
                 </div>
               )}
+
+
+              {user.token && user.user_role==5 && <>
+
+                {/* -------------------  user   ----------------- */}
+
+                <div className="rt-side">
+
+                  
+               
+
+              {/* ------------------------ end user  ------------------------ */}
+
+                  <div className="hd-loging-sign">
+                    {!user.token && (
+                      <ul>
+                        <li key={"list13"}>
+                          <a
+                            data-toggle="modal"
+                            data-target="#loginform"
+                            href="#"
+                          >
+                            {langObj.login}
+                          </a>
+                        </li>
+                        {/* <li><a href="/signup">Sign up</a></li> */}
+                      </ul>
+                    )}
+                    {user.token && (
+                      <ul>
+                        <li key={"list14"}>
+                          <Link to="#" onClick={Logout}>
+                            {langObj.logout}
+                          </Link>
+                        </li>
+                      </ul>
+                    )}
+                  </div>
+
+                  </div>
+
+              </>}
+
+               
+
+
+
+
             </div>
           </div>
         </div>

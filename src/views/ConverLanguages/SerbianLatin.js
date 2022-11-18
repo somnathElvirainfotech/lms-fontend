@@ -1,6 +1,10 @@
 
 var SerbianLatin = {
 
+
+    // courses page---------------------
+    sub_courses:"Interni portal za obuku",
+
     // main menu-----
     courses: "Kursevi",
     profile: "Moj profil",
@@ -45,7 +49,13 @@ var SerbianLatin = {
     your_online_courses: "Tvoji kursevi",
     number_of_enrolled_courses: "Započeti kursevi",
     number_of_finished_courses: "Završeni kursevi",
-    number_of_certificates: "Sertifikati"
+    number_of_certificates: "Sertifikati",
+    my_task:"Tvoji zadaci",
+
+    // footer language --------------------------
+    copyright_item1:"Elektroprivreda Srbije",
+    copyright_item2:"Internal learning portal",
+    support_text:"Kontakt za korisničku podršku:"
 
 }
 

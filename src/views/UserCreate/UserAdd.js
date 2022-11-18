@@ -271,6 +271,8 @@ function UserAdd() {
       groupArr.push(i.value);
     }
 
+    console.log("selected... ",selected);
+
     const data = new FormData();
     data.append("firstname", cinputs.firstname);
     data.append("lastname", cinputs.lastname);
@@ -326,47 +328,9 @@ function UserAdd() {
     }
   };
 
-  const CreateFrom = () => {
-    setCourseList(false);
-    setCourseCreate(true);
-    setCourseEdit(false);
+  
 
-    cinputs.firstname = "";
-    cinputs.lastname = "";
-    cinputs.email = "";
-    cinputs.password1 = "";
-    cinputs.password2 = "";
-    cinputs.role = "";
-    setSelected([]);
-    cinputs.status = "";
-    cinputs.qualification = "";
-    cinputs.date = "";
-    cinputs.hr_no = "";
-
-    setsuccess("");
-    seterror("");
-  };
-
-  const CreateBack = () => {
-    setCourseList(true);
-    setCourseCreate(false);
-    setCourseEdit(false);
-
-    listCourse();
-
-    cinputs.firstname = "";
-    cinputs.lastname = "";
-    cinputs.email = "";
-    cinputs.password1 = "";
-    cinputs.password2 = "";
-    cinputs.role = "";
-    setSelected([]);
-    cinputs.qualification = "";
-    cinputs.date = "";
-    cinputs.hr_no = "";
-    setsuccess("");
-    seterror("");
-  };
+  
 
   const EditBack = () => {
     setCourseList(false);
@@ -412,60 +376,7 @@ function UserAdd() {
     }
   };
 
-  const courseEditForm = async (id) => {
-    var response = await UserCreateService.getUser(id);
-    // console.log(response.data.data[0].course_languages_id)
-    EditBack();
-    if (response.data.status) {
-      setCourseId(id);
-      var item = response.data.data[0];
-      console.log("apppppppppppp", response.data.data.group_details);
-
-      cinputs.firstname = item.firstname;
-      cinputs.lastname = item.lastname;
-      cinputs.role = item.role;
-      // cinputs.group_id = item.group_id;
-      cinputs.qualification = item.qualification_id
-        ? item.qualification_id
-        : "";
-      cinputs.language = item.language_id ? item.language_id : "";
-      cinputs.social_link_1 = item.social_link_1 ? item.social_link_1 : "";
-      cinputs.social_link_2 = item.social_link_2 ? item.social_link_2 : "";
-      cinputs.details = item.details ? item.details : "";
-      cinputs.status = item.is_active;
-      cinputs.date = item.date;
-      cinputs.hr_no = item.user_hr_no;
-
-      var groupRes = await UserService.getGroupList();
-      if (groupRes.data.status != false) {
-        let temp = [];
-        for (var i of groupRes.data.data) {
-          var aa = { label: i.g_name.toUpperCase(), value: i.id };
-          temp.push(aa);
-        }
-      }
-
-      var languageRes = await UserService.languages();
-      // console.log(languageRes.data)
-      if (languageRes.data.status != false) {
-        setLanguage([...languageRes.data.data]);
-      }
-
-      var qualificationRes = await QualificationService.getAll();
-      if (qualificationRes.data.status != false) {
-        setQualification([...qualificationRes.data.data]);
-      }
-
-      var temp = [];
-      for (var item of item.group_details) {
-        var aa = { label: item.g_name.toUpperCase(), value: item.group_id };
-        temp.push(aa);
-      }
-
-      setSelected([...temp]);
-    }
-  };
-
+   
   const courseDelete = async (id) => {
     var responce = await UserService.courseDelete(id);
     listCourse();
@@ -691,6 +602,7 @@ function UserAdd() {
             <div className="col-md-12 col-sm-6 pr-md-0">
               <div className="container">
                 <button
+                style={{width:"20%"}}
                   type="button"
                   className="sec-btn"
                   onClick={previousPage}
@@ -754,7 +666,7 @@ function UserAdd() {
                         </div>
 
                         <div className="col-md-6">
-                          <div className="form-group">
+                          <div className="form-group multi-group">
                             <label>GROUP</label>
                             <MultiSelect
                               required
@@ -956,7 +868,7 @@ function UserAdd() {
                       <div className="form-row">
                         <div className="col-md-12 text-center mt-3">
                           <div className="form-group">
-                            <button type="submit" className="btn btn-success">
+                            <button type="submit" style={{width:"20%"}} className="btn btn-success">
                               CREATE
                             </button>
                           </div>

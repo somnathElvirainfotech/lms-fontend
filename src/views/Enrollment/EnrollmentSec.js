@@ -400,7 +400,7 @@ export default function EnrollmentSec() {
   ];
 
   // react pagination  //////////////////////////
-  const PER_PAGE = 10;
+  const PER_PAGE = 50;
   const [currentPageData, setCurrentPageData] = useState([]);
   const pageCount = Math.ceil(enrollment.length / PER_PAGE);
 
@@ -781,7 +781,7 @@ export default function EnrollmentSec() {
 
       {/** search */}
 
-      {user.user_role == 2 || user.user_role == 1 || user.user_role == 4 ? (
+      { user.user_role == 2 || user.user_role == 4 ? (
         <div className="enrollments-form course">
           <div className="container">
             <div className="enrollments-form-inner course-inner">
@@ -870,7 +870,7 @@ export default function EnrollmentSec() {
 
       {/** entrollment table */}
       <div className="enrollments-sec activites-sec">
-        <div className="container">
+        <div className="container-fluid">
           {/**  export button  */}
 
           {(csv_data && csv_data.length > 0 && user.user_role == 1) ||
@@ -880,7 +880,7 @@ export default function EnrollmentSec() {
               data={csv_data}
               filename="enrollment.csv"
             >
-              <button type="button" className="btn btn-primary">
+              <button type="button" className="btn btn-primary col-md-4">
                 EXPORT CSV
               </button>
             </CSVLink>
@@ -900,7 +900,7 @@ export default function EnrollmentSec() {
             </CSVLink>
           )}
 
-          <div className="enrollments-sec-table activites-table">
+          <div className="enrollments-sec-table activites-table tableFont ">
             {currentPageData.length > 0 ? (
               <table className="table table-responsive">
                 <thead>
@@ -917,10 +917,10 @@ export default function EnrollmentSec() {
                     <th>User Progress</th>
                     {user.user_role != 4 && <th>Teacher’s Name</th>}
                     {/**    <th>Points
-                                        Won</th> */}
+                                        Won</th> 
                     <th>Assignment no </th>
 
-                    <th>Assignment deadline</th>
+                    <th>Assignment deadline</th> */}
                     <th>Rating</th>
                     <th>Comments</th>
                     <th>View</th>
@@ -933,6 +933,7 @@ export default function EnrollmentSec() {
                   </tr>
                 </thead>
                 <tbody>
+                
                   {/** for creator */}
                   {user.user_role == 4 &&
                     currentPageData.map((item) => (
@@ -1136,35 +1137,35 @@ export default function EnrollmentSec() {
                   {user.user_role == 5 &&
                     currentPageData.map((item) => (
                       <tr>
-                        <td>{item.enrollment_create_date}</td>
-                        <td>{item.user_details[0].user_hr_no}</td>
-                        <td>{item.user_details[0].fullname.toUpperCase()}</td>
-                        <td>
+                        <td style={{fontSize:"13px"}} >{item.enrollment_create_date}</td>
+                        <td style={{fontSize:"13px"}} >{item.user_details[0].user_hr_no}</td>
+                        <td style={{fontSize:"13px"}} >{item.user_details[0].fullname.toUpperCase()}</td>
+                        <td style={{fontSize:"13px"}} >
                           {item.course_details[0].course_name.toUpperCase()}
                         </td>
 
-                        <td>
+                        <td style={{fontSize:"13px"}} >
                           {item.course_details[0].category_name.toUpperCase()}
                         </td>
-                        <td>{item.enrollment_status.toUpperCase()}</td>
-                        <td>
+                        <td style={{fontSize:"13px"}} >{item.enrollment_status.toUpperCase()}</td>
+                        <td style={{fontSize:"13px"}} >
                           {item.course_progress ? item.course_progress : 0}%
                         </td>
-                        <td>
+                        <td style={{fontSize:"13px"}} >
                           {item.course_details[0].creator_name.toUpperCase()} (
                           {item.course_details[0].creator_email})
                         </td>
-                        {/**  <td>0</td> */}
-                        <td>
+                        {/**  <td>0</td> 
+                        <td style={{fontSize:"13px"}} >
                           {item.assignment_details
                             ? item.assignment_details.length
                             : 0}
                         </td>
-                        <td>
+                        <td style={{fontSize:"13px"}} >
                           {item.assignment_details &&
                             item.assignment_details[0].assignment_deadline}
-                        </td>
-                        <td>
+                        </td> */}
+                        <td style={{fontSize:"13px"}} >
                           {item.rating_number && (
                             <div>
                               {item.rating_number == 1 && (
@@ -1314,9 +1315,10 @@ export default function EnrollmentSec() {
                             </div>
                           )}
                         </td>
-                        <td>{item.comment ? item.comment : ""}</td>
-                        <td>
+                        <td style={{fontSize:"13px"}} >{item.comment ? item.comment : ""}</td>
+                        <td style={{fontSize:"13px"}} >
                           <Link
+                          style={{fontSize:"13px"}}
                             to={`/courses/${item.course_details[0].course_name}`}
                             state={{
                               singleCourseId: item.course_details[0].id,
@@ -1326,11 +1328,12 @@ export default function EnrollmentSec() {
                             <i className="fa fa-eye" aria-hidden="true"></i>
                           </Link>
                         </td>
-                        <td>
+                        <td style={{fontSize:"13px"}} >
                           {item.enrollment_status == "completed" &&
                             item.course_progress == 100 &&
                             item.course_details[0].certificate_id != 0 && (
                               <Link
+                              style={{fontSize:"13px"}}
                                 state={{
                                   user_name: user.username.toUpperCase(),
                                   email: user.email,
@@ -1361,44 +1364,44 @@ export default function EnrollmentSec() {
                   {user.user_role == 2 || user.user_role == 1
                     ? currentPageData.map((item) => (
                       <tr>
-                        <td>{item.enrollment_create_date}</td>
-                        <td>{item.user_details[0].user_hr_no}</td>
-                        <td>
+                        <td style={{fontSize:"13px"}} >{item.enrollment_create_date}</td>
+                        <td style={{fontSize:"13px"}} >{item.user_details[0].user_hr_no}</td>
+                        <td style={{fontSize:"13px"}} >
                           {item.user_details[0].fullname.toUpperCase()} (
                           {item.user_details[0].email})
                         </td>
-                        <td>
+                        <td style={{fontSize:"13px"}} >
                           {item.course_details[0].course_name.toUpperCase()}
                         </td>
-                        <td>
+                        <td style={{fontSize:"13px"}} >
                           {item.course_details[0].course_type.toUpperCase()}
                         </td>
-                        <td>
+                        <td style={{fontSize:"13px"}} >
                           {item.course_details[0].category_name.toUpperCase()}
                         </td>
                         {user.user_role == 2 && (
-                          <td>{item.enrollment_status.toUpperCase()}</td>
+                          <td style={{fontSize:"13px"}} >{item.enrollment_status.toUpperCase()}</td>
                         )}
-                        {user.user_role == 2 && <td>{item.total_number}</td>}
-                        {user.user_role == 2 && <td>{item.score_number}</td>}
-                        <td>
+                        {user.user_role == 2 && <td style={{fontSize:"13px"}} >{item.total_number}</td>}
+                        {user.user_role == 2 && <td style={{fontSize:"13px"}} >{item.score_number}</td>}
+                        <td style={{fontSize:"13px"}} >
                           {item.course_progress ? item.course_progress : 0}%
                         </td>
-                        <td>
+                        <td style={{fontSize:"13px"}} >
                           {item.course_details[0].creator_name.toUpperCase()}{" "}
                           ({item.course_details[0].creator_email}){" "}
                         </td>
-                        {/**  <td>0</td> */}
-                        <td>
+                        {/**  <td>0</td> 
+                        <td style={{fontSize:"13px"}} >
                           {item.assignment_details
                             ? item.assignment_details.length
                             : 0}
                         </td>
-                        <td>
+                        <td style={{fontSize:"13px"}} >
                           {item.assignment_details &&
                             item.assignment_details[0].assignment_deadline}
-                        </td>
-                        <td>
+                        </td>  */}
+                        <td style={{fontSize:"13px"}} >
                           {item.rating_number && (
                             <div>
                               {item.rating_number == 1 && (
@@ -1548,8 +1551,8 @@ export default function EnrollmentSec() {
                             </div>
                           )}
                         </td>
-                        <td>{item.comment ? item.comment : ""}</td>
-                        <td>
+                        <td style={{fontSize:"13px"}} >{item.comment ? item.comment : ""}</td>
+                        <td style={{fontSize:"13px"}} >
                           <Link
                             to={`/courses/${item.course_details[0].course_name}`}
                             state={{
@@ -1560,11 +1563,12 @@ export default function EnrollmentSec() {
                             <i className="fa fa-eye" aria-hidden="true"></i>
                           </Link>
                         </td>
-                        <td>
+                        <td style={{fontSize:"13px"}} >
                           {" "}
                           {item.enrollment_status == "completed" &&
                             item.course_details[0].course_type == "xapi" && (
                               <Link
+                              style={{fontSize:"13px"}}
                                 className="btn btn-success"
                                 to="/view-result"
                                 state={{
@@ -1595,6 +1599,7 @@ export default function EnrollmentSec() {
                       </tr>
                     ))
                     : ""}
+
                 </tbody>
               </table>
             ) : (
@@ -1605,7 +1610,7 @@ export default function EnrollmentSec() {
                   fontWeight: "bold",
                 }}
               >
-                No record Found
+                No record found
               </p>
             )}
 

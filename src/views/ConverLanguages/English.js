@@ -1,6 +1,9 @@
 
 var English = {
 
+    // courses page---------------------
+    sub_courses:"Internal learning portal",
+
     // main menu----------
     courses: "Courses",
     profile: "Profile",
@@ -46,7 +49,13 @@ var English = {
     your_online_courses:"Your online courses",
     number_of_enrolled_courses:"Number of enrolled courses",
     number_of_finished_courses:"Number of finished courses",
-    number_of_certificates:"Number of certificates"
+    number_of_certificates:"Number of certificates",
+    my_task:"My tasks",
+
+    // footer language --------------------------
+    copyright_item1:"Elektroprivreda Srbije",
+    copyright_item2:"Internal learning portal",
+    support_text:"Support contacts:"
 
 }
 

@@ -174,7 +174,7 @@ export default function UserGroup() {
                         </div>
                     }
 
-                    <button type="button" className="sec-btn add-grp-btn" data-toggle="modal" data-target="#addgroupModal">
+                    <button style={{width:"20%"}} type="button" className="sec-btn add-grp-btn" data-toggle="modal" data-target="#addgroupModal">
                         Add group <i className="fa fa-plus" aria-hidden="true"></i>
                     </button>
 
@@ -203,11 +203,11 @@ export default function UserGroup() {
                                                 <td>{i + 1}</td>
                                                 <td>{item.g_name}</td>
                                                 <td>
-                                                    <button type="button" onClick={e => getOne(item.id)} className="edit-btn" data-toggle="modal" data-target="#editgroupModal">
+                                                    <button style={{width:"20%"}} type="button" onClick={e => getOne(item.id)} className="edit-btn" data-toggle="modal" data-target="#editgroupModal">
                                                         Edit
                                                     </button>
 
-                                                    <button type="button" onClick={e => deleteData(item.id)} className="delete-btn" >
+                                                    <button style={{width:"30%"}} type="button" onClick={e => deleteData(item.id)} className="delete-btn" >
                                                         Delete
                                                     </button>
                                                 </td>

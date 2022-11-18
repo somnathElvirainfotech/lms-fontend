@@ -179,20 +179,60 @@ function CourseAdd() {
     setCreator([...responce.data.data]);
   };
 
+  const [sample_type,setSample_type]=useState("");
+
+  const [vedio,setVedio]=useState({});
+
+  const VedioHandler = (e) => {
+    const select = e.target.files[0];
+    const name = e.target.name;
+    console.log(select.type);
+    //setimageUpload(select);
+    const Allow = ["video/mp4"];
+    if (select && Allow.includes(select.type)) {
+      setVedio(select);
+    } else {
+      seterror("file type not support, file will be mp4 format ");
+    }
+
+    //console.log(vedio)
+  };
+
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     setCInputs((values) => ({ ...values, [name]: value }));
     // seterror('');
+
     if (name == "course_type") {
       if (value == "regular") {
         setCourseType("regular");
       } else if (value == "xapi") {
         setCourseType("xapi");
+        setSample_type("")
       } else {
         setCourseType("");
+        setSample_type("")
       }
     }
+
+    if(name== "sample_type")
+    {
+      if(value=="sample_vedio")
+      {
+        setSample_type("sample_vedio");
+        cinputs.sample_link="";
+      }
+      else if(value == "sample_link")
+      {
+
+        setSample_type("sample_link")
+        setVedio({})
+      }
+      else
+      setSample_type("")
+    }
+
     console.log(cinputs);
   };
 
@@ -262,6 +302,13 @@ function CourseAdd() {
     return count;
   }
 
+  var isEmpty = (obj) => {
+    for (var i in obj) {
+      return false;
+    }
+    return true;
+  };
+
   const FormSubmit = async (e) => {
     console.log("ssss");
     e.preventDefault();
@@ -294,9 +341,16 @@ function CourseAdd() {
         data.append("course_certificate_name", cinputs.course_certificate_name);
         data.append("author_name", cinputs.author_name);
         data.append("author_email", cinputs.author_email);
-
+        
         if (courseType == "regular") {
           data.append("attachment_file", attachment_file);
+          // data.append("sample_type",cinputs.sample_type)
+
+          // if(cinputs.sample_type == "sample_vedio")
+          // data.append("sample_vedio",isEmpty(vedio) ? "" : vedio)
+          // else if(cinputs.sample_type=="sample_link")
+          // data.append("sample_link",cinputs.sample_link)
+
         } else if (courseType == "xapi") {
           data.append("xapi_attachment_file", attachment_file);
         }
@@ -329,6 +383,9 @@ function CourseAdd() {
             cinputs.course_certificate_name = "";
             cinputs.author_email = "";
             cinputs.author_name = "";
+            cinputs.sample_type="";
+            cinputs.sample_link="";
+            setVedio({})
             setImage("");
             setAvatar_image("");
             setAttachment_file("");
@@ -491,14 +548,18 @@ function CourseAdd() {
         <div className="container">
           <div className="row">
             <div className="container">
-              <span>
-                <button
-                  type="button"
-                  className="sec-btn m-2"
-                  onClick={previousPage}
-                >
-                  Back
-                </button>
+              <span className="row">
+              <div className="col-sm-4">
+              <button
+              type="button"
+              className="sec-btn m-2"
+              onClick={previousPage}
+            >
+              Back
+            </button>
+              </div>
+              <div className="col-sm-4"></div>
+                <div className="col-sm-4"></div>
               </span>
 
               <div className="row">
@@ -525,7 +586,7 @@ function CourseAdd() {
                         </div>
                       </div>
                       <div className="col-md-6">
-                        <div className="form-group">
+                        <div className="form-group multi-group">
                           <label>GROUP</label>
 
                           <MultiSelect
@@ -712,6 +773,7 @@ function CourseAdd() {
                     </div>
 
                     <div className="form-row">
+
                       <div className="col-md-6">
                         <div className="form-group">
                           <label>Course Type</label>
@@ -765,6 +827,68 @@ function CourseAdd() {
                         </div>
                       )}
                     </div>
+
+                    {/** sample vedio/ link --------------------------- */}
+                 {courseType == "regular1" &&   <div className="form-row mt-3">
+
+                    <div className="col-md-6">
+                        <div className="form-group">
+                          <label> Sample Vedio/Link </label>
+                          <select
+                            required
+                            className="form-control"
+                            id="sample_type"
+                            onChange={handleChange}
+                            name="sample_type"
+                            value={cinputs.sample_type}
+                          >
+                            <option value=""> -- Select -- </option>
+                            <option value="sample_vedio">Vedio</option>
+                            <option value="sample_link">Link</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {sample_type == "sample_vedio" && (
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label>Sample Local Vedio</label>
+                            <input
+                              required
+                              type="file"
+                              name="sample_vedio"
+                              id="sample_vedio"
+                              className="form-control"
+                              value={cinputs.sample_vedio}
+                              onChange={VedioHandler}
+                              accept="video/mp4,video/x-m4v,video/*"
+                            />
+                          </div>
+                        </div>
+                      )}
+
+
+                      {sample_type == "sample_link" && (
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label>Sample Vedio Link</label>
+                            <input
+                              required
+                              type="text"
+                              name="sample_link"
+                              id="sample_link"
+                              className="form-control"
+                              value={cinputs.sample_link}
+                              onChange={handleChange}
+                            />
+                          </div>
+                        </div>
+                      )}
+
+
+                    </div> }
+
+                    {/** end sample vedio/ link --------------------------- */}
 
                     <div className="form-row mt-3">
                       {courseType == "xapi" && (
@@ -880,13 +1004,17 @@ function CourseAdd() {
                     </div>
 
                     <div className="form-row">
-                      <div className="col-md-12 text-center">
-                        <div className="form-group">
+                    <div className="col-sm-4"></div>
+                   
+                      <div className="col-sm-4 text-center">
+                        <div className="form-group ">
                           <button type="submit" className="btn btn-success">
                             CREATE
                           </button>
                         </div>
                       </div>
+
+                      <div className="col-sm-4"></div>
                     </div>
                   </form>
                 </div>

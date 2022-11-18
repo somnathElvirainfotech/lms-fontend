@@ -35,7 +35,7 @@
     }
 }
 
-@media screen and (max-width: 1509px) {
+@media screen and (max-width: 1920px) {
     .header .header-wrap .hd-sec .lt-side .hd-src .form-control {
         max-width: 250px;
     }
@@ -81,6 +81,57 @@
         padding: 0 0 0 10px;
     }
     .header .header-wrap .hd-sec .rt-side .menu-sec .closebtn{
+        display: block;
+    }
+
+}
+
+@media screen and (max-width: 10px) {
+    .header .header-wrap .hd-sec .lt-side .hd-src .form-control {
+        max-width: 250px;
+    }
+    .mb-hum{
+        display: block;
+        margin-right: 20px;
+    }
+    .header .header-wrap .hd-sec .rt-side .menu-sec2{
+        /*display: none;*/
+        margin: 0;
+        position: fixed;
+        top: 0;
+        right: 0;
+        background: #fff;
+        height: 100%;
+        z-index: 1;
+        overflow:hidden;
+        transition: .5s;
+        width: 0px;
+        max-width: 300px;
+    }
+    .header .header-wrap .hd-sec .rt-side .menu-sec2 ul li{
+        display: block;
+        margin: 0 0 5px;
+        padding: 0 20px;
+    }
+    .header .header-wrap .hd-sec .rt-side .menu-sec2 ul{
+        padding: 10px 0;
+    }
+    .header.stickyhead{
+        position: relative;
+        animation: infinite;
+    }
+    .header .header-wrap .hd-sec .rt-side .menu-sec2 .closebtn {
+        font-size: 40px;
+        line-height: 1;
+        position: absolute;
+        right: 7px;
+        cursor: pointer;
+        color: #fa1d1d;
+    }
+    .our-courses-sec .cou-box .text-box{
+        padding: 0 0 0 10px;
+    }
+    .header .header-wrap .hd-sec .rt-side .menu-sec2 .closebtn{
         display: block;
     }
 

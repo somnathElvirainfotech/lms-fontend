@@ -28,6 +28,7 @@ const userData = {
   language_type: TokenHelper.getLanguage(),
   firstname: TokenHelper.getFristName(),
   lastname: TokenHelper.getLastName(),
+  login_type:TokenHelper.getLoginType(),
 };
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

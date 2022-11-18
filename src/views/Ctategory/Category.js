@@ -214,7 +214,7 @@ export default function Category() {
                         </div>
                     }
 
-                    <button type="button" className="sec-btn add-grp-btn" data-toggle="modal" data-target="#addgroupModal">
+                    <button style={{width:"30%"}} type="button" className="sec-btn add-grp-btn" data-toggle="modal" data-target="#addgroupModal">
                         Add category <i className="fa fa-plus" aria-hidden="true"></i>
                     </button>
 
@@ -246,11 +246,11 @@ export default function Category() {
                                                 <td>{item.c_name.toUpperCase()}</td>
                                                 <td>{item.parent_cName && item.parent_cName.toUpperCase()}</td>
                                                 <td>
-                                                    <button type="button" onClick={e => getOne(item.id)} className="edit-btn" data-toggle="modal" data-target="#editgroupModal">
+                                                    <button style={{width:"30%"}} type="button" onClick={e => getOne(item.id)} className="edit-btn" data-toggle="modal" data-target="#editgroupModal">
                                                         Edit
                                                     </button>
 
-                                                    <button type="button" onClick={e => deleteData(item.id)} className="delete-btn" >
+                                                    <button  style={{width:"40%"}} type="button" onClick={e => deleteData(item.id)} className="delete-btn" >
                                                         Delete
                                                     </button>
                                                 </td>

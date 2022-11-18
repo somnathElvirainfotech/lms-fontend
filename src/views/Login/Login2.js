@@ -61,7 +61,8 @@ export const Login2 = () => {
                     TokenHelper.setUserRoll(response.data.data.role);
                     TokenHelper.setFristName(response.data.data.firstname);
                     TokenHelper.setLastName(response.data.data.lastname);
-                    TokenHelper.setLanguage(response.data.data.language_id)
+                    TokenHelper.setLanguage(response.data.data.language_id);
+                    TokenHelper.setLoginType(response.data.data.login_type);
 
 
 
@@ -183,7 +184,8 @@ export const Login2 = () => {
                 TokenHelper.setUserRoll(response.data.data[0].role);
                 TokenHelper.setFristName(response.data.data[0].firstname);
                 TokenHelper.setLastName(response.data.data[0].lastname);
-                TokenHelper.setLanguage(response.data.data.language_id)
+                TokenHelper.setLanguage(response.data.data[0].language_id);
+                TokenHelper.setLoginType(response.data.data[0].login_type);
 
 
 
