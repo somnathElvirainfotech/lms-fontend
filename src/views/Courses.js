@@ -687,8 +687,8 @@ export default function Course() {
                 <img src="images/inner-banner.png" alt="" />
                 <div className="desc">
                     <div className="container">
-                        <div className="text">
-                            <h1 style={{textAlign:"center"}}>{langObj.sub_courses}</h1>
+                        <div className="text text-center">
+                            <span className="sub_courses_2"   style={{textAlign:"center"}}>{langObj.sub_courses}</span>
                           {/**  <div className="breadcrumb">
                                 <ul>
                                     <li><a href="#">Home</a></li>
@@ -716,10 +716,10 @@ export default function Course() {
 
                                                 {pitem.sub_category.map((subItem) =>
                                                     <>
-                                                        <option value={subItem.id}>--{subItem.c_name.toUpperCase()}</option>
+                                                        <option value={subItem.id}>&nbsp;&nbsp;&nbsp;{subItem.c_name.toUpperCase()}</option>
                                                         {subItem.sub_category.map(child =>
                                                             <>
-                                                                <option value={child.id}>....{child.c_name.toUpperCase()}</option>
+                                                                <option value={child.id}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{child.c_name.toUpperCase()}</option>
                                                             </>
                                                         )}
                                                     </>
@@ -832,21 +832,22 @@ export default function Course() {
 
 
                                                
+                                                {course.enrollment_details.length > 0 && user.user_role == 5 &&
+                                                    <>
+                                                        {course.enrollment_details[0].course_progress != 0 &&
+                                                            <ProgressBar
+                                                            className="progressBarPosition"
+                                                            completed={course.enrollment_details[0].course_progress} bgColor={course.enrollment_details[0].course_progress == 100 ? "green" : "#023e86"} borderRadius={"2px"} height={"18px"} />
+                                                        }
+                                                    </>
+    
+                                                }
     
                                                 
 
                                             </div>
 
-                                            {course.enrollment_details.length > 0 && user.user_role == 5 &&
-                                                <>
-                                                    {course.enrollment_details[0].course_progress != 0 &&
-                                                        <ProgressBar
-                                                        className="progressBarPosition"
-                                                        completed={course.enrollment_details[0].course_progress} bgColor={course.enrollment_details[0].course_progress == 100 ? "green" : "#023e86"} borderRadius={"2px"} height={"18px"} />
-                                                    }
-                                                </>
-
-                                            }
+                                            
 
 
 

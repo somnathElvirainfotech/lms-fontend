@@ -24,6 +24,11 @@ import SerbianLatin from "../ConverLanguages/SerbianLatin";
 import { LangContext } from "../../routes/routes";
 import MyTask from "./MyTask";
 
+import GenarateCertificateService from "../../services/GenarateCertificateService";
+import { toast } from "react-toastify";
+
+
+
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
@@ -219,6 +224,7 @@ export default function MyCourse() {
   };
 
   useEffect(() => {
+    
     getAllcourse();
   }, []);
 
@@ -277,24 +283,68 @@ export default function MyCourse() {
     }
   };
 
-  var geotoCertificate = (
+
+  // certificate ----------------------------------------------
+  var geotoCertificate = async(
     user_name,
     email,
     course_name,
     date,
-    certificate_id
+    certificate_id,
+    enroll_id
   ) => {
-    navigate("/Certificate", {
-      state: {
-        user_name: user_name,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        email: email,
-        course_name: course_name,
-        date: date,
-        certificate_id: certificate_id,
-      },
-    });
+    // navigate("/Certificate", {
+    //   state: {
+    //     user_name: user_name,
+    //     firstname: user.firstname,
+    //     lastname: user.lastname,
+    //     email: email,
+    //     course_name: course_name,
+    //     date: date,
+    //     certificate_id: certificate_id,
+    //   },
+    // });
+
+    setShowLoader(true)
+
+    var payload={
+      user_name: user_name,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      cert_course_name: course_name,
+      date: date,
+      certificate_id: certificate_id,
+      enroll_id:enroll_id,
+      email:email
+    }
+
+
+    var responce=await GenarateCertificateService.create(payload);
+
+    if(responce.data.status)
+    {
+        // console.log("certificate link  ",responce.data.data[0].certificate)
+        toast.success(responce.data.msg)
+     
+        const link = document.createElement('a');
+        link.href = responce.data.data[0].certificate;
+        link.download = true;
+        link.setAttribute('target', '_blank');
+        link.blank=
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+
+    }
+
+
+   
+
+
+
+    setShowLoader(false)
+
   };
 
   var goSinglePage=(cname,cid)=>{
@@ -305,6 +355,7 @@ export default function MyCourse() {
   const [langObj, setLangObj] = useState({});
 
   useEffect(() => {
+
     if (languageList.language_name === "1") {
       setLangObj(English);
     } else if (languageList.language_name === "2") {
@@ -452,8 +503,8 @@ export default function MyCourse() {
                                               user.email,
                                               enrollmentcourse.course_details[0].course_certificate_name.toUpperCase(),
                                               enrollmentcourse.updated_at,
-                                              enrollmentcourse.course_details[0]
-                                                .certificate_id
+                                              enrollmentcourse.course_details[0].certificate_id,
+                                              enrollmentcourse.enroll_id
                                             )
                                           }
                                           className="course-status ml-3"

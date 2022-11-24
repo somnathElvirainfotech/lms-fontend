@@ -16,6 +16,7 @@ import {
   getCookie,
   removeCookie,
 } from "../../../middleware/CookieSetup";
+import $ from "jquery";
 
 // languages
 import English from "../../ConverLanguages/English";
@@ -33,6 +34,7 @@ function openNav() {
    
   document.getElementById("myNav").style.width = "100%";
   document.getElementById("myNav").style.display = "block";
+  // $('#myNav').toggle();
   
 }
 
@@ -224,6 +226,12 @@ export default function Header() {
     // console.log(languageList.language_name);
   }, [languageList.language_name]);
 
+  var mobileToggle=()=>{
+   
+      $('#myNav').toggle();
+  
+  }
+
   return (
     <>
       {/** loader */}
@@ -242,6 +250,10 @@ export default function Header() {
                 <div className="cat-menu">
 
                 {user.user_role==5 && user.token && <>
+
+                  <span className="mobile-toggle" onClick={mobileToggle}>
+                <i class="fa fa-bars" aria-hidden="true"></i>
+                </span>
                   
 
                   <div id="myNav" className="menu-sec2">
@@ -400,6 +412,19 @@ export default function Header() {
                     </span>
                     <ul>
                       {/* {user.token && user.user_role == 2 || user.token && user.user_role == 1 ? <> <li><a target="__blank" href={ADMIN_URL}>Admin</a></li> </> : ''} */}
+
+                      {user.token ? (
+                        <>
+                          {" "}
+                          <li key={"list2"}>
+                            <Link style={{color:location.pathname=="/courses"?"#023e86":"",}}  onClick={clerSearchText} to="/courses">
+                              Home
+                            </Link>
+                          </li>{" "}
+                        </>
+                      ) : (
+                        ""
+                      )}
 
                       {user.token && (
                         <li key={"list1"}>
@@ -565,6 +590,19 @@ export default function Header() {
                     &times;
                   </span>
                   <ul>
+
+                  {user.token ? (
+                    <>
+                      {" "}
+                      <li key={"list2"}>
+                        <Link style={{color:location.pathname=="/courses"?"#023e86":"",}}  onClick={clerSearchText} to="/courses">
+                          Home
+                        </Link>
+                      </li>{" "}
+                    </>
+                  ) : (
+                    ""
+                  )}
                    
 
                     {user.token && (
@@ -696,6 +734,7 @@ export default function Header() {
 
                 <div className="rt-side">
 
+                
                   
                
 

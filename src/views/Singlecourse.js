@@ -21,6 +21,7 @@ import QnsAnsComment from "./QnsAnsComment";
 import { setCookie, getCookie, removeCookie } from "../middleware/CookieSetup";
 import SingleXapiModal from "./SingleXapiModal";
 import StaticRating from "./StaticRating";
+import ProgressBar from "@ramonak/react-progress-bar";
 
 // loader
 import Loader from "./Loader";
@@ -59,7 +60,7 @@ export default function Singlecourse() {
   // const [courseType,setcourseType]=useState('');
 
   var { singleCourseId, taskId, courseType } =
-    location.state != null ? location.state : { singleCourseId: 1 };
+    location.state != null ? location.state : { singleCourseId: 0 };
 
   console.log("params --- ", location.state);
 
@@ -94,7 +95,7 @@ export default function Singlecourse() {
   // // to store selected course
   const [selectedCourse, setSelectedCourse] = useState("");
   const [creatorId, setCreatorId] = useState("");
-  const [courseID, setCourseID] = useState([]);
+  const [courseID, setCourseID] = useState();
 
   const [review, setReview] = useState([]);
   const [singleReview, setSingleReview] = useState([]);
@@ -124,9 +125,10 @@ export default function Singlecourse() {
     for (var i of tresponce.data.data) {
       if (i.course_id == cdata.id) {
         // setTaskId(Number(i.id))
+        console.log("course id", cdata.id);
+        console.log("task id", i.id);
         taskId = Number(i.id);
         var a = i.no_attempted + 1;
-        console.log(a);
         // setNoAttemp(a)
         noAttemp = a;
       }
@@ -146,6 +148,7 @@ export default function Singlecourse() {
   // },[])
 
   var lessonActive = (e) => {
+    // alert(1)
     // console.log(e)
     $(".active_lesson").removeClass("active_lesson_selected");
     $(`#${e}`).addClass("active_lesson_selected");
@@ -162,10 +165,13 @@ export default function Singlecourse() {
 
       if (location.state == null) {
         var data = await UserService.singlecourseByName(paramsvalue);
+        // alert(data.data.data.id)
         singleCourseId = data.data.data.id;
       }
 
       var course = query.get("id");
+
+      // alert(singleCourseId)
 
       setCourseID(singleCourseId);
 
@@ -224,35 +230,32 @@ export default function Singlecourse() {
       setCourses(temp);
       setChap(temp.chapters);
 
-      if (user.token && user.user_role == 5 ) {
+      if (user.token && user.user_role == 5) {
         chkAllGroups(temp.group_details);
       }
 
-      if (user.token && user.user_role == 4 ) {
+      if (user.token && user.user_role == 4) {
         chkAllGroups(temp.group_details);
       }
 
-      if(user.user_role==2)
-      {
+      if (user.user_role == 2) {
         setChkGroup(true);
         setChkGroup2(true);
 
-        if(temp.course_type=="regular")
-        {
-        // alert(temp.chapters[0].id)
-        setLastChapter(temp.chapters[0].id)
-        setLastLesson(temp.chapters[0].lessons[0].id)
+        if (temp.course_type == "regular") {
+          // alert(temp.chapters[0].id)
+          setLastChapter(temp.chapters[0].id);
+          setLastLesson(temp.chapters[0].lessons[0].id);
 
-        setVedioPlayer(temp.chapters[0].lessons[0].lesson_vedio_link);
-        setVedioType(temp.chapters[0].lessons[0].lesson_vedio_type);
-        setCurrentChapter(temp.chapters[0].lessons[0].chapter_id);
-        setCurrentLesson(temp.chapters[0].lessons[0].id);
-        oneView({
-          chapter_name: temp.chapters[0].id.chapter_name,
-          lesson_name: temp.chapters[0].lessons[0].lesson_name,
-          lesson_details: temp.chapters[0].lessons[0].lesson_details,
-        });
-
+          setVedioPlayer(temp.chapters[0].lessons[0].lesson_vedio_link);
+          setVedioType(temp.chapters[0].lessons[0].lesson_vedio_type);
+          setCurrentChapter(temp.chapters[0].lessons[0].chapter_id);
+          setCurrentLesson(temp.chapters[0].lessons[0].id);
+          oneView({
+            chapter_name: temp.chapters[0].id.chapter_name,
+            lesson_name: temp.chapters[0].lessons[0].lesson_name,
+            lesson_details: temp.chapters[0].lessons[0].lesson_details,
+          });
         }
       }
 
@@ -277,16 +280,22 @@ export default function Singlecourse() {
                 ? enrollRes.data.data[0].current_chapter
                 : 0
             );
+
+            console.log(
+              "current chapter ",
+              enrollRes.data.data[0].current_chapter
+            );
             setLastLesson(
               enrollRes.data.data[0].current_lession != null
                 ? enrollRes.data.data[0].current_lession
                 : 0
             );
-            await getCurrentLesson();
+            console.log(
+              "current lesson ",
+              enrollRes.data.data[0].current_lession
+            );
+            await getCurrentLesson(singleCourseId);
           }
-
-         
-
         }
 
         setEnrollments(status);
@@ -454,10 +463,10 @@ export default function Singlecourse() {
         task_id: taskId,
         no_attempted: noAttemp,
       });
-
+      // alert(courseID)
       var enrollmentresponce = await UserService.enrollment(
         user.user_id,
-        singleCourseId
+        courseID
       );
       setEnrollments(enrollmentresponce.data.status);
 
@@ -519,10 +528,13 @@ export default function Singlecourse() {
         setShowLoader(true);
 
         await taskAdd();
+
         var enrollRes = await UserService.enrollmentcourse(
           user.user_id,
           singleCourseId
         );
+
+        console.log("current enroll ", enrollRes.data);
 
         setShowLoader(false);
 
@@ -598,6 +610,38 @@ export default function Singlecourse() {
       await CourseTrackService.lastLessonUpdate(payload);
       setShowLoader(false);
     }
+
+   
+
+  };
+
+  var [viewAllRating, setViewAllRating] = useState(false);
+
+  var closeRating = async () => {
+    setShowLoader(true);
+
+    var reviews = await CommentRatingService.getByCourseId(courseID, "", 5);
+    setReview([...reviews.data.data]);
+    console.log("lllllllllllllllll:", reviews.data);
+    var creviews = await CommentRatingService.getByCourseId(
+      courseID,
+      user.user_id,
+      5
+    );
+    setSingleReview([...creviews.data.data]);
+
+    setShowLoader(false);
+
+    setViewAllRating(false);
+  };
+
+  var getReview = async () => {
+    setShowLoader(true);
+    var reviews = await CommentRatingService.getByCourseId(courseID, "", "");
+    console.log(reviews.data);
+    setReview([...reviews.data.data]);
+    setViewAllRating(true);
+    setShowLoader(false);
   };
 
   var delReview = async (id) => {
@@ -606,15 +650,11 @@ export default function Singlecourse() {
     var responce = await CommentRatingService.delete(id);
     if (responce.data.status) {
       // get review
-      var reviews = await CommentRatingService.getByCourseId(
-        singleCourseId,
-        "",
-        5
-      );
+      var reviews = await CommentRatingService.getByCourseId(courseID, "", 5);
       setReview([...reviews.data.data]);
       console.log("lllllllllllllllll:", reviews.data);
       var creviews = await CommentRatingService.getByCourseId(
-        singleCourseId,
+        courseID,
         user.user_id,
         5
       );
@@ -667,7 +707,7 @@ export default function Singlecourse() {
 
     var payload = {
       user_id: user.user_id,
-      course_id: singleCourseId,
+      course_id: courseID,
       chapter_id: currentChapter,
       lesson_id: currentLesson,
       lesson_percentage: 100,
@@ -683,7 +723,7 @@ export default function Singlecourse() {
 
     var payload = {
       user_id: user.user_id,
-      course_id: singleCourseId,
+      course_id: courseID,
       chapter_id: currentChapter,
       lesson_id: currentLesson,
       lesson_percentage: Math.round((progress.playedSeconds / duration) * 100),
@@ -736,7 +776,7 @@ export default function Singlecourse() {
 
       var payload = {
         user_id: user.user_id,
-        course_id: singleCourseId,
+        course_id: courseID,
       };
 
       var responce = await CourseTrackService.getTrackingLession(payload);
@@ -748,15 +788,17 @@ export default function Singlecourse() {
 
   const [currentActiveLesson, setCurrentActiveLesson] = useState({});
 
-  var getCurrentLesson = async () => {
+  var getCurrentLesson = async (CId) => {
     if (user.user_role == 5) {
       setShowLoader(true);
       var course_id = query.get("id");
 
       var payload = {
         user_id: user.user_id,
-        course_id: singleCourseId,
+        course_id: CId,
       };
+
+      console.log("payload ", payload);
 
       var response = await CourseTrackService.getCurrentLession(payload);
       console.log("getCurrentLesson ------  ", response.data);
@@ -824,7 +866,7 @@ export default function Singlecourse() {
   var taskAdd = async () => {
     console.log("noAttemp ----", noAttemp);
     if (user.user_role == 5) {
-      var responce = await UserService.singlecourse(singleCourseId);
+      var responce = await UserService.singlecourse(courseID);
 
       await setTask(responce.data.data);
       console.log("noAttemp ----", noAttemp);
@@ -843,7 +885,7 @@ export default function Singlecourse() {
 
       {chkGroups ? (
         <>
-        {/**   <div className="inner-banner">
+          {/**   <div className="inner-banner">
             <img src="/images/inner-banner.png" alt="" />
             <div className="desc">
               <div className="container">
@@ -862,7 +904,7 @@ export default function Singlecourse() {
             </div>
           </div> */}
 
-     {/**   <div className="single-course-top">
+          {/**   <div className="single-course-top">
             <div className="container">
               <div className="media align-items-center">
                 <img src="/images/university-logo.png" alt="" />
@@ -876,15 +918,13 @@ export default function Singlecourse() {
                 </div>
               </div>
             </div>
-          </div> */} 
+          </div> */}
 
           <div className="single-course-bottom sec-bg">
-            <div className="container">
+            <div className="container-fluid">
               <div className="row">
-                
-
-                <div className="col-md-7">
-                  {enrollment == false && user.user_role==5 && (
+                <div className="col-lg-8 col-md-7">
+                  {enrollment == false && user.user_role == 5 && (
                     <div className="image-course">
                       <img
                         src={
@@ -895,18 +935,22 @@ export default function Singlecourse() {
                     </div>
                   )}
 
-                  {enrollment == true && course.course_type == "xapi" && user.user_role==5 && (
-                    <div className="image-course">
-                      <img
-                        src={
-                          course.image ? course.image : "/images/my-course1.png"
-                        }
-                        alt=""
-                      />
-                    </div>
-                  )}
+                  {enrollment == true &&
+                    course.course_type == "xapi" &&
+                    user.user_role == 5 && (
+                      <div className="image-course">
+                        <img
+                          src={
+                            course.image
+                              ? course.image
+                              : "/images/my-course1.png"
+                          }
+                          alt=""
+                        />
+                      </div>
+                    )}
 
-                  {user.user_role != 5 && course.course_type=="xapi" && (
+                  {user.user_role != 5 && course.course_type == "xapi" && (
                     <div className="image-course">
                       <img
                         src={
@@ -925,6 +969,7 @@ export default function Singlecourse() {
                             file: {
                               attributes: {
                                 controlsList: "nodownload",
+                                fluid: true,
                               },
                             },
                           }}
@@ -937,46 +982,26 @@ export default function Singlecourse() {
                           playing={vedioPlay}
                           controls={true}
                           width="100%"
-                          height="355px"
+                          height="100%"
                         ></ReactPlayer>
                       </div>
                     </div>
                   )}
 
                   {view && (
-                    <div className="container">
+                    <div className="container-fluid">
                       <div className="row">
                         <div className="">
                           <div className="ft-box">
-                            {view.chapter_name && (
-                              <li>
-                                <h4 style={style1}>
-                                  Chapter Name:{" "}
-                                  <span style={style2}>
-                                    {view.chapter_name.toUpperCase()}{" "}
-                                  </span>
-                                </h4>
-                              </li>
-                            )}
                             <ul>
-                              {view.lesson_name && (
-                                <li>
-                                  <h4 style={style1}>
-                                    Lesson Name:
-                                    <span style={style2}>
-                                      {` ${view.lesson_name.toUpperCase()}`}
-                                    </span>
-                                  </h4>
-                                </li>
-                              )}
                               {view.lesson_details && (
                                 <li>
-                                  <h4 style={style1}>
+                                  <h5 style={style1}>
                                     Lesson Description:
                                     <span style={styleDesc}>
                                       <Markup content={view.lesson_details} />
                                     </span>
-                                  </h4>
+                                  </h5>
                                 </li>
                               )}
                             </ul>
@@ -1032,26 +1057,15 @@ export default function Singlecourse() {
                           </li>
                         )}
                       </ul>
-                      <div className="tab-content" id="myTabContent">
+                      <div className="tab-content " id="myTabContent">
                         <div
                           className="tab-pane fade show active"
                           id="course-description"
                           role="tabpanel"
                           aria-labelledby="course-description-tab"
-
                         >
                           <h3>{langObj.course_description}</h3>
                           <Markup content={course.long_description} />
-
-                          {/**  <ul>
-                                                <li><i className="fa fa-check-circle-o" aria-hidden="true"></i><span>Lorem ipsum dolor sit amet, </span></li>
-                                                <li><i className="fa fa-check-circle-o" aria-hidden="true"></i><span>Lorem ipsum dolor sit amet, </span></li>
-                                                <li><i className="fa fa-check-circle-o" aria-hidden="true"></i><span>Lorem ipsum dolor sit amet, </span></li>
-                                                <li><i className="fa fa-check-circle-o" aria-hidden="true"></i><span>Lorem ipsum dolor sit amet, </span></li>
-                                                <li><i className="fa fa-check-circle-o" aria-hidden="true"></i><span>Lorem ipsum dolor sit amet, </span></li>
-                                            </ul>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet.</p> */}
                         </div>
                         <div
                           className="tab-pane fade"
@@ -1060,7 +1074,7 @@ export default function Singlecourse() {
                           aria-labelledby="reviews-tab"
                         >
                           <h3>Featured Review</h3>
-                          <div className="review-wrap">
+                          <div className="review-wrap review-wrap-scroll ">
                             {/** reviews  section */}
 
                             {singleReview &&
@@ -1313,261 +1327,250 @@ export default function Singlecourse() {
                                 </div>
                               ))}
 
-                            {review &&
-                              review.map((item) =>
-                                item.user_id != user.user_id ? (
-                                  <div className="review-box">
-                                    <ul className="rating">
-                                      {item.rating_number == 1 && (
-                                        <>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star-o"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star-o"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star-o"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star-o"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                        </>
-                                      )}
+                            <div>
+                              {review &&
+                                review.map((item) =>
+                                  item.user_id != user.user_id ? (
+                                    <div className="review-box">
+                                      <ul className="rating">
+                                        {item.rating_number == 1 && (
+                                          <>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star-o"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star-o"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star-o"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star-o"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                          </>
+                                        )}
 
-                                      {item.rating_number == 2 && (
-                                        <>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star-o"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star-o"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star-o"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                        </>
-                                      )}
+                                        {item.rating_number == 2 && (
+                                          <>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star-o"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star-o"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star-o"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                          </>
+                                        )}
 
-                                      {item.rating_number == 3 && (
-                                        <>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star-o"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star-o"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                        </>
-                                      )}
+                                        {item.rating_number == 3 && (
+                                          <>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star-o"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star-o"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                          </>
+                                        )}
 
-                                      {item.rating_number == 4 && (
-                                        <>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star-o"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                        </>
-                                      )}
+                                        {item.rating_number == 4 && (
+                                          <>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star-o"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                          </>
+                                        )}
 
-                                      {item.rating_number == 5 && (
-                                        <>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                          <li>
-                                            <a href="">
-                                              <i
-                                                className="fa fa-star"
-                                                aria-hidden="true"
-                                              ></i>
-                                            </a>{" "}
-                                          </li>
-                                        </>
-                                      )}
-                                    </ul>
-                                    <h5>
-                                      {item.fullname &&
-                                        item.fullname.toUpperCase()}
-                                      , {new Date(item.date_at).toDateString()}
-                                    </h5>
-                                    <p>{item.comment}.</p>
-                                  </div>
-                                ) : (
-                                  ""
-                                )
-                              )}
-
-                            {/**    <div className="review-box">
-                                                    <ul className="rating">
-                                                        <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                        <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                        <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                        <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                        <li><a href=""><i className="fa fa-star" aria-hidden="true"></i></a> </li>
-                                                    </ul>
-                                                    <h5>By Rahul, Feb 28, 2020</h5>
-                                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-                                                </div>
-                                                */}
+                                        {item.rating_number == 5 && (
+                                          <>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                            <li>
+                                              <a href="">
+                                                <i
+                                                  className="fa fa-star"
+                                                  aria-hidden="true"
+                                                ></i>
+                                              </a>{" "}
+                                            </li>
+                                          </>
+                                        )}
+                                      </ul>
+                                      <h5>
+                                        {item.fullname &&
+                                          item.fullname.toUpperCase()}
+                                        ,{" "}
+                                        {new Date(item.date_at).toDateString()}
+                                      </h5>
+                                      <p>{item.comment}.</p>
+                                    </div>
+                                  ) : (
+                                    ""
+                                  )
+                                )}
+                            </div>
                           </div>
                           <div className="tab-btnarea">
                             {chkComment && enrollment ? (
@@ -1584,13 +1587,34 @@ export default function Singlecourse() {
                             ) : (
                               ""
                             )}
-                            <Link
+
+                            {/**   <Link
                               to={`/allreview`}
                               state={{ coure_ID: courseID }}
                               className="sec-btn sec-btn-border"
                             >
                               {langObj.view_all_reviews}
-                            </Link>
+                            </Link> */}
+
+                            {!viewAllRating && (
+                              <button
+                                onClick={getReview}
+                                type="button"
+                                className="sec-btn sec-btn-border"
+                              >
+                                {langObj.view_all_reviews}
+                              </button>
+                            )}
+
+                            {viewAllRating && (
+                              <button
+                                onClick={closeRating}
+                                type="button"
+                                className="sec-btn sec-btn-border"
+                              >
+                                Close
+                              </button>
+                            )}
                           </div>
 
                           {/**   <div className="enroll-sec">
@@ -1605,9 +1629,9 @@ export default function Singlecourse() {
                             role="tabpanel"
                             aria-labelledby="q-a-tab"
                           >
-                            <h3>Question and Answers</h3>
+                            <h3 clasName="mb-5">Question and Answers</h3>
 
-                            <QnsAnsComment course_id={singleCourseId} />
+                            <QnsAnsComment course_id={courseID} />
                           </div>
                         )}
                       </div>
@@ -1615,78 +1639,78 @@ export default function Singlecourse() {
                   </div>
                 </div>
 
-                <div className="col-md-5">
+                <div className="col-lg-4 col-md-5">
                   <div className="single-course-bottom-right">
                     <div className="enroll-full">
-                      
-                       
-                        {user.token &&
-                          user.user_role == 5 &&
-                          chkGroups &&
-                          enrollment == false && (
-                            <button
-                              className="sec-btn enroll-btn"
-                              style={{fontSize: "18px", fontWeight: "600" }}
-                              onClick={(e) =>
-                                enrollmentid(
-                                  course.xapi_attachment_file,
-                                  course.course_type
-                                )
-                              }
-                            >
-                              Enroll Now
-                            </button>
-                          )}
+                      {user.token &&
+                        user.user_role == 5 &&
+                        chkGroups &&
+                        enrollment == false && (
+                          <button
+                            className="sec-btn enroll-btn"
+                            style={{ fontSize: "18px", fontWeight: "600" }}
+                            onClick={(e) =>
+                              enrollmentid(
+                                course.xapi_attachment_file,
+                                course.course_type
+                              )
+                            }
+                          >
+                            Enroll Now
+                          </button>
+                        )}
 
-                          {(course.course_type == "xapi" && enrollment) ||
-                (course.course_type == "xapi" && user.user_role == 1) ||
-                (course.course_type == "xapi" && user.user_role == 2) ||
-                (course.course_type == "xapi" &&
-                  user.user_role == 4 &&
-                  user.user_id == creatorId) ? (
-                  <div className="col-sm-12 mb-3">
-                    
-
-                    <a
-                      href={`/singlexapi?link=${btoa(
-                        course.xapi_attachment_file +
-                          "?USER_ID=" +
-                          user.user_id +
-                          "&ENROLL_ID=" +
-                          enroll_id +
-                          "&TASK_ID=" +
-                          taskId +
-                          "&USER_ROLE=" +
-                          user.user_role +
-                          "&USER_EMAIL=" +
-                          user.email +
-                          "&USER_NAME=" +
-                          user.username
-                      )}`}
-                      target="__blank"
-                      className="sec-btn"
-                      onClick={taskAdd}
-                    >
-                      VIEW COURSE
-                    </a>
-
-                    
-                  </div>
-                ) : (
-                  ""
-                )}  
-                      
+                      {(course.course_type == "xapi" && enrollment) ||
+                      (course.course_type == "xapi" && user.user_role == 1) ||
+                      (course.course_type == "xapi" && user.user_role == 2) ||
+                      (course.course_type == "xapi" &&
+                        user.user_role == 4 &&
+                        user.user_id == creatorId) ? (
+                        <div className="col-sm-12 mb-3">
+                          <a
+                            href={`/singlexapi?link=${btoa(
+                              course.xapi_attachment_file +
+                                "?USER_ID=" +
+                                user.user_id +
+                                "&ENROLL_ID=" +
+                                enroll_id +
+                                "&TASK_ID=" +
+                                taskId +
+                                "&USER_ROLE=" +
+                                user.user_role +
+                                "&USER_EMAIL=" +
+                                user.email +
+                                "&USER_NAME=" +
+                                user.username
+                            )}`}
+                            target="__blank"
+                            className="sec-btn"
+                            onClick={taskAdd}
+                          >
+                            VIEW COURSE
+                          </a>
+                        </div>
+                      ) : (
+                        ""
+                      )}
                     </div>
 
                     <div className="catego-area">
-                      
                       <p>
-                    <b>Category </b>: {course.category_name_list && course.category_name_list}
-                  </p>
+                        <b>Category </b>:{" "}
+                        {course.category_name_list && course.category_name_list}
+                      </p>
                     </div>
 
                     <div className="course-avator-image">
-                      <img src={course.avatar_image?course.avatar_image:"/images/my-course1.png"} alt="" />
+                      <img
+                        src={
+                          course.avatar_image
+                            ? course.avatar_image
+                            : "/images/my-course1.png"
+                        }
+                        alt=""
+                      />
                     </div>
 
                     <div className="course-details">
@@ -1695,23 +1719,33 @@ export default function Singlecourse() {
                       </p>
                       <p>
                         <b> </b> {course.author_email && course.author_email}
-                      </p> 
+                      </p>
                       <div className="review-area">
                         <ul className="review-stat rating ">
- 
-                        <StaticRating value={course.rating_details[0].rating_number } />
-                        <span style={{ fontSize: "15px", color: "#707070",marginTop:"10px" }} className="ml-2" >{course.rating_details[0].rating_number} ({course.rating_details[0].total_rating})</span>
-
+                          <StaticRating
+                            value={course.rating_details[0].rating_number}
+                          />
+                          <span
+                            style={{
+                              fontSize: "15px",
+                              color: "#707070",
+                              marginTop: "10px",
+                            }}
+                            className="ml-2"
+                          >
+                            {course.rating_details[0].rating_number} (
+                            {course.rating_details[0].total_rating})
+                          </span>
                         </ul>
-                        
-                         
                       </div>
 
                       <p>
-                        <b> Course Language </b>: {course.language_name && course.language_name}
+                        <b> Course Language </b>:{" "}
+                        {course.language_name && course.language_name}
                       </p>
                       <p>
-                        <b> Total Video Length </b>: {course.total_lesson_vedio && course.total_lesson_vedio}
+                        <b> Total Video Length </b>:{" "}
+                        {course.total_lesson_vedio && course.total_lesson_vedio}
                       </p>
                     </div>
 
@@ -1901,6 +1935,7 @@ export default function Singlecourse() {
                                                   </a>
                                                 )}
                                               </div>
+
                                               <div className="col-sm-2">
                                                 <div className="course-content-accordian-bottom ">
                                                   {user.token && (
@@ -1925,17 +1960,6 @@ export default function Singlecourse() {
                                                 </div>
                                               </div>
                                             </div>
-
-                                            {/** attatch file 
-                                                            <div className="course-content-accordian-bottom ">
-
-                                                                {user.token && <>
-                                                                    {less.lesson_file && <NavLink href={less.lesson_file} className="sec-btn sec-btn-orange" >Download Attachments</a>}
-                                                                </>
-                                                                }
-
-
-                                                            </div> */}
                                           </div>
                                         </div>
                                       ) : (
@@ -2140,6 +2164,123 @@ export default function Singlecourse() {
                                   ))}
                               </div>
                             ))}
+
+                          {/** ----------------------------- new lesson ----------------------------- */}
+
+                          <h1>New Lesson ----------- </h1>
+
+                          <div id="accordion">
+                            {chap.length > 0 &&
+                              chap.map((chapter, j) => (
+                                <>
+                                  <div className="card">
+                                    <div
+                                      className="card-header"
+                                      id={`heading${j}`}
+                                    >
+                                      <a
+
+                                        href="#"
+                                        className="btn btn-header-link collapsed"
+                                        data-toggle="collapse"
+                                        data-target={`#collapse${j}`}
+                                        aria-expanded="false"
+                                        aria-controls={`collapse${j}`}  
+                                      >
+                                        <span>
+                                        {chapter.lessons.length > 0
+                                          ? chapter.chapter_name
+                                          : ""}
+                                        </span>
+
+                                      </a>
+                                    </div>
+                                    <div
+                                      id={`collapse${j}`}
+                                      className="collapse"
+                                      aria-labelledby={`heading${j}`}
+                                      data-parent="#accordion"
+                                    >
+                                      <div className="card-body">
+
+                                      {chapter.lessons.length>0  &&
+                                        chapter.lessons.map((less, i) => (
+                                         
+                                            <div id={`lessB${j}${i}`} className="btn-header-link2 btn active_lesson" style={{cursor:"default"}} >
+
+                                            <div className="row">
+                                            <div className="col-sm-10"  >
+                                            
+                                              <p
+
+                                              
+                                              style={{cursor:"pointer"}}
+                                              onClick={(e) =>{
+
+                                                setVedio(
+                                                  less.lesson_vedio_link,
+                                                  less.lesson_vedio_type,
+                                                  less.lesson_name,
+                                                  less.lesson_details,
+                                                  chapter.chapter_name,
+                                                  chapter.id,
+                                                  less.id
+                                                );
+
+                                                lessonActive(`lessB${j}${i}`)
+                                              
+                                              }
+                                              } 
+                                              
+                                              
+
+                                              >
+                                               {less && less.lesson_name.toUpperCase()}
+                                              </p>                                                                                
+                                                          
+                                            </div>
+
+                                            <div className="col-sm-2">
+                                                <div className="course-content-accordian-bottom ">
+                                                  {user.token && (
+                                                    <>
+                                                      {less.lesson_file && (
+                                                        <a
+                                                          data-toggle="tooltip"
+                                                          title="file download"
+                                                          href={
+                                                            less.lesson_file
+                                                          }
+                                                          className="sec-btn sec-btn-orange"
+                                                        >
+                                                          <i
+                                                            className="fa fa-paperclip"
+                                                            aria-hidden="true"
+                                                          ></i>
+                                                        </a>
+                                                      )}
+                                                    </>
+                                                  )}
+                                                </div>
+                                              </div>
+
+                                          </div>
+
+                                          <ProgressBar className="progressBarPosition2" labelClassName="progressBarLabel"   completed={80} bgColor={"green"} borderRadius={"2px"} height={"14px"} />
+  
+
+                                            </div>
+                                            
+                                        ))}
+
+                                      </div>
+                                    </div>
+                                  </div>
+                                </>
+                              ))}
+                          </div>
+
+                          {/** ---------------------------------------------------------- */}
                         </div>
                       </>
                     ) : (

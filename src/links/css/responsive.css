@@ -36,6 +36,14 @@
 }
 
 @media screen and (max-width: 1920px) {
+
+
+    .sub_courses_2{
+        font-size: 40px;
+        color: white;
+        font-weight: 600
+    }
+
     .header .header-wrap .hd-sec .lt-side .hd-src .form-control {
         max-width: 250px;
     }
@@ -513,6 +521,45 @@
 }
 
 @media screen and (max-width: 575px) {
+
+    .sub_courses_2{
+        font-size: 30px;
+        color: white;
+        font-weight: 600
+    }
+
+    .mobile-toggle{
+        display: block;
+    }
+    .cat-menu 
+    {
+        width: 100%;
+        text-align: right;
+    }
+    #myNav 
+    {
+        display: none;
+        background: #efefef;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+
+    .mobile-toggle {
+        display: inline-block;
+        background: #203787;
+        color: #FFF;
+        padding: 6px 15px;
+        margin: 10px 0;
+    }
+    .cat-menu ul {
+        text-align: left;
+    }
+
+    .cat-menu ul li {
+        padding: 5px 10px;
+        display: block;
+        margin: 0;
+    }
 
 }
 

@@ -4,7 +4,7 @@ import Loader from "./Loader";
 import { AuthContext } from "../index";
 import { toast } from "react-toastify";
 import Moment from "react-moment";
-import ParentQnsAnsComment from "./ParentQnsAnsComment"
+import ParentQnsAnsComment from "./ParentQnsAnsComment";
 
 function QnsAnsComment(props) {
   const { course_id } = props;
@@ -20,12 +20,12 @@ function QnsAnsComment(props) {
   const [parent, setParent] = useState(false);
 
   useEffect(() => {
-    commentSearch(course_id, "");
+    commentSearch(course_id, "",5);
   }, []);
 
   var closeModal = () => {
     setText({ comment: "" });
-    setAnsId('');
+    setAnsId("");
     document.getElementById("myForm").reset();
   };
 
@@ -61,13 +61,10 @@ function QnsAnsComment(props) {
       toast.error(responce.data.msg);
     }
 
-
-    commentSearch(course_id, "");
-
+    commentSearch(course_id, "",5);
   };
 
   var handelSubmit2 = async () => {
-
     setShowLoader(true);
 
     var data = {
@@ -81,116 +78,106 @@ function QnsAnsComment(props) {
 
     if (responce.data.status) {
       setText({ comment: "" });
-      setAnsId('')
+      setAnsId("");
       document.getElementById("myForm").reset();
       setShowLoader(false);
       toast.success(responce.data.msg);
     } else {
       setText({ comment: "" });
-      setAnsId('')
+      setAnsId("");
       document.getElementById("myForm").reset();
       setShowLoader(false);
       toast.error(responce.data.msg);
     }
 
-    commentSearch(course_id, "");
-  }
+    commentSearch(course_id, "",5);
+  };
 
-  var commentSearch = async (courseID, ID) => {
+  var commentSearch = async (courseID, ID,limit) => {
     var responce = await QnsAnsCommentService.search({
       course_id: courseID,
       id: ID,
+      limit:limit
     });
     // console.log("comments ",responce.data.data);
     var resData = responce.data.data;
     setComments(resData.data);
-
-
-
   };
 
-
   var showReply = async (did, id) => {
-
     var subAns = document.getElementById(did);
 
-    var responce = await QnsAnsCommentService.search({ course_id: course_id, id: id })
-
+    var responce = await QnsAnsCommentService.search({
+      course_id: course_id,
+      id: id,
+    });
 
     if (subAns.style.display === "none") {
       subAns.style.display = "block";
-      setParent(true)
+      setParent(true);
       //subAns.innerHTML=htmlData;
     } else {
       subAns.style.display = "none";
-      setParent(false)
+      setParent(false);
       //subAns.innerHTML='';
     }
-
-
-
-
-  }
+  };
 
   var viewParent = () => {
-    return <ParentQnsAnsComment />
+    return <ParentQnsAnsComment />;
+  };
+
+  var [limit,setLimit]=useState(false)
+  
+  var shoeQA=async()=>{
+   await commentSearch(course_id, "","");
+   setLimit(true)
   }
 
+  var closeQA=async()=>{
+    await commentSearch(course_id, "",5);
+    setLimit(false)
+   }
 
   return (
     <>
+    
       {/** loader */}
       {showLoader && <Loader />}
 
       <div className="review-wrap">
-
-        {/** add comment */}
-        <div className="tab-btnarea">
-          <button
-            type="button"
-            className="sec-btn comment-add-btn"
-            data-toggle="modal"
-            data-target="#addgroupModal"
-            data-backdrop="static"
-            data-keyboard="false"
-          >
-            Add Question & Answer
-          </button>
-        </div>
-
         {/** reviews  section */}
-
-        {comments &&
-          comments.map((item, i) => (
-            <div className="review-box mb-3" style={{ borderBottom: "none" }}>
-              <h5>
-                {item.user_image ? (
-                  <img
-                    src={item.user_image}
-                    class=" float-left mr-2 "
-                    style={{
-                      width: "50px",
-                      height: "50px",
-                      borderRadius: "50%",
-                    }}
-                    alt="..."
-                  ></img>
-                ) : (
-                  <img
-                    src="/images/user.png"
-                    class="rounded float-left mr-2 "
-                    style={{ width: "50px", height: "50px" }}
-                    alt="..."
-                  ></img>
-                )}
-                <span>{item.user_name.toUpperCase()}</span>
-                <span className="text-secondary" style={{ fontSize: "14px" }}>
-                  {" "}
-                  <Moment fromNow>{item.created_at}</Moment>
-                  {" "}
-                </span>
-                {/* Split dropright button */}
-                {/**  <div className="btn-group dropright ml-2">
+        <div className="review-wrap-scroll">
+          {comments &&
+            comments.map((item, i) => (
+              <div className="review-box mb-3" style={{ borderBottom: "none" }}>
+                <h5>
+                  {item.user_image ? (
+                    <img
+                      src={item.user_image}
+                      class=" float-left mr-2 "
+                      style={{
+                        width: "50px",
+                        height: "50px",
+                        borderRadius: "50%",
+                      }}
+                      alt="..."
+                    ></img>
+                  ) : (
+                    <img
+                      src="/images/user.png"
+                      class="rounded float-left mr-2 "
+                      style={{ width: "50px", height: "50px" }}
+                      alt="..."
+                    ></img>
+                  )}
+                  <span>{item.user_name && item.user_name.toUpperCase()}</span>
+                  <span className="text-secondary" style={{ fontSize: "14px" }}>
+                    {" "}
+                    <Moment fromNow>{item.created_at}</Moment>{" "}
+                  </span>
+                  {/* Split dropright button */}
+                  {/**  <div className="btn-group dropright ml-2">
                 
                   <button
                    
@@ -213,42 +200,78 @@ function QnsAnsComment(props) {
                   </div> 
 
                 </div> */}
-              </h5>
-              <p className="ml-5">{item.comment}</p>
-              <h6
-                className="ml-5 text-primary font-weight-bold "
-                style={{ cursor: "pointer" }}
-              >
-                {" "}
-                <span className="p-2" >{item.total_replies}</span> <span onClick={() => (showReply(`subAns${i + 1}`, item.id))}>REPLIES</span>
+                </h5>
+                <p className="ml-5">{item.comment}</p>
+                <h6
+                  className="ml-5 text-primary font-weight-bold "
+                  style={{ cursor: "pointer" }}
+                >
+                  {" "}
+                  <span className="p-2">{item.total_replies}</span>{" "}
+                  <span onClick={() => showReply(`subAns${i + 1}`, item.id)}>
+                    REPLIES
+                  </span>
+                  {item.user_id != user.user_id && (
+                    <span
+                      data-toggle="modal"
+                      data-backdrop="static"
+                      data-keyboard="false"
+                      className="ml-5"
+                      data-target="#addgroupModal2"
+                      title="Reply"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        setAnsId(item.id);
+                      }}
+                    >
+                      REPLY
+                    </span>
+                  )}
+                </h6>
 
-                {item.user_id != user.user_id && <span data-toggle="modal" data-backdrop="static"
-                  data-keyboard="false" className="ml-5"
-                  data-target="#addgroupModal2" title="Reply" style={{ cursor: "pointer" }}
-                  onClick={() => { setAnsId(item.id) }}
-                >REPLY</span>}
+                {/** ---------------------------------------------- */}
 
+                <div
+                  className="container mt-3 ml-5"
+                  id={`subAns${i + 1}`}
+                  style={{ display: "none" }}
+                >
+                  {parent && (
+                    <ParentQnsAnsComment
+                      course_id={course_id}
+                      parent_id={item.id}
+                      label={`${i + 1}childAns`}
+                    />
+                  )}
+                </div>
 
-              </h6>
-
-
-
-              {/** ---------------------------------------------- */}
-
-              <div className="container mt-3 ml-5" id={`subAns${i + 1}`} style={{ display: "none" }}>
-                {parent && <ParentQnsAnsComment course_id={course_id} parent_id={item.id} label={`${i + 1}childAns`} />}
+                {/** ---------------------------------------------- */}
               </div>
+            ))}
+        </div>
 
-              {/** ---------------------------------------------- */}
+        {/** add comment */}
+        <div className="tab-btnarea">
+          <button
+            type="button"
+            className="sec-btn comment-add-btn"
+            data-toggle="modal"
+            data-target="#addgroupModal"
+            data-backdrop="static"
+            data-keyboard="false"
+          >
+            Add Question & Answer
+          </button>
+
+           
+
+          {!limit &&  <button onClick={shoeQA} type="button" className="sec-btn sec-btn-border" >View All</button> }
+
+          {limit &&   <button onClick={closeQA} type="button" className="sec-btn sec-btn-border" >Close</button>}
 
 
-            </div>
-          ))}
+        </div>
       </div>
-
-
-
-
 
       {/**  modal */}
       <div
@@ -311,7 +334,6 @@ function QnsAnsComment(props) {
           </div>
         </div>
       </div>
-
 
       {/**  modal 2 */}
       <div

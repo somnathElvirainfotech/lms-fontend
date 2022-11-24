@@ -24,9 +24,8 @@ export default function SingleXapi() {
 
     return <>
         <iframe src={link}
-            width="100%"
-            height="700rem"
-        ></iframe>
+        className="xapi-player"
+                ></iframe>
         
     </>
 }

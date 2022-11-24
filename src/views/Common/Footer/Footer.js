@@ -30,6 +30,7 @@ export default function Footer() {
 
 
           <div className=" col-md-3 col-sm-12"></div>
+          
             <div className=" col-md-3 col-sm-12">
               <div className="ft-box">
                 <h3>Copyright © 2022 </h3>

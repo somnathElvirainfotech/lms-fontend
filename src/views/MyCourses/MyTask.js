@@ -74,6 +74,7 @@ export default function MyTask() {
   const [xapCourse, setxapCourse] = useState("");
 
   var getCourse = async (courseId, taskId, no_attempted, course_name) => {
+    setShowLoader(true)
     var enrollRes = await UserService.enrollmentcourse(user.user_id, courseId);
     var status = false;
     console.log(enrollRes.data);
@@ -92,7 +93,25 @@ export default function MyTask() {
     };
     var responce = await TaskService.search(data);
     console.log(responce.data.data);
-    setAssignments([...responce.data.data]);
+
+   
+    // task chk ------------------------------
+    var tData=[];
+
+    for(var i of responce.data.data)
+    {
+      if(i.user_task_status != "passed" &&
+      Date.parse(new Date().toISOString().slice(0, 10)) <=
+        Date.parse(i.task_end_date))
+        {
+          tData.push(i)
+        }
+
+    }
+
+    setAssignments([...tData]);
+    // ---------------------------------
+
     setCount(responce.data.data.length);
     ////////////////////
 
@@ -127,6 +146,7 @@ export default function MyTask() {
             ? Number(enrollRes.data.data[0].enroll_id)
             : 0;
 
+            setShowLoader(false)
         window.open(
           `/singlexapi?link=${btoa(
             temp.xapi_attachment_file +
@@ -148,6 +168,8 @@ export default function MyTask() {
 
         // navigate(`/singlexapi?link=${temp.xapi_attachment_file}`,{replace:true,target:'_blank'})
       } else {
+
+        setShowLoader(false)
         //window.location.replace(`/singlecourse?id=${courseId}`)
         navigate(`/courses/${course_name.replaceAll(" ", "-")}`, {
           state: {
@@ -161,6 +183,7 @@ export default function MyTask() {
       var cresponce = await UserService.singlecourse(courseId);
       var temp = cresponce.data.data;
 
+      setShowLoader(false)
       // window.location.replace(`/singlecourse?id=${courseId}`)
       navigate(`/courses/${course_name.replaceAll(" ", "-")}`, {
         state: {
@@ -170,6 +193,8 @@ export default function MyTask() {
         },
       });
     }
+
+    setShowLoader(false)
   };
 
   var setXapiLink = (link, course_name, xapi_course_name) => {
@@ -215,7 +240,24 @@ export default function MyTask() {
 
     }
 
-    setAssignments([...data]);
+    // task chk ------------------------------
+    var tData=[];
+
+    for(var i of data)
+    {
+      if(i.user_task_status != "passed" &&
+      Date.parse(new Date().toISOString().slice(0, 10)) <=
+        Date.parse(i.task_end_date))
+        {
+          tData.push(i)
+        }
+
+    }
+
+    setAssignments([...tData]);
+    // ---------------------------------
+
+    // setAssignments([...data]);
 
     setShowLoader(false);
     console.log("new task data ", data);
@@ -260,12 +302,26 @@ export default function MyTask() {
                             <div className="row align-items-center">
                               <div className="col-md-4">
                                 <div className="my-course-img">
-                                      <img src={assignment.course_image && assignment.course_image} className="img-fluid" alt="" /> 
+                                      <img style={{cursor:"pointer"}} onClick={(e) =>
+                                        getCourse(
+                                          assignment.course_id,
+                                          assignment.id,
+                                          assignment.no_attempted,
+                                          assignment.course_name
+                                        )
+                                      } src={assignment.course_image && assignment.course_image} className="img-fluid" alt="" /> 
                                 </div>
                               </div>
                               <div className="col-md-8">
                                 <div className="my-course-content">
-                                  <h4>{assignment.task_name.toUpperCase()} </h4>
+                                  <h4 style={{cursor:"pointer"}} onClick={(e) =>
+                                    getCourse(
+                                      assignment.course_id,
+                                      assignment.id,
+                                      assignment.no_attempted,
+                                      assignment.course_name
+                                    )
+                                  } >{assignment.task_name.toUpperCase()} </h4>
                                   
                                   <p>
                                     {" "}
