@@ -2197,7 +2197,7 @@ export default function Singlecourse() {
                                     </div>
                                     <div
                                       id={`collapse${j}`}
-                                      className="collapse"
+                                      className={`collapse ${((chapter.id == lastChapter && less.id == lastLesson) || (j == 0 && lastChapter == 0 && i == 0 &&  lastLesson == 0))}`}
                                       aria-labelledby={`heading${j}`}
                                       data-parent="#accordion"
                                     >
