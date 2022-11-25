@@ -5,6 +5,8 @@ import { AuthContext } from "../index";
 import { toast } from "react-toastify";
 import Moment from "react-moment";
 import ParentQnsAnsComment from "./ParentQnsAnsComment";
+import $ from "jquery";
+import "jquery-ui-dist/jquery-ui";
 
 function QnsAnsComment(props) {
   const { course_id } = props;
@@ -64,6 +66,7 @@ function QnsAnsComment(props) {
     commentSearch(course_id, "",5);
   };
 
+  const [reqload,setReqLoad]=useState(false);
   var handelSubmit2 = async () => {
     setShowLoader(true);
 
@@ -82,6 +85,8 @@ function QnsAnsComment(props) {
       document.getElementById("myForm").reset();
       setShowLoader(false);
       toast.success(responce.data.msg);
+      // alert(1)
+      setReqLoad(!reqload)
     } else {
       setText({ comment: "" });
       setAnsId("");
@@ -93,6 +98,8 @@ function QnsAnsComment(props) {
     commentSearch(course_id, "",5);
   };
 
+
+  
   var commentSearch = async (courseID, ID,limit) => {
     var responce = await QnsAnsCommentService.search({
       course_id: courseID,
@@ -102,6 +109,7 @@ function QnsAnsComment(props) {
     // console.log("comments ",responce.data.data);
     var resData = responce.data.data;
     setComments(resData.data);
+    
   };
 
   var showReply = async (did, id) => {
@@ -130,12 +138,19 @@ function QnsAnsComment(props) {
   var [limit,setLimit]=useState(false)
   
   var shoeQA=async()=>{
+    
    await commentSearch(course_id, "","");
+    
+   $(".revie-wrap").removeClass("review-wrap-scroll");
+    $(`#review-wrap-rating2`).addClass("review-wrap-scroll");
+     
    setLimit(true)
+   
   }
 
   var closeQA=async()=>{
     await commentSearch(course_id, "",5);
+    $(".review-wrap").removeClass("review-wrap-scroll");
     setLimit(false)
    }
 
@@ -147,7 +162,7 @@ function QnsAnsComment(props) {
 
       <div className="review-wrap">
         {/** reviews  section */}
-        <div className="review-wrap-scroll">
+        <div id="review-wrap-rating2" className="">
           {comments &&
             comments.map((item, i) => (
               <div className="review-box mb-3" style={{ borderBottom: "none" }}>
@@ -171,11 +186,13 @@ function QnsAnsComment(props) {
                       alt="..."
                     ></img>
                   )}
+                  <div className="qnsAns-username">
                   <span>{item.user_name && item.user_name.toUpperCase()}</span>
                   <span className="text-secondary" style={{ fontSize: "14px" }}>
                     {" "}
                     <Moment fromNow>{item.created_at}</Moment>{" "}
                   </span>
+                  </div>
                   {/* Split dropright button */}
                   {/**  <div className="btn-group dropright ml-2">
                 
@@ -201,13 +218,15 @@ function QnsAnsComment(props) {
 
                 </div> */}
                 </h5>
-                <p className="ml-5">{item.comment}</p>
+               <div className="container qnsAns-details"  >
+               <p style={{wordBreak: "break-all"}} >{item.comment}</p>
+               </div>
                 <h6
                   className="ml-5 text-primary font-weight-bold "
                   style={{ cursor: "pointer" }}
                 >
                   {" "}
-                  <span className="p-2">{item.total_replies}</span>{" "}
+                  <span className="p-2"  >{item.total_replies}</span>{" "}
                   <span onClick={() => showReply(`subAns${i + 1}`, item.id)}>
                     REPLIES
                   </span>
@@ -241,6 +260,7 @@ function QnsAnsComment(props) {
                       course_id={course_id}
                       parent_id={item.id}
                       label={`${i + 1}childAns`}
+                      reqload={reqload}
                     />
                   )}
                 </div>
@@ -265,7 +285,8 @@ function QnsAnsComment(props) {
 
            
 
-          {!limit &&  <button onClick={shoeQA} type="button" className="sec-btn sec-btn-border" >View All</button> }
+
+          {!limit &&  <button onClick={shoeQA} type="button" className="sec-btn sec-btn-border" >View All</button> } 
 
           {limit &&   <button onClick={closeQA} type="button" className="sec-btn sec-btn-border" >Close</button>}
 

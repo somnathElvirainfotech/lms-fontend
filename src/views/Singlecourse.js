@@ -157,6 +157,8 @@ export default function Singlecourse() {
   const [lastChapter, setLastChapter] = useState(0);
   const [lastLesson, setLastLesson] = useState(0);
 
+  
+
   useEffect(() => {
     console.log("course id ==== ", singleCourseId);
 
@@ -168,12 +170,14 @@ export default function Singlecourse() {
         // alert(data.data.data.id)
         singleCourseId = data.data.data.id;
       }
-
+      
+      setCourseID(singleCourseId);
+      console.log("first course id ",singleCourseId)
       var course = query.get("id");
 
       // alert(singleCourseId)
 
-      setCourseID(singleCourseId);
+      
 
       getTrackingLessions();
 
@@ -306,6 +310,74 @@ export default function Singlecourse() {
       setShowLoader(false);
     })();
   }, []);
+
+  // after run vedio when  ended
+  
+
+  var reloadLesson=async (payload)=>{
+  
+    var dresponse = await CourseTrackService.regularCourseTrack(payload);
+    console.log("local course track updated -----  ", dresponse.data);
+
+    if(dresponse.data.status)
+    {
+      getTrackingLessions();
+
+      var responce = await UserService.singlecourse(singleCourseId);
+      var temp = responce.data.data;
+
+      console.log("course details2 ", responce.data);
+
+      setCreatorId(temp.creator_id);
+      setCourses(temp);
+      setChap(temp.chapters);
+
+      if (user.token) {
+        var enrollRes = await UserService.enrollmentcourse(
+          user.user_id,
+          singleCourseId
+        );
+        var status = false;
+        console.log("enrolllll  ", enrollRes.data);
+        if (enrollRes.data.status) {
+          setEnrollStatus(
+            enrollRes.data.data[0].enrollment_status == "completed"
+              ? "completed"
+              : ""
+          );
+          if (enrollRes.data.data[0].user_enroll_status == "active") {
+            status = true;
+            setEnroll_id(enrollRes.data.data[0].enroll_id);
+            setLastChapter(
+              enrollRes.data.data[0].current_chapter != null
+                ? enrollRes.data.data[0].current_chapter
+                : 0
+            );
+
+            console.log(
+              "current chapter ",
+              enrollRes.data.data[0].current_chapter
+            );
+            setLastLesson(
+              enrollRes.data.data[0].current_lession != null
+                ? enrollRes.data.data[0].current_lession
+                : 0
+            );
+            console.log(
+              "current lesson ",
+              enrollRes.data.data[0].current_lession
+            );
+            await getCurrentLesson(singleCourseId);
+          }
+        }
+
+        setEnrollments(status);
+
+        // gotoPage(status, temp.course_type, temp.xapi_attachment_file, temp.creator_id)
+      }
+
+    }
+  }
 
   function gotoPage(enroll, course_type, file_path, creator_id) {
     console.log("dddddd", creator_id);
@@ -541,18 +613,18 @@ export default function Singlecourse() {
         window.open(
           `/singlexapi?link=${btoa(
             file_path +
-              "?USER_ID=" +
-              user.user_id +
-              "&ENROLL_ID=" +
-              enrollRes.data.data[0].enroll_id +
-              "&TASK_ID=" +
-              taskId +
-              "&USER_ROLE=" +
-              user.user_role +
-              "&USER_EMAIL=" +
-              user.email +
-              "&USER_NAME=" +
-              user.username
+            "?USER_ID=" +
+            user.user_id +
+            "&ENROLL_ID=" +
+            enrollRes.data.data[0].enroll_id +
+            "&TASK_ID=" +
+            taskId +
+            "&USER_ROLE=" +
+            user.user_role +
+            "&USER_EMAIL=" +
+            user.email +
+            "&USER_NAME=" +
+            user.username
           )}`,
           "_blank"
         );
@@ -611,7 +683,7 @@ export default function Singlecourse() {
       setShowLoader(false);
     }
 
-   
+
 
   };
 
@@ -630,6 +702,8 @@ export default function Singlecourse() {
     );
     setSingleReview([...creviews.data.data]);
 
+    $(".review-wrap").removeClass("review-wrap-scroll");
+
     setShowLoader(false);
 
     setViewAllRating(false);
@@ -642,6 +716,9 @@ export default function Singlecourse() {
     setReview([...reviews.data.data]);
     setViewAllRating(true);
     setShowLoader(false);
+
+    $(".review-wrap").removeClass("review-wrap-scroll");
+    $(`#review-wrap-rating`).addClass("review-wrap-scroll");
   };
 
   var delReview = async (id) => {
@@ -680,11 +757,7 @@ export default function Singlecourse() {
     color: "black",
   };
 
-  var styleDesc = {
-    fontSize: "medium",
-    color: "black",
-    fontWeight: "300",
-  };
+  
 
   // player tracking
   const [progress, setProgress] = useState({});
@@ -702,8 +775,13 @@ export default function Singlecourse() {
     console.log("run time ", e);
   };
 
-  var playerEnded = () => {
+ 
+
+  var playerEnded =  () => {
     var course_id = query.get("id");
+    setVedioPlay(false)
+
+    // setShowLoader(true)
 
     var payload = {
       user_id: user.user_id,
@@ -714,7 +792,14 @@ export default function Singlecourse() {
       current_play_sec: duration,
     };
 
-    courseTracking(payload);
+    // courseTracking(payload);
+
+    reloadLesson(payload)
+
+   
+
+    // setShowLoader(false)
+
     console.log("complete data  ", payload);
   };
 
@@ -752,6 +837,8 @@ export default function Singlecourse() {
       // setShowLoader(true)
       var dresponse = await CourseTrackService.regularCourseTrack(payload);
       console.log("local course track updated -----  ", dresponse.data);
+
+      // reloadLesson();
       // setShowLoader(false)
 
       // getTrackingLessions()
@@ -773,10 +860,10 @@ export default function Singlecourse() {
     if (user.user_role == 5) {
       setShowLoader(true);
       var course_id = query.get("id");
-
+console.log("courseID  ",singleCourseId)
       var payload = {
         user_id: user.user_id,
-        course_id: courseID,
+        course_id: singleCourseId,
       };
 
       var responce = await CourseTrackService.getTrackingLession(payload);
@@ -923,6 +1010,7 @@ export default function Singlecourse() {
           <div className="single-course-bottom sec-bg">
             <div className="container-fluid">
               <div className="row">
+              
                 <div className="col-lg-8 col-md-7">
                   {enrollment == false && user.user_role == 5 && (
                     <div className="image-course">
@@ -963,13 +1051,13 @@ export default function Singlecourse() {
 
                   {vedioPlayer && course.course_type == "regular" && (
                     <div className="">
-                      <div className=" image-course full-w100">
+                      <div className=" image-course vimeo-player-style full-w100" >
                         <ReactPlayer
                           config={{
                             file: {
                               attributes: {
                                 controlsList: "nodownload",
-                                fluid: true,
+                                // fluid: true,
                               },
                             },
                           }}
@@ -998,7 +1086,7 @@ export default function Singlecourse() {
                                 <li>
                                   <h5 style={style1}>
                                     Lesson Description:
-                                    <span style={styleDesc}>
+                                    <span className="lesson-describtions">
                                       <Markup content={view.lesson_details} />
                                     </span>
                                   </h5>
@@ -1074,7 +1162,7 @@ export default function Singlecourse() {
                           aria-labelledby="reviews-tab"
                         >
                           <h3>Featured Review</h3>
-                          <div className="review-wrap review-wrap-scroll ">
+                          <div id="review-wrap-rating" className="review-wrap ">
                             {/** reviews  section */}
 
                             {singleReview &&
@@ -1323,7 +1411,7 @@ export default function Singlecourse() {
                                       ></i>{" "}
                                     </span>{" "}
                                   </h5>
-                                  <p>{item.comment}.</p>
+                                  <p style={{wordBreak: "break-all"}} >{item.comment}.</p>
                                 </div>
                               ))}
 
@@ -1564,13 +1652,14 @@ export default function Singlecourse() {
                                         ,{" "}
                                         {new Date(item.date_at).toDateString()}
                                       </h5>
-                                      <p>{item.comment}.</p>
+                                      <p style={{wordBreak: "break-all"}}  >{item.comment}.</p>
                                     </div>
                                   ) : (
                                     ""
                                   )
                                 )}
                             </div>
+
                           </div>
                           <div className="tab-btnarea">
                             {chkComment && enrollment ? (
@@ -1596,7 +1685,7 @@ export default function Singlecourse() {
                               {langObj.view_all_reviews}
                             </Link> */}
 
-                            {!viewAllRating && (
+                            {!viewAllRating  && (
                               <button
                                 onClick={getReview}
                                 type="button"
@@ -1637,10 +1726,21 @@ export default function Singlecourse() {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> 
 
                 <div className="col-lg-4 col-md-5">
                   <div className="single-course-bottom-right">
+
+                  <div className="catego-area">
+                      <p style={{
+                        fontSize: "30px",
+                        fontWeight: "700",
+                        wordBreak: "break-all"
+                      }} >
+                         {course.course_name && course.course_name.toUpperCase()}
+                      </p>
+                    </div>
+
                     <div className="enroll-full">
                       {user.token &&
                         user.user_role == 5 &&
@@ -1661,27 +1761,27 @@ export default function Singlecourse() {
                         )}
 
                       {(course.course_type == "xapi" && enrollment) ||
-                      (course.course_type == "xapi" && user.user_role == 1) ||
-                      (course.course_type == "xapi" && user.user_role == 2) ||
-                      (course.course_type == "xapi" &&
-                        user.user_role == 4 &&
-                        user.user_id == creatorId) ? (
+                        (course.course_type == "xapi" && user.user_role == 1) ||
+                        (course.course_type == "xapi" && user.user_role == 2) ||
+                        (course.course_type == "xapi" &&
+                          user.user_role == 4 &&
+                          user.user_id == creatorId) ? (
                         <div className="col-sm-12 mb-3">
                           <a
                             href={`/singlexapi?link=${btoa(
                               course.xapi_attachment_file +
-                                "?USER_ID=" +
-                                user.user_id +
-                                "&ENROLL_ID=" +
-                                enroll_id +
-                                "&TASK_ID=" +
-                                taskId +
-                                "&USER_ROLE=" +
-                                user.user_role +
-                                "&USER_EMAIL=" +
-                                user.email +
-                                "&USER_NAME=" +
-                                user.username
+                              "?USER_ID=" +
+                              user.user_id +
+                              "&ENROLL_ID=" +
+                              enroll_id +
+                              "&TASK_ID=" +
+                              taskId +
+                              "&USER_ROLE=" +
+                              user.user_role +
+                              "&USER_EMAIL=" +
+                              user.email +
+                              "&USER_NAME=" +
+                              user.username
                             )}`}
                             target="__blank"
                             className="sec-btn"
@@ -1750,424 +1850,19 @@ export default function Singlecourse() {
                     </div>
 
                     {(user.token && enrollment && chap.length > 0) ||
-                    (user.token &&
-                      user.user_id == creatorId &&
-                      chap.length > 0) ||
-                    (user.token && user.user_role == 2 && chap.length > 0) ? (
+                      (user.token &&
+                        user.user_id == creatorId &&
+                        chap.length > 0) ||
+                      (user.token && user.user_role == 2 && chap.length > 0) ? (
                       <>
                         <h3>{langObj.course_contant} </h3>
 
                         <div className="course-content">
-                          {chap &&
-                            chap.map((chapter, j) => (
-                              <div className="accordion">
-                                <h4 key={`chap${j}`}>
-                                  {chapter.lessons.length > 0
-                                    ? chapter.chapter_name
-                                    : ""}
-                                </h4>
-                                &nbsp;
-                                {chapter.lessons &&
-                                  chapter.lessons.map((less, i) => (
-                                    <>
-                                      {(chapter.id == lastChapter &&
-                                        less.id == lastLesson) ||
-                                      (j == 0 &&
-                                        lastChapter == 0 &&
-                                        i == 0 &&
-                                        lastLesson == 0) ? (
-                                        <div key={i} className="card">
-                                          <div
-                                            key={`less${i}`}
-                                            className="card-header"
-                                          >
-                                            <div
-                                              className="row active_lesson m-2 active_lesson_selected"
-                                              id={`lessA${j}${i}`}
-                                              tabIndex="1"
-                                              style={{
-                                                borderStyle: "solid",
-                                                borderColor: "#a2b0a6",
-                                                borderWidth: "thin",
-                                              }}
-                                              onClick={(e) =>
-                                                lessonActive(`lessA${j}${i}`)
-                                              }
-                                            >
-                                              <div className="col-sm-10">
-                                                {less.lesson_vedio && (
-                                                  <a
-                                                    onClick={(e) =>
-                                                      setVedio(
-                                                        less.lesson_vedio,
-                                                        less.lesson_vedio_type,
-                                                        less.lesson_name,
-                                                        less.lesson_details,
-                                                        chapter.chapter_name,
-                                                        chapter.id,
-                                                        less.id
-                                                      )
-                                                    }
-                                                    className="btn  text-left "
-                                                    aria-expanded="true"
-                                                    aria-controls="course2"
-                                                  >
-                                                    <span
-                                                      style={{
-                                                        fontSize: "24px",
-                                                      }}
-                                                    >
-                                                      {less &&
-                                                        less.name.toUpperCase()}
-                                                    </span>
-                                                    <p
-                                                      style={{
-                                                        fontSize: "12px",
-                                                        color: "#023e86",
-                                                      }}
-                                                    >
-                                                      {" "}
-                                                      Length: {
-                                                        less.duration
-                                                      }{" "}
-                                                      mins&nbsp;
-                                                      {trackLessions.map(
-                                                        (lessonItem) => (
-                                                          <>
-                                                            {lessonItem.lesson_id ==
-                                                              less.id && (
-                                                              <span>
-                                                                {lessonItem.status ==
-                                                                  "completed" && (
-                                                                  <>
-                                                                    , status:{" "}
-                                                                    {
-                                                                      lessonItem.status
-                                                                    }
-                                                                  </>
-                                                                )}
-                                                                {lessonItem.lesson_percentage <
-                                                                  90 && (
-                                                                  <span>
-                                                                    , progress:{" "}
-                                                                    {
-                                                                      lessonItem.lesson_percentage
-                                                                    }
-                                                                    %
-                                                                  </span>
-                                                                )}
-                                                              </span>
-                                                            )}
-                                                          </>
-                                                        )
-                                                      )}
-                                                    </p>
-                                                  </a>
-                                                )}
-
-                                                {less.lesson_vedio_link && (
-                                                  <a
-                                                    onClick={(e) =>
-                                                      setVedio(
-                                                        less.lesson_vedio_link,
-                                                        less.lesson_vedio_type,
-                                                        less.lesson_name,
-                                                        less.lesson_details,
-                                                        chapter.chapter_name,
-                                                        chapter.id,
-                                                        less.id
-                                                      )
-                                                    }
-                                                    className="btn  text-left"
-                                                    aria-expanded="true"
-                                                    aria-controls="course2"
-                                                  >
-                                                    <span
-                                                      style={{
-                                                        fontSize: "24px",
-                                                      }}
-                                                    >
-                                                      {less &&
-                                                        less.lesson_name.toUpperCase()}
-                                                    </span>
-                                                    <p
-                                                      style={{
-                                                        fontSize: "12px",
-                                                        color: "#023e86",
-                                                      }}
-                                                    >
-                                                      {" "}
-                                                      Length: {
-                                                        less.duration
-                                                      }{" "}
-                                                      mins&nbsp;
-                                                      {trackLessions.map(
-                                                        (lessonItem) => (
-                                                          <>
-                                                            {lessonItem.lesson_id ==
-                                                              less.id && (
-                                                              <span>
-                                                                {lessonItem.status ==
-                                                                  "completed" && (
-                                                                  <>
-                                                                    , status:{" "}
-                                                                    {
-                                                                      lessonItem.status
-                                                                    }
-                                                                  </>
-                                                                )}
-                                                                {lessonItem.lesson_percentage <
-                                                                  90 && (
-                                                                  <span>
-                                                                    , progress:{" "}
-                                                                    {
-                                                                      lessonItem.lesson_percentage
-                                                                    }
-                                                                    %
-                                                                  </span>
-                                                                )}
-                                                              </span>
-                                                            )}
-                                                          </>
-                                                        )
-                                                      )}
-                                                    </p>
-                                                  </a>
-                                                )}
-                                              </div>
-
-                                              <div className="col-sm-2">
-                                                <div className="course-content-accordian-bottom ">
-                                                  {user.token && (
-                                                    <>
-                                                      {less.lesson_file && (
-                                                        <a
-                                                          data-toggle="tooltip"
-                                                          title="file download"
-                                                          href={
-                                                            less.lesson_file
-                                                          }
-                                                          className="sec-btn sec-btn-orange"
-                                                        >
-                                                          <i
-                                                            className="fa fa-paperclip"
-                                                            aria-hidden="true"
-                                                          ></i>
-                                                        </a>
-                                                      )}
-                                                    </>
-                                                  )}
-                                                </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      ) : (
-                                        <div key={i} className="card">
-                                          <div
-                                            key={`less${i}`}
-                                            className="card-header"
-                                          >
-                                            <div
-                                              className="row active_lesson m-2"
-                                              tabIndex="1"
-                                              id={`lessA${j}${i}`}
-                                              style={{
-                                                borderStyle: "solid",
-                                                borderColor: "#a2b0a6",
-                                                borderWidth: "thin",
-                                              }}
-                                              onClick={(e) =>
-                                                lessonActive(`lessA${j}${i}`)
-                                              }
-                                            >
-                                              <div className="col-sm-10">
-                                                {less.lesson_vedio && (
-                                                  <a
-                                                    onClick={(e) =>
-                                                      setVedio(
-                                                        less.lesson_vedio,
-                                                        less.lesson_vedio_type,
-                                                        less.lesson_name,
-                                                        less.lesson_details,
-                                                        chapter.chapter_name,
-                                                        chapter.id,
-                                                        less.id
-                                                      )
-                                                    }
-                                                    className="btn  text-left "
-                                                    aria-expanded="true"
-                                                    aria-controls="course2"
-                                                  >
-                                                    <span
-                                                      style={{
-                                                        fontSize: "24px",
-                                                      }}
-                                                    >
-                                                      {less &&
-                                                        less.lesson_name.toUpperCase()}
-                                                    </span>
-                                                    <p
-                                                      style={{
-                                                        fontSize: "12px",
-                                                        color: "#023e86",
-                                                      }}
-                                                    >
-                                                      {" "}
-                                                      Length: {
-                                                        less.duration
-                                                      }{" "}
-                                                      mins&nbsp;
-                                                      {trackLessions.map(
-                                                        (lessonItem) => (
-                                                          <>
-                                                            {lessonItem.lesson_id ==
-                                                              less.id && (
-                                                              <span>
-                                                                {lessonItem.status ==
-                                                                  "completed" && (
-                                                                  <>
-                                                                    , status:{" "}
-                                                                    {
-                                                                      lessonItem.status
-                                                                    }
-                                                                  </>
-                                                                )}
-                                                                {lessonItem.lesson_percentage <
-                                                                  90 && (
-                                                                  <span>
-                                                                    , progress:{" "}
-                                                                    {
-                                                                      lessonItem.lesson_percentage
-                                                                    }
-                                                                    %
-                                                                  </span>
-                                                                )}
-                                                              </span>
-                                                            )}
-                                                          </>
-                                                        )
-                                                      )}
-                                                    </p>
-                                                  </a>
-                                                )}
-
-                                                {less.lesson_vedio_link && (
-                                                  <a
-                                                    onClick={(e) =>
-                                                      setVedio(
-                                                        less.lesson_vedio_link,
-                                                        less.lesson_vedio_type,
-                                                        less.lesson_name,
-                                                        less.lesson_details,
-                                                        chapter.chapter_name,
-                                                        chapter.id,
-                                                        less.id
-                                                      )
-                                                    }
-                                                    className="btn  text-left"
-                                                    aria-expanded="true"
-                                                    aria-controls="course2"
-                                                  >
-                                                    <span
-                                                      style={{
-                                                        fontSize: "24px",
-                                                      }}
-                                                    >
-                                                      {less &&
-                                                        less.lesson_name.toUpperCase()}
-                                                    </span>
-                                                    <p
-                                                      style={{
-                                                        fontSize: "12px",
-                                                        color: "#023e86",
-                                                      }}
-                                                    >
-                                                      {" "}
-                                                      Length: {
-                                                        less.duration
-                                                      }{" "}
-                                                      mins&nbsp;
-                                                      {trackLessions.map(
-                                                        (lessonItem) => (
-                                                          <>
-                                                            {lessonItem.lesson_id ==
-                                                              less.id && (
-                                                              <span>
-                                                                {lessonItem.status ==
-                                                                  "completed" && (
-                                                                  <>
-                                                                    , status:{" "}
-                                                                    {
-                                                                      lessonItem.status
-                                                                    }
-                                                                  </>
-                                                                )}
-                                                                {lessonItem.lesson_percentage <
-                                                                  90 && (
-                                                                  <span>
-                                                                    , progress:{" "}
-                                                                    {
-                                                                      lessonItem.lesson_percentage
-                                                                    }
-                                                                    %
-                                                                  </span>
-                                                                )}
-                                                              </span>
-                                                            )}
-                                                          </>
-                                                        )
-                                                      )}
-                                                    </p>
-                                                  </a>
-                                                )}
-                                              </div>
-                                              <div className="col-sm-2">
-                                                <div className="course-content-accordian-bottom ">
-                                                  {user.token && (
-                                                    <>
-                                                      {less.lesson_file && (
-                                                        <a
-                                                          data-toggle="tooltip"
-                                                          title="file download"
-                                                          href={
-                                                            less.lesson_file
-                                                          }
-                                                          className="sec-btn sec-btn-orange"
-                                                        >
-                                                          <i
-                                                            className="fa fa-paperclip"
-                                                            aria-hidden="true"
-                                                          ></i>
-                                                        </a>
-                                                      )}
-                                                    </>
-                                                  )}
-                                                </div>
-                                              </div>
-                                            </div>
-
-                                            {/** attatch file 
-                                                            <div className="course-content-accordian-bottom ">
-
-                                                                {user.token && <>
-                                                                    {less.lesson_file && <NavLink href={less.lesson_file} className="sec-btn sec-btn-orange" >Download Attachments</a>}
-                                                                </>
-                                                                }
-
-
-                                                            </div> */}
-                                          </div>
-                                        </div>
-                                      )}
-                                    </>
-                                  ))}
-                              </div>
-                            ))}
+                           
 
                           {/** ----------------------------- new lesson ----------------------------- */}
 
-                          <h1>New Lesson ----------- </h1>
+                           
 
                           <div id="accordion">
                             {chap.length > 0 &&
@@ -2185,93 +1880,131 @@ export default function Singlecourse() {
                                         data-toggle="collapse"
                                         data-target={`#collapse${j}`}
                                         aria-expanded="false"
-                                        aria-controls={`collapse${j}`}  
+                                        aria-controls={`collapse${j}`}
                                       >
                                         <span>
-                                        {chapter.lessons.length > 0
-                                          ? chapter.chapter_name
-                                          : ""}
+                                          {chapter.lessons.length > 0
+                                            ? chapter.chapter_name
+                                            : ""}
                                         </span>
 
                                       </a>
                                     </div>
                                     <div
                                       id={`collapse${j}`}
-                                      className={`collapse ${((chapter.id == lastChapter && less.id == lastLesson) || (j == 0 && lastChapter == 0 && i == 0 &&  lastLesson == 0))}`}
+                                      className={`collapse ${((chapter.id == lastChapter) || (j == 0 && lastChapter == 0)) ? ' show' : ''}`}
                                       aria-labelledby={`heading${j}`}
                                       data-parent="#accordion"
                                     >
                                       <div className="card-body">
 
-                                      {chapter.lessons.length>0  &&
-                                        chapter.lessons.map((less, i) => (
-                                         
-                                            <div id={`lessB${j}${i}`} className="btn-header-link2 btn active_lesson" style={{cursor:"default"}} >
+                                        {chapter.lessons.length > 0 &&
+                                          chapter.lessons.map((less, i) => (
 
-                                            <div className="row">
-                                            <div className="col-sm-10"  >
-                                            
-                                              <p
+                                            <div id={`lessB${j}${i}`} className={`btn-header-link2 btn active_lesson ${((less.id == lastLesson) || (i == 0 && lastLesson == 0)) ? ' active_lesson_selected ' : ''}`} style={{ cursor: "default" }} >
 
-                                              
-                                              style={{cursor:"pointer"}}
-                                              onClick={(e) =>{
+                                              <div className="row">
+                                                <div className="col-sm-10"  >
 
-                                                setVedio(
-                                                  less.lesson_vedio_link,
-                                                  less.lesson_vedio_type,
-                                                  less.lesson_name,
-                                                  less.lesson_details,
-                                                  chapter.chapter_name,
-                                                  chapter.id,
-                                                  less.id
-                                                );
+                                                  <p
 
-                                                lessonActive(`lessB${j}${i}`)
-                                              
-                                              }
-                                              } 
-                                              
-                                              
 
-                                              >
-                                               {less && less.lesson_name.toUpperCase()}
-                                              </p>                                                                                
-                                                          
-                                            </div>
+                                                    style={{ cursor: "pointer" }}
+                                                    onClick={(e) => {
 
-                                            <div className="col-sm-2">
-                                                <div className="course-content-accordian-bottom ">
-                                                  {user.token && (
-                                                    <>
-                                                      {less.lesson_file && (
-                                                        <a
-                                                          data-toggle="tooltip"
-                                                          title="file download"
-                                                          href={
-                                                            less.lesson_file
-                                                          }
-                                                          className="sec-btn sec-btn-orange"
-                                                        >
-                                                          <i
-                                                            className="fa fa-paperclip"
-                                                            aria-hidden="true"
-                                                          ></i>
-                                                        </a>
-                                                      )}
-                                                    </>
-                                                  )}
+                                                      setVedio(
+                                                        less.lesson_vedio_link,
+                                                        less.lesson_vedio_type,
+                                                        less.lesson_name,
+                                                        less.lesson_details,
+                                                        chapter.chapter_name,
+                                                        chapter.id,
+                                                        less.id
+                                                      );
+
+                                                      lessonActive(`lessB${j}${i}`)
+
+                                                    }
+                                                    }
+
+
+
+                                                  >
+                                                    {less && less.lesson_name.toUpperCase()}
+                                                  </p>
+
                                                 </div>
+
+                                                <div className="col-sm-2">
+                                                  <div className="course-content-accordian-bottom ">
+                                                    {user.token && (
+                                                      <>
+                                                        {less.lesson_file && (
+                                                          <a
+                                                            data-toggle="tooltip"
+                                                            title="file download"
+                                                            href={
+                                                              less.lesson_file
+                                                            }
+                                                            className="sec-btn sec-btn-orange"
+                                                          >
+                                                            <i
+                                                              className="fa fa-paperclip"
+                                                              aria-hidden="true"
+                                                            ></i>
+                                                          </a>
+                                                        )}
+                                                      </>
+                                                    )}
+                                                  </div>
+                                                </div>
+
                                               </div>
 
-                                          </div>
 
-                                          <ProgressBar className="progressBarPosition2" labelClassName="progressBarLabel"   completed={80} bgColor={"green"} borderRadius={"2px"} height={"14px"} />
-  
+                                              {trackLessions.map(
+                                                (lessonItem) => (
+                                                  <>
+                                                    {lessonItem.lesson_id ==
+                                                      less.id && (
+                                                        <span>
+                                                          {lessonItem.status == "completed" && (
+                                                              <>
+                                                                {/* , status:{" "}
+                                                                {
+                                                                  lessonItem.status
+                                                                } */}
+
+                                                                <ProgressBar className=" progressBarPosition2" labelClassName="progressBarLabel" completed={100} bgColor={"green"} borderRadius={"2px"} height={"14px"} />
+
+                                                              </>
+                                                            )}
+
+                                                          {lessonItem.lesson_percentage < 90 && (
+                                                              <span>
+                                                                {/* , progress:{" "}
+                                                                {
+                                                                  lessonItem.lesson_percentage
+                                                                }
+                                                                % */}
+
+                                                                <ProgressBar className=" progressBarPosition2" labelClassName="progressBarLabel" completed={lessonItem.lesson_percentage} bgColor={"green"} borderRadius={"2px"} height={"14px"} />
+
+                                                              </span>
+                                                            )}
+                                                        </span>
+                                                      )}
+                                                  </>
+                                                )
+                                              )}
+
+
+                                              
+
 
                                             </div>
-                                            
-                                        ))}
+
+                                          ))}
 
                                       </div>
                                     </div>
@@ -2281,6 +2014,7 @@ export default function Singlecourse() {
                           </div>
 
                           {/** ---------------------------------------------------------- */}
+
                         </div>
                       </>
                     ) : (
@@ -2295,8 +2029,8 @@ export default function Singlecourse() {
           </div>
 
           {(user.token && enrollment && assignment.length > 0) ||
-          (user.token && user.user_id == creatorId && assignment.length > 0) ||
-          (user.token && user.user_role == 2 && assignment.length > 0) ? (
+            (user.token && user.user_id == creatorId && assignment.length > 0) ||
+            (user.token && user.user_role == 2 && assignment.length > 0) ? (
             <div className="assignment-sec sec-bg">
               <div className="container">
                 <div className="data-table">

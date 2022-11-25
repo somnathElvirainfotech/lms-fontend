@@ -11,7 +11,7 @@ function ParentQnsAnsComment(props) {
   // loader
   const [showLoader, setShowLoader] = useState(false);
   const { user } = useContext(AuthContext);
-  const { course_id, parent_id, label } = props;
+  const { course_id, parent_id, label,reqload } = props;
 
   var [comments, setComments] = useState([]);
   const [Text, setText] = useState({ comment: "" });
@@ -45,9 +45,16 @@ function ParentQnsAnsComment(props) {
 
   }, [])
 
+  useEffect(() => {
+
+    commentSearch(course_id, parent_id)
+
+  }, [reqload])
+
 
 
   var commentSearch = async (courseID, ID) => {
+    setShowLoader(true)
     var responce = await QnsAnsCommentService.search({
       course_id: courseID,
       id: ID,
@@ -55,6 +62,7 @@ function ParentQnsAnsComment(props) {
     // console.log("comments ",responce.data.data);
     var resData = responce.data.data;
     setComments(resData.data);
+    setShowLoader(false)
   };
 
   var closeModal = () => {
@@ -71,6 +79,7 @@ function ParentQnsAnsComment(props) {
     console.log(Text);
   };
 
+  const [c_reqload,setChildReqLoad]=useState(false)
   var handelSubmit2 = async () => {
 
     setShowLoader(true);
@@ -85,6 +94,7 @@ function ParentQnsAnsComment(props) {
     var responce = await QnsAnsCommentService.create(data);
 
     if (responce.data.status) {
+      setChildReqLoad(!c_reqload)
       setText({ comment: "" });
       setAnsId('')
       document.getElementById("myForm").reset();
@@ -155,21 +165,27 @@ function ParentQnsAnsComment(props) {
                 alt="..."
               ></img>
             )}
+            
+            <div className="qnsAns-username">
+
             <span>{item.user_name.toUpperCase()}</span>
             <span className="text-secondary" style={{ fontSize: "14px" }}>
               {" "}
               <Moment fromNow>{item.created_at}</Moment>
               {" "}
             </span>
+            </div>
 
           </h5>
-          <p className="ml-5">{item.comment}</p>
+          <div className="container qnsAns-details "   >
+               <p style={{wordBreak: "break-all"}} >{item.comment}</p>
+               </div>
           <h6
             className="ml-5 text-primary font-weight-bold "
             style={{ cursor: "pointer" }}
           >
             {" "}
-            <span className="p-2" >{item.total_replies}</span> <span onClick={() => (showReply(`${label}${i + 1}`, item.id))}>REPLIES</span>
+            <span className="p-2"  >{item.total_replies}</span> <span onClick={() => (showReply(`${label}${i + 1}`, item.id))}>REPLIES</span>
 
             {item.user_id != user.user_id && <span data-toggle="modal" data-backdrop="static"
               data-keyboard="false" className="ml-5"
@@ -185,7 +201,7 @@ function ParentQnsAnsComment(props) {
           {/** ---------------------------------------------- */}
 
           <div className="container mt-3 ml-5" id={`${label}${i + 1}`} style={{ display: "none" }}>
-            {parent && <ChildQnsAnsComment course_id={course_id} parent_id={item.id} />}
+            {parent && <ChildQnsAnsComment c_reqload={c_reqload} course_id={course_id} parent_id={item.id} />}
           </div>
 
           {/** ---------------------------------------------- */}

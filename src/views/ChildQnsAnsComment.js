@@ -10,7 +10,7 @@ function ChildQnsAnsComment(props) {
     // loader
   const [showLoader, setShowLoader] = useState(false);
   const { user } = useContext(AuthContext);
-  const { course_id,parent_id } = props;
+  const { course_id,parent_id ,c_reqload} = props;
   var [comments, setComments] = useState([]);
 
   useEffect(()=>{  
@@ -19,7 +19,14 @@ function ChildQnsAnsComment(props) {
 
    },[])
 
+   useEffect(()=>{
+
+    commentSearch(course_id,parent_id)
+
+  },[c_reqload])
+
    var commentSearch = async (courseID, ID) => {
+    setShowLoader(true)
     var responce = await QnsAnsCommentService.search({
       course_id: courseID,
       id: ID,
@@ -27,7 +34,10 @@ function ChildQnsAnsComment(props) {
     // console.log("comments ",responce.data.data);
     var resData = responce.data.data;
     setComments(resData.data);
+    setShowLoader(false)
   };
+
+  
     
 
   return <>
@@ -58,15 +68,22 @@ function ChildQnsAnsComment(props) {
               alt="..."
             ></img>
           )}
+          <div className="qnsAns-username">
+
           <span>{item.user_name.toUpperCase()}</span>
           <span className="text-secondary" style={{ fontSize: "14px" }}>
             {" "}
             <Moment fromNow>{item.created_at}</Moment>
             {" "}
           </span>
+
+          </div>
+          
            
         </h5>
-        <p className="ml-5">{item.comment}</p>
+        <div className="container qnsAns-details "  >
+               <p style={{wordBreak: "break-all"}} >{item.comment}</p>
+               </div>
 
       </div>
 
