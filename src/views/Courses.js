@@ -797,7 +797,7 @@ export default function Course() {
                                             <p style={{height:"40px"}}  className="courseText"><Markup content={`${course.short_description && textShort(course.short_description)}`} /></p>  
 
 
-                                                <p className="courseText mt-1" style={{ fontSize: "13px" }}> {course.updated_at != null ? moment(course.updated_at).format("MM-YYYY") :  moment(course.created_at).format("MM-YYYY")}</p>
+                                                <p className="courseText mt-1" style={{ fontSize: "13px" }}> {course.updated_at != null ? moment(course.updated_at).format("MM/YYYY") :  moment(course.created_at).format("MM/YYYY")}</p>
 
                                                 {course.rating_details &&
                                                     course.rating_details.map((item) => (
@@ -837,6 +837,7 @@ export default function Course() {
                                                         {course.enrollment_details[0].course_progress != 0 &&
                                                             <ProgressBar
                                                             className="progressBarPosition"
+                                                            labelAlignment="center"
                                                             labelClassName="progressBarPosition-lable"
                                                             completed={course.enrollment_details[0].course_progress} bgColor={course.enrollment_details[0].course_progress == 100 ? "green" : "#023e86"} borderRadius={"2px"} height={"18px"} />
                                                         }

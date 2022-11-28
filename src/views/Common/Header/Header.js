@@ -340,7 +340,7 @@ export default function Header() {
                                     </ul>  */}
                 </div>
 
-                {user.token && (
+                {user.token && user.user_role != 5 && (
                   <div className="hd-src">
                     <form onSubmit={(e) => e.preventDefault()} action="#">
                       <input
@@ -365,6 +365,7 @@ export default function Header() {
                   </div>
                 )}
 
+                {user.user_role != 5 && (
                 <div className="hd-src">
                   <div
                     style={{
@@ -387,7 +388,8 @@ export default function Header() {
                     </select>
                   </div>
                 </div>
-                
+                )}
+
               </div>
 
 
@@ -733,14 +735,80 @@ export default function Header() {
                 {/* -------------------  user   ----------------- */}
 
                 <div className="rt-side">
+                <div className="row">
 
+                <div className="col-md-6">
+                {user.token && user.user_role == 5 && (
+                  <div className="hd-src">
+                    <form onSubmit={(e) => e.preventDefault()} action="#">
+                    <div className="row" >
+                    <div className="col-10" >
+                      <input
+                        value={search.search_text}
+                        style={{ fontSize: "14px" }}
+                        onChange={searchhandler}
+                        type="text"
+                        name="search_text"
+                        placeholder={`${langObj.main_search}`}
+                        className="form-control"
+                        onKeyDown={(e) => eneterSearch(e)}
+                      />
+                      </div>
+                      <div className="col-2">
+                      <button
+                        style={{ marginLeft:"-20px" }}
+                        type="button"
+                        onClick={textSearch}
+                        className="btn"
+                      >
+                        <i className="fa fa-search"></i>
+                      </button>
+                      </div>
+                      </div>
+                    </form>
+                  </div>
+                )}
+                </div>
+
+                <div className="col-md-3">
+
+                {user.token && user.user_role == 5 && (
+                <div className="hd-src">
+                  <div
+                    style={{
+                      marginTop: "4px",
+                      marginLeft: "0",
+                      // marginRight: "15px",
+                    }}
+                  >
+                    <select
+                      required
+                      className="form-control"
+                      onChange={languageHandler}
+                      id="language_type"
+                      name="language_type"
+                      value={languageList.language_name}
+                    >
+                      {langData.map((item) => (
+                        <option value={item.id}>{item.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                )}
+                </div>
                 
                   
                
 
               {/* ------------------------ end user  ------------------------ */}
 
+
+                <div className="col-md-3">
                   <div className="hd-loging-sign">
+
+                  
+
                     {!user.token && (
                       <ul>
                         <li key={"list13"}>
@@ -758,14 +826,20 @@ export default function Header() {
                     {user.token && (
                       <ul>
                         <li key={"list14"}>
-                          <Link to="#" onClick={Logout}>
+                          <Link to="#" onClick={Logout} style={{
+                      marginTop: "4px",
+                      marginLeft: "0",
+                      // marginRight: "15px",
+                    }}>
                             {langObj.logout}
                           </Link>
                         </li>
                       </ul>
                     )}
                   </div>
-
+                </div>
+                  
+                  </div>
                   </div>
 
               </>}

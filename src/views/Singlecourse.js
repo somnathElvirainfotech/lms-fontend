@@ -48,6 +48,7 @@ export default function Singlecourse() {
   const [showLoader, setShowLoader] = useState(false);
 
   const [enrollStatus, setEnrollStatus] = useState("");
+  const [nextData, setNextData] = useState({});
 
   let query = useQuery();
   var location = useLocation();
@@ -157,7 +158,7 @@ export default function Singlecourse() {
   const [lastChapter, setLastChapter] = useState(0);
   const [lastLesson, setLastLesson] = useState(0);
 
-  
+
 
   useEffect(() => {
     console.log("course id ==== ", singleCourseId);
@@ -170,14 +171,14 @@ export default function Singlecourse() {
         // alert(data.data.data.id)
         singleCourseId = data.data.data.id;
       }
-      
+
       setCourseID(singleCourseId);
-      console.log("first course id ",singleCourseId)
+      console.log("first course id ", singleCourseId)
       var course = query.get("id");
 
       // alert(singleCourseId)
 
-      
+
 
       getTrackingLessions();
 
@@ -235,11 +236,11 @@ export default function Singlecourse() {
       setChap(temp.chapters);
 
       if (user.token && user.user_role == 5) {
-        chkAllGroups(temp.group_details);
+        chkAllGroups(temp.group_details, temp);
       }
 
       if (user.token && user.user_role == 4) {
-        chkAllGroups(temp.group_details);
+        chkAllGroups(temp.group_details, temp);
       }
 
       if (user.user_role == 2) {
@@ -260,9 +261,30 @@ export default function Singlecourse() {
             lesson_name: temp.chapters[0].lessons[0].lesson_name,
             lesson_details: temp.chapters[0].lessons[0].lesson_details,
           });
+
+
+
+          for (var i of temp.chapters) {
+            if (i.id == temp.chapters[0].lessons[0].chapter_id) {
+              for (var j of i.lessons) {
+                if (j.id == temp.chapters[0].lessons[0].id) {
+                  setNextData({
+                    next_lessons_data: j.next_lessons_data,
+                    preChapter: `parentChap${i.id}`
+                  });
+                }
+              }
+            }
+          }
+
+
+          $(`#parentChap${temp.chapters[0].lessons[0].chapter_id}`).removeClass("collapsed");
+
+
         }
       }
 
+      // alert(singleCourseId)
       if (user.token) {
         var enrollRes = await UserService.enrollmentcourse(
           user.user_id,
@@ -298,7 +320,74 @@ export default function Singlecourse() {
               "current lesson ",
               enrollRes.data.data[0].current_lession
             );
-            await getCurrentLesson(singleCourseId);
+
+
+            // alert(singleCourseId)            
+
+            if (enrollRes.data.data[0].current_lession == null && enrollRes.data.data[0].current_chapter == null) {
+
+              if (temp.course_type == "regular") {
+                // alert(temp.chapters[0].id)
+
+                setVedioPlayer(temp.chapters[0].lessons[0].lesson_vedio_link);
+                setVedioType(temp.chapters[0].lessons[0].lesson_vedio_type);
+                setCurrentChapter(temp.chapters[0].lessons[0].chapter_id);
+                setCurrentLesson(temp.chapters[0].lessons[0].id);
+                oneView({
+                  chapter_name: temp.chapters[0].id.chapter_name,
+                  lesson_name: temp.chapters[0].lessons[0].lesson_name,
+                  lesson_details: temp.chapters[0].lessons[0].lesson_details,
+                });
+
+
+
+                for (var i of temp.chapters) {
+                  if (i.id == temp.chapters[0].lessons[0].chapter_id) {
+                    for (var j of i.lessons) {
+                      if (j.id == temp.chapters[0].lessons[0].id) {
+                        setNextData({
+                          next_lessons_data: j.next_lessons_data,
+                          preChapter: `parentChap${i.id}`
+                        });
+                      }
+                    }
+                  }
+                }
+
+                $(`#parentChap${temp.chapters[0].lessons[0].chapter_id}`).removeClass("collapsed");
+
+
+
+                var payload = {
+                  user_id: user.user_id,
+                  course_id: singleCourseId,
+                  chapter_id: temp.chapters[0].lessons[0].chapter_id,
+                  lesson_id: temp.chapters[0].lessons[0].id,
+                  lesson_percentage: Math.round((progress.playedSeconds / duration) * 100),
+                  current_play_sec: Number(progress.playedSeconds).toFixed(2),
+                };
+                setPreviousID(payload)
+
+
+              }
+            }
+            else {
+
+              var payload = {
+                user_id: user.user_id,
+                course_id: singleCourseId,
+                chapter_id: enrollRes.data.data[0].current_chapter,
+                lesson_id: enrollRes.data.data[0].current_lession,
+                lesson_percentage: Math.round((progress.playedSeconds / duration) * 100),
+                current_play_sec: Number(progress.playedSeconds).toFixed(2),
+              };
+              setPreviousID(payload)
+
+              await getCurrentLesson(singleCourseId, temp.chapters);
+            }
+
+
+
           }
         }
 
@@ -312,15 +401,33 @@ export default function Singlecourse() {
   }, []);
 
   // after run vedio when  ended
-  
 
-  var reloadLesson=async (payload)=>{
-  
-    var dresponse = await CourseTrackService.regularCourseTrack(payload);
-    console.log("local course track updated -----  ", dresponse.data);
 
-    if(dresponse.data.status)
-    {
+  var reloadLesson = async (payload) => {
+
+    if (user.user_role == 5) {
+
+      var chkTl = false;
+      for (var lessonItem of trackLessions) {
+        if (lessonItem.lesson_id == payload.lesson_id) {
+          if ((Math.round((progress.playedSeconds / duration) * 100)) > lessonItem.lesson_percentage) {
+            payload.lesson_percentage = (Math.round((progress.playedSeconds / duration) * 100));
+            payload.current_play_sec = (Number(progress.playedSeconds).toFixed(2));
+            var dresponse = await CourseTrackService.regularCourseTrack(payload);
+            console.log("local course track updated -----  ", dresponse.data);
+            
+          }
+          chkTl = true;
+        }
+      }
+
+      if (chkTl == false) {
+        var dresponse = await CourseTrackService.regularCourseTrack(payload);
+        console.log("local course track updated -----  ", dresponse.data);
+      }
+
+
+
       getTrackingLessions();
 
       var responce = await UserService.singlecourse(singleCourseId);
@@ -332,51 +439,129 @@ export default function Singlecourse() {
       setCourses(temp);
       setChap(temp.chapters);
 
-      if (user.token) {
-        var enrollRes = await UserService.enrollmentcourse(
-          user.user_id,
-          singleCourseId
-        );
-        var status = false;
-        console.log("enrolllll  ", enrollRes.data);
-        if (enrollRes.data.status) {
-          setEnrollStatus(
-            enrollRes.data.data[0].enrollment_status == "completed"
-              ? "completed"
-              : ""
-          );
-          if (enrollRes.data.data[0].user_enroll_status == "active") {
-            status = true;
-            setEnroll_id(enrollRes.data.data[0].enroll_id);
-            setLastChapter(
-              enrollRes.data.data[0].current_chapter != null
-                ? enrollRes.data.data[0].current_chapter
-                : 0
-            );
 
-            console.log(
-              "current chapter ",
-              enrollRes.data.data[0].current_chapter
-            );
-            setLastLesson(
-              enrollRes.data.data[0].current_lession != null
-                ? enrollRes.data.data[0].current_lession
-                : 0
-            );
-            console.log(
-              "current lesson ",
-              enrollRes.data.data[0].current_lession
-            );
-            await getCurrentLesson(singleCourseId);
-          }
-        }
 
-        setEnrollments(status);
 
-        // gotoPage(status, temp.course_type, temp.xapi_attachment_file, temp.creator_id)
-      }
+
 
     }
+
+
+
+  }
+
+  var reloadLesson2 = async (payload) => {
+
+    if (user.user_role == 5) {
+
+      var chkTl = false;
+      for (var lessonItem of trackLessions) {
+        if (lessonItem.lesson_id == payload.lesson_id) {
+          if ((Math.round((progress.playedSeconds / duration) * 100)) > lessonItem.lesson_percentage) {
+            payload.lesson_percentage = (Math.round((progress.playedSeconds / duration) * 100));
+            payload.current_play_sec = (Number(progress.playedSeconds).toFixed(2));
+
+            var dresponse = await CourseTrackService.regularCourseTrack(payload);
+            console.log("local course track updated -----  ", dresponse.data);
+            
+          }
+          chkTl = true;
+        }
+      }
+
+      if (chkTl == false) {
+        var dresponse = await CourseTrackService.regularCourseTrack(payload);
+        console.log("local course track updated -----  ", dresponse.data);
+      }
+
+
+
+
+
+      getTrackingLessions();
+
+      var responce = await UserService.singlecourse(singleCourseId);
+      var temp = responce.data.data;
+
+      console.log("course details2 ", responce.data);
+
+      setChap(temp.chapters);
+
+
+      console.log("next Data", nextData)
+
+      var NEXTDATA = {};
+
+      for (var i of temp.chapters) {
+        if (i.id == payload.chapter_id) {
+          for (var j of i.lessons) {
+            if (j.id == payload.lesson_id) {
+              NEXTDATA = {
+                next_lessons_data: j.next_lessons_data,
+                preChapter: `parentChap${i.id}`
+              };
+            }
+          }
+        }
+      }
+
+      if (NEXTDATA.next_lessons_data.chapter_id != null && NEXTDATA.next_lessons_data.lesson_id != null) {
+        // alert(NEXTDATA.next_lessons_data.lesson_vedio_link)
+        setVedioPlayer(NEXTDATA.next_lessons_data.lesson_vedio_link);
+        setVedioType(NEXTDATA.next_lessons_data.lesson_vedio_type);
+        setCurrentChapter(NEXTDATA.next_lessons_data.chapter_id);
+        setCurrentLesson(NEXTDATA.next_lessons_data.lesson_id);
+        setVedioPlay(false);
+        oneView({
+          chapter_name: NEXTDATA.next_lessons_data.chapter_name,
+          lesson_name: NEXTDATA.next_lessons_data.lesson_name,
+          lesson_details: NEXTDATA.next_lessons_data.lesson_details,
+        });
+
+        $(".active_lesson").removeClass("active_lesson_selected");
+        $(`.selectLesson${NEXTDATA.next_lessons_data.lesson_id}`).addClass("active_lesson_selected");
+
+        if (NEXTDATA.next_lessons_data.chapter_id != payload.chapter_id) {
+          $(".chapterCHK").removeClass("show");
+          $(`.selectChapter${NEXTDATA.next_lessons_data.chapter_id}`).addClass("show");
+          $(`#parentChap${NEXTDATA.next_lessons_data.chapter_id}`).removeClass("collapsed");
+          $(`#${NEXTDATA.preChapter}`).addClass("collapsed");
+        }
+
+
+      }
+
+
+
+
+    } else {
+      if (nextData.next_lessons_data.chapter_id != null && nextData.next_lessons_data.lesson_id != null) {
+        // alert(nextData.next_lessons_data.lesson_vedio_link)
+        setVedioPlayer(nextData.next_lessons_data.lesson_vedio_link);
+        setVedioType(nextData.next_lessons_data.lesson_vedio_type);
+        setCurrentChapter(nextData.next_lessons_data.chapter_id);
+        setCurrentLesson(nextData.next_lessons_data.lesson_id);
+        setVedioPlay(false);
+        oneView({
+          chapter_name: nextData.next_lessons_data.chapter_name,
+          lesson_name: nextData.next_lessons_data.lesson_name,
+          lesson_details: nextData.next_lessons_data.lesson_details,
+        });
+
+        $(".active_lesson").removeClass("active_lesson_selected");
+        $(`.selectLesson${nextData.next_lessons_data.lesson_id}`).addClass("active_lesson_selected");
+
+        if (nextData.next_lessons_data.chapter_id != payload.chapter_id) {
+          $(".chapterCHK").removeClass("show");
+          $(`.selectChapter${nextData.next_lessons_data.chapter_id}`).addClass("show");
+          $(`#parentChap${nextData.next_lessons_data.chapter_id}`).removeClass("collapsed");
+          $(`#${nextData.preChapter}`).addClass("collapsed");
+        }
+
+
+      }
+    }
+
   }
 
   function gotoPage(enroll, course_type, file_path, creator_id) {
@@ -503,17 +688,58 @@ export default function Singlecourse() {
   const [vedioPlay, setVedioPlay] = useState(false);
 
   // check coourse and user group
-  var chkAllGroups = (courseGroup) => {
+  var chkAllGroups = (courseGroup, temp) => {
     var Group = user.user_groups.split(",");
     var userGroup = Group.map((i) => Number(i));
     setShowLoader(true);
     console.log("user group", userGroup);
+    var chk = false;
     for (var item of courseGroup) {
       if (userGroup.includes(item.group_id)) {
         console.log(userGroup.includes(item.group_id));
         setChkGroup(true);
+        chk = true
       }
       setChkGroup2(false);
+    }
+
+    if (user.user_role == 4) {
+      if (chk) {
+        if (temp.course_type == "regular") {
+          // alert(temp.chapters[0].id)
+          setLastChapter(temp.chapters[0].id);
+          setLastLesson(temp.chapters[0].lessons[0].id);
+
+          setVedioPlayer(temp.chapters[0].lessons[0].lesson_vedio_link);
+          setVedioType(temp.chapters[0].lessons[0].lesson_vedio_type);
+          setCurrentChapter(temp.chapters[0].lessons[0].chapter_id);
+          setCurrentLesson(temp.chapters[0].lessons[0].id);
+          oneView({
+            chapter_name: temp.chapters[0].id.chapter_name,
+            lesson_name: temp.chapters[0].lessons[0].lesson_name,
+            lesson_details: temp.chapters[0].lessons[0].lesson_details,
+          });
+
+
+
+          for (var i of temp.chapters) {
+            if (i.id == temp.chapters[0].lessons[0].chapter_id) {
+              for (var j of i.lessons) {
+                if (j.id == temp.chapters[0].lessons[0].id) {
+                  setNextData({
+                    next_lessons_data: j.next_lessons_data,
+                    preChapter: `parentChap${i.id}`
+                  });
+                }
+              }
+            }
+          }
+
+          $(`#parentChap${temp.chapters[0].lessons[0].chapter_id}`).removeClass("collapsed");
+
+
+        }
+      }
     }
 
     setShowLoader(false);
@@ -649,6 +875,17 @@ export default function Singlecourse() {
   var [currentChapter, setCurrentChapter] = useState(0);
   var [currentLesson, setCurrentLesson] = useState(0);
 
+  var [previousID, setPreviousID] = useState({
+    user_id: 0,
+    course_id: 0,
+    chapter_id: 0,
+    lesson_id: 0,
+    lesson_percentage: 0,
+    current_play_sec: 0,
+  });
+
+
+
   var setVedio = async (
     value,
     type,
@@ -656,8 +893,60 @@ export default function Singlecourse() {
     less_details,
     chapter_name,
     chapter_id,
-    lesson_id
+    lesson_id,
+    nextLessonData,
+    preChapter
   ) => {
+
+    // previous  value set
+    if (user.user_role == 5) {
+      if (previousID.user_id != 0 && previousID.course_id != 0 && previousID.chapter_id != 0 && previousID.lesson_id != 0) {
+        // alert(1)
+        reloadLesson(previousID)
+
+
+
+      }
+    }
+
+    if (enroll_id != 0) {
+      var payload = {
+        chapter_id: chapter_id,
+        less_id: lesson_id,
+        enroll_id: enroll_id,
+      };
+      console.log(payload);
+      setShowLoader(true);
+      await CourseTrackService.lastLessonUpdate(payload);
+
+      // var payload = {
+      //   user_id: user.user_id,
+      //   course_id: courseID,
+      //   chapter_id: chapter_id,
+      //   lesson_id: lesson_id,
+      //   lesson_percentage: Math.round((progress.playedSeconds / duration) * 100),
+      //   current_play_sec: Number(progress.playedSeconds).toFixed(2),
+      // };
+
+      // courseTracking(payload);
+
+      var payload = {
+        user_id: user.user_id,
+        course_id: courseID,
+        chapter_id: chapter_id,
+        lesson_id: lesson_id,
+        lesson_percentage: Math.round((progress.playedSeconds / duration) * 100),
+        current_play_sec: Number(progress.playedSeconds).toFixed(2),
+      };
+      setPreviousID(payload)
+
+
+
+      setShowLoader(false);
+    }
+
+
+
     setVedioPlayer(value);
     setVedioType(type);
     setCurrentChapter(chapter_id);
@@ -671,17 +960,17 @@ export default function Singlecourse() {
       lesson_details: less_details,
     });
 
-    if (enroll_id != 0) {
-      var payload = {
-        chapter_id: chapter_id,
-        less_id: lesson_id,
-        enroll_id: enroll_id,
-      };
-      console.log(payload);
-      setShowLoader(true);
-      await CourseTrackService.lastLessonUpdate(payload);
-      setShowLoader(false);
-    }
+
+
+
+
+
+    // set next lesson data------------------
+
+    setNextData({
+      next_lessons_data: nextLessonData,
+      preChapter: preChapter
+    });
 
 
 
@@ -757,7 +1046,7 @@ export default function Singlecourse() {
     color: "black",
   };
 
-  
+
 
   // player tracking
   const [progress, setProgress] = useState({});
@@ -775,13 +1064,15 @@ export default function Singlecourse() {
     console.log("run time ", e);
   };
 
- 
 
-  var playerEnded =  () => {
+
+  var playerEnded = () => {
     var course_id = query.get("id");
     setVedioPlay(false)
 
     // setShowLoader(true)
+
+    // alert("END",singleCourseId)
 
     var payload = {
       user_id: user.user_id,
@@ -794,9 +1085,9 @@ export default function Singlecourse() {
 
     // courseTracking(payload);
 
-    reloadLesson(payload)
+    reloadLesson2(payload)
 
-   
+
 
     // setShowLoader(false)
 
@@ -816,7 +1107,10 @@ export default function Singlecourse() {
     };
 
     courseTracking(payload);
+
+
     console.log("paused ", payload);
+    // reloadLesson(payload)
     setCompleteData({ ...payload });
   };
 
@@ -831,6 +1125,10 @@ export default function Singlecourse() {
     console.log("seek ", payload);
     setCompleteData({ ...payload });
   };
+
+  var playerReady = () => {
+    setShowLoader(true)
+  }
 
   var courseTracking = async (payload) => {
     if (user.user_role == 5) {
@@ -860,7 +1158,7 @@ export default function Singlecourse() {
     if (user.user_role == 5) {
       setShowLoader(true);
       var course_id = query.get("id");
-console.log("courseID  ",singleCourseId)
+      console.log("courseID  ", singleCourseId)
       var payload = {
         user_id: user.user_id,
         course_id: singleCourseId,
@@ -875,10 +1173,10 @@ console.log("courseID  ",singleCourseId)
 
   const [currentActiveLesson, setCurrentActiveLesson] = useState({});
 
-  var getCurrentLesson = async (CId) => {
+  var getCurrentLesson = async (CId, Chapters) => {
     if (user.user_role == 5) {
       setShowLoader(true);
-      var course_id = query.get("id");
+      // var course_id = query.get("id");
 
       var payload = {
         user_id: user.user_id,
@@ -905,6 +1203,7 @@ console.log("courseID  ",singleCourseId)
         );
         console.log("Chapterresponse ---- ", Chapterresponse.data);
 
+        // alert(Lessresponse.data.data[0].lesson_vedio_link)
         setVedioPlayer(Lessresponse.data.data[0].lesson_vedio_link);
         setVedioType(Lessresponse.data.data[0].lesson_vedio_type);
         setCurrentChapter(Lessresponse.data.data[0].chapter_id);
@@ -915,9 +1214,26 @@ console.log("courseID  ",singleCourseId)
           lesson_details: Lessresponse.data.data[0].lesson_details,
         });
 
+
         setCurrentActiveLesson(response.data.data[0]);
+
+        for (var i of Chapters) {
+          if (i.id == Lessresponse.data.data[0].chapter_id) {
+            for (var j of i.lessons) {
+              if (j.id == Lessresponse.data.data[0].id) {
+                setNextData({
+                  next_lessons_data: j.next_lessons_data,
+                  preChapter: `parentChap${i.id}`
+                });
+              }
+            }
+          }
+        }
+
       }
       setShowLoader(false);
+
+      // return {chapter_id:Lessresponse.data.data[0].chapter_id,lesson_id:Lessresponse.data.data[0].id};
     }
   };
 
@@ -1010,7 +1326,7 @@ console.log("courseID  ",singleCourseId)
           <div className="single-course-bottom sec-bg">
             <div className="container-fluid">
               <div className="row">
-              
+
                 <div className="col-lg-8 col-md-7">
                   {enrollment == false && user.user_role == 5 && (
                     <div className="image-course">
@@ -1066,6 +1382,7 @@ console.log("courseID  ",singleCourseId)
                           onEnded={playerEnded}
                           onPause={playerPaused}
                           onProgress={playerProgress}
+                          preload={'auto'}
                           url={vedioPlayer}
                           playing={vedioPlay}
                           controls={true}
@@ -1411,7 +1728,7 @@ console.log("courseID  ",singleCourseId)
                                       ></i>{" "}
                                     </span>{" "}
                                   </h5>
-                                  <p style={{wordBreak: "break-all"}} >{item.comment}.</p>
+                                  <p style={{ wordBreak: "break-all" }} >{item.comment}.</p>
                                 </div>
                               ))}
 
@@ -1652,7 +1969,7 @@ console.log("courseID  ",singleCourseId)
                                         ,{" "}
                                         {new Date(item.date_at).toDateString()}
                                       </h5>
-                                      <p style={{wordBreak: "break-all"}}  >{item.comment}.</p>
+                                      <p style={{ wordBreak: "break-all" }}  >{item.comment}.</p>
                                     </div>
                                   ) : (
                                     ""
@@ -1685,7 +2002,7 @@ console.log("courseID  ",singleCourseId)
                               {langObj.view_all_reviews}
                             </Link> */}
 
-                            {!viewAllRating  && (
+                            {!viewAllRating && (
                               <button
                                 onClick={getReview}
                                 type="button"
@@ -1726,18 +2043,18 @@ console.log("courseID  ",singleCourseId)
                       </div>
                     </div>
                   </div>
-                </div> 
+                </div>
 
                 <div className="col-lg-4 col-md-5">
                   <div className="single-course-bottom-right">
 
-                  <div className="catego-area">
+                    <div className="catego-area">
                       <p style={{
                         fontSize: "30px",
                         fontWeight: "700",
                         wordBreak: "break-all"
                       }} >
-                         {course.course_name && course.course_name.toUpperCase()}
+                        {course.course_name && course.course_name.toUpperCase()}
                       </p>
                     </div>
 
@@ -1844,7 +2161,7 @@ console.log("courseID  ",singleCourseId)
                         {course.language_name && course.language_name}
                       </p>
                       <p>
-                        <b> Total Video Length </b>:{" "}
+                        <b> Number of lessons </b>:{" "}
                         {course.total_lesson_vedio && course.total_lesson_vedio}
                       </p>
                     </div>
@@ -1858,11 +2175,11 @@ console.log("courseID  ",singleCourseId)
                         <h3>{langObj.course_contant} </h3>
 
                         <div className="course-content">
-                           
+
 
                           {/** ----------------------------- new lesson ----------------------------- */}
 
-                           
+
 
                           <div id="accordion">
                             {chap.length > 0 &&
@@ -1874,9 +2191,9 @@ console.log("courseID  ",singleCourseId)
                                       id={`heading${j}`}
                                     >
                                       <a
-
+                                        id={`parentChap${chapter.id}`}
                                         href="#"
-                                        className="btn btn-header-link collapsed"
+                                        className={`btn btn-header-link ${user.user_role == 5 ? ((lastChapter == chapter.id) || (j == 0 && lastChapter == 0) ? '' : 'collapsed') : (j != 0 ? 'collapsed' : '')}`}
                                         data-toggle="collapse"
                                         data-target={`#collapse${j}`}
                                         aria-expanded="false"
@@ -1892,7 +2209,7 @@ console.log("courseID  ",singleCourseId)
                                     </div>
                                     <div
                                       id={`collapse${j}`}
-                                      className={`collapse ${((chapter.id == lastChapter) || (j == 0 && lastChapter == 0)) ? ' show' : ''}`}
+                                      className={`collapse chapterCHK selectChapter${chapter.id}  ${((chapter.id == lastChapter) || (j == 0 && lastChapter == 0)) ? ' show' : ''}`}
                                       aria-labelledby={`heading${j}`}
                                       data-parent="#accordion"
                                     >
@@ -1901,7 +2218,7 @@ console.log("courseID  ",singleCourseId)
                                         {chapter.lessons.length > 0 &&
                                           chapter.lessons.map((less, i) => (
 
-                                            <div id={`lessB${j}${i}`} className={`btn-header-link2 btn active_lesson ${((less.id == lastLesson) || (i == 0 && lastLesson == 0)) ? ' active_lesson_selected ' : ''}`} style={{ cursor: "default" }} >
+                                            <div id={`lessB${j}${i}`} className={`btn-header-link2 selectLesson${less.id} btn active_lesson ${((less.id == lastLesson) || (i == 0 && lastLesson == 0)) ? ' active_lesson_selected ' : ''}`} style={{ cursor: "default" }} >
 
                                               <div className="row">
                                                 <div className="col-sm-10"  >
@@ -1919,9 +2236,12 @@ console.log("courseID  ",singleCourseId)
                                                         less.lesson_details,
                                                         chapter.chapter_name,
                                                         chapter.id,
-                                                        less.id
+                                                        less.id,
+                                                        less.next_lessons_data,
+                                                        `parentChap${chapter.id}`
                                                       );
 
+                                                      // nexVedioSet(chap[j])
                                                       lessonActive(`lessB${j}${i}`)
 
                                                     }
@@ -1930,7 +2250,7 @@ console.log("courseID  ",singleCourseId)
 
 
                                                   >
-                                                    {less && less.lesson_name.toUpperCase()}
+                                                    {less && less.lesson_name}
                                                   </p>
 
                                                 </div>
@@ -1969,29 +2289,33 @@ console.log("courseID  ",singleCourseId)
                                                       less.id && (
                                                         <span>
                                                           {lessonItem.status == "completed" && (
-                                                              <>
-                                                                {/* , status:{" "}
+                                                            <>
+                                                              {/* , status:{" "}
                                                                 {
                                                                   lessonItem.status
                                                                 } */}
 
-                                                                <ProgressBar className=" progressBarPosition2" labelClassName="progressBarLabel" completed={100} bgColor={"green"} borderRadius={"2px"} height={"14px"} />
+                                                              <ProgressBar className=" progressBarPosition2"
+                                                                labelAlignment="center"
+                                                                labelClassName="progressBarLabel" completed={100} bgColor={"green"} borderRadius={"2px"} height={"14px"} />
 
-                                                              </>
-                                                            )}
+                                                            </>
+                                                          )}
 
                                                           {lessonItem.lesson_percentage < 90 && (
-                                                              <span>
-                                                                {/* , progress:{" "}
+                                                            <span>
+                                                              {/* , progress:{" "}
                                                                 {
                                                                   lessonItem.lesson_percentage
                                                                 }
                                                                 % */}
 
-                                                                <ProgressBar className=" progressBarPosition2" labelClassName="progressBarLabel" completed={lessonItem.lesson_percentage} bgColor={"green"} borderRadius={"2px"} height={"14px"} />
+                                                              <ProgressBar className=" progressBarPosition2" labelClassName="progressBarLabel"
+                                                                labelAlignment="center"
+                                                                completed={lessonItem.lesson_percentage} bgColor={"#023e86"} borderRadius={"2px"} height={"14px"} />
 
-                                                              </span>
-                                                            )}
+                                                            </span>
+                                                          )}
                                                         </span>
                                                       )}
                                                   </>
@@ -1999,7 +2323,7 @@ console.log("courseID  ",singleCourseId)
                                               )}
 
 
-                                              
+
 
 
                                             </div>
