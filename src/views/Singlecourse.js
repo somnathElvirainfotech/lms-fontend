@@ -298,6 +298,19 @@ export default function Singlecourse() {
               ? "completed"
               : ""
           );
+
+          // -------------------------------------------
+          var payload = {
+            user_id: user.user_id,
+            course_id: singleCourseId,
+            chapter_id: temp.chapters[0].lessons[0].chapter_id,
+            lesson_id: temp.chapters[0].lessons[0].id,
+            lesson_percentage:1,
+            current_play_sec: Number(progress.playedSeconds).toFixed(2),
+          };
+          setPreviousID(payload)
+          // ------------------------------------------------------------------------
+
           if (enrollRes.data.data[0].user_enroll_status == "active") {
             status = true;
             setEnroll_id(enrollRes.data.data[0].enroll_id);
@@ -363,7 +376,7 @@ export default function Singlecourse() {
                   course_id: singleCourseId,
                   chapter_id: temp.chapters[0].lessons[0].chapter_id,
                   lesson_id: temp.chapters[0].lessons[0].id,
-                  lesson_percentage: Math.round((progress.playedSeconds / duration) * 100),
+                  lesson_percentage: 1,
                   current_play_sec: Number(progress.playedSeconds).toFixed(2),
                 };
                 setPreviousID(payload)
@@ -407,24 +420,11 @@ export default function Singlecourse() {
 
     if (user.user_role == 5) {
 
-      var chkTl = false;
-      for (var lessonItem of trackLessions) {
-        if (lessonItem.lesson_id == payload.lesson_id) {
-          if ((Math.round((progress.playedSeconds / duration) * 100)) > lessonItem.lesson_percentage) {
             payload.lesson_percentage = (Math.round((progress.playedSeconds / duration) * 100));
             payload.current_play_sec = (Number(progress.playedSeconds).toFixed(2));
+            console.log("track payload",payload);
             var dresponse = await CourseTrackService.regularCourseTrack(payload);
             console.log("local course track updated -----  ", dresponse.data);
-            
-          }
-          chkTl = true;
-        }
-      }
-
-      if (chkTl == false) {
-        var dresponse = await CourseTrackService.regularCourseTrack(payload);
-        console.log("local course track updated -----  ", dresponse.data);
-      }
 
 
 
@@ -454,25 +454,11 @@ export default function Singlecourse() {
 
     if (user.user_role == 5) {
 
-      var chkTl = false;
-      for (var lessonItem of trackLessions) {
-        if (lessonItem.lesson_id == payload.lesson_id) {
-          if ((Math.round((progress.playedSeconds / duration) * 100)) > lessonItem.lesson_percentage) {
             payload.lesson_percentage = (Math.round((progress.playedSeconds / duration) * 100));
             payload.current_play_sec = (Number(progress.playedSeconds).toFixed(2));
-
+            console.log("track payload",payload);
             var dresponse = await CourseTrackService.regularCourseTrack(payload);
             console.log("local course track updated -----  ", dresponse.data);
-            
-          }
-          chkTl = true;
-        }
-      }
-
-      if (chkTl == false) {
-        var dresponse = await CourseTrackService.regularCourseTrack(payload);
-        console.log("local course track updated -----  ", dresponse.data);
-      }
 
 
 
@@ -518,6 +504,19 @@ export default function Singlecourse() {
           lesson_details: NEXTDATA.next_lessons_data.lesson_details,
         });
 
+        var payload2 = {
+          user_id: user.user_id,
+          course_id: payload.course_id,
+          chapter_id: NEXTDATA.next_lessons_data.chapter_id,
+          lesson_id: NEXTDATA.next_lessons_data.lesson_id,
+          lesson_percentage: 1,
+          current_play_sec: Number(progress.playedSeconds).toFixed(2),
+        };
+
+        setPreviousID(payload2)
+
+        console.log("payload2 ",payload2);
+
         $(".active_lesson").removeClass("active_lesson_selected");
         $(`.selectLesson${NEXTDATA.next_lessons_data.lesson_id}`).addClass("active_lesson_selected");
 
@@ -535,31 +534,88 @@ export default function Singlecourse() {
 
 
     } else {
-      if (nextData.next_lessons_data.chapter_id != null && nextData.next_lessons_data.lesson_id != null) {
-        // alert(nextData.next_lessons_data.lesson_vedio_link)
-        setVedioPlayer(nextData.next_lessons_data.lesson_vedio_link);
-        setVedioType(nextData.next_lessons_data.lesson_vedio_type);
-        setCurrentChapter(nextData.next_lessons_data.chapter_id);
-        setCurrentLesson(nextData.next_lessons_data.lesson_id);
+
+      var responce = await UserService.singlecourse(singleCourseId);
+      var temp = responce.data.data;
+
+      console.log("course details2 ", responce.data);
+
+      setChap(temp.chapters);
+      
+      var NEXTDATA = {};
+
+      for (var i of temp.chapters) {
+        if (i.id == payload.chapter_id) {
+          for (var j of i.lessons) {
+            if (j.id == payload.lesson_id) {
+              NEXTDATA = {
+                next_lessons_data: j.next_lessons_data,
+                preChapter: `parentChap${i.id}`
+              };
+            }
+          }
+        }
+      }
+
+
+
+      if (NEXTDATA.next_lessons_data.chapter_id != null && NEXTDATA.next_lessons_data.lesson_id != null) {
+
+        console.log("ok ok",NEXTDATA);
+
+        // alert(NEXTDATA.next_lessons_data.lesson_vedio_link)
+        setVedioPlayer(NEXTDATA.next_lessons_data.lesson_vedio_link);
+        setVedioType(NEXTDATA.next_lessons_data.lesson_vedio_type);
+        setCurrentChapter(NEXTDATA.next_lessons_data.chapter_id);
+        setCurrentLesson(NEXTDATA.next_lessons_data.lesson_id);
         setVedioPlay(false);
         oneView({
-          chapter_name: nextData.next_lessons_data.chapter_name,
-          lesson_name: nextData.next_lessons_data.lesson_name,
-          lesson_details: nextData.next_lessons_data.lesson_details,
+          chapter_name: NEXTDATA.next_lessons_data.chapter_name,
+          lesson_name: NEXTDATA.next_lessons_data.lesson_name,
+          lesson_details: NEXTDATA.next_lessons_data.lesson_details,
         });
 
-        $(".active_lesson").removeClass("active_lesson_selected");
-        $(`.selectLesson${nextData.next_lessons_data.lesson_id}`).addClass("active_lesson_selected");
 
-        if (nextData.next_lessons_data.chapter_id != payload.chapter_id) {
+      
+        $(".active_lesson").removeClass("active_lesson_selected");
+        $(`.selectLesson${NEXTDATA.next_lessons_data.lesson_id}`).addClass("active_lesson_selected");
+
+        if (NEXTDATA.next_lessons_data.chapter_id != payload.chapter_id) {
           $(".chapterCHK").removeClass("show");
-          $(`.selectChapter${nextData.next_lessons_data.chapter_id}`).addClass("show");
-          $(`#parentChap${nextData.next_lessons_data.chapter_id}`).removeClass("collapsed");
-          $(`#${nextData.preChapter}`).addClass("collapsed");
+          $(`.selectChapter${NEXTDATA.next_lessons_data.chapter_id}`).addClass("show");
+          $(`#parentChap${NEXTDATA.next_lessons_data.chapter_id}`).removeClass("collapsed");
+          $(`#${NEXTDATA.preChapter}`).addClass("collapsed");
         }
 
 
       }
+
+
+      // if (nextData.next_lessons_data.chapter_id != null && nextData.next_lessons_data.lesson_id != null) {
+      //   // alert(nextData.next_lessons_data.lesson_vedio_link)
+      //   setVedioPlayer(nextData.next_lessons_data.lesson_vedio_link);
+      //   setVedioType(nextData.next_lessons_data.lesson_vedio_type);
+      //   setCurrentChapter(nextData.next_lessons_data.chapter_id);
+      //   setCurrentLesson(nextData.next_lessons_data.lesson_id);
+      //   setVedioPlay(false);
+      //   oneView({
+      //     chapter_name: nextData.next_lessons_data.chapter_name,
+      //     lesson_name: nextData.next_lessons_data.lesson_name,
+      //     lesson_details: nextData.next_lessons_data.lesson_details,
+      //   });
+
+      //   $(".active_lesson").removeClass("active_lesson_selected");
+      //   $(`.selectLesson${nextData.next_lessons_data.lesson_id}`).addClass("active_lesson_selected");
+
+      //   if (nextData.next_lessons_data.chapter_id != payload.chapter_id) {
+      //     $(".chapterCHK").removeClass("show");
+      //     $(`.selectChapter${nextData.next_lessons_data.chapter_id}`).addClass("show");
+      //     $(`#parentChap${nextData.next_lessons_data.chapter_id}`).removeClass("collapsed");
+      //     $(`#${nextData.preChapter}`).addClass("collapsed");
+      //   }
+
+
+      // }
     }
 
   }
@@ -595,6 +651,9 @@ export default function Singlecourse() {
   var closeModal = () => {
     input.comment = "";
     input.rating = "";
+
+    
+
   };
 
   var ratingCreate = async () => {
@@ -638,6 +697,14 @@ export default function Singlecourse() {
         5
       );
       setSingleReview([...creviews.data.data]);
+
+      var responce = await UserService.singlecourse(singleCourseId);
+      var temp = responce.data.data;
+      console.log("course details3 ", responce.data);
+
+      setCourses(temp);
+
+
 
       setShowLoader(false);
     } else {
@@ -901,7 +968,7 @@ export default function Singlecourse() {
     // previous  value set
     if (user.user_role == 5) {
       if (previousID.user_id != 0 && previousID.course_id != 0 && previousID.chapter_id != 0 && previousID.lesson_id != 0) {
-        // alert(1)
+        console.log("pre course set  ",previousID);
         reloadLesson(previousID)
 
 
@@ -1025,6 +1092,10 @@ export default function Singlecourse() {
         5
       );
       setSingleReview([...creviews.data.data]);
+      var responce = await UserService.singlecourse(singleCourseId);
+      var temp = responce.data.data;
+      console.log("course details3 ", responce.data);
+      setCourses(temp);
       setShowLoader(false);
       setChkComment(true);
     }
