@@ -7,8 +7,6 @@ class TokenHelper {
     language_type: '',
   };
 
-
-
   constructor() {
     // this._accessToken = "oko";
   }

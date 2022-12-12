@@ -254,6 +254,8 @@ export default function MyTask() {
 
     }
 
+    console.log("tdata ",tData)
+
     setAssignments([...tData]);
     // ---------------------------------
 

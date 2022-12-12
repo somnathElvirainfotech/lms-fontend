@@ -2485,7 +2485,7 @@ select {
 .btn-header-link2 {
 
     margin: 0;
-    margin-bottom: 15px;
+    /* margin-bottom: 15px; */
     padding: 5px;
     text-align: left;
     width: 100%;
@@ -3157,26 +3157,23 @@ input:checked+.slider:before {
 }
 
 .progressBarPosition2 {
-    /* position: absolute; */
-    /* left: 0;
-   bottom: 0; */
+    position: relative;
+    left: 0;
+    bottom: 11.5px;
     width: 100%;
     /* font-size: 15px; */
     /* color: #707070; */
     /* bottom: 0%;
    width: 100%;
-   margin-right: 0%;
-   margin-left: -15px; */
-
+   margin-right: 0%; */
+   /* margin-left: -15px; */
 
 
     padding: 0;
     margin: 0;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    -webkit-box-shadow: 0px 5px 13px 0px rgba(0, 0, 0, 0.23);
+    /* -webkit-box-shadow: 0px 5px 13px 0px rgba(0, 0, 0, 0.23);
     -moz-box-shadow: 0px 5px 13px 0px rgba(0, 0, 0, 0.23);
-    box-shadow: 0px 5px 13px 0px rgba(0, 0, 0, 0.23);
+    box-shadow: 0px 5px 13px 0px rgba(0, 0, 0, 0.23); */
 }
 
 .progressBarLabel {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import Header from "./Common/Header/Header";
 import Footer from "./Common/Footer/Footer";
@@ -49,6 +49,7 @@ export default function Singlecourse() {
 
   const [enrollStatus, setEnrollStatus] = useState("");
   const [nextData, setNextData] = useState({});
+  const playerRef = useRef();
 
   let query = useQuery();
   var location = useLocation();
@@ -305,7 +306,7 @@ export default function Singlecourse() {
             course_id: singleCourseId,
             chapter_id: temp.chapters[0].lessons[0].chapter_id,
             lesson_id: temp.chapters[0].lessons[0].id,
-            lesson_percentage:1,
+            lesson_percentage: 1,
             current_play_sec: Number(progress.playedSeconds).toFixed(2),
           };
           setPreviousID(payload)
@@ -420,17 +421,17 @@ export default function Singlecourse() {
 
     if (user.user_role == 5) {
 
-            payload.lesson_percentage = (Math.round((progress.playedSeconds / duration) * 100));
-            payload.current_play_sec = (Number(progress.playedSeconds).toFixed(2));
-            console.log("track payload",payload);
-            var dresponse = await CourseTrackService.regularCourseTrack(payload);
-            console.log("local course track updated -----  ", dresponse.data);
+      payload.lesson_percentage = (Math.round((progress.playedSeconds / duration) * 100));
+      payload.current_play_sec = (Number(progress.playedSeconds).toFixed(2));
+      console.log("track payload", payload);
+      var dresponse = await CourseTrackService.regularCourseTrack(payload);
+      console.log("local course track updated -----  ", dresponse.data);
 
 
 
       getTrackingLessions();
 
-      var responce = await UserService.singlecourse(singleCourseId);
+      var responce = await UserService.singlecourse(singleCourseId===0?courseID:singleCourseId);
       var temp = responce.data.data;
 
       console.log("course details2 ", responce.data);
@@ -454,11 +455,11 @@ export default function Singlecourse() {
 
     if (user.user_role == 5) {
 
-            payload.lesson_percentage = (Math.round((progress.playedSeconds / duration) * 100));
-            payload.current_play_sec = (Number(progress.playedSeconds).toFixed(2));
-            console.log("track payload",payload);
-            var dresponse = await CourseTrackService.regularCourseTrack(payload);
-            console.log("local course track updated -----  ", dresponse.data);
+      payload.lesson_percentage = (Math.round((progress.playedSeconds / duration) * 100));
+      payload.current_play_sec = (Number(progress.playedSeconds).toFixed(2));
+      console.log("track payload", payload);
+      var dresponse = await CourseTrackService.regularCourseTrack(payload);
+      console.log("local course track updated -----  ", dresponse.data);
 
 
 
@@ -466,7 +467,7 @@ export default function Singlecourse() {
 
       getTrackingLessions();
 
-      var responce = await UserService.singlecourse(singleCourseId);
+      var responce = await UserService.singlecourse(singleCourseId===0?courseID:singleCourseId);
       var temp = responce.data.data;
 
       console.log("course details2 ", responce.data);
@@ -515,7 +516,7 @@ export default function Singlecourse() {
 
         setPreviousID(payload2)
 
-        console.log("payload2 ",payload2);
+        console.log("payload2 ", payload2);
 
         $(".active_lesson").removeClass("active_lesson_selected");
         $(`.selectLesson${NEXTDATA.next_lessons_data.lesson_id}`).addClass("active_lesson_selected");
@@ -541,7 +542,7 @@ export default function Singlecourse() {
       console.log("course details2 ", responce.data);
 
       setChap(temp.chapters);
-      
+
       var NEXTDATA = {};
 
       for (var i of temp.chapters) {
@@ -561,7 +562,7 @@ export default function Singlecourse() {
 
       if (NEXTDATA.next_lessons_data.chapter_id != null && NEXTDATA.next_lessons_data.lesson_id != null) {
 
-        console.log("ok ok",NEXTDATA);
+        console.log("ok ok", NEXTDATA);
 
         // alert(NEXTDATA.next_lessons_data.lesson_vedio_link)
         setVedioPlayer(NEXTDATA.next_lessons_data.lesson_vedio_link);
@@ -576,7 +577,7 @@ export default function Singlecourse() {
         });
 
 
-      
+
         $(".active_lesson").removeClass("active_lesson_selected");
         $(`.selectLesson${NEXTDATA.next_lessons_data.lesson_id}`).addClass("active_lesson_selected");
 
@@ -652,7 +653,11 @@ export default function Singlecourse() {
     input.comment = "";
     input.rating = "";
 
-    
+    thirdExample.onChange(0)
+
+    // ReactStars(thirdExample)
+
+    document.getElementById("myForm").reset();
 
   };
 
@@ -669,7 +674,7 @@ export default function Singlecourse() {
       setShowLoader(true);
       var data = new FormData();
       data.append("user_id", user.user_id);
-      data.append("course_id", singleCourseId);
+      data.append("course_id", (singleCourseId===0?courseID:singleCourseId));
       data.append("rating_number", input.rating);
       data.append("comment", input.comment);
 
@@ -685,20 +690,20 @@ export default function Singlecourse() {
 
       // get review
       var reviews = await CommentRatingService.getByCourseId(
-        singleCourseId,
+        (singleCourseId===0?courseID:singleCourseId),
         "",
         5
       );
       setReview([...reviews.data.data]);
       console.log("lllllllllllllllll:", reviews.data);
       var creviews = await CommentRatingService.getByCourseId(
-        singleCourseId,
+        (singleCourseId===0?courseID:singleCourseId),
         user.user_id,
         5
       );
       setSingleReview([...creviews.data.data]);
 
-      var responce = await UserService.singlecourse(singleCourseId);
+      var responce = await UserService.singlecourse((singleCourseId===0?courseID:singleCourseId));
       var temp = responce.data.data;
       console.log("course details3 ", responce.data);
 
@@ -831,7 +836,7 @@ export default function Singlecourse() {
       // alert(courseID)
       var enrollmentresponce = await UserService.enrollment(
         user.user_id,
-        courseID
+        (singleCourseId===0?courseID:singleCourseId)
       );
       setEnrollments(enrollmentresponce.data.status);
 
@@ -854,6 +859,19 @@ export default function Singlecourse() {
           lesson_name: Lessresponse.data.data[0].lesson_name,
           lesson_details: Lessresponse.data.data[0].lesson_details,
         });
+
+
+        var payload2 = {
+          user_id: user.user_id,
+          course_id: (singleCourseId===0?courseID:singleCourseId),
+          chapter_id: Lessresponse.data.data[0].chapter_id,
+          lesson_id: Lessresponse.data.data[0].id,
+          lesson_percentage: 1,
+          current_play_sec: Number(progress.playedSeconds).toFixed(2),
+        };
+
+        setPreviousID(payload2)
+
       }
 
       console.log("eeeeeeeeeEE", enrollmentresponce.data);
@@ -896,7 +914,7 @@ export default function Singlecourse() {
 
         var enrollRes = await UserService.enrollmentcourse(
           user.user_id,
-          singleCourseId
+          (singleCourseId===0?courseID:singleCourseId)
         );
 
         console.log("current enroll ", enrollRes.data);
@@ -968,7 +986,7 @@ export default function Singlecourse() {
     // previous  value set
     if (user.user_role == 5) {
       if (previousID.user_id != 0 && previousID.course_id != 0 && previousID.chapter_id != 0 && previousID.lesson_id != 0) {
-        console.log("pre course set  ",previousID);
+        console.log("pre course set  ", previousID);
         reloadLesson(previousID)
 
 
@@ -1012,6 +1030,11 @@ export default function Singlecourse() {
       setShowLoader(false);
     }
 
+    for (var i of trackLessions) {
+      if (i.lesson_id == lesson_id && i.chapter_id == chapter_id) {
+        setSeekTime(i.current_play_sec)
+      }
+    }
 
 
     setVedioPlayer(value);
@@ -1067,7 +1090,7 @@ export default function Singlecourse() {
 
   var getReview = async () => {
     setShowLoader(true);
-    var reviews = await CommentRatingService.getByCourseId(courseID, "", "");
+    var reviews = await CommentRatingService.getByCourseId((singleCourseId===0?courseID:singleCourseId), "", "");
     console.log(reviews.data);
     setReview([...reviews.data.data]);
     setViewAllRating(true);
@@ -1083,16 +1106,16 @@ export default function Singlecourse() {
     var responce = await CommentRatingService.delete(id);
     if (responce.data.status) {
       // get review
-      var reviews = await CommentRatingService.getByCourseId(courseID, "", 5);
+      var reviews = await CommentRatingService.getByCourseId((singleCourseId===0?courseID:singleCourseId), "", 5);
       setReview([...reviews.data.data]);
       console.log("lllllllllllllllll:", reviews.data);
       var creviews = await CommentRatingService.getByCourseId(
-        courseID,
+        (singleCourseId===0?courseID:singleCourseId),
         user.user_id,
         5
       );
       setSingleReview([...creviews.data.data]);
-      var responce = await UserService.singlecourse(singleCourseId);
+      var responce = await UserService.singlecourse((singleCourseId===0?courseID:singleCourseId));
       var temp = responce.data.data;
       console.log("course details3 ", responce.data);
       setCourses(temp);
@@ -1137,6 +1160,11 @@ export default function Singlecourse() {
 
 
 
+  var setSeekTime = (value) => {
+    playerRef.current.seekTo(value, 'seconds');
+  }
+
+
   var playerEnded = () => {
     var course_id = query.get("id");
     setVedioPlay(false)
@@ -1147,7 +1175,7 @@ export default function Singlecourse() {
 
     var payload = {
       user_id: user.user_id,
-      course_id: courseID,
+      course_id: (singleCourseId===0?courseID:singleCourseId),
       chapter_id: currentChapter,
       lesson_id: currentLesson,
       lesson_percentage: 100,
@@ -1170,7 +1198,7 @@ export default function Singlecourse() {
 
     var payload = {
       user_id: user.user_id,
-      course_id: courseID,
+      course_id: (singleCourseId===0?courseID:singleCourseId),
       chapter_id: currentChapter,
       lesson_id: currentLesson,
       lesson_percentage: Math.round((progress.playedSeconds / duration) * 100),
@@ -1232,7 +1260,7 @@ export default function Singlecourse() {
       console.log("courseID  ", singleCourseId)
       var payload = {
         user_id: user.user_id,
-        course_id: singleCourseId,
+        course_id: (singleCourseId===0?courseID:singleCourseId),
       };
 
       var responce = await CourseTrackService.getTrackingLession(payload);
@@ -1340,7 +1368,7 @@ export default function Singlecourse() {
   var taskAdd = async () => {
     console.log("noAttemp ----", noAttemp);
     if (user.user_role == 5) {
-      var responce = await UserService.singlecourse(courseID);
+      var responce = await UserService.singlecourse((singleCourseId===0?courseID:singleCourseId));
 
       await setTask(responce.data.data);
       console.log("noAttemp ----", noAttemp);
@@ -1410,7 +1438,7 @@ export default function Singlecourse() {
                     </div>
                   )}
 
-                  {enrollment == true &&
+                  {enrollment != false &&
                     course.course_type == "xapi" &&
                     user.user_role == 5 && (
                       <div className="image-course">
@@ -1440,6 +1468,7 @@ export default function Singlecourse() {
                     <div className="">
                       <div className=" image-course vimeo-player-style full-w100" >
                         <ReactPlayer
+                          ref={playerRef}
                           config={{
                             file: {
                               attributes: {
@@ -2108,7 +2137,7 @@ export default function Singlecourse() {
                           >
                             <h3 clasName="mb-5">Question and Answers</h3>
 
-                            <QnsAnsComment course_id={courseID} />
+                            <QnsAnsComment course_id={(singleCourseId===0?courseID:singleCourseId)} />
                           </div>
                         )}
                       </div>
@@ -2148,7 +2177,7 @@ export default function Singlecourse() {
                           </button>
                         )}
 
-                      {(course.course_type == "xapi" && enrollment) ||
+                      {(course.course_type == "xapi" && enrollment != false && user.user_role == 5) ||
                         (course.course_type == "xapi" && user.user_role == 1) ||
                         (course.course_type == "xapi" && user.user_role == 2) ||
                         (course.course_type == "xapi" &&
@@ -2181,6 +2210,20 @@ export default function Singlecourse() {
                       ) : (
                         ""
                       )}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     </div>
 
                     <div className="catego-area">
@@ -2288,70 +2331,76 @@ export default function Singlecourse() {
 
                                         {chapter.lessons.length > 0 &&
                                           chapter.lessons.map((less, i) => (
+                                            <div style={{marginBottom: "15px"}}>
+                                              <div id={`lessB${j}${i}`} className={`btn-header-link2 selectLesson${less.id} btn active_lesson ${((less.id == lastLesson) || (i == 0 && lastLesson == 0)) ? ' active_lesson_selected ' : ''}`} style={{ cursor: "default" }} >
 
-                                            <div id={`lessB${j}${i}`} className={`btn-header-link2 selectLesson${less.id} btn active_lesson ${((less.id == lastLesson) || (i == 0 && lastLesson == 0)) ? ' active_lesson_selected ' : ''}`} style={{ cursor: "default" }} >
+                                                <div className="row">
+                                                  <div className="col-sm-10"  >
 
-                                              <div className="row">
-                                                <div className="col-sm-10"  >
-
-                                                  <p
-
-
-                                                    style={{ cursor: "pointer" }}
-                                                    onClick={(e) => {
-
-                                                      setVedio(
-                                                        less.lesson_vedio_link,
-                                                        less.lesson_vedio_type,
-                                                        less.lesson_name,
-                                                        less.lesson_details,
-                                                        chapter.chapter_name,
-                                                        chapter.id,
-                                                        less.id,
-                                                        less.next_lessons_data,
-                                                        `parentChap${chapter.id}`
-                                                      );
-
-                                                      // nexVedioSet(chap[j])
-                                                      lessonActive(`lessB${j}${i}`)
-
-                                                    }
-                                                    }
+                                                    <p
 
 
+                                                      style={{ cursor: "pointer" ,marginBottom:"5px"}}
+                                                      onClick={(e) => {
 
-                                                  >
-                                                    {less && less.lesson_name}
-                                                  </p>
+                                                        setVedio(
+                                                          less.lesson_vedio_link,
+                                                          less.lesson_vedio_type,
+                                                          less.lesson_name,
+                                                          less.lesson_details,
+                                                          chapter.chapter_name,
+                                                          chapter.id,
+                                                          less.id,
+                                                          less.next_lessons_data,
+                                                          `parentChap${chapter.id}`
+                                                        );
 
-                                                </div>
+                                                        // nexVedioSet(chap[j])
+                                                        lessonActive(`lessB${j}${i}`)
 
-                                                <div className="col-sm-2">
-                                                  <div className="course-content-accordian-bottom ">
-                                                    {user.token && (
-                                                      <>
-                                                        {less.lesson_file && (
-                                                          <a
-                                                            data-toggle="tooltip"
-                                                            title="file download"
-                                                            href={
-                                                              less.lesson_file
-                                                            }
-                                                            className="sec-btn sec-btn-orange"
-                                                          >
-                                                            <i
-                                                              className="fa fa-paperclip"
-                                                              aria-hidden="true"
-                                                            ></i>
-                                                          </a>
-                                                        )}
-                                                      </>
-                                                    )}
+                                                      }
+                                                      }
+
+
+
+                                                    >
+                                                      {less && less.lesson_name}
+                                                    </p>
+
+                                                  </div>
+
+                                                  <div className="col-sm-2">
+                                                    <div className="course-content-accordian-bottom ">
+                                                      {user.token && (
+                                                        <>
+                                                          {less.lesson_file && (
+                                                            <a
+                                                              data-toggle="tooltip"
+                                                              title="file download"
+                                                              href={
+                                                                less.lesson_file
+                                                              }
+                                                              className="sec-btn sec-btn-orange"
+                                                            >
+                                                              <i
+                                                                className="fa fa-paperclip"
+                                                                aria-hidden="true"
+                                                              ></i>
+                                                            </a>
+                                                          )}
+                                                        </>
+                                                      )}
+                                                    </div>
                                                   </div>
                                                 </div>
 
-                                              </div>
 
+                                             
+
+
+
+
+                                              </div>
 
                                               {trackLessions.map(
                                                 (lessonItem) => (
@@ -2367,8 +2416,8 @@ export default function Singlecourse() {
                                                                 } */}
 
                                                               <ProgressBar className=" progressBarPosition2"
-                                                                labelAlignment="center"
-                                                                labelClassName="progressBarLabel" completed={100} bgColor={"green"} borderRadius={"2px"} height={"14px"} />
+                                                                isLabelVisible={false}
+                                                                completed={100} bgColor={"green"} borderRadius={"2px"} height={"10px"} />
 
                                                             </>
                                                           )}
@@ -2381,9 +2430,9 @@ export default function Singlecourse() {
                                                                 }
                                                                 % */}
 
-                                                              <ProgressBar className=" progressBarPosition2" labelClassName="progressBarLabel"
-                                                                labelAlignment="center"
-                                                                completed={lessonItem.lesson_percentage} bgColor={"#023e86"} borderRadius={"2px"} height={"14px"} />
+                                                              <ProgressBar className=" progressBarPosition2"
+                                                                isLabelVisible={false}
+                                                                completed={lessonItem.lesson_percentage} bgColor={"#023e86"} borderRadius={"2px"} height={"10px"} />
 
                                                             </span>
                                                           )}
@@ -2392,10 +2441,7 @@ export default function Singlecourse() {
                                                   </>
                                                 )
                                               )}
-
-
-
-
+                                              
 
                                             </div>
 
@@ -2514,10 +2560,7 @@ export default function Singlecourse() {
                               </tr>
                             </tbody>
                           </table>
-                          <table className="table table-responsive">
-                            <tbody>
-                              <tr>
-                                <td width="800px">
+                          
                                   <textarea
                                     onChange={handler}
                                     value={input.comment}
@@ -2526,12 +2569,9 @@ export default function Singlecourse() {
                                     placeholder="comment ..."
                                     className="form-control"
                                     id="exampleFormControlTextarea1"
-                                    rows="300"
+                                    rows="6"
                                   />
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
+                              
                         </form>
                       </div>
                     </div>

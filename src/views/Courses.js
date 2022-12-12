@@ -825,8 +825,9 @@ export default function Course() {
 
                                                 {course.certificate_id != 0 && <span className="viwers" style={{
                                                     display: "-webkit-box",
-                                                    marginLeft: "70%"
-                                                }} > <img src="/images/download.png" alt="" /> </span>}
+                                                    marginLeft: "65%",
+                                                    
+                                                }} > <img style={{width:"50px"}} src="/images/certificateLogo.png" alt="" /> </span>}
 
                                                 {/* <span className="viwers">{course.total_enroll_no} Viewers</span> */}
 
