@@ -460,9 +460,10 @@ p {
 
 .populer-box .text-box {
     position: relative;
-    padding: 35px 15px 30px;
+    padding: 10px 15px 30px;
     margin: 0;
-    min-height: 220px;
+    min-height: 350px;
+    height: 369px;
 }
 
 .populer-box .text-box .clg-box {
@@ -485,6 +486,7 @@ p {
     color: #000;
     padding: 0;
     margin: 0 0 15px;
+    font-family: 'Calibri';
 }
 
 .populer-box .text-box p {
@@ -493,9 +495,9 @@ p {
 }
 
 .populer-box .text-box span.viwers {
-    position: absolute;
-    left: 15px;
-    bottom: 25px;
+    /* position: relative; */
+    /* left: 0; */
+    /* bottom: 18px; */
     font-size: 15px;
     color: #707070;
 }
@@ -1200,7 +1202,8 @@ ul.vegies li ul.vegies-submenu li ul li {
 
 .inner-banner img {
     width: 100%;
-    height: auto;
+    /* height: auto; */
+    height: 150px;
 }
 
 .inner-banner .desc {
@@ -1854,7 +1857,11 @@ textarea {
 }
 
 .rating li {
-    display: inline-block;
+    /* display: inline-block; */
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .rating li i {
@@ -2281,10 +2288,12 @@ select {
 .single-course-tab .nav-tabs .nav-item.show .nav-link,
 .single-course-tab .nav-tabs .nav-link.active {
     /* background-color: #023e86; */
-    background-color: #023e86;
-    color: #fff;
-    border: 0;
-    border-radius: 0;
+    /* background-color: #023e86; */
+    /* color: #fff; */
+    border: 5px;
+    /* border-radius: 0; */
+    border-bottom-style: solid;
+    border-bottom-color: #023e86;;
 }
 
 .single-course-tab .nav-tabs .nav-item a {
@@ -2297,10 +2306,11 @@ select {
 }
 
 .single-course-tab .tab-content .tab-pane h3,
-.single-course-bottom-right h3 {
+.single-course-bottom-right h4 {
     color: #023e86;
     font-weight: 600;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
+    font-size: 20px;
 }
 
 .single-course-tab .tab-content .tab-pane p {
@@ -2381,7 +2391,7 @@ select {
 }
 
 .course-content .card {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     border: 0;
 }
 
@@ -2448,7 +2458,7 @@ select {
 .course-content .card .card-header .btn-header-link span {
     white-space: normal;
     display: block;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 600;
 }
 
@@ -2472,7 +2482,7 @@ select {
 .btn-header-link2 p {
     white-space: normal;
     display: block;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 500;
 
 }
@@ -3236,7 +3246,7 @@ td {
 
 .course-avator-image {
     margin: 15px 0;
-    height: 200px;
+    /* height: 200px; */
     overflow: hidden;
 }
 
@@ -3359,4 +3369,25 @@ td {
 .qnsAns-details p{
     overflow-x: hidden;
     margin-top: 5px;
+}
+
+@font-face {
+    font-family: 'Calibri';
+    src: url('../fonts/Calibri-Bold.eot');
+    src: url('../fonts/Calibri-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Calibri-Bold.woff2') format('woff2'),
+        url('../fonts/Calibri-Bold.woff') format('woff'),
+        url('../fonts/Calibri-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+.dropdown-menu small{
+    cursor: pointer;
+}
+
+.dropdown-menu small:hover{
+    color: white;
+    background-color: #99a7f0;
 }

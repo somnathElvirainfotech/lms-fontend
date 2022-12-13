@@ -124,7 +124,7 @@ function CourseEdit() {
         },
         {
           label: "No",
-          onClick: () => { },
+          onClick: () => {},
         },
       ],
     });
@@ -196,9 +196,9 @@ function CourseEdit() {
     setCreator([...responce.data.data]);
   };
 
-  const [sample_type,setSample_type]=useState("");
+  const [sample_type, setSample_type] = useState("");
 
-  const [vedio,setVedio]=useState({});
+  const [vedio, setVedio] = useState({});
 
   const VedioHandler = (e) => {
     const select = e.target.files[0];
@@ -228,21 +228,14 @@ function CourseEdit() {
       }
     }
 
-    if(name== "sample_type")
-    {
-      if(value=="sample_vedio")
-      {
+    if (name == "sample_type") {
+      if (value == "sample_vedio") {
         setSample_type("sample_vedio");
-        cinputs.sample_link="";
-      }
-      else if(value == "sample_link")
-      {
-
-        setSample_type("sample_link")
-        setVedio({})
-      }
-      else
-      setSample_type("")
+        cinputs.sample_link = "";
+      } else if (value == "sample_link") {
+        setSample_type("sample_link");
+        setVedio({});
+      } else setSample_type("");
     }
 
     console.log(cinputs);
@@ -336,11 +329,16 @@ function CourseEdit() {
       data.append("avatar_image", avatar_image);
       data.append("attachment_file", attachment_file);
       data.append("id", courseId);
-      data.append("certificate_id", cinputs.certificate_id?cinputs.certificate_id:0);
-      data.append("xapi_file_name", cinputs.xapi_file_name)
+      data.append(
+        "certificate_id",
+        cinputs.certificate_id ? cinputs.certificate_id : 0
+      );
+      data.append("xapi_file_name", cinputs.xapi_file_name);
       data.append("course_certificate_name", cinputs.course_certificate_name);
       data.append("author_name", cinputs.author_name);
       data.append("author_email", cinputs.author_email);
+      data.append("course_duration", cinputs.course_duration);
+      data.append("quize", cinputs.quize);
 
       data.append("course_type", cinputs.course_type);
 
@@ -387,12 +385,17 @@ function CourseEdit() {
       cinputs.published_status = item.published_status;
       cinputs.course_level = item.course_level;
       cinputs.certificate_id = item.certificate_id;
-      cinputs.xapi_file_name = item.xapi_file_name != null ? item.xapi_file_name : "";
-      cinputs.course_certificate_name = item.course_certificate_name=='undefined'?'':item.course_certificate_name;
+      cinputs.xapi_file_name =
+        item.xapi_file_name != null ? item.xapi_file_name : "";
+      cinputs.course_certificate_name =
+        item.course_certificate_name == "undefined"
+          ? ""
+          : item.course_certificate_name;
 
       cinputs.author_name = item.author_name;
       cinputs.author_email = item.author_email;
-
+      cinputs.course_duration = item.course_duration;
+      cinputs.quize = item.quize;
 
       setImage("");
       setAvatar_image("");
@@ -467,7 +470,9 @@ function CourseEdit() {
               <h1>Course</h1>
               <div className="breadcrumb">
                 <ul>
-                  <li><Link to="/">Home</Link></li>
+                  <li>
+                    <Link to="/">Home</Link>
+                  </li>
                   <li>Edit</li>
                 </ul>
               </div>
@@ -476,27 +481,23 @@ function CourseEdit() {
         </div>
       </div>
 
-      <div className=" enrollments-sec activites-sec " >
+      <div className=" enrollments-sec activites-sec ">
         <div className="container">
-
           <div className="row">
             <div className="container">
-
               <span className="row">
                 <div className="col-sm-4">
-                <button
-                type="button"
-                className="sec-btn m-2"
-                onClick={previousPage}
-              >
-                Back
-              </button>
+                  <button
+                    type="button"
+                    className="sec-btn m-2"
+                    onClick={previousPage}
+                  >
+                    Back
+                  </button>
                 </div>
                 <div className="col-sm-4"></div>
                 <div className="col-sm-4"></div>
-
               </span>
-
 
               <div className="row">
                 <div className="col-sm-12 bg-white m-4 p-3">
@@ -560,7 +561,6 @@ function CourseEdit() {
                         </div>
                       </div>
                     </div>
-
 
                     <div className="form-row">
                       <div className="col-md-6">
@@ -670,6 +670,36 @@ function CourseEdit() {
                     <div className="form-row">
                       <div className="col-md-6">
                         <div className="form-group">
+                          <label>Course Duration</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="course_duration"
+                            id="course_duration"
+                            value={cinputs.course_duration}
+                            onChange={handleChange}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label>Quize</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            name="quize"
+                            id="quize"
+                            value={cinputs.quize}
+                            onChange={handleChange}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="form-row">
+                      <div className="col-md-6">
+                        <div className="form-group">
                           <label>IMAGE</label>
                           <input
                             type="file"
@@ -682,7 +712,7 @@ function CourseEdit() {
                         </div>
                       </div>
 
-                      <div className="col-md-6">
+                   {/**    <div className="col-md-6">
                         <div className="form-group">
                           <label>AVATAR IMAGE</label>
                           <input
@@ -694,10 +724,8 @@ function CourseEdit() {
                             accept="image/png, image/jpg, image/jpeg"
                           />
                         </div>
-                      </div>
-                    </div>
+                      </div> */}
 
-                    <div className="form-row">
                       <div className="col-md-6">
                         <div className="form-group">
                           <label>Course Type</label>
@@ -715,6 +743,12 @@ function CourseEdit() {
                           </select>
                         </div>
                       </div>
+
+
+                    </div>
+
+                    <div className="form-row">
+                      
 
                       {courseType == "regular" && (
                         <div className="col-md-6">
@@ -747,7 +781,11 @@ function CourseEdit() {
                             )}
                           </div>
                         </div>
+
+                        
                       )}
+
+
 
                       {courseType == "xapi" && (
                         <div className="col-md-6">
@@ -765,7 +803,23 @@ function CourseEdit() {
                         </div>
                       )}
 
-                      <div className="col-md-3">
+                      {courseType == "xapi" && (
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label>Xapi File name</label>
+                            <input
+                              required
+                              type="text"
+                              name="xapi_file_name"
+                              className="form-control"
+                              value={cinputs.xapi_file_name}
+                              onChange={handleChange}
+                            />
+                          </div>
+                        </div>
+                      )}
+
+                      <div className="col-md-6">
                         <div className="form-group">
                           <label>IMAGE</label>
                           <br></br>
@@ -780,7 +834,7 @@ function CourseEdit() {
                         </div>
                       </div>
 
-                      <div className="col-md-3">
+                   {/* <div className="col-md-3">
                         <div className="form-group">
                           <label>AVATAR IMAGE</label>
                           <br></br>
@@ -793,7 +847,7 @@ function CourseEdit() {
                             style={{ borderStyle: "dashed" }}
                           />
                         </div>
-                      </div>
+                      </div> */}
 
                       {courseType == "xapi" && (
                         <div className="col-md-6">
@@ -810,85 +864,67 @@ function CourseEdit() {
                     </div>
 
                     {/** sample vedio/ link --------------------------- */}
-                    {courseType == "regular1" &&   <div className="form-row mt-3">
-   
-                       <div className="col-md-6">
-                           <div className="form-group">
-                             <label> Sample Vedio/Link </label>
-                             <select
-                               required
-                               className="form-control"
-                               id="sample_type"
-                               onChange={handleChange}
-                               name="sample_type"
-                               value={cinputs.sample_type}
-                             >
-                               <option value=""> -- Select -- </option>
-                               <option value="sample_vedio">Vedio</option>
-                               <option value="sample_link">Link</option>
-                             </select>
-                           </div>
-                         </div>
-   
-                         {sample_type == "sample_vedio" && (
-                           <div className="col-md-6">
-                             <div className="form-group">
-                               <label>Sample Local Vedio</label>
-                               <input
-                                 required
-                                 type="file"
-                                 name="sample_vedio"
-                                 id="sample_vedio"
-                                 className="form-control"
-                                 value={cinputs.sample_vedio}
-                                 onChange={VedioHandler}
-                                 accept="video/mp4,video/x-m4v,video/*"
-                               />
-                             </div>
-                           </div>
-                         )}
-   
-   
-                         {sample_type == "sample_link" && (
-                           <div className="col-md-6">
-                             <div className="form-group">
-                               <label>Sample Vedio Link</label>
-                               <input
-                                 required
-                                 type="text"
-                                 name="sample_link"
-                                 id="sample_link"
-                                 className="form-control"
-                                 value={cinputs.sample_link}
-                                 onChange={handleChange}
-                               />
-                             </div>
-                           </div>
-                         )}
-   
-   
-                       </div> }
-   
-                       {/** end sample vedio/ link --------------------------- */}
-
-
-
-                    <div className="form-row mt-3">
-                      {courseType == "xapi" && (
+                    {courseType == "regular1" && (
+                      <div className="form-row mt-3">
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label>Xapi File name</label>
-                            <input
+                            <label> Sample Vedio/Link </label>
+                            <select
                               required
-                              type="text"
-                              name="xapi_file_name"
                               className="form-control"
-                              value={cinputs.xapi_file_name}
+                              id="sample_type"
                               onChange={handleChange}
-                            />
+                              name="sample_type"
+                              value={cinputs.sample_type}
+                            >
+                              <option value=""> -- Select -- </option>
+                              <option value="sample_vedio">Vedio</option>
+                              <option value="sample_link">Link</option>
+                            </select>
                           </div>
                         </div>
-                      )}
+
+                        {sample_type == "sample_vedio" && (
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label>Sample Local Vedio</label>
+                              <input
+                                required
+                                type="file"
+                                name="sample_vedio"
+                                id="sample_vedio"
+                                className="form-control"
+                                value={cinputs.sample_vedio}
+                                onChange={VedioHandler}
+                                accept="video/mp4,video/x-m4v,video/*"
+                              />
+                            </div>
+                          </div>
+                        )}
+
+                        {sample_type == "sample_link" && (
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label>Sample Vedio Link</label>
+                              <input
+                                required
+                                type="text"
+                                name="sample_link"
+                                id="sample_link"
+                                className="form-control"
+                                value={cinputs.sample_link}
+                                onChange={handleChange}
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/** end sample vedio/ link --------------------------- */}
+
+                    <div className="form-row mt-3">
+                     
 
                       {user.user_role == 2 || user.user_role == 1 ? (
                         <>
@@ -908,8 +944,9 @@ function CourseEdit() {
                                   creator.map((item) => (
                                     <option
                                       value={item.id}
-                                    >{`${item.firstname.toUpperCase()} ${item.lastname.toUpperCase()} (${item.email
-                                      })`}</option>
+                                    >{`${item.firstname.toUpperCase()} ${item.lastname.toUpperCase()} (${
+                                      item.email
+                                    })`}</option>
                                   ))}
                               </select>
                             </div>
@@ -918,13 +955,9 @@ function CourseEdit() {
                       ) : (
                         ""
                       )}
-                    </div>
 
-                    {/** -------------- certificate ----------------- */}
 
-                    <div className="form-row">
-
-                      {cinputs.certificate_id != 0 &&
+                      {cinputs.certificate_id != 0 && (
                         <div className="col-md-6">
                           <div className="form-group">
                             <label>COURSE CERTIFICATE NAME</label>
@@ -937,7 +970,16 @@ function CourseEdit() {
                               onChange={handleChange}
                             />
                           </div>
-                        </div>}
+                        </div>
+                      )}
+
+
+                    </div>
+
+                    {/** -------------- certificate ----------------- */}
+
+                    <div className="form-row">
+                     
 
                       <div className="col-md-6">
                         <div className="form-group">
@@ -950,20 +992,19 @@ function CourseEdit() {
                             Select Certificate
                           </button>
                           {"  "}
-                          {cinputs.certificate_id || cinputs.certificate_id==0 ? (
+                          {cinputs.certificate_id ||
+                          cinputs.certificate_id == 0 ? (
                             <span style={{ color: "green" }}>
                               <i
                                 class="fa fa-check fa-lg"
                                 aria-hidden="true"
                               ></i>
                             </span>
-                          ):''}
-
-                           
-
+                          ) : (
+                            ""
+                          )}
                         </div>
                       </div>
-
                     </div>
 
                     {/** -------------- End certificate ----------------- */}
@@ -988,7 +1029,7 @@ function CourseEdit() {
                     </div>
 
                     <div className="form-row">
-                    <div className="col-md-4"></div>
+                      <div className="col-md-4"></div>
                       <div className="col-md-4 text-center">
                         <div className="form-group">
                           <button type="submit" className="btn btn-success">
@@ -1020,7 +1061,6 @@ function CourseEdit() {
             {/* Modal body */}
             <div className="modal-body text-center">
               <form>
-
                 {/* default */}
                 <>
                   <div className="form-check">
@@ -1030,7 +1070,7 @@ function CourseEdit() {
                         type="radio"
                         name="certificate_id"
                         id={`certificate_id`}
-                        value='0'
+                        value="0"
                         onChange={handleChange}
                         checked={0 == cinputs.certificate_id}
                       />
@@ -1043,7 +1083,6 @@ function CourseEdit() {
                     </div>
                   </div>
                 </>
-
 
                 {certificateList.map((item, i) => (
                   <>

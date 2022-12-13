@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 
 import Header from "./Common/Header/Header";
 import Footer from "./Common/Footer/Footer";
@@ -23,6 +23,8 @@ import SingleXapiModal from "./SingleXapiModal";
 import StaticRating from "./StaticRating";
 import ProgressBar from "@ramonak/react-progress-bar";
 
+
+
 // loader
 import Loader from "./Loader";
 
@@ -43,13 +45,44 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
+
+
 export default function Singlecourse() {
+
+  
+
   // loader
   const [showLoader, setShowLoader] = useState(false);
+
+  var thirdExample2 = {
+    size: 25,
+    count: 5,
+    isHalf: true,
+    color: "grey",
+    activeColor: "#ebc934",
+    edit:false
+  
+  };
+
+  const [TotalRating,setTotalRating]=useState(0);
+  const [TotalRatingStatus,setTotalRatingStatus]=useState(0);
+
+useEffect(()=>{
+
+},)
+
+  
+
+
 
   const [enrollStatus, setEnrollStatus] = useState("");
   const [nextData, setNextData] = useState({});
   const playerRef = useRef();
+  const [enrollment, setEnrollments] = useState();
+  const [chkGroups, setChkGroup] = useState(false);
+  const [chkGroups2, setChkGroup2] = useState(true);
+
+  const [vedioPlay, setVedioPlay] = useState(false);
 
   let query = useQuery();
   var location = useLocation();
@@ -64,7 +97,7 @@ export default function Singlecourse() {
   var { singleCourseId, taskId, courseType } =
     location.state != null ? location.state : { singleCourseId: 0 };
 
-  console.log("params --- ", location.state);
+  // console.log("params --- ", location.state);
 
   //    var singleCourseId=1;
   //    var taskId=1;
@@ -235,6 +268,7 @@ export default function Singlecourse() {
       setCreatorId(temp.creator_id);
       setCourses(temp);
       setChap(temp.chapters);
+      setTotalRating(temp?.rating_details[0]?.rating_number)
 
       if (user.token && user.user_role == 5) {
         chkAllGroups(temp.group_details, temp);
@@ -291,6 +325,7 @@ export default function Singlecourse() {
           user.user_id,
           singleCourseId
         );
+   
         var status = false;
         console.log("enrolllll  ", enrollRes.data);
         if (enrollRes.data.status) {
@@ -301,6 +336,7 @@ export default function Singlecourse() {
           );
 
           // -------------------------------------------
+          if(temp.course_type==="regular"){
           var payload = {
             user_id: user.user_id,
             course_id: singleCourseId,
@@ -310,30 +346,33 @@ export default function Singlecourse() {
             current_play_sec: Number(progress.playedSeconds).toFixed(2),
           };
           setPreviousID(payload)
+        }
           // ------------------------------------------------------------------------
 
-          if (enrollRes.data.data[0].user_enroll_status == "active") {
+          if (enrollRes.data.data[0].user_enroll_status == "active" ) {
             status = true;
+
             setEnroll_id(enrollRes.data.data[0].enroll_id);
+            
             setLastChapter(
               enrollRes.data.data[0].current_chapter != null
                 ? enrollRes.data.data[0].current_chapter
                 : 0
             );
 
-            console.log(
-              "current chapter ",
-              enrollRes.data.data[0].current_chapter
-            );
+            // console.log(
+            //   "current chapter ",
+            //   enrollRes.data.data[0].current_chapter
+            // );
             setLastLesson(
               enrollRes.data.data[0].current_lession != null
                 ? enrollRes.data.data[0].current_lession
                 : 0
             );
-            console.log(
-              "current lesson ",
-              enrollRes.data.data[0].current_lession
-            );
+            // console.log(
+            //   "current lesson ",
+            //   enrollRes.data.data[0].current_lession
+            // );
 
 
             // alert(singleCourseId)            
@@ -439,15 +478,9 @@ export default function Singlecourse() {
       setCreatorId(temp.creator_id);
       setCourses(temp);
       setChap(temp.chapters);
-
-
-
-
-
+      setTotalRating(temp?.rating_details[0]?.rating_number)
 
     }
-
-
 
   }
 
@@ -621,6 +654,7 @@ export default function Singlecourse() {
 
   }
 
+
   function gotoPage(enroll, course_type, file_path, creator_id) {
     console.log("dddddd", creator_id);
     if (
@@ -708,7 +742,7 @@ export default function Singlecourse() {
       console.log("course details3 ", responce.data);
 
       setCourses(temp);
-
+      setTotalRating(temp?.rating_details[0]?.rating_number)
 
 
       setShowLoader(false);
@@ -753,11 +787,7 @@ export default function Singlecourse() {
   }
 
   // to store all the enrollment
-  const [enrollment, setEnrollments] = useState();
-  const [chkGroups, setChkGroup] = useState(false);
-  const [chkGroups2, setChkGroup2] = useState(true);
 
-  const [vedioPlay, setVedioPlay] = useState(false);
 
   // check coourse and user group
   var chkAllGroups = (courseGroup, temp) => {
@@ -840,7 +870,16 @@ export default function Singlecourse() {
       );
       setEnrollments(enrollmentresponce.data.status);
 
+      
+
       if (enrollmentresponce.data.status && course_type != "xapi") {
+
+        var enrollRes = await UserService.enrollmentcourse(
+          user.user_id,
+          (singleCourseId===0?courseID:singleCourseId)
+        );
+        setEnroll_id(enrollRes.data.data[0].enroll_id);
+
         var lessid = chap[0].lessons[0].id;
 
         var Chapterresponse = await ChapterService.getOne(chap[0].id);
@@ -988,9 +1027,6 @@ export default function Singlecourse() {
       if (previousID.user_id != 0 && previousID.course_id != 0 && previousID.chapter_id != 0 && previousID.lesson_id != 0) {
         console.log("pre course set  ", previousID);
         reloadLesson(previousID)
-
-
-
       }
     }
 
@@ -1017,15 +1053,15 @@ export default function Singlecourse() {
 
       var payload = {
         user_id: user.user_id,
-        course_id: courseID,
+        course_id: (singleCourseId===0?courseID:singleCourseId),
         chapter_id: chapter_id,
         lesson_id: lesson_id,
         lesson_percentage: Math.round((progress.playedSeconds / duration) * 100),
         current_play_sec: Number(progress.playedSeconds).toFixed(2),
       };
+
+      console.log("set pre co",payload);
       setPreviousID(payload)
-
-
 
       setShowLoader(false);
     }
@@ -1121,8 +1157,22 @@ export default function Singlecourse() {
       setCourses(temp);
       setShowLoader(false);
       setChkComment(true);
+      setTotalRating(temp?.rating_details[0]?.rating_number)
+ 
     }
   };
+  
+
+
+
+
+//  var getTotalRating=()=>{
+//   alert(totalRating)
+//   return (<StaticRating
+//     // value={course.rating_details[0].rating_number}
+//     value={totalRating}
+//   />);
+//  }
 
   // view chapter lesson
   var oneView = (data) => {
@@ -1155,7 +1205,7 @@ export default function Singlecourse() {
   var playerProgress = (e) => {
     setProgress({ ...e });
 
-    console.log("run time ", e);
+    // console.log("run time ", e);
   };
 
 
@@ -1208,7 +1258,7 @@ export default function Singlecourse() {
     courseTracking(payload);
 
 
-    console.log("paused ", payload);
+    // console.log("paused ", payload);
     // reloadLesson(payload)
     setCompleteData({ ...payload });
   };
@@ -1221,7 +1271,7 @@ export default function Singlecourse() {
       currentPlaySec: Number(stime).toFixed(2),
     };
 
-    console.log("seek ", payload);
+    // console.log("seek ", payload);
     setCompleteData({ ...payload });
   };
 
@@ -1502,7 +1552,7 @@ export default function Singlecourse() {
                               {view.lesson_details && (
                                 <li>
                                   <h5 style={style1}>
-                                    Lesson Description:
+                                    {langObj.lesson_description}:
                                     <span className="lesson-describtions">
                                       <Markup content={view.lesson_details} />
                                     </span>
@@ -1578,244 +1628,15 @@ export default function Singlecourse() {
                           role="tabpanel"
                           aria-labelledby="reviews-tab"
                         >
-                          <h3>Featured Review</h3>
+                          <h3>{langObj.featured_reviews}</h3>
                           <div id="review-wrap-rating" className="review-wrap ">
                             {/** reviews  section */}
 
                             {singleReview &&
                               singleReview.map((item) => (
-                                <div className="review-box">
-                                  <ul className="rating">
-                                    {item.rating_number == 1 && (
-                                      <>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star-o"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star-o"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star-o"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star-o"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                      </>
-                                    )}
-
-                                    {item.rating_number == 2 && (
-                                      <>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star-o"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star-o"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star-o"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                      </>
-                                    )}
-
-                                    {item.rating_number == 3 && (
-                                      <>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star-o"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star-o"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                      </>
-                                    )}
-
-                                    {item.rating_number == 4 && (
-                                      <>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star-o"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                      </>
-                                    )}
-
-                                    {item.rating_number == 5 && (
-                                      <>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                        <li>
-                                          <a href="">
-                                            <i
-                                              className="fa fa-star"
-                                              aria-hidden="true"
-                                            ></i>
-                                          </a>{" "}
-                                        </li>
-                                      </>
-                                    )}
-                                  </ul>
-                                  <h5>
-                                    {item.fullname &&
-                                      item.fullname.toUpperCase()}
+                              <>  <StaticRating value={item.rating_number} />
+                              <h5 style={{fontSize:"15px",fontWeight: "600"}} >
+                                    {item.fullname && item.fullname.toUpperCase()} 
                                     , {new Date(item.date_at).toDateString()}{" "}
                                     <span
                                       className="btn btn-danger"
@@ -1828,251 +1649,29 @@ export default function Singlecourse() {
                                       ></i>{" "}
                                     </span>{" "}
                                   </h5>
-                                  <p style={{ wordBreak: "break-all" }} >{item.comment}.</p>
-                                </div>
+                                  <p style={{ wordBreak: "break-all",fontSize:"13px" }} >{item.comment}.</p>
+                                 </>
                               ))}
 
                             <div>
                               {review &&
                                 review.map((item) =>
                                   item.user_id != user.user_id ? (
-                                    <div className="review-box">
-                                      <ul className="rating">
-                                        {item.rating_number == 1 && (
-                                          <>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star-o"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star-o"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star-o"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star-o"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                          </>
-                                        )}
-
-                                        {item.rating_number == 2 && (
-                                          <>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star-o"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star-o"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star-o"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                          </>
-                                        )}
-
-                                        {item.rating_number == 3 && (
-                                          <>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star-o"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star-o"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                          </>
-                                        )}
-
-                                        {item.rating_number == 4 && (
-                                          <>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star-o"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                          </>
-                                        )}
-
-                                        {item.rating_number == 5 && (
-                                          <>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                            <li>
-                                              <a href="">
-                                                <i
-                                                  className="fa fa-star"
-                                                  aria-hidden="true"
-                                                ></i>
-                                              </a>{" "}
-                                            </li>
-                                          </>
-                                        )}
-                                      </ul>
-                                      <h5>
+                                    <>
+                                    <StaticRating value={item.rating_number} />
+                                   
+                                    <h5 style={{fontSize:"15px",fontWeight: "600"}}>
                                         {item.fullname &&
                                           item.fullname.toUpperCase()}
                                         ,{" "}
                                         {new Date(item.date_at).toDateString()}
                                       </h5>
-                                      <p style={{ wordBreak: "break-all" }}  >{item.comment}.</p>
-                                    </div>
+                                      <p style={{ wordBreak: "break-all",fontSize:"13px" }}  >{item.comment}.</p>
+
+                                    </>
                                   ) : (
                                     ""
+
                                   )
                                 )}
                             </div>
@@ -2135,7 +1734,7 @@ export default function Singlecourse() {
                             role="tabpanel"
                             aria-labelledby="q-a-tab"
                           >
-                            <h3 clasName="mb-5">Question and Answers</h3>
+                            <h3 clasName="mb-5">{langObj.qns_ans}</h3>
 
                             <QnsAnsComment course_id={(singleCourseId===0?courseID:singleCourseId)} />
                           </div>
@@ -2211,21 +1810,9 @@ export default function Singlecourse() {
                         ""
                       )}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
                     </div>
 
+                    {!enrollment  && <>
                     <div className="catego-area">
                       <p>
                         <b>Category </b>:{" "}
@@ -2234,14 +1821,18 @@ export default function Singlecourse() {
                     </div>
 
                     <div className="course-avator-image">
-                      <img
+                   {/**    <img
                         src={
                           course.avatar_image
                             ? course.avatar_image
                             : "/images/my-course1.png"
                         }
                         alt=""
-                      />
+                      /> */}
+                  
+                      <Markup
+                            content={`${course.short_description && course.short_description }`}
+                          />
                     </div>
 
                     <div className="course-details">
@@ -2253,9 +1844,10 @@ export default function Singlecourse() {
                       </p>
                       <div className="review-area">
                         <ul className="review-stat rating ">
-                          <StaticRating
-                            value={course.rating_details[0].rating_number}
-                          />
+                        {TotalRating}
+
+                        <ReactStars value={TotalRating} {...thirdExample2} />
+                        
                           <span
                             style={{
                               fontSize: "15px",
@@ -2279,6 +1871,7 @@ export default function Singlecourse() {
                         {course.total_lesson_vedio && course.total_lesson_vedio}
                       </p>
                     </div>
+                    </>}
 
                     {(user.token && enrollment && chap.length > 0) ||
                       (user.token &&
@@ -2286,7 +1879,7 @@ export default function Singlecourse() {
                         chap.length > 0) ||
                       (user.token && user.user_role == 2 && chap.length > 0) ? (
                       <>
-                        <h3>{langObj.course_contant} </h3>
+                        <h4>{langObj.course_contant} </h4>
 
                         <div className="course-content">
 

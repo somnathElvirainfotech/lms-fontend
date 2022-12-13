@@ -4,6 +4,9 @@ var SerbianLatin = {
 
     // courses page---------------------
     sub_courses:"Interni portal za obuku",
+    number_of_lesson:"Broj lekcija:",
+    course_duration:"Trajanje:",
+    quize:"Kvizova:",
 
     // main menu-----
     courses: "Kursevi",
@@ -11,10 +14,12 @@ var SerbianLatin = {
     my_courses: "Moji kursevi",
     login: "Uloguj se",
     logout: "Izlaz",
+    about:"O sistemu",
 
     // login form----------
     username: "Korisničko ime",
     password: "Lozinka",
+    forget_password:"Zaboravili ste lozinku?",
 
     // courses page filter-----------
     category: "Sve kategorije",
@@ -26,6 +31,12 @@ var SerbianLatin = {
     reviews: "Ocene",
     view_all_reviews: "Sve ocene",
     course_contant: "Sadržaj kursa",
+    replies:"odgovora",
+    reply:"odgovori",
+    lesson_description:"Opis lekcije",
+    featured_reviews:"Ocene i komentari",
+    qns_ans:"Pitanja i odgovori",
+
 
     // main search-----------
     main_search: "Pretraga kurseva",

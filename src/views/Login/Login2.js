@@ -354,7 +354,7 @@ export const Login2 = () => {
 
                                     </div>
                                     <div className="form-group" style={{ marginTop: "10px" }}>
-                                        <p onClick={forgetPassword} style={{ color: "#007bff", cursor: "pointer" }} >Forgotten password?</p>
+                                        <p onClick={forgetPassword} style={{ color: "#007bff", cursor: "pointer" }} >{langObj.forget_password}</p>
                                     </div>
 
                                 </form>

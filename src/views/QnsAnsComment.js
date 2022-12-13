@@ -8,6 +8,14 @@ import ParentQnsAnsComment from "./ParentQnsAnsComment";
 import $ from "jquery";
 import "jquery-ui-dist/jquery-ui";
 
+// languages
+import English from "./ConverLanguages/English";
+import SerbianCyrilic from "./ConverLanguages/SerbianCyrilic";
+import SerbianLatin from "./ConverLanguages/SerbianLatin";
+// end languages
+import { LangContext } from "../routes/routes";
+
+
 function QnsAnsComment(props) {
   const { course_id } = props;
 
@@ -154,6 +162,19 @@ function QnsAnsComment(props) {
     setLimit(false)
    }
 
+   const { languageList } = useContext(LangContext);
+  const [langObj, setLangObj] = useState({});
+
+  useEffect(() => {
+    if (languageList.language_name === "1") {
+      setLangObj(English);
+    } else if (languageList.language_name === "2") {
+      setLangObj(SerbianCyrilic);
+    } else if (languageList.language_name === "3") {
+      setLangObj(SerbianLatin);
+    }
+  }, [languageList.language_name]);
+
   return (
     <>
     
@@ -187,7 +208,7 @@ function QnsAnsComment(props) {
                     ></img>
                   )}
                   <div className="qnsAns-username">
-                  <span>{item.user_name && item.user_name.toUpperCase()}</span>
+                  <span style={{fontSize:"13px"}} >{item.user_name && item.user_name.toUpperCase()}</span>
                   <span className="text-secondary" style={{ fontSize: "14px" }}>
                     {" "}
                     <Moment fromNow>{item.created_at}</Moment>{" "}
@@ -219,7 +240,7 @@ function QnsAnsComment(props) {
                 </div> */}
                 </h5>
                <div className="container qnsAns-details"  >
-               <p style={{wordBreak: "break-all"}} >{item.comment}</p>
+               <p style={{wordBreak: "break-all",fontSize:"12px"}} >{item.comment}</p>
                </div>
                 <h6
                   className="ml-5 text-primary font-weight-bold "
@@ -228,7 +249,7 @@ function QnsAnsComment(props) {
                   {" "}
                   <span className="p-2"  >{item.total_replies}</span>{" "}
                   <span onClick={() => showReply(`subAns${i + 1}`, item.id)}>
-                    REPLIES
+                    {langObj.replies}  {item.total_replies!= 0 && <i class="fa fa-caret-down" style={{color: "#007bff" }} aria-hidden="true"></i> } 
                   </span>
                   {item.user_id != user.user_id && (
                     <span
@@ -243,7 +264,7 @@ function QnsAnsComment(props) {
                         setAnsId(item.id);
                       }}
                     >
-                      REPLY
+                    {langObj.reply}
                     </span>
                   )}
                 </h6>

@@ -4,6 +4,9 @@ var SerbianCyrilic = {
 
     // courses page---------------------
     sub_courses:"Интерни портал за обуку",
+    number_of_lesson:"Broj lekcija:",
+    course_duration:"Trajanje:",
+    quize:"Kvizova:",
 
     // main menu--------------
     courses: "Курсеви",
@@ -11,10 +14,12 @@ var SerbianCyrilic = {
     my_courses: "Моји курсеви",
     login: "Улогуј се",
     logout: "Излаз",
+    about:"О систему",
 
     // login form------------
     username: "Корисничко име",
     password: "Лозинка",
+    forget_password:"Заборавили сте лозинку?",
 
     // courses page filter--------------
     category: "Све категорије",
@@ -26,6 +31,12 @@ var SerbianCyrilic = {
     reviews: "Оцене",
     view_all_reviews: "Све оцене",
     course_contant: "Садржај курса",
+    replies:"одговора",
+    reply:"одговори",
+    lesson_description:"Опис лекције",
+    featured_reviews:"Оцене и коментари",
+    qns_ans:"Питања и одговори",
+
 
     // main search---------------
     main_search: "Претрага курсева",

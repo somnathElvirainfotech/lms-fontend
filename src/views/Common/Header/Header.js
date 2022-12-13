@@ -289,7 +289,7 @@ export default function Header() {
                     {user.token && (
                       <li key={"list1"}>
                         <Link style={{color:location.pathname=="/about-us"?"#023e86":"",}}  onClick={clerSearchText} to="/about-us">
-                          About
+                          {langObj.about}
                         </Link>
                       </li>
                     )}
@@ -431,7 +431,7 @@ export default function Header() {
                       {user.token && (
                         <li key={"list1"}>
                           <Link style={{color:location.pathname=="/about-us"?"#023e86":"",}}  onClick={clerSearchText} to="/about-us">
-                            About
+                          {langObj.about}
                           </Link>
                         </li>
                       )}
@@ -610,7 +610,7 @@ export default function Header() {
                     {user.token && (
                       <li key={"list1"}>
                         <Link style={{color:location.pathname=="/about-us"?"#023e86":"",}}  onClick={clerSearchText} to="/about-us">
-                          About
+                        {langObj.about}
                         </Link>
                       </li>
                     )}

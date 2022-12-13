@@ -70,7 +70,7 @@ function ChildQnsAnsComment(props) {
           )}
           <div className="qnsAns-username">
 
-          <span>{item.user_name.toUpperCase()}</span>
+          <span style={{fontSize:"13px"}}>{item.user_name.toUpperCase()}</span>
           <span className="text-secondary" style={{ fontSize: "14px" }}>
             {" "}
             <Moment fromNow>{item.created_at}</Moment>
@@ -82,7 +82,7 @@ function ChildQnsAnsComment(props) {
            
         </h5>
         <div className="container qnsAns-details "  >
-               <p style={{wordBreak: "break-all"}} >{item.comment}</p>
+               <p style={{wordBreak: "break-all",fontSize:"12px"}} >{item.comment}</p>
                </div>
 
       </div>

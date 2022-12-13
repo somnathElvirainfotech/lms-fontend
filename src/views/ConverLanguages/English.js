@@ -3,6 +3,10 @@ var English = {
 
     // courses page---------------------
     sub_courses:"Internal learning portal",
+    number_of_lesson:"Number Of Lesson:",
+    course_duration:"Course Duration:",
+    quize:"Quize:",
+    
 
     // main menu----------
     courses: "Courses",
@@ -10,10 +14,12 @@ var English = {
     my_courses: "My courses",
     login: "Login",
     logout: "Logout",
+    about:"About",
 
     // login form--------------
     username: "Username",
     password: "Password",
+    forget_password:"Forgotten password?",
 
     // courses page filter---------------
     category: "Category",
@@ -25,6 +31,12 @@ var English = {
     reviews:"Reviews",
     view_all_reviews:"View all reviews",
     course_contant:"Course contant",
+    replies:"replies",
+    reply:"reply",
+    lesson_description:"Lesson description",
+    featured_reviews:"Featured reviews",
+    qns_ans:"Questions and answers",
+
 
     // main search-----------------
     main_search: "What you want to learn today",

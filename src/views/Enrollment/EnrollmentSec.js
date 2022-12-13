@@ -597,7 +597,7 @@ export default function EnrollmentSec() {
       data.append("std_no", input.std_no != undefined ? input.std_no : "");
 
       var responce = await EnrollmentService.getAll(data);
-      console.log(responce.data.data);
+      console.log("search enroll api ",responce.data.data);
       setEnrollment(responce.data.data);
       getDataPagi(responce.data.data, 0 * PER_PAGE);
 
@@ -1610,7 +1610,7 @@ export default function EnrollmentSec() {
                   fontWeight: "bold",
                 }}
               >
-                No record found
+                {enrollment.length >PER_PAGE ?"Loading...":"No record found"}
               </p>
             )}
 
