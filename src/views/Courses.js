@@ -631,6 +631,15 @@ export default function Course() {
     }
   };
 
+  var textShort2 = (text) => {
+    // var newText=text+
+    if (text.length > 50) {
+      return text.substring(0, 50) + "....";
+    } else {
+      return text;
+    }
+  };
+
   return (
     <React.Fragment>
       {/** loader */}
@@ -731,66 +740,101 @@ export default function Course() {
               </div>
             </form>   */}
 
-            <div className="btn-group mr-2">
-              <button type="button" style={{ backgroundColor: "#023e86", color: "#fff" }} className="btn"
-              onClick={() => FormSubmit("")}>
-                Clear All
+            <nav className="navbar navbar-expand-lg navbar-light justify-content-end">
+              <button
+                className="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+              >
+                <span className="">
+                  {" "}
+                  <i class="fa fa-bars"></i>
+                </span>
               </button>
-               
-              
-            </div>
-
-            {category.length &&
-              category.map((pitem) => (
-                <>
-                  <div className="btn-group mr-2">
+              <div
+                className="collapse navbar-collapse"
+                id="navbarSupportedContent"
+              >
+                <ul className="navbar-nav mr-auto">
+                  <div className="btn-group mr-2 mt-1">
                     <button
-                      style={{ backgroundColor: "#023e86", color: "#fff" }}
                       type="button"
+                      style={{ backgroundColor: "#023e86", color: "#fff" }}
                       className="btn"
-                      onClick={() => FormSubmit(pitem.id)}
+                      onClick={() => FormSubmit("")}
                     >
-                      {pitem.c_name.toUpperCase()}
+                      All
                     </button>
-                    {pitem.sub_category.length > 0 && (
-                      <button
-                        type="button"
-                        className="btn   dropdown-toggle dropdown-toggle-split"
-                        data-toggle="dropdown"
-                        aria-expanded="false"
-                        style={{ backgroundColor: "#023e86", color: "#fff" }}
-                      >
-                        <span className="sr-only">Toggle Dropdown</span>
-                      </button>
-                    )}
-
-                    {pitem.sub_category.length > 0 && (
-                      <div className="dropdown-menu">
-                        {pitem.sub_category.map((subItem) => (
-                          <>
-                            <small
-                              onClick={() => FormSubmit(subItem.id)}
-                              className="dropdown-item"
-                            >
-                              {subItem.c_name.toUpperCase()}
-                            </small>
-                            {subItem.sub_category.map((child) => (
-                              <>
-                                <small
-                                  onClick={() => FormSubmit(child.id)}
-                                  className="dropdown-item"
-                                >
-                                  {child.c_name.toUpperCase()}
-                                </small>
-                              </>
-                            ))}
-                          </>
-                        ))}
-                      </div>
-                    )}
                   </div>
-                </>
-              ))}
+
+                  {category.length &&
+                    category.map((pitem) => (
+                      <>
+                        <div className="btn-group mr-2 mt-1">
+                          <button
+                            style={{
+                              backgroundColor: "#023e86",
+                              color: "#fff",
+                            }}
+                            type="button"
+                            className="btn nav-item "
+                            onClick={() => FormSubmit(pitem.id)}
+                          >
+                            {pitem.c_name.toUpperCase()}
+                          </button>
+                          {pitem.sub_category.length > 0 && (
+                            <button
+                              type="button"
+                              className="btn   dropdown-toggle dropdown-toggle-split"
+                              data-toggle="dropdown"
+                              aria-expanded="false"
+                              style={{
+                                backgroundColor: "#023e86",
+                                color: "#fff",
+                              }}
+                            >
+                              <span className="sr-only">Toggle Dropdown</span>
+                            </button>
+                          )}
+
+                          {pitem.sub_category.length > 0 && (
+                            <div className="dropdown-menu">
+                              {pitem.sub_category.map((subItem) => (
+                                <>
+                                  <small
+                                    onClick={() => FormSubmit(subItem.id)}
+                                    className="dropdown-item"
+                                  >
+                                    {subItem.c_name.toUpperCase()}
+                                  </small>
+                                  {subItem.sub_category.map((child) => (
+                                    <>
+                                      <small
+                                        onClick={() => FormSubmit(child.id)}
+                                        className="dropdown-item"
+                                      >
+                                        {child.c_name.toUpperCase()}
+                                      </small>
+                                    </>
+                                  ))}
+                                </>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </>
+                    ))}
+                </ul>
+              </div>
+            </nav>
+
+            {/** filter card ------- */}
+
+            {/** end filter card ------------ */}
           </div>
         </div>
       </div>
@@ -832,11 +876,11 @@ export default function Course() {
                         /> 
                         </div> */}
                         {/*    <p className="courseText mt-2">{course.creator_name}</p>  */}
-                        <h3 style={{ heigth: "40px" }} className="">
-                          {course.course_name}
+                        <h3 className="">
+                          {course.course_name && textShort2(course.course_name)}
                         </h3>
 
-                        <p style={{ heigth: "40px" }} className="courseText">
+                        <p className="courseText">
                           <Markup
                             content={`${
                               course.short_description &&
@@ -845,26 +889,26 @@ export default function Course() {
                           />
                         </p>
 
-                        <p
-                          className="courseText"
-                          style={{ fontSize: "15px", fontFamily: "Calibri" }}
-                        >
-                          {langObj.number_of_lesson} {course.total_lesson_vedio}
-                        </p>
+                        <div className="courseText2">
+                          <p
+                            style={{ fontSize: "15px", fontFamily: "Calibri" }}
+                          >
+                            {langObj.number_of_lesson}{" "}
+                            {course.total_lesson_vedio}
+                          </p>
 
-                        <p
-                          className="courseText"
-                          style={{ fontSize: "15px", fontFamily: "Calibri" }}
-                        >
-                          {langObj.course_duration} {course.course_duration}
-                        </p>
+                          <p
+                            style={{ fontSize: "15px", fontFamily: "Calibri" }}
+                          >
+                            {langObj.course_duration} {course.course_duration}
+                          </p>
 
-                        <p
-                          className="courseText"
-                          style={{ fontSize: "15px", fontFamily: "Calibri" }}
-                        >
-                          {langObj.quize} {course.quize}
-                        </p>
+                          <p
+                            style={{ fontSize: "15px", fontFamily: "Calibri" }}
+                          >
+                            {langObj.quize} {course.quize}
+                          </p>
+                        </div>
 
                         {course.certificate_id != 0 && (
                           <span
@@ -877,7 +921,7 @@ export default function Course() {
                           >
                             {" "}
                             <img
-                              style={{ width: "50px" }}
+                              style={{ width: "25px" }}
                               src="/images/clogo.png"
                               alt=""
                             />{" "}

@@ -74,6 +74,7 @@ import Certificate2 from '../views/Certificates/all_three_certificate/certificat
 import Certificate3 from '../views/Certificates/all_three_certificate/certificate-3/Certificate3';
 import PrintResult from '../views/Enrollment/PrintResult';
 import SingleXapiModal from '../views/SingleXapiModal';
+import UserTaskList from '../views/Task/UserTaskList';
 
 
 
@@ -185,6 +186,7 @@ export default function RoutesList() {
           <Route path='task' element={<RequireAuth><Task /></RequireAuth>} />
           <Route path='task/add' element={<RequireAuth><TaskAdd /></RequireAuth>} />
           <Route path='task/edit' element={<RequireAuth><TaskEdit /></RequireAuth>} />
+          <Route path='task/record/' element={<RequireAuth><UserTaskList /></RequireAuth>} />
 
           <Route path='group' element={<RequireAuth><UserGroup /></RequireAuth>} />
           <Route path='language' element={<RequireAuth><Language /></RequireAuth>} />

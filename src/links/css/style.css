@@ -462,8 +462,8 @@ p {
     position: relative;
     padding: 10px 15px 30px;
     margin: 0;
-    min-height: 350px;
-    height: 369px;
+    min-height: 250px;
+    height: 250px;
 }
 
 .populer-box .text-box .clg-box {
@@ -480,13 +480,12 @@ p {
 }
 
 .populer-box .text-box h3 {
-    font-size: 16px;
+    font-size: 15px;
     line-height: 1.2;
-    font-weight: 600;
     color: #000;
     padding: 0;
-    margin: 0 0 15px;
-    font-family: 'Calibri';
+    margin: 0 0 3px;
+    font-family: 'Calibri bold';
 }
 
 .populer-box .text-box p {
@@ -2280,29 +2279,37 @@ select {
 }
 
 .single-course-tab .nav-tabs {
-    border: 1px solid #c3c3c3;
+    border: 2px;
+    border-bottom:solid #c3c3c3 ;
     margin-bottom: 30px;
-    background: #fff;
+    background: #e2e2e2;
+     
 }
 
 .single-course-tab .nav-tabs .nav-item.show .nav-link,
 .single-course-tab .nav-tabs .nav-link.active {
     /* background-color: #023e86; */
-    /* background-color: #023e86; */
+    background-color: #e2e2e2;
     /* color: #fff; */
-    border: 5px;
+    border: 2px;
     /* border-radius: 0; */
     border-bottom-style: solid;
-    border-bottom-color: #023e86;;
+    border-bottom-color: #000;
+
+     
+}
+
+.single-course-tab .nav-tabs {
+    border-bottom: 1px solid #cacaca !important;
 }
 
 .single-course-tab .nav-tabs .nav-item a {
-    font-size: 18px;
+    font-size: 15px;
     color: #0c0c0c;
     font-weight: 600;
     border: 0;
     margin-right: 30px;
-    padding: 13px 30px;
+    padding: 13px 17px;
 }
 
 .single-course-tab .tab-content .tab-pane h3,
@@ -2310,11 +2317,12 @@ select {
     color: #023e86;
     font-weight: 600;
     margin-bottom: 12px;
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .single-course-tab .tab-content .tab-pane p {
     margin-bottom: 20px;
+    font-size: 15px;
 }
 
 .single-course-tab .tab-content .tab-pane ul {
@@ -2855,8 +2863,19 @@ button {
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    line-height: 18px;
+    
 
+}
 
+.courseText2{
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 18px;
+    margin-top: 4px;
 }
 
 .switch {
@@ -3169,7 +3188,7 @@ input:checked+.slider:before {
 .progressBarPosition2 {
     position: relative;
     left: 0;
-    bottom: 11.5px;
+    bottom: 6.5px;
     width: 100%;
     /* font-size: 15px; */
     /* color: #707070; */
@@ -3215,7 +3234,7 @@ td {
 .image-course {
     height: 445px;
     overflow: hidden;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .image-course img {
@@ -3255,6 +3274,10 @@ td {
     height: 100%;
 }
 
+.course-avator-image p{
+    font-size: 14px;
+}
+
 
 .review-area {
     display: flex;
@@ -3286,11 +3309,24 @@ td {
 
 .course-details {
     margin-bottom: 30px;
+    
+}
+
+.course-details p{
+    font-size: 14px;
+}
+
+.course-details h4{
+    font-size: 14px !important;
 }
 
 .catego-area b {
     margin-bottom: 10px;
-    font-size: 18px;
+    font-size: 14px !important;
+}
+
+.catego-area{
+    font-size: 14px !important;
 }
 
 .tab-pane p a {
@@ -3343,6 +3379,8 @@ td {
     color: black;
     font-weight: 300;
     word-break: break-all;
+    font-size: 15px;
+    line-height: 1.5;
 }
 
 
@@ -3372,13 +3410,25 @@ td {
 }
 
 @font-face {
-    font-family: 'Calibri';
+    font-family: 'Calibri bold';
     src: url('../fonts/Calibri-Bold.eot');
     src: url('../fonts/Calibri-Bold.eot?#iefix') format('embedded-opentype'),
         url('../fonts/Calibri-Bold.woff2') format('woff2'),
         url('../fonts/Calibri-Bold.woff') format('woff'),
         url('../fonts/Calibri-Bold.ttf') format('truetype');
     font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Calibri';
+    src: url('../fonts/Calibri.eot');
+    src: url('../fonts/Calibri.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/Calibri.woff2') format('woff2'),
+        url('../fonts/Calibri.woff') format('woff'),
+        url('../fonts/Calibri.ttf') format('truetype');
+    font-weight: normal;
     font-style: normal;
     font-display: swap;
 }
@@ -3391,3 +3441,117 @@ td {
     color: white;
     background-color: #99a7f0;
 }
+
+/*  15.12.2022 */
+
+.lms-right-side-menu .card {
+    margin-bottom: 15px;
+    border: 0;
+}
+
+.lms-right-side-menu .card .card-header {
+    border: 0;
+    -webkit-box-shadow: 0 0 20px 0 rgba(213, 213, 213, 0.5);
+    box-shadow: 0 0 20px 0 rgba(213, 213, 213, 0.5);
+    border-radius: 2px;
+    padding: 0;
+}
+
+.lms-right-side-menu .card .card-header .btn-header-link {
+    color: #000;
+    display: block;
+    text-align: left;
+    color: #222;
+    padding: 12px 20px;
+    border: 1px solid #cfcbca;
+    color: #000;
+    background: #cfcbca;
+    border-radius: 0;
+    font-size: 15px;
+}
+
+.lms-right-side-menu .card .card-header .btn-header-link:after {
+    content: "\f107";
+    font: normal normal normal 18px/1 FontAwesome;
+    float: right;
+    position: relative;
+    bottom: 20px;
+}
+
+.lms-right-side-menu .card .card-header .btn-header-link.collapsed {
+    border: 1px solid #bababa;
+    background: transparent;
+    color: #000;
+}
+
+.lms-right-side-menu .card .card-header .btn-header-link.collapsed:focus {
+    box-shadow: none;
+
+}
+
+.lms-right-side-menu .card .card-header .btn-header-link:focus {
+    box-shadow: none;
+}
+
+.lms-right-side-menu .card .card-header .btn-header-link.collapsed:after {
+    content: "\f106";
+}
+
+.lms-right-side-menu .card .collapsing {
+    line-height: 30px;
+}
+
+.lms-right-side-menu .card .collapse {
+    border: 0;
+}
+
+.lms-right-side-menu .card .collapse.show {
+    color: #000;
+}
+
+.lms-right-side-menu .card .card-header .btn-header-link span {
+    display: block;
+}
+
+.lms-right-side-menu .card .card-header .btn-header-link i {
+    font-style: normal;
+}
+
+.lms-right-side-menu .card .card-header .btn-header-link.collapsed span {
+    color: #000;
+    display: block;
+}
+
+.lms-right-side-menu .card .card-header .btn-header-link.collapsed i {
+    color: #7f7f7f;
+    font-style: normal;
+}
+
+.lms-right-side-menu .card .card-body {
+    padding: 20px 0 0;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.lms-right-side-menu {
+    height: 100%;
+}
+
+.lms-right-side-menu #accordion {
+    height: 550px;
+    overflow-y: scroll;
+}
+
+.navbar-toggler  
+{
+    outline: none !important;
+    /* border: none !important; */
+}
+/* justify-content: flex-end; */
+.navbar-toggler span
+{
+    color: #203787;
+    font-size: 30px;
+}
+
+ 

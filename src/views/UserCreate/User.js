@@ -95,7 +95,7 @@ export default function Create() {
     { label: "social_link_1", key: "social_link_1" },
     { label: "social_link_2", key: "social_link_2" },
     { label: "email", key: "email" },
-    {label: "language_id", key:"language_id"},
+    { label: "language_id", key: "language_id" },
     { label: "user_hr_no", key: "hr_no" },
     { label: "login_type", key: "login_type" },
     { label: "", key: "blank_1" },
@@ -183,7 +183,7 @@ export default function Create() {
         social_link_2: item.social_link_2,
         is_active: item.is_active ? "1" : "0",
         login_type: item.login_type,
-        language_id:item.language_id
+        language_id: item.language_id,
       };
 
       data.push(temp);
@@ -210,7 +210,7 @@ export default function Create() {
     data[0].login_type_details = ` local , google , ms `;
 
     // language_id_details
-    data[0].language_id_details=` English=1  , Serbian Cyrilic =2 , Serbian Latin=3 `;
+    data[0].language_id_details = ` English=1  , Serbian Cyrilic =2 , Serbian Latin=3 `;
 
     console.log("csv222vvvvvv", temp2);
     setCsvData2([...data]);
@@ -284,32 +284,51 @@ export default function Create() {
   }
 
   const [generateModal, setGenerateModal] = useState(false);
-  var generatePass = async (email) => {
-    setShowLoader(true);
 
-    var passwords = passwordGenerator(12);
+  var generatePass = async (e) => {
+    e.preventDefault();
 
-    const form = new FormData();
-    form.append("email", email);
-    form.append("password", passwords);
+    if (cinputs.email_subject) {
+      if (cinputs.email_message) {
+        setShowLoader(true);
 
-    var responce = await UserService.generatePassword(form);
-    if (responce.data.status) {
-      setShowLoader(false);
-      toast.success("passwored reset & mail send");
+        var passwords = passwordGenerator(12);
+
+        const form = new FormData();
+        form.append("email", formemai);
+        form.append("password", passwords);
+        form.append("email_subject", cinputs.email_subject);
+        form.append("email_message", cinputs.email_message);
+
+        var responce = await UserService.generatePassword(form);
+        if (responce.data.status) {
+          setShowLoader(false);
+          toast.success(`Email send on ${formemai} mail`);
+        } else {
+          setShowLoader(false);
+          toast.error(responce.data.msg);
+        }
+      } else {
+        toast.error("Email message required");
+      }
     } else {
-      setShowLoader(false);
-      toast.error(responce.data.msg);
+      toast.error("Email subject required");
     }
   };
 
   var modalClose = (e) => {
     e.preventDefault();
-    cinputs.password1 = "";
-    cinputs.password2 = "";
+    // cinputs.password1 = "";
+    // cinputs.password2 = "";
     setFormemai("");
     setperror("");
     setpsuccess("");
+    setCInputs({
+      password1: "",
+      password2: "",
+      email_subject: "",
+      email_message: "",
+    });
   };
 
   const updatePassword = async (e) => {
@@ -770,12 +789,8 @@ export default function Create() {
 
       {/** cvs or add new  */}
 
-      <div
-        className="enrollments-sec activites-sec "
-      >
+      <div className="enrollments-sec activites-sec ">
         <div className="container-fluid ">
-          
-
           <div className="row">
             <div className="col-md-12 col-sm-6  ">
               {/** Course List */}
@@ -795,8 +810,8 @@ export default function Create() {
                       </div>
 
                       <div className="col-md-8">
-                        <form 
-                        id="form1"
+                        <form
+                          id="form1"
                           encType="multipart/form-data"
                           method="post"
                           onSubmit={csvUpload}
@@ -838,7 +853,8 @@ export default function Create() {
                       </div>
 
                       <div className="col-md-8">
-                        <form id="form2"
+                        <form
+                          id="form2"
                           encType="multipart/form-data"
                           method="post"
                           onSubmit={csvUpload}
@@ -897,7 +913,7 @@ export default function Create() {
                           <th width="21%">Email</th>
                           <th width="22.5%">Last Sign IN Date</th>
                           <th width="21%">Created Date</th>
-                       {/**   <th width="21%">Updated Date</th> */}
+                          {/**   <th width="21%">Updated Date</th> */}
                           <th width="26%">User Name</th>
                           <th width="21%">User Type</th>
                           <th width="21%">Course Count</th>
@@ -911,36 +927,48 @@ export default function Create() {
                       <tbody>
                         {currentPageData.map((item, i) => (
                           <tr>
-                            <td style={{fontSize:"13px"}} >{i + 1}</td>
-                            <td style={{fontSize:"13px"}} >{item.user_hr_no}</td>
-                            <td style={{fontSize:"13px"}} >{item.login_count}</td>
-                            <td style={{fontSize:"13px"}}>{item.login_type.toUpperCase()}</td>
-                            <td style={{fontSize:"13px"}} >{item.email}</td>
-                            <td style={{fontSize:"13px"}} >
+                            <td style={{ fontSize: "13px" }}>{i + 1}</td>
+                            <td style={{ fontSize: "13px" }}>
+                              {item.user_hr_no}
+                            </td>
+                            <td style={{ fontSize: "13px" }}>
+                              {item.login_count}
+                            </td>
+                            <td style={{ fontSize: "13px" }}>
+                              {item.login_type.toUpperCase()}
+                            </td>
+                            <td style={{ fontSize: "13px" }}>{item.email}</td>
+                            <td style={{ fontSize: "13px" }}>
                               {item.last_sign_date
                                 ? new Date(
                                     item.last_sign_date
                                   ).toLocaleDateString()
                                 : ""}
                             </td>
-                            <td style={{fontSize:"13px"}} >
+                            <td style={{ fontSize: "13px" }}>
                               {new Date(item.created_at).toLocaleDateString()}
                             </td>
-                           {/**    <td style={{fontSize:"13px"}} >
+                            {/**    <td style={{fontSize:"13px"}} >
                               {item.updated_at
                                 ? new Date(item.updated_at).toLocaleDateString()
                                 : ""}
                             </td> */}
-                            <td style={{fontSize:"13px"}} >{item.fullname.toUpperCase()}</td>
-                            <td style={{fontSize:"13px"}} >{item.user_type.toUpperCase()}</td>
-                            <td  style={{fontSize:"13px"}} >{item.course_count ? item.course_count : 0}</td>
-                            <td  style={{fontSize:"13px"}} >
+                            <td style={{ fontSize: "13px" }}>
+                              {item.fullname.toUpperCase()}
+                            </td>
+                            <td style={{ fontSize: "13px" }}>
+                              {item.user_type.toUpperCase()}
+                            </td>
+                            <td style={{ fontSize: "13px" }}>
+                              {item.course_count ? item.course_count : 0}
+                            </td>
+                            <td style={{ fontSize: "13px" }}>
                               {item.is_active == 1 ? (
                                 <button
                                   onClick={(e) =>
                                     statusUpdate(item.email, item.is_active)
                                   }
-                                  style={{fontSize:"13px"}}
+                                  style={{ fontSize: "13px" }}
                                   className="btn btn-success"
                                 >
                                   Approve
@@ -956,10 +984,10 @@ export default function Create() {
                                 </button>
                               )}
                             </td>
-                            <td  style={{fontSize:"13px"}} >
+                            <td style={{ fontSize: "13px" }}>
                               <Link
                                 className="btn btn-success"
-                                style={{fontSize:"13px"}}
+                                style={{ fontSize: "13px" }}
                                 to={"/user/edit"}
                                 state={{ user_ID: item.id }}
                               >
@@ -970,7 +998,7 @@ export default function Create() {
                             <td>
                               <button
                                 type="button"
-                                style={{fontSize:"13px"}}
+                                style={{ fontSize: "13px" }}
                                 onClick={(e) => setEmail(item.email)}
                                 class="btn btn-info btn-lg"
                                 data-toggle="modal"
@@ -983,9 +1011,11 @@ export default function Create() {
                             <td>
                               <button
                                 type="button"
-                                style={{fontSize:"13px"}}
-                                onClick={(e) => generatePass(item.email)}
+                                style={{ fontSize: "13px" }}
+                                onClick={(e) => setEmail(item.email)}
                                 class="btn btn-info btn-lg"
+                                data-toggle="modal"
+                                data-target="#myModal2"
                               >
                                 <i class="fa fa-repeat" aria-hidden="true"></i>
                               </button>
@@ -1035,7 +1065,11 @@ export default function Create() {
                   </div>
 
                   {/** Modal */}
-                  <div class="modal fade" id="myModal" role="dialog">
+                  <div class="modal fade raddgroupModal" id="myModal" role="dialog" aria-hidden="true"
+                  aria-labelledby="addgroupModalLabel"
+                  tabIndex={-1}
+                  data-keyboard="false" 
+                  data-backdrop="static" >
                     <div class="modal-dialog">
                       {/** Modal content */}
                       <div class="modal-content">
@@ -1065,7 +1099,7 @@ export default function Create() {
                             <div className="form-row">
                               <div className="col-12">
                                 <div className="form-group">
-                                  <label>PASSWORD</label>
+                                  <label>Password</label>
                                   <input
                                     type="text"
                                     className="form-control"
@@ -1075,7 +1109,7 @@ export default function Create() {
                                   />
                                 </div>
                                 <div className="form-group">
-                                  <label>CONFIRM PASSWORD</label>
+                                  <label>Confirm Password</label>
                                   <input
                                     type="text"
                                     className="form-control"
@@ -1098,6 +1132,77 @@ export default function Create() {
                             </button>
                             <button type="submit" class="btn btn-success">
                               Change
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/** Modal 2 */}
+                  <div
+                    class="modal fade raddgroupModal"
+                    id="myModal2"
+                    role="dialog"
+                    aria-hidden="true"
+                    aria-labelledby="addgroupModalLabel"
+                    tabIndex={-1}
+                    data-keyboard="false" 
+                    data-backdrop="static"
+                  >
+                    <div class="modal-dialog modal-lg">
+                      {/** Modal content */}
+                      <div class="modal-content">
+                        <form
+                          encType="multipart/form-data"
+                          method="post"
+                          onSubmit={generatePass}
+                        >
+                          <div class="modal-header">
+                            <h2>Reset Password</h2>
+                            {/**  <button type="button" class="close" data-dismiss="modal">&times;</button> */}
+                          </div>
+                          <div class="modal-body">
+                            <div className="form-row">
+                              <div className="col-12">
+                                <div className="form-group">
+                                  <label>Email subject</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    name="email_subject"
+                                    value={cinputs.email_subject}
+                                    onChange={handleChange}
+                                    required
+                                  />
+                                </div>
+                                <div className="form-group">
+                                  <label>Email message</label>
+
+                                  <textarea
+                                    onChange={handleChange}
+                                    value={cinputs.email_message}
+                                    name="email_message"
+                                    required
+                                    className="form-control"
+                                    id="exampleFormControlTextarea1"
+                                    rows="6"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button
+                              type="button"
+                              class="btn btn-danger"
+                              data-dismiss="modal"
+                              onClick={modalClose}
+                            >
+                              Close
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                              Send
                             </button>
                           </div>
                         </form>

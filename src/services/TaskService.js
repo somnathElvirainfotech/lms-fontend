@@ -31,6 +31,10 @@ class TaskService {
         return axios.post(REACT_APP_API_SERVICE_URL + '/task/search', payload, TokenHelper.getHeader());
     }
 
+    download(id) {
+        return axios.get(REACT_APP_API_SERVICE_URL + '/task-download/'+id, TokenHelper.getHeader());
+    }
+
 
 }
 

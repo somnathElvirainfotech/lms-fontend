@@ -23,8 +23,6 @@ import SingleXapiModal from "./SingleXapiModal";
 import StaticRating from "./StaticRating";
 import ProgressBar from "@ramonak/react-progress-bar";
 
-
-
 // loader
 import Loader from "./Loader";
 
@@ -45,14 +43,11 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-
-
 export default function Singlecourse() {
-
-  
-
   // loader
   const [showLoader, setShowLoader] = useState(false);
+  const tabPanel=useRef();
+  const tabPanel2=useRef();
 
   var thirdExample2 = {
     size: 25,
@@ -60,20 +55,13 @@ export default function Singlecourse() {
     isHalf: true,
     color: "grey",
     activeColor: "#ebc934",
-    edit:false
-  
+    edit: false,
   };
 
-  const [TotalRating,setTotalRating]=useState(0);
-  const [TotalRatingStatus,setTotalRatingStatus]=useState(0);
+  const [TotalRating, setTotalRating] = useState(0);
+  const [TotalRatingStatus, setTotalRatingStatus] = useState(0);
 
-useEffect(()=>{
-
-},)
-
-  
-
-
+  useEffect(() => {});
 
   const [enrollStatus, setEnrollStatus] = useState("");
   const [nextData, setNextData] = useState({});
@@ -192,8 +180,6 @@ useEffect(()=>{
   const [lastChapter, setLastChapter] = useState(0);
   const [lastLesson, setLastLesson] = useState(0);
 
-
-
   useEffect(() => {
     console.log("course id ==== ", singleCourseId);
 
@@ -207,12 +193,10 @@ useEffect(()=>{
       }
 
       setCourseID(singleCourseId);
-      console.log("first course id ", singleCourseId)
+      console.log("first course id ", singleCourseId);
       var course = query.get("id");
 
       // alert(singleCourseId)
-
-
 
       getTrackingLessions();
 
@@ -268,7 +252,7 @@ useEffect(()=>{
       setCreatorId(temp.creator_id);
       setCourses(temp);
       setChap(temp.chapters);
-      setTotalRating(temp?.rating_details[0]?.rating_number)
+      setTotalRating(temp?.rating_details[0]?.rating_number);
 
       if (user.token && user.user_role == 5) {
         chkAllGroups(temp.group_details, temp);
@@ -297,25 +281,22 @@ useEffect(()=>{
             lesson_details: temp.chapters[0].lessons[0].lesson_details,
           });
 
-
-
           for (var i of temp.chapters) {
             if (i.id == temp.chapters[0].lessons[0].chapter_id) {
               for (var j of i.lessons) {
                 if (j.id == temp.chapters[0].lessons[0].id) {
                   setNextData({
                     next_lessons_data: j.next_lessons_data,
-                    preChapter: `parentChap${i.id}`
+                    preChapter: `parentChap${i.id}`,
                   });
                 }
               }
             }
           }
 
-
-          $(`#parentChap${temp.chapters[0].lessons[0].chapter_id}`).removeClass("collapsed");
-
-
+          $(`#parentChap${temp.chapters[0].lessons[0].chapter_id}`).removeClass(
+            "collapsed"
+          );
         }
       }
 
@@ -325,7 +306,7 @@ useEffect(()=>{
           user.user_id,
           singleCourseId
         );
-   
+
         var status = false;
         console.log("enrolllll  ", enrollRes.data);
         if (enrollRes.data.status) {
@@ -336,24 +317,24 @@ useEffect(()=>{
           );
 
           // -------------------------------------------
-          if(temp.course_type==="regular"){
-          var payload = {
-            user_id: user.user_id,
-            course_id: singleCourseId,
-            chapter_id: temp.chapters[0].lessons[0].chapter_id,
-            lesson_id: temp.chapters[0].lessons[0].id,
-            lesson_percentage: 1,
-            current_play_sec: Number(progress.playedSeconds).toFixed(2),
-          };
-          setPreviousID(payload)
-        }
+          if (temp.course_type === "regular") {
+            var payload = {
+              user_id: user.user_id,
+              course_id: singleCourseId,
+              chapter_id: temp.chapters[0].lessons[0].chapter_id,
+              lesson_id: temp.chapters[0].lessons[0].id,
+              lesson_percentage: 1,
+              current_play_sec: Number(progress.playedSeconds).toFixed(2),
+            };
+            setPreviousID(payload);
+          }
           // ------------------------------------------------------------------------
 
-          if (enrollRes.data.data[0].user_enroll_status == "active" ) {
+          if (enrollRes.data.data[0].user_enroll_status == "active") {
             status = true;
 
             setEnroll_id(enrollRes.data.data[0].enroll_id);
-            
+
             setLastChapter(
               enrollRes.data.data[0].current_chapter != null
                 ? enrollRes.data.data[0].current_chapter
@@ -374,11 +355,12 @@ useEffect(()=>{
             //   enrollRes.data.data[0].current_lession
             // );
 
+            // alert(singleCourseId)
 
-            // alert(singleCourseId)            
-
-            if (enrollRes.data.data[0].current_lession == null && enrollRes.data.data[0].current_chapter == null) {
-
+            if (
+              enrollRes.data.data[0].current_lession == null &&
+              enrollRes.data.data[0].current_chapter == null
+            ) {
               if (temp.course_type == "regular") {
                 // alert(temp.chapters[0].id)
 
@@ -392,24 +374,22 @@ useEffect(()=>{
                   lesson_details: temp.chapters[0].lessons[0].lesson_details,
                 });
 
-
-
                 for (var i of temp.chapters) {
                   if (i.id == temp.chapters[0].lessons[0].chapter_id) {
                     for (var j of i.lessons) {
                       if (j.id == temp.chapters[0].lessons[0].id) {
                         setNextData({
                           next_lessons_data: j.next_lessons_data,
-                          preChapter: `parentChap${i.id}`
+                          preChapter: `parentChap${i.id}`,
                         });
                       }
                     }
                   }
                 }
 
-                $(`#parentChap${temp.chapters[0].lessons[0].chapter_id}`).removeClass("collapsed");
-
-
+                $(
+                  `#parentChap${temp.chapters[0].lessons[0].chapter_id}`
+                ).removeClass("collapsed");
 
                 var payload = {
                   user_id: user.user_id,
@@ -419,28 +399,23 @@ useEffect(()=>{
                   lesson_percentage: 1,
                   current_play_sec: Number(progress.playedSeconds).toFixed(2),
                 };
-                setPreviousID(payload)
-
-
+                setPreviousID(payload);
               }
-            }
-            else {
-
+            } else {
               var payload = {
                 user_id: user.user_id,
                 course_id: singleCourseId,
                 chapter_id: enrollRes.data.data[0].current_chapter,
                 lesson_id: enrollRes.data.data[0].current_lession,
-                lesson_percentage: Math.round((progress.playedSeconds / duration) * 100),
+                lesson_percentage: Math.round(
+                  (progress.playedSeconds / duration) * 100
+                ),
                 current_play_sec: Number(progress.playedSeconds).toFixed(2),
               };
-              setPreviousID(payload)
+              setPreviousID(payload);
 
               await getCurrentLesson(singleCourseId, temp.chapters);
             }
-
-
-
           }
         }
 
@@ -455,22 +430,21 @@ useEffect(()=>{
 
   // after run vedio when  ended
 
-
   var reloadLesson = async (payload) => {
-
     if (user.user_role == 5) {
-
-      payload.lesson_percentage = (Math.round((progress.playedSeconds / duration) * 100));
-      payload.current_play_sec = (Number(progress.playedSeconds).toFixed(2));
+      payload.lesson_percentage = Math.round(
+        (progress.playedSeconds / duration) * 100
+      );
+      payload.current_play_sec = Number(progress.playedSeconds).toFixed(2);
       console.log("track payload", payload);
       var dresponse = await CourseTrackService.regularCourseTrack(payload);
       console.log("local course track updated -----  ", dresponse.data);
 
-
-
       getTrackingLessions();
 
-      var responce = await UserService.singlecourse(singleCourseId===0?courseID:singleCourseId);
+      var responce = await UserService.singlecourse(
+        singleCourseId === 0 ? courseID : singleCourseId
+      );
       var temp = responce.data.data;
 
       console.log("course details2 ", responce.data);
@@ -478,37 +452,32 @@ useEffect(()=>{
       setCreatorId(temp.creator_id);
       setCourses(temp);
       setChap(temp.chapters);
-      setTotalRating(temp?.rating_details[0]?.rating_number)
-
+      setTotalRating(temp?.rating_details[0]?.rating_number);
     }
-
-  }
+  };
 
   var reloadLesson2 = async (payload) => {
-
     if (user.user_role == 5) {
-
-      payload.lesson_percentage = (Math.round((progress.playedSeconds / duration) * 100));
-      payload.current_play_sec = (Number(progress.playedSeconds).toFixed(2));
+      payload.lesson_percentage = Math.round(
+        (progress.playedSeconds / duration) * 100
+      );
+      payload.current_play_sec = Number(progress.playedSeconds).toFixed(2);
       console.log("track payload", payload);
       var dresponse = await CourseTrackService.regularCourseTrack(payload);
       console.log("local course track updated -----  ", dresponse.data);
 
-
-
-
-
       getTrackingLessions();
 
-      var responce = await UserService.singlecourse(singleCourseId===0?courseID:singleCourseId);
+      var responce = await UserService.singlecourse(
+        singleCourseId === 0 ? courseID : singleCourseId
+      );
       var temp = responce.data.data;
 
       console.log("course details2 ", responce.data);
 
       setChap(temp.chapters);
 
-
-      console.log("next Data", nextData)
+      console.log("next Data", nextData);
 
       var NEXTDATA = {};
 
@@ -518,14 +487,17 @@ useEffect(()=>{
             if (j.id == payload.lesson_id) {
               NEXTDATA = {
                 next_lessons_data: j.next_lessons_data,
-                preChapter: `parentChap${i.id}`
+                preChapter: `parentChap${i.id}`,
               };
             }
           }
         }
       }
 
-      if (NEXTDATA.next_lessons_data.chapter_id != null && NEXTDATA.next_lessons_data.lesson_id != null) {
+      if (
+        NEXTDATA.next_lessons_data.chapter_id != null &&
+        NEXTDATA.next_lessons_data.lesson_id != null
+      ) {
         // alert(NEXTDATA.next_lessons_data.lesson_vedio_link)
         setVedioPlayer(NEXTDATA.next_lessons_data.lesson_vedio_link);
         setVedioType(NEXTDATA.next_lessons_data.lesson_vedio_type);
@@ -547,28 +519,27 @@ useEffect(()=>{
           current_play_sec: Number(progress.playedSeconds).toFixed(2),
         };
 
-        setPreviousID(payload2)
+        setPreviousID(payload2);
 
         console.log("payload2 ", payload2);
 
         $(".active_lesson").removeClass("active_lesson_selected");
-        $(`.selectLesson${NEXTDATA.next_lessons_data.lesson_id}`).addClass("active_lesson_selected");
+        $(`.selectLesson${NEXTDATA.next_lessons_data.lesson_id}`).addClass(
+          "active_lesson_selected"
+        );
 
         if (NEXTDATA.next_lessons_data.chapter_id != payload.chapter_id) {
           $(".chapterCHK").removeClass("show");
-          $(`.selectChapter${NEXTDATA.next_lessons_data.chapter_id}`).addClass("show");
-          $(`#parentChap${NEXTDATA.next_lessons_data.chapter_id}`).removeClass("collapsed");
+          $(`.selectChapter${NEXTDATA.next_lessons_data.chapter_id}`).addClass(
+            "show"
+          );
+          $(`#parentChap${NEXTDATA.next_lessons_data.chapter_id}`).removeClass(
+            "collapsed"
+          );
           $(`#${NEXTDATA.preChapter}`).addClass("collapsed");
         }
-
-
       }
-
-
-
-
     } else {
-
       var responce = await UserService.singlecourse(singleCourseId);
       var temp = responce.data.data;
 
@@ -584,17 +555,17 @@ useEffect(()=>{
             if (j.id == payload.lesson_id) {
               NEXTDATA = {
                 next_lessons_data: j.next_lessons_data,
-                preChapter: `parentChap${i.id}`
+                preChapter: `parentChap${i.id}`,
               };
             }
           }
         }
       }
 
-
-
-      if (NEXTDATA.next_lessons_data.chapter_id != null && NEXTDATA.next_lessons_data.lesson_id != null) {
-
+      if (
+        NEXTDATA.next_lessons_data.chapter_id != null &&
+        NEXTDATA.next_lessons_data.lesson_id != null
+      ) {
         console.log("ok ok", NEXTDATA);
 
         // alert(NEXTDATA.next_lessons_data.lesson_vedio_link)
@@ -609,21 +580,22 @@ useEffect(()=>{
           lesson_details: NEXTDATA.next_lessons_data.lesson_details,
         });
 
-
-
         $(".active_lesson").removeClass("active_lesson_selected");
-        $(`.selectLesson${NEXTDATA.next_lessons_data.lesson_id}`).addClass("active_lesson_selected");
+        $(`.selectLesson${NEXTDATA.next_lessons_data.lesson_id}`).addClass(
+          "active_lesson_selected"
+        );
 
         if (NEXTDATA.next_lessons_data.chapter_id != payload.chapter_id) {
           $(".chapterCHK").removeClass("show");
-          $(`.selectChapter${NEXTDATA.next_lessons_data.chapter_id}`).addClass("show");
-          $(`#parentChap${NEXTDATA.next_lessons_data.chapter_id}`).removeClass("collapsed");
+          $(`.selectChapter${NEXTDATA.next_lessons_data.chapter_id}`).addClass(
+            "show"
+          );
+          $(`#parentChap${NEXTDATA.next_lessons_data.chapter_id}`).removeClass(
+            "collapsed"
+          );
           $(`#${NEXTDATA.preChapter}`).addClass("collapsed");
         }
-
-
       }
-
 
       // if (nextData.next_lessons_data.chapter_id != null && nextData.next_lessons_data.lesson_id != null) {
       //   // alert(nextData.next_lessons_data.lesson_vedio_link)
@@ -648,12 +620,9 @@ useEffect(()=>{
       //     $(`#${nextData.preChapter}`).addClass("collapsed");
       //   }
 
-
       // }
     }
-
-  }
-
+  };
 
   function gotoPage(enroll, course_type, file_path, creator_id) {
     console.log("dddddd", creator_id);
@@ -687,12 +656,11 @@ useEffect(()=>{
     input.comment = "";
     input.rating = "";
 
-    thirdExample.onChange(0)
+    thirdExample.onChange(0);
 
     // ReactStars(thirdExample)
 
     document.getElementById("myForm").reset();
-
   };
 
   var ratingCreate = async () => {
@@ -708,7 +676,10 @@ useEffect(()=>{
       setShowLoader(true);
       var data = new FormData();
       data.append("user_id", user.user_id);
-      data.append("course_id", (singleCourseId===0?courseID:singleCourseId));
+      data.append(
+        "course_id",
+        singleCourseId === 0 ? courseID : singleCourseId
+      );
       data.append("rating_number", input.rating);
       data.append("comment", input.comment);
 
@@ -724,26 +695,27 @@ useEffect(()=>{
 
       // get review
       var reviews = await CommentRatingService.getByCourseId(
-        (singleCourseId===0?courseID:singleCourseId),
+        singleCourseId === 0 ? courseID : singleCourseId,
         "",
         5
       );
       setReview([...reviews.data.data]);
       console.log("lllllllllllllllll:", reviews.data);
       var creviews = await CommentRatingService.getByCourseId(
-        (singleCourseId===0?courseID:singleCourseId),
+        singleCourseId === 0 ? courseID : singleCourseId,
         user.user_id,
         5
       );
       setSingleReview([...creviews.data.data]);
 
-      var responce = await UserService.singlecourse((singleCourseId===0?courseID:singleCourseId));
+      var responce = await UserService.singlecourse(
+        singleCourseId === 0 ? courseID : singleCourseId
+      );
       var temp = responce.data.data;
       console.log("course details3 ", responce.data);
 
       setCourses(temp);
-      setTotalRating(temp?.rating_details[0]?.rating_number)
-
+      setTotalRating(temp?.rating_details[0]?.rating_number);
 
       setShowLoader(false);
     } else {
@@ -788,7 +760,6 @@ useEffect(()=>{
 
   // to store all the enrollment
 
-
   // check coourse and user group
   var chkAllGroups = (courseGroup, temp) => {
     var Group = user.user_groups.split(",");
@@ -800,7 +771,7 @@ useEffect(()=>{
       if (userGroup.includes(item.group_id)) {
         console.log(userGroup.includes(item.group_id));
         setChkGroup(true);
-        chk = true
+        chk = true;
       }
       setChkGroup2(false);
     }
@@ -822,24 +793,22 @@ useEffect(()=>{
             lesson_details: temp.chapters[0].lessons[0].lesson_details,
           });
 
-
-
           for (var i of temp.chapters) {
             if (i.id == temp.chapters[0].lessons[0].chapter_id) {
               for (var j of i.lessons) {
                 if (j.id == temp.chapters[0].lessons[0].id) {
                   setNextData({
                     next_lessons_data: j.next_lessons_data,
-                    preChapter: `parentChap${i.id}`
+                    preChapter: `parentChap${i.id}`,
                   });
                 }
               }
             }
           }
 
-          $(`#parentChap${temp.chapters[0].lessons[0].chapter_id}`).removeClass("collapsed");
-
-
+          $(`#parentChap${temp.chapters[0].lessons[0].chapter_id}`).removeClass(
+            "collapsed"
+          );
         }
       }
     }
@@ -866,17 +835,14 @@ useEffect(()=>{
       // alert(courseID)
       var enrollmentresponce = await UserService.enrollment(
         user.user_id,
-        (singleCourseId===0?courseID:singleCourseId)
+        singleCourseId === 0 ? courseID : singleCourseId
       );
       setEnrollments(enrollmentresponce.data.status);
 
-      
-
       if (enrollmentresponce.data.status && course_type != "xapi") {
-
         var enrollRes = await UserService.enrollmentcourse(
           user.user_id,
-          (singleCourseId===0?courseID:singleCourseId)
+          singleCourseId === 0 ? courseID : singleCourseId
         );
         setEnroll_id(enrollRes.data.data[0].enroll_id);
 
@@ -899,18 +865,16 @@ useEffect(()=>{
           lesson_details: Lessresponse.data.data[0].lesson_details,
         });
 
-
         var payload2 = {
           user_id: user.user_id,
-          course_id: (singleCourseId===0?courseID:singleCourseId),
+          course_id: singleCourseId === 0 ? courseID : singleCourseId,
           chapter_id: Lessresponse.data.data[0].chapter_id,
           lesson_id: Lessresponse.data.data[0].id,
           lesson_percentage: 1,
           current_play_sec: Number(progress.playedSeconds).toFixed(2),
         };
 
-        setPreviousID(payload2)
-
+        setPreviousID(payload2);
       }
 
       console.log("eeeeeeeeeEE", enrollmentresponce.data);
@@ -953,7 +917,7 @@ useEffect(()=>{
 
         var enrollRes = await UserService.enrollmentcourse(
           user.user_id,
-          (singleCourseId===0?courseID:singleCourseId)
+          singleCourseId === 0 ? courseID : singleCourseId
         );
 
         console.log("current enroll ", enrollRes.data);
@@ -963,18 +927,18 @@ useEffect(()=>{
         window.open(
           `/singlexapi?link=${btoa(
             file_path +
-            "?USER_ID=" +
-            user.user_id +
-            "&ENROLL_ID=" +
-            enrollRes.data.data[0].enroll_id +
-            "&TASK_ID=" +
-            taskId +
-            "&USER_ROLE=" +
-            user.user_role +
-            "&USER_EMAIL=" +
-            user.email +
-            "&USER_NAME=" +
-            user.username
+              "?USER_ID=" +
+              user.user_id +
+              "&ENROLL_ID=" +
+              enrollRes.data.data[0].enroll_id +
+              "&TASK_ID=" +
+              taskId +
+              "&USER_ROLE=" +
+              user.user_role +
+              "&USER_EMAIL=" +
+              user.email +
+              "&USER_NAME=" +
+              user.username
           )}`,
           "_blank"
         );
@@ -1008,8 +972,6 @@ useEffect(()=>{
     current_play_sec: 0,
   });
 
-
-
   var setVedio = async (
     value,
     type,
@@ -1021,12 +983,16 @@ useEffect(()=>{
     nextLessonData,
     preChapter
   ) => {
-
     // previous  value set
     if (user.user_role == 5) {
-      if (previousID.user_id != 0 && previousID.course_id != 0 && previousID.chapter_id != 0 && previousID.lesson_id != 0) {
+      if (
+        previousID.user_id != 0 &&
+        previousID.course_id != 0 &&
+        previousID.chapter_id != 0 &&
+        previousID.lesson_id != 0
+      ) {
         console.log("pre course set  ", previousID);
-        reloadLesson(previousID)
+        reloadLesson(previousID);
       }
     }
 
@@ -1053,25 +1019,26 @@ useEffect(()=>{
 
       var payload = {
         user_id: user.user_id,
-        course_id: (singleCourseId===0?courseID:singleCourseId),
+        course_id: singleCourseId === 0 ? courseID : singleCourseId,
         chapter_id: chapter_id,
         lesson_id: lesson_id,
-        lesson_percentage: Math.round((progress.playedSeconds / duration) * 100),
+        lesson_percentage: Math.round(
+          (progress.playedSeconds / duration) * 100
+        ),
         current_play_sec: Number(progress.playedSeconds).toFixed(2),
       };
 
-      console.log("set pre co",payload);
-      setPreviousID(payload)
+      console.log("set pre co", payload);
+      setPreviousID(payload);
 
       setShowLoader(false);
     }
 
     for (var i of trackLessions) {
       if (i.lesson_id == lesson_id && i.chapter_id == chapter_id) {
-        setSeekTime(i.current_play_sec)
+        setSeekTime(i.current_play_sec);
       }
     }
-
 
     setVedioPlayer(value);
     setVedioType(type);
@@ -1086,20 +1053,12 @@ useEffect(()=>{
       lesson_details: less_details,
     });
 
-
-
-
-
-
     // set next lesson data------------------
 
     setNextData({
       next_lessons_data: nextLessonData,
-      preChapter: preChapter
+      preChapter: preChapter,
     });
-
-
-
   };
 
   var [viewAllRating, setViewAllRating] = useState(false);
@@ -1126,7 +1085,11 @@ useEffect(()=>{
 
   var getReview = async () => {
     setShowLoader(true);
-    var reviews = await CommentRatingService.getByCourseId((singleCourseId===0?courseID:singleCourseId), "", "");
+    var reviews = await CommentRatingService.getByCourseId(
+      singleCourseId === 0 ? courseID : singleCourseId,
+      "",
+      ""
+    );
     console.log(reviews.data);
     setReview([...reviews.data.data]);
     setViewAllRating(true);
@@ -1142,37 +1105,38 @@ useEffect(()=>{
     var responce = await CommentRatingService.delete(id);
     if (responce.data.status) {
       // get review
-      var reviews = await CommentRatingService.getByCourseId((singleCourseId===0?courseID:singleCourseId), "", 5);
+      var reviews = await CommentRatingService.getByCourseId(
+        singleCourseId === 0 ? courseID : singleCourseId,
+        "",
+        5
+      );
       setReview([...reviews.data.data]);
       console.log("lllllllllllllllll:", reviews.data);
       var creviews = await CommentRatingService.getByCourseId(
-        (singleCourseId===0?courseID:singleCourseId),
+        singleCourseId === 0 ? courseID : singleCourseId,
         user.user_id,
         5
       );
       setSingleReview([...creviews.data.data]);
-      var responce = await UserService.singlecourse((singleCourseId===0?courseID:singleCourseId));
+      var responce = await UserService.singlecourse(
+        singleCourseId === 0 ? courseID : singleCourseId
+      );
       var temp = responce.data.data;
       console.log("course details3 ", responce.data);
       setCourses(temp);
       setShowLoader(false);
       setChkComment(true);
-      setTotalRating(temp?.rating_details[0]?.rating_number)
- 
+      setTotalRating(temp?.rating_details[0]?.rating_number);
     }
   };
-  
 
-
-
-
-//  var getTotalRating=()=>{
-//   alert(totalRating)
-//   return (<StaticRating
-//     // value={course.rating_details[0].rating_number}
-//     value={totalRating}
-//   />);
-//  }
+  //  var getTotalRating=()=>{
+  //   alert(totalRating)
+  //   return (<StaticRating
+  //     // value={course.rating_details[0].rating_number}
+  //     value={totalRating}
+  //   />);
+  //  }
 
   // view chapter lesson
   var oneView = (data) => {
@@ -1190,8 +1154,6 @@ useEffect(()=>{
     color: "black",
   };
 
-
-
   // player tracking
   const [progress, setProgress] = useState({});
   const [duration, setDuration] = useState(0);
@@ -1208,16 +1170,13 @@ useEffect(()=>{
     // console.log("run time ", e);
   };
 
-
-
   var setSeekTime = (value) => {
-    playerRef.current.seekTo(value, 'seconds');
-  }
-
+    playerRef.current.seekTo(value, "seconds");
+  };
 
   var playerEnded = () => {
     var course_id = query.get("id");
-    setVedioPlay(false)
+    setVedioPlay(false);
 
     // setShowLoader(true)
 
@@ -1225,7 +1184,7 @@ useEffect(()=>{
 
     var payload = {
       user_id: user.user_id,
-      course_id: (singleCourseId===0?courseID:singleCourseId),
+      course_id: singleCourseId === 0 ? courseID : singleCourseId,
       chapter_id: currentChapter,
       lesson_id: currentLesson,
       lesson_percentage: 100,
@@ -1234,9 +1193,7 @@ useEffect(()=>{
 
     // courseTracking(payload);
 
-    reloadLesson2(payload)
-
-
+    reloadLesson2(payload);
 
     // setShowLoader(false)
 
@@ -1248,7 +1205,7 @@ useEffect(()=>{
 
     var payload = {
       user_id: user.user_id,
-      course_id: (singleCourseId===0?courseID:singleCourseId),
+      course_id: singleCourseId === 0 ? courseID : singleCourseId,
       chapter_id: currentChapter,
       lesson_id: currentLesson,
       lesson_percentage: Math.round((progress.playedSeconds / duration) * 100),
@@ -1256,7 +1213,6 @@ useEffect(()=>{
     };
 
     courseTracking(payload);
-
 
     // console.log("paused ", payload);
     // reloadLesson(payload)
@@ -1276,8 +1232,8 @@ useEffect(()=>{
   };
 
   var playerReady = () => {
-    setShowLoader(true)
-  }
+    setShowLoader(true);
+  };
 
   var courseTracking = async (payload) => {
     if (user.user_role == 5) {
@@ -1307,10 +1263,10 @@ useEffect(()=>{
     if (user.user_role == 5) {
       setShowLoader(true);
       var course_id = query.get("id");
-      console.log("courseID  ", singleCourseId)
+      console.log("courseID  ", singleCourseId);
       var payload = {
         user_id: user.user_id,
-        course_id: (singleCourseId===0?courseID:singleCourseId),
+        course_id: singleCourseId === 0 ? courseID : singleCourseId,
       };
 
       var responce = await CourseTrackService.getTrackingLession(payload);
@@ -1363,7 +1319,6 @@ useEffect(()=>{
           lesson_details: Lessresponse.data.data[0].lesson_details,
         });
 
-
         setCurrentActiveLesson(response.data.data[0]);
 
         for (var i of Chapters) {
@@ -1372,13 +1327,12 @@ useEffect(()=>{
               if (j.id == Lessresponse.data.data[0].id) {
                 setNextData({
                   next_lessons_data: j.next_lessons_data,
-                  preChapter: `parentChap${i.id}`
+                  preChapter: `parentChap${i.id}`,
                 });
               }
             }
           }
         }
-
       }
       setShowLoader(false);
 
@@ -1418,7 +1372,9 @@ useEffect(()=>{
   var taskAdd = async () => {
     console.log("noAttemp ----", noAttemp);
     if (user.user_role == 5) {
-      var responce = await UserService.singlecourse((singleCourseId===0?courseID:singleCourseId));
+      var responce = await UserService.singlecourse(
+        singleCourseId === 0 ? courseID : singleCourseId
+      );
 
       await setTask(responce.data.data);
       console.log("noAttemp ----", noAttemp);
@@ -1475,7 +1431,6 @@ useEffect(()=>{
           <div className="single-course-bottom sec-bg">
             <div className="container-fluid">
               <div className="row">
-
                 <div className="col-lg-8 col-md-7">
                   {enrollment == false && user.user_role == 5 && (
                     <div className="image-course">
@@ -1516,7 +1471,7 @@ useEffect(()=>{
 
                   {vedioPlayer && course.course_type == "regular" && (
                     <div className="">
-                      <div className=" image-course vimeo-player-style full-w100" >
+                      <div className=" image-course vimeo-player-style full-w100">
                         <ReactPlayer
                           ref={playerRef}
                           config={{
@@ -1532,7 +1487,7 @@ useEffect(()=>{
                           onEnded={playerEnded}
                           onPause={playerPaused}
                           onProgress={playerProgress}
-                          preload={'auto'}
+                          preload={"auto"}
                           url={vedioPlayer}
                           playing={vedioPlay}
                           controls={true}
@@ -1543,45 +1498,44 @@ useEffect(()=>{
                     </div>
                   )}
 
-                  {view && (
-                    <div className="container-fluid">
-                      <div className="row">
-                        <div className="">
-                          <div className="ft-box">
-                            <ul>
-                              {view.lesson_details && (
-                                <li>
-                                  <h5 style={style1}>
-                                    {langObj.lesson_description}:
-                                    <span className="lesson-describtions">
-                                      <Markup content={view.lesson_details} />
-                                    </span>
-                                  </h5>
-                                </li>
-                              )}
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+                   
 
                   <div className="single-course-bottom-left">
                     <div className="single-course-tab">
                       <ul className="nav nav-tabs" id="myTab" role="tablist">
-                        <li className="nav-item">
+
+                     { ((enrollment != false && course.course_type !=='xapi' && user.user_role != 2 ) || (course.course_type !=='xapi' && user.user_role==2)) &&  <li className="nav-item">
+                      
+                              <a
+                              className={`nav-link active`}
+                              id="lesson-description-tab"
+                              data-toggle="tab"
+                              href="#lesson-description"
+                              role="tab"
+                              aria-controls="lesson-description"
+                              aria-selected="false"
+                             
+                            >
+                              {langObj.lesson_description}
+                            </a>
+                      </li> }
+
+                      <li className="nav-item">
                           <a
-                            className="nav-link active"
+                            className={`nav-link ${(((enrollment == false && user.user_role != 2) || (course.course_type ==='xapi' && user.user_role != 2) ) || ((course.course_type ==='xapi' && user.user_role==2)) )?'active':''}`}
                             id="course-description-tab"
                             data-toggle="tab"
                             href="#course-description"
                             role="tab"
                             aria-controls="course-description"
-                            aria-selected="true"
+                            aria-selected="false"
+                           
                           >
-                            {langObj.course_description}{" "}
+                            {langObj.course_description}
                           </a>
-                        </li>
+                          
+                      </li>
+
                         <li className="nav-item">
                           <a
                             className="nav-link"
@@ -1613,15 +1567,26 @@ useEffect(()=>{
                         )}
                       </ul>
                       <div className="tab-content " id="myTabContent">
+                   {((enrollment != false && course.course_type !=='xapi' && user.user_role != 2 ) || (course.course_type !=='xapi' && user.user_role==2)) &&   <div
+                          className="tab-pane fade active show"
+                          id="lesson-description"
+                          role="tabpanel"
+                          aria-labelledby="lesson-description-tab"
+                        >
+                         {/**  <h3>{langObj.lesson_description}</h3> */}
+                       {view.lesson_details && <Markup content={view.lesson_details} /> }  
+                        </div> }
+
                         <div
-                          className="tab-pane fade show active"
+                          className={`tab-pane fade ${(((enrollment == false && user.user_role != 2) || (course.course_type ==='xapi' && user.user_role != 2) ) || ((course.course_type ==='xapi' && user.user_role==2)) )?'active show':''}`}
                           id="course-description"
                           role="tabpanel"
                           aria-labelledby="course-description-tab"
                         >
-                          <h3>{langObj.course_description}</h3>
+                        {/**  <h3>{langObj.course_description}</h3> */}
                           <Markup content={course.long_description} />
                         </div>
+
                         <div
                           className="tab-pane fade"
                           id="reviews"
@@ -1634,9 +1599,17 @@ useEffect(()=>{
 
                             {singleReview &&
                               singleReview.map((item) => (
-                              <>  <StaticRating value={item.rating_number} />
-                              <h5 style={{fontSize:"15px",fontWeight: "600"}} >
-                                    {item.fullname && item.fullname.toUpperCase()} 
+                                <>
+                                  {" "}
+                                  <StaticRating value={item.rating_number} />
+                                  <h5
+                                    style={{
+                                      fontSize: "15px",
+                                      fontWeight: "600",
+                                    }}
+                                  >
+                                    {item.fullname &&
+                                      item.fullname.toUpperCase()}
                                     , {new Date(item.date_at).toDateString()}{" "}
                                     <span
                                       className="btn btn-danger"
@@ -1649,8 +1622,15 @@ useEffect(()=>{
                                       ></i>{" "}
                                     </span>{" "}
                                   </h5>
-                                  <p style={{ wordBreak: "break-all",fontSize:"13px" }} >{item.comment}.</p>
-                                 </>
+                                  <p
+                                    style={{
+                                      wordBreak: "break-all",
+                                      fontSize: "13px",
+                                    }}
+                                  >
+                                    {item.comment}.
+                                  </p>
+                                </>
                               ))}
 
                             <div>
@@ -1658,24 +1638,35 @@ useEffect(()=>{
                                 review.map((item) =>
                                   item.user_id != user.user_id ? (
                                     <>
-                                    <StaticRating value={item.rating_number} />
-                                   
-                                    <h5 style={{fontSize:"15px",fontWeight: "600"}}>
+                                      <StaticRating
+                                        value={item.rating_number}
+                                      />
+
+                                      <h5
+                                        style={{
+                                          fontSize: "15px",
+                                          fontWeight: "600",
+                                        }}
+                                      >
                                         {item.fullname &&
                                           item.fullname.toUpperCase()}
                                         ,{" "}
                                         {new Date(item.date_at).toDateString()}
                                       </h5>
-                                      <p style={{ wordBreak: "break-all",fontSize:"13px" }}  >{item.comment}.</p>
-
+                                      <p
+                                        style={{
+                                          wordBreak: "break-all",
+                                          fontSize: "13px",
+                                        }}
+                                      >
+                                        {item.comment}.
+                                      </p>
                                     </>
                                   ) : (
                                     ""
-
                                   )
                                 )}
                             </div>
-
                           </div>
                           <div className="tab-btnarea">
                             {chkComment && enrollment ? (
@@ -1729,14 +1720,18 @@ useEffect(()=>{
 
                         {user.token && (
                           <div
-                            className="tab-pane fade show "
+                            className="tab-pane fade "
                             id="q-a"
                             role="tabpanel"
                             aria-labelledby="q-a-tab"
                           >
                             <h3 clasName="mb-5">{langObj.qns_ans}</h3>
 
-                            <QnsAnsComment course_id={(singleCourseId===0?courseID:singleCourseId)} />
+                            <QnsAnsComment
+                              course_id={
+                                singleCourseId === 0 ? courseID : singleCourseId
+                              }
+                            />
                           </div>
                         )}
                       </div>
@@ -1746,13 +1741,14 @@ useEffect(()=>{
 
                 <div className="col-lg-4 col-md-5">
                   <div className="single-course-bottom-right">
-
                     <div className="catego-area">
-                      <p style={{
-                        fontSize: "30px",
-                        fontWeight: "700",
-                        wordBreak: "break-all"
-                      }} >
+                      <p
+                        style={{
+                          fontSize: "14px",
+                          fontWeight: "700",
+                          wordBreak: "break-all",
+                        }}
+                      >
                         {course.course_name && course.course_name.toUpperCase()}
                       </p>
                     </div>
@@ -1776,52 +1772,57 @@ useEffect(()=>{
                           </button>
                         )}
 
-                      {(course.course_type == "xapi" && enrollment != false && user.user_role == 5) ||
-                        (course.course_type == "xapi" && user.user_role == 1) ||
-                        (course.course_type == "xapi" && user.user_role == 2) ||
-                        (course.course_type == "xapi" &&
-                          user.user_role == 4 &&
-                          user.user_id == creatorId) ? (
-                        <div className="col-sm-12 mb-3">
+                      {(course.course_type == "xapi" &&
+                        enrollment != false &&
+                        user.user_role == 5) ||
+                      (course.course_type == "xapi" && user.user_role == 1) ||
+                      (course.course_type == "xapi" && user.user_role == 2) ||
+                      (course.course_type == "xapi" &&
+                        user.user_role == 4 &&
+                        user.user_id == creatorId) ? (
+                        <div className="mb-3">
                           <a
                             href={`/singlexapi?link=${btoa(
                               course.xapi_attachment_file +
-                              "?USER_ID=" +
-                              user.user_id +
-                              "&ENROLL_ID=" +
-                              enroll_id +
-                              "&TASK_ID=" +
-                              taskId +
-                              "&USER_ROLE=" +
-                              user.user_role +
-                              "&USER_EMAIL=" +
-                              user.email +
-                              "&USER_NAME=" +
-                              user.username
+                                "?USER_ID=" +
+                                user.user_id +
+                                "&ENROLL_ID=" +
+                                enroll_id +
+                                "&TASK_ID=" +
+                                taskId +
+                                "&USER_ROLE=" +
+                                user.user_role +
+                                "&USER_EMAIL=" +
+                                user.email +
+                                "&USER_NAME=" +
+                                user.username
                             )}`}
                             target="__blank"
-                            className="sec-btn"
+                            className="sec-btn mt-4"
+                            style={{ fontSize: "18px", fontWeight: "600" }}
                             onClick={taskAdd}
                           >
                             VIEW COURSE
                           </a>
+                          
                         </div>
                       ) : (
                         ""
                       )}
-
                     </div>
 
-                    {!enrollment  && <>
-                    <div className="catego-area">
-                      <p>
-                        <b>Category </b>:{" "}
-                        {course.category_name_list && course.category_name_list}
-                      </p>
-                    </div>
+                    {!enrollment && (
+                      <>
+                        <div className="catego-area">
+                          <p>
+                            <b>Category </b>:{" "}
+                            {course.category_name_list &&
+                              course.category_name_list}
+                          </p>
+                        </div>
 
-                    <div className="course-avator-image">
-                   {/**    <img
+                        <div className="course-avator-image">
+                          {/**    <img
                         src={
                           course.avatar_image
                             ? course.avatar_image
@@ -1829,193 +1830,225 @@ useEffect(()=>{
                         }
                         alt=""
                       /> */}
-                  
-                      <Markup
-                            content={`${course.short_description && course.short_description }`}
+
+                          <Markup
+                            content={`${
+                              course.short_description &&
+                              course.short_description
+                            }`}
                           />
-                    </div>
+                        </div>
 
-                    <div className="course-details">
-                      <p>
-                        <b> </b> {course.author_name && course.author_name}
-                      </p>
-                      <p>
-                        <b> </b> {course.author_email && course.author_email}
-                      </p>
-                      <div className="review-area">
-                        <ul className="review-stat rating ">
-                        {TotalRating}
+                        <div className="course-details">
+                          <p>
+                            <b> </b> {course.author_name && course.author_name}
+                          </p>
+                          <p>
+                            <b> </b>{" "}
+                            {course.author_email && course.author_email}
+                          </p>
+                          <div className="review-area">
+                            <ul className="review-stat rating ">
+                              <ReactStars
+                                value={TotalRating}
+                                {...thirdExample2}
+                              />
 
-                        <ReactStars value={TotalRating} {...thirdExample2} />
-                        
-                          <span
-                            style={{
-                              fontSize: "15px",
-                              color: "#707070",
-                              marginTop: "10px",
-                            }}
-                            className="ml-2"
-                          >
-                            {course.rating_details[0].rating_number} (
-                            {course.rating_details[0].total_rating})
-                          </span>
-                        </ul>
-                      </div>
+                              <span
+                                style={{
+                                  fontSize: "15px",
+                                  color: "#707070",
+                                  marginTop: "10px",
+                                }}
+                                className="ml-2"
+                              >
+                                {course.rating_details[0].rating_number} (
+                                {course.rating_details[0].total_rating})
+                              </span>
+                            </ul>
+                          </div>
 
-                      <p>
-                        <b> Course Language </b>:{" "}
-                        {course.language_name && course.language_name}
-                      </p>
-                      <p>
-                        <b> Number of lessons </b>:{" "}
-                        {course.total_lesson_vedio && course.total_lesson_vedio}
-                      </p>
-                    </div>
-                    </>}
+                          <p style={{ fontSize: "14px" }}>
+                            <b> Course Language </b>:{" "}
+                            {course.language_name && course.language_name}
+                          </p>
+                          <p style={{ fontSize: "14px" }}>
+                            <b> Number of lessons </b>:{" "}
+                            {course.total_lesson_vedio &&
+                              course.total_lesson_vedio}
+                          </p>
+                        </div>
+                      </>
+                    )}
 
                     {(user.token && enrollment && chap.length > 0) ||
-                      (user.token &&
-                        user.user_id == creatorId &&
-                        chap.length > 0) ||
-                      (user.token && user.user_role == 2 && chap.length > 0) ? (
+                    (user.token &&
+                      user.user_id == creatorId &&
+                      chap.length > 0) ||
+                    (user.token && user.user_role == 2 && chap.length > 0) ? (
                       <>
                         <h4>{langObj.course_contant} </h4>
 
                         <div className="course-content">
-
-
                           {/** ----------------------------- new lesson ----------------------------- */}
 
-
-
-                          <div id="accordion">
-                            {chap.length > 0 &&
-                              chap.map((chapter, j) => (
-                                <>
-                                  <div className="card">
-                                    <div
-                                      className="card-header"
-                                      id={`heading${j}`}
-                                    >
-                                      <a
-                                        id={`parentChap${chapter.id}`}
-                                        href="#"
-                                        className={`btn btn-header-link ${user.user_role == 5 ? ((lastChapter == chapter.id) || (j == 0 && lastChapter == 0) ? '' : 'collapsed') : (j != 0 ? 'collapsed' : '')}`}
-                                        data-toggle="collapse"
-                                        data-target={`#collapse${j}`}
-                                        aria-expanded="false"
-                                        aria-controls={`collapse${j}`}
+                          <div className="lms-right-side-menu">
+                            <div id="accordion">
+                              {chap.length > 0 &&
+                                chap.map((chapter, j) => (
+                                  <>
+                                    <div className="card">
+                                      <div
+                                        className="card-header"
+                                        id={`heading${j}`}
                                       >
-                                        <span>
-                                          {chapter.lessons.length > 0
-                                            ? chapter.chapter_name
-                                            : ""}
-                                        </span>
+                                        <a
+                                          id={`parentChap${chapter.id}`}
+                                          href="#"
+                                          className={`btn btn-header-link ${
+                                            user.user_role == 5
+                                              ? lastChapter == chapter.id ||
+                                                (j == 0 && lastChapter == 0)
+                                                ? ""
+                                                : "collapsed"
+                                              : j != 0
+                                              ? "collapsed"
+                                              : ""
+                                          }`}
+                                          data-toggle="collapse"
+                                          data-target={`#collapse${j}`}
+                                          aria-expanded="false"
+                                          aria-controls={`collapse${j}`}
+                                        >
+                                          <span style={{fontSize:"14px"}} >
+                                            {chapter.lessons.length > 0
+                                              ? chapter.chapter_name
+                                              : ""}
+                                          </span>
+                                        </a>
+                                      </div>
+                                      <div
+                                        id={`collapse${j}`}
+                                        className={`collapse chapterCHK selectChapter${
+                                          chapter.id
+                                        }  ${
+                                          chapter.id == lastChapter ||
+                                          (j == 0 && lastChapter == 0)
+                                            ? " show"
+                                            : ""
+                                        }`}
+                                        aria-labelledby={`heading${j}`}
+                                        data-parent="#accordion"
+                                      >
+                                        <div className="card-body">
+                                          {chapter.lessons.length > 0 &&
+                                            chapter.lessons.map((less, i) => (
+                                              <div
+                                                style={{ marginBottom: "5px" }}
+                                              >
+                                                <div
+                                                  id={`lessB${j}${i}`}
+                                                  className={`btn-header-link2 selectLesson${
+                                                    less.id
+                                                  } btn active_lesson ${
+                                                    less.id == lastLesson ||
+                                                    (i == 0 && lastLesson == 0)
+                                                      ? " active_lesson_selected "
+                                                      : ""
+                                                  }`}
+                                                  style={{ cursor: "default" }}
+                                                >
+                                                  <div className="row">
+                                                    <div className="col-sm-10">
+                                                      <p
+                                                        style={{
+                                                          cursor: "pointer",
+                                                          marginBottom: "5px",
+                                                          fontSize:"14px",
+                                                        }}
+                                                        onClick={(e) => {
+                                                          setVedio(
+                                                            less.lesson_vedio_link,
+                                                            less.lesson_vedio_type,
+                                                            less.lesson_name,
+                                                            less.lesson_details,
+                                                            chapter.chapter_name,
+                                                            chapter.id,
+                                                            less.id,
+                                                            less.next_lessons_data,
+                                                            `parentChap${chapter.id}`
+                                                          );
 
-                                      </a>
-                                    </div>
-                                    <div
-                                      id={`collapse${j}`}
-                                      className={`collapse chapterCHK selectChapter${chapter.id}  ${((chapter.id == lastChapter) || (j == 0 && lastChapter == 0)) ? ' show' : ''}`}
-                                      aria-labelledby={`heading${j}`}
-                                      data-parent="#accordion"
-                                    >
-                                      <div className="card-body">
+                                                          // nexVedioSet(chap[j])
+                                                          lessonActive(
+                                                            `lessB${j}${i}`
+                                                          );
+                                                        }}
+                                                      >
+                                                        {less &&
+                                                          less.lesson_name}
+                                                      </p>
+                                                    </div>
 
-                                        {chapter.lessons.length > 0 &&
-                                          chapter.lessons.map((less, i) => (
-                                            <div style={{marginBottom: "15px"}}>
-                                              <div id={`lessB${j}${i}`} className={`btn-header-link2 selectLesson${less.id} btn active_lesson ${((less.id == lastLesson) || (i == 0 && lastLesson == 0)) ? ' active_lesson_selected ' : ''}`} style={{ cursor: "default" }} >
-
-                                                <div className="row">
-                                                  <div className="col-sm-10"  >
-
-                                                    <p
-
-
-                                                      style={{ cursor: "pointer" ,marginBottom:"5px"}}
-                                                      onClick={(e) => {
-
-                                                        setVedio(
-                                                          less.lesson_vedio_link,
-                                                          less.lesson_vedio_type,
-                                                          less.lesson_name,
-                                                          less.lesson_details,
-                                                          chapter.chapter_name,
-                                                          chapter.id,
-                                                          less.id,
-                                                          less.next_lessons_data,
-                                                          `parentChap${chapter.id}`
-                                                        );
-
-                                                        // nexVedioSet(chap[j])
-                                                        lessonActive(`lessB${j}${i}`)
-
-                                                      }
-                                                      }
-
-
-
-                                                    >
-                                                      {less && less.lesson_name}
-                                                    </p>
-
-                                                  </div>
-
-                                                  <div className="col-sm-2">
-                                                    <div className="course-content-accordian-bottom ">
-                                                      {user.token && (
-                                                        <>
-                                                          {less.lesson_file && (
-                                                            <a
-                                                              data-toggle="tooltip"
-                                                              title="file download"
-                                                              href={
-                                                                less.lesson_file
-                                                              }
-                                                              className="sec-btn sec-btn-orange"
-                                                            >
-                                                              <i
-                                                                className="fa fa-paperclip"
-                                                                aria-hidden="true"
-                                                              ></i>
-                                                            </a>
-                                                          )}
-                                                        </>
-                                                      )}
+                                                    <div className="col-sm-2">
+                                                      <div className="course-content-accordian-bottom ">
+                                                        {user.token && (
+                                                          <>
+                                                            {less.lesson_file && (
+                                                              <a
+                                                                data-toggle="tooltip"
+                                                                title="file download"
+                                                                href={
+                                                                  less.lesson_file
+                                                                }
+                                                                className="sec-btn sec-btn-orange"
+                                                              >
+                                                                <i
+                                                                  className="fa fa-paperclip"
+                                                                  aria-hidden="true"
+                                                                ></i>
+                                                              </a>
+                                                            )}
+                                                          </>
+                                                        )}
+                                                      </div>
                                                     </div>
                                                   </div>
                                                 </div>
 
-
-                                             
-
-
-
-
-                                              </div>
-
-                                              {trackLessions.map(
-                                                (lessonItem) => (
-                                                  <>
-                                                    {lessonItem.lesson_id ==
-                                                      less.id && (
+                                                {trackLessions.map(
+                                                  (lessonItem) => (
+                                                    <>
+                                                      {lessonItem.lesson_id ==
+                                                        less.id && (
                                                         <span>
-                                                          {lessonItem.status == "completed" && (
+                                                          {lessonItem.status ==
+                                                            "completed" && (
                                                             <>
                                                               {/* , status:{" "}
                                                                 {
                                                                   lessonItem.status
                                                                 } */}
 
-                                                              <ProgressBar className=" progressBarPosition2"
-                                                                isLabelVisible={false}
-                                                                completed={100} bgColor={"green"} borderRadius={"2px"} height={"10px"} />
-
+                                                              <ProgressBar
+                                                                className=" progressBarPosition2"
+                                                                isLabelVisible={
+                                                                  false
+                                                                }
+                                                                completed={100}
+                                                                bgColor={
+                                                                  "green"
+                                                                }
+                                                                borderRadius={
+                                                                  "2px"
+                                                                }
+                                                                height={"5px"}
+                                                              />
                                                             </>
                                                           )}
 
-                                                          {lessonItem.lesson_percentage < 90 && (
+                                                          {lessonItem.lesson_percentage <
+                                                            90 && (
                                                             <span>
                                                               {/* , progress:{" "}
                                                                 {
@@ -2023,32 +2056,40 @@ useEffect(()=>{
                                                                 }
                                                                 % */}
 
-                                                              <ProgressBar className=" progressBarPosition2"
-                                                                isLabelVisible={false}
-                                                                completed={lessonItem.lesson_percentage} bgColor={"#023e86"} borderRadius={"2px"} height={"10px"} />
-
+                                                              <ProgressBar
+                                                                className=" progressBarPosition2"
+                                                                isLabelVisible={
+                                                                  false
+                                                                }
+                                                                completed={
+                                                                  lessonItem.lesson_percentage
+                                                                }
+                                                                bgColor={
+                                                                  "#023e86"
+                                                                }
+                                                                borderRadius={
+                                                                  "2px"
+                                                                }
+                                                                height={"5px"}
+                                                              />
                                                             </span>
                                                           )}
                                                         </span>
                                                       )}
-                                                  </>
-                                                )
-                                              )}
-                                              
-
-                                            </div>
-
-                                          ))}
-
+                                                    </>
+                                                  )
+                                                )}
+                                              </div>
+                                            ))}
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                </>
-                              ))}
+                                  </>
+                                ))}
+                            </div>
                           </div>
 
                           {/** ---------------------------------------------------------- */}
-
                         </div>
                       </>
                     ) : (
@@ -2063,8 +2104,8 @@ useEffect(()=>{
           </div>
 
           {(user.token && enrollment && assignment.length > 0) ||
-            (user.token && user.user_id == creatorId && assignment.length > 0) ||
-            (user.token && user.user_role == 2 && assignment.length > 0) ? (
+          (user.token && user.user_id == creatorId && assignment.length > 0) ||
+          (user.token && user.user_role == 2 && assignment.length > 0) ? (
             <div className="assignment-sec sec-bg">
               <div className="container">
                 <div className="data-table">
@@ -2153,18 +2194,17 @@ useEffect(()=>{
                               </tr>
                             </tbody>
                           </table>
-                          
-                                  <textarea
-                                    onChange={handler}
-                                    value={input.comment}
-                                    name="comment"
-                                    required
-                                    placeholder="comment ..."
-                                    className="form-control"
-                                    id="exampleFormControlTextarea1"
-                                    rows="6"
-                                  />
-                              
+
+                          <textarea
+                            onChange={handler}
+                            value={input.comment}
+                            name="comment"
+                            required
+                            placeholder="comment ..."
+                            className="form-control"
+                            id="exampleFormControlTextarea1"
+                            rows="6"
+                          />
                         </form>
                       </div>
                     </div>
