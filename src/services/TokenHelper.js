@@ -130,6 +130,30 @@ class TokenHelper {
     return localStorage.getItem("login_type");
   }
 
+
+
+
+  setLoginTime(data){
+    localStorage.setItem('set_login_time', data)
+  }
+
+  getLoginTime()
+  {
+    return localStorage.getItem("set_login_time");
+  }
+
+
+
+
+  setExpireTime(data){
+    localStorage.setItem('set_expire_time', data)
+  }
+
+  getExpireTime()
+  {
+    return localStorage.getItem("set_expire_time");
+  }
+
 }
 
 export default new TokenHelper();

@@ -303,9 +303,9 @@ function CourseAdd() {
   };
 
   const FormSubmit = async (e) => {
-    console.log("ssss");
     e.preventDefault();
-
+    
+    console.log("avatar_image  ",image);
     var groupArr = [];
     for (var i of selected) {
       groupArr.push(i.value);

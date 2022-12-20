@@ -7,7 +7,7 @@ import TokenHelper from '../../services/TokenHelper';
 
 import { setCookie, getCookie, removeCookie } from '../../middleware/CookieSetup';
 import { toast } from "react-toastify";
-
+import moment from "moment";
 // languages
 import English from "../ConverLanguages/English";
 import SerbianCyrilic from "../ConverLanguages/SerbianCyrilic";
@@ -63,8 +63,9 @@ export const Login2 = () => {
                     TokenHelper.setLastName(response.data.data.lastname);
                     TokenHelper.setLanguage(response.data.data.language_id);
                     TokenHelper.setLoginType(response.data.data.login_type);
-
-
+                    var startDate=moment().format('DD/MM/YYYY HH:mm:ss');
+                    // TokenHelper.setLoginTime(startDate);
+                    TokenHelper.setExpireTime(moment().startOf(startDate).add(5,"days").format('DD/MM/YYYY HH:mm:ss'));
 
 
                     // var cdata = {
@@ -187,6 +188,9 @@ export const Login2 = () => {
                 TokenHelper.setLanguage(response.data.data[0].language_id);
                 TokenHelper.setLoginType(response.data.data[0].login_type);
 
+                var startDate=moment().format('DD/MM/YYYY HH:mm:ss');
+                // TokenHelper.setLoginTime(startDate);
+                TokenHelper.setExpireTime(moment().startOf(startDate).add(5,"days").format('DD/MM/YYYY HH:mm:ss'));
 
 
 
