@@ -61,14 +61,14 @@ export default function ProfileDetails(userData) {
                     <div className="row">
                         <div className="col-md-6">
                             <div className="user-content">
-                                <h4>Welcome , {TokenHelper.getUsername()} </h4>
-                                <p className="member-deration">Member since 2021</p>
-                                <p>My Courses</p>
+                                <h4>{TokenHelper.getUsername()} </h4>
+                                <p className="member-deration"></p>
+                                
                             </div>
                         </div>
                         <div className="col-md-5 offset-md-1">
                             <div className="user-content">
-                                <button style={{width:"40%"}} onClick={editUser} className="edit-pro-btn toggle">Edit Profile
+                                <button style={{width:"40%"}} onClick={editUser} className="edit-pro-btn toggle">{langObj.edit_profile}&nbsp;
                                     <i className="fa fa-pencil" aria-hidden="true"></i></button>
 
 

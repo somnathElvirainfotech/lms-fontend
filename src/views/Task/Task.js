@@ -555,12 +555,18 @@ export default function Task() {
                           </Link>{" "}
                         </td>
                         <td>
-                      {item.delete_task_status &&  <button
+                      {/**  item.delete_task_status &&  <button
                         className="btn btn-danger"
                         onClick={(e) => deleteData(item.id)}
                       >
                         <i className="fa fa-trash-o"></i>
-                      </button> }
+                      </button> */}
+                      <button
+                      className="btn btn-danger"
+                      onClick={(e) => deleteData(item.id)}
+                    >
+                      <i className="fa fa-trash-o"></i>
+                    </button>
                         </td>
 
                         <td>

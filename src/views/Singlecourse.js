@@ -1678,7 +1678,7 @@ export default function Singlecourse() {
                                 data-backdrop="static"
                                 data-keyboard="false"
                               >
-                                Add Comment
+                               {langObj.add_comment}
                               </button>
                             ) : (
                               ""
@@ -1713,9 +1713,7 @@ export default function Singlecourse() {
                             )}
                           </div>
 
-                          {/**   <div className="enroll-sec">
-                                                <h6>58,971 already enrolled</h6>
-                                            </div>  */}
+                          
                         </div>
 
                         {user.token && (
@@ -1768,7 +1766,7 @@ export default function Singlecourse() {
                               )
                             }
                           >
-                            Enroll Now
+                            {langObj.enroll_btn}
                           </button>
                         )}
 
@@ -1802,7 +1800,7 @@ export default function Singlecourse() {
                             style={{ fontSize: "18px", fontWeight: "600" }}
                             onClick={taskAdd}
                           >
-                            VIEW COURSE
+                            {langObj.view_btn}
                           </a>
                           
                         </div>
@@ -1811,11 +1809,12 @@ export default function Singlecourse() {
                       )}
                     </div>
 
-                    {!enrollment && (
+                    {((enrollment==false) || (enrollment==true && course.course_type=="xapi")) && (
                       <>
+                  
                         <div className="catego-area">
                           <p>
-                            <b>Category </b>:{" "}
+                            <b>{langObj.Category_p} </b>:{" "}
                             {course.category_name_list &&
                               course.category_name_list}
                           </p>
@@ -1869,13 +1868,15 @@ export default function Singlecourse() {
                           </div>
 
                           <p style={{ fontSize: "14px" }}>
-                            <b> Course Language </b>:{" "}
+                            <b> {langObj.Course_language} </b>:{" "}
                             {course.language_name && course.language_name}
                           </p>
                           <p style={{ fontSize: "14px" }}>
-                            <b> Number of lessons </b>:{" "}
-                            {course.total_lesson_vedio &&
+                            <b> {langObj.Number_of_lessons} </b>:{" "}
+                            { (course.course_type=="regular" && course.total_lesson_vedio > 0 ) &&
                               course.total_lesson_vedio}
+
+                              {course.course_type=="xapi" && "1"}
                           </p>
                         </div>
                       </>
@@ -1920,7 +1921,8 @@ export default function Singlecourse() {
                                           aria-expanded="false"
                                           aria-controls={`collapse${j}`}
                                         >
-                                          <span style={{fontSize:"14px"}} >
+                                          <span style={{fontSize: "15px",
+                                            fontWeight: "700"}} >
                                             {chapter.lessons.length > 0
                                               ? chapter.chapter_name
                                               : ""}
@@ -1995,16 +1997,16 @@ export default function Singlecourse() {
                                                         {user.token && (
                                                           <>
                                                             {less.lesson_file && (
-                                                              <a
+                                                              <a download
                                                                 data-toggle="tooltip"
                                                                 title="file download"
                                                                 href={
                                                                   less.lesson_file
                                                                 }
-                                                                className="sec-btn sec-btn-orange"
+                                                                className=""
                                                               >
                                                                 <i
-                                                                  className="fa fa-paperclip"
+                                                                  className="fa fa-paperclip fa-lg"
                                                                   aria-hidden="true"
                                                                 ></i>
                                                               </a>
@@ -2042,7 +2044,7 @@ export default function Singlecourse() {
                                                                 borderRadius={
                                                                   "2px"
                                                                 }
-                                                                height={"5px"}
+                                                                height={"7px"}
                                                               />
                                                             </>
                                                           )}
@@ -2070,7 +2072,7 @@ export default function Singlecourse() {
                                                                 borderRadius={
                                                                   "2px"
                                                                 }
-                                                                height={"5px"}
+                                                                height={"7px"}
                                                               />
                                                             </span>
                                                           )}

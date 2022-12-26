@@ -15,9 +15,9 @@ export default function index() {
            
             <InnerBanner title="About Us" name="About Us" linkName="Home" link="/" />
             <Story />
-            <GlobalCommSec />
+           {/** <GlobalCommSec />
             <CommunitySec />
-            <StartJourneySec />
+            <StartJourneySec />  */}
             
         </>
     )

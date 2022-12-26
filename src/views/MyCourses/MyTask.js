@@ -333,11 +333,11 @@ export default function MyTask() {
                                   </p>
                                   <p>
                                     {" "}
-                                    <b>START DATE :</b>{" "}
+                                    <b>{langObj.start_date} :</b>{" "}
                                     {new Date(
                                       assignment.task_start_date
                                     ).toLocaleDateString()}{" "}
-                                    &nbsp; &nbsp; &nbsp; <b>END DATE :</b>{" "}
+                                    &nbsp; &nbsp; &nbsp; <b>{langObj.end_date}  :</b>{" "}
                                     {new Date(
                                       assignment.task_end_date
                                     ).toLocaleDateString()}
@@ -352,12 +352,12 @@ export default function MyTask() {
                                     </p>
                                   </div> */}
 
-                                  {assignment.no_attempted == 0 && (
+                                  {/** {assignment.no_attempted == 0 && (
                                     <h5 className="course-status">
                                       {" "}
                                       {assignment.user_task_status}
                                     </h5>
-                                  )}
+                                  )} */}
 
                                   {assignment.no_attempted != 0 && (
                                     <h5 className="course-status">
@@ -405,7 +405,7 @@ export default function MyTask() {
                                       }
                                     >
                                       {" "}
-                                      Continue{" "}
+                                      {langObj.continue}{" "}
                                       <i
                                         className="fa fa-arrow-right"
                                         aria-hidden="true"

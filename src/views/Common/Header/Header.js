@@ -420,7 +420,7 @@ export default function Header() {
                           {" "}
                           <li key={"list2"}>
                             <Link style={{color:location.pathname=="/courses"?"#023e86":"",}}  onClick={clerSearchText} to="/courses">
-                              Home
+                              HOME
                             </Link>
                           </li>{" "}
                         </>
@@ -469,6 +469,7 @@ export default function Header() {
                         </>
                       ) : (
                         ""
+                        
                       )}
 
                       {/**  <li><a href="#" data-toggle="modal" data-target="#creatorloginform" >Creator</a></li> */}
@@ -484,7 +485,8 @@ export default function Header() {
                       {user.token && user.user_role != 5 ? (
                         <li key={"list6"}>
                           <NavLink style={{color:location.pathname=="/enrollments"?"#023e86":"",}} onClick={clerSearchText} to={"enrollments"}>
-                            Enrollments
+                            
+                            ENROLLMENTS
                           </NavLink>
                         </li>
                       ) : (
@@ -494,7 +496,8 @@ export default function Header() {
                       (user.token && user.user_role == 1) ? (
                         <li key={"list7"}>
                           <Link style={{color:location.pathname=="/user"?"#023e86":"",}} onClick={clerSearchText} to="/user">
-                            User List
+                         
+                            USER LIST
                           </Link>
                         </li>
                       ) : (
@@ -507,7 +510,7 @@ export default function Header() {
                           {" "}
                           <li key={"list8"}>
                             <Link style={{color:location.pathname=="/group"?"re#023e86d":"",}} onClick={clerSearchText} to="/group">
-                              Group
+                              GROUP
                             </Link>
                           </li>{" "}
                         </>
@@ -533,7 +536,8 @@ export default function Header() {
                           {" "}
                           <li key={"list10"}>
                             <Link style={{color:location.pathname=="/category"?"#023e86":"",}} onClick={clerSearchText} to="/category">
-                              Category
+                              
+                              CATEGORY
                             </Link>
                           </li>{" "}
                         </>
@@ -560,7 +564,8 @@ export default function Header() {
                           {" "}
                           <li key={"list11"}>
                             <Link style={{color:location.pathname=="/qualification"?"#023e86":"",}}  onClick={clerSearchText} to="/qualification">
-                              Qualification
+                              
+                              QUALIFICATION
                             </Link>
                           </li>{" "}
                         </>
@@ -574,7 +579,7 @@ export default function Header() {
                           {" "}
                           <li key={"list12"}>
                             <Link style={{color:location.pathname=="/task"?"#023e86":"",}} onClick={clerSearchText} to="/task">
-                              Task
+                              TASK
                             </Link>
                           </li>{" "}
                         </>
@@ -598,7 +603,7 @@ export default function Header() {
                       {" "}
                       <li key={"list2"}>
                         <Link style={{color:location.pathname=="/courses"?"#023e86":"",}}  onClick={clerSearchText} to="/courses">
-                          Home
+                          HOME
                         </Link>
                       </li>{" "}
                     </>
@@ -655,7 +660,8 @@ export default function Header() {
                     {user.token && user.user_role == 4 ? (
                       <li key={"list6"}>
                         <NavLink style={{color:location.pathname=="/enrollments"?"#023e86":"",}} onClick={clerSearchText} to={"enrollments"}>
-                          Enrollments
+                          
+                          ENROLLMENTS
                         </NavLink>
                       </li>
                     ) : (
@@ -687,7 +693,7 @@ export default function Header() {
                         {" "}
                         <li key={"list12"}>
                           <Link style={{color:location.pathname=="/task"?"#023e86":"",}} onClick={clerSearchText} to="/task">
-                            Task
+                            TASK
                           </Link>
                         </li>{" "}
                       </>

@@ -6,15 +6,24 @@ var English = {
     number_of_lesson:"Number Of Lesson:",
     course_duration:"Course Duration:",
     quize:"Quize:",
-    
+    home_course:"Courses",
+    enroll_btn:"Enroll -button",
+    view_btn:"view course - button",
+    Category_p:"Category",
+    Course_language:"Course language",
+    Number_of_lessons:"Number of lessons",
+    view_all:"View All",
+    add_qns_qns:"Add Question & Answer",
+    add_comment:"Add Comment",
 
     // main menu----------
-    courses: "Courses",
-    profile: "Profile",
-    my_courses: "My courses",
+    courses: "COURSES",
+    capital_courses:'COURSES',
+    profile: "PROFILE",
+    my_courses: "MY COURSES",
     login: "Login",
     logout: "Logout",
-    about:"About",
+    about:"ABOUT",
 
     // login form--------------
     username: "Username",
@@ -36,6 +45,7 @@ var English = {
     lesson_description:"Lesson description",
     featured_reviews:"Featured reviews",
     qns_ans:"Questions and answers",
+    quiz_test:"Quiz/test",
 
 
     // main search-----------------
@@ -63,6 +73,14 @@ var English = {
     number_of_finished_courses:"Number of finished courses",
     number_of_certificates:"Number of certificates",
     my_task:"My tasks",
+    my_course:"My courses",
+    sub_courses_title:"Home>My courses",
+    edit_profile:"Edit profile",
+    start_date:"start date",
+    end_date:"end date",
+    continue:"Continue",
+
+
 
     // footer language --------------------------
     copyright_item1:"Elektroprivreda Srbije",

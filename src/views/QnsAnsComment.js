@@ -301,13 +301,13 @@ function QnsAnsComment(props) {
             data-backdrop="static"
             data-keyboard="false"
           >
-            Add Question & Answer
+           {langObj.add_qns_qns}
           </button>
 
            
 
 
-          {!limit &&  <button onClick={shoeQA} type="button" className="sec-btn sec-btn-border" >View All</button> } 
+          {!limit &&  <button onClick={shoeQA} type="button" className="sec-btn sec-btn-border" >{langObj.view_all}</button> } 
 
           {limit &&   <button onClick={closeQA} type="button" className="sec-btn sec-btn-border" >Close</button>}
 

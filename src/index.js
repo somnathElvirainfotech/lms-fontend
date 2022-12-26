@@ -53,7 +53,7 @@ root.render(
           <Routes />
         </CookiesProvider>
       </AuthContext.Provider>
-      </BrowserRouter>
+    </BrowserRouter>
     
   </>
 );

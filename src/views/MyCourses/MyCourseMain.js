@@ -1,29 +1,37 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext } from "react";
 
-import Header from '../Common/Header/Header';
-import Footer from '../Common/Footer/Footer';
-import InnerBanner from '../Common/InnerBanner';
-import MyCourse from './MyCourse';
-import MYAssignment from './MYAssignment';
-import ProfileDetails from '../Profile/ProfileDetails';
-import { AuthContext } from '../../index';
+import Header from "../Common/Header/Header";
+import Footer from "../Common/Footer/Footer";
+import InnerBanner from "../Common/InnerBanner";
+import MyCourse from "./MyCourse";
+import MYAssignment from "./MYAssignment";
+import ProfileDetails from "../Profile/ProfileDetails";
+import { AuthContext } from "../../index";
+// languages
+import English from "../ConverLanguages/English";
+import SerbianCyrilic from "../ConverLanguages/SerbianCyrilic";
+import SerbianLatin from "../ConverLanguages/SerbianLatin";
+import { LangContext } from "../../routes/routes";
+// end languages
 
-import { setCookie, getCookie, removeCookie } from '../../middleware/CookieSetup';
+import {
+  setCookie,
+  getCookie,
+  removeCookie,
+} from "../../middleware/CookieSetup";
 
+import MyTask from "./MyTask";
 
-import MyTask from './MyTask';
-
-
-import UserService from '../../services/UserService';
-import TokenHelper from '../../services/TokenHelper';
+import UserService from "../../services/UserService";
+import TokenHelper from "../../services/TokenHelper";
 
 // loader
 import Loader from "../Loader";
-import EnrollmentService from '../../services/EnrollmentService';
-import XapiService from '../../services/XapiService';
+import EnrollmentService from "../../services/EnrollmentService";
+import XapiService from "../../services/XapiService";
+import { Link } from "react-router-dom";
 
 export default function MyCourseMain() {
-
   const { user } = useContext(AuthContext);
 
   const [users, setUsers] = useState({ email: TokenHelper.getEmail() });
@@ -33,25 +41,19 @@ export default function MyCourseMain() {
 
   const [xapiu, setXapiu] = useState(false);
 
-
-
   //const [count, setCount] = useState({});
-
-
-
 
   var courseData = async () => {
     if (getCookie("xapi_result_name") && user.user_role == 5) {
-
-
       var xresponce = await EnrollmentService.getUserEnrollmentList();
-      console.log("xapi_result ", getCookie("xapi_result_name"))
-
+      console.log("xapi_result ", getCookie("xapi_result_name"));
 
       var xdata = [];
       for (var i of xresponce.data.data) {
-
-        if (i.course_details[0].course_type == "xapi" && getCookie("xapi_result_name") === i.course_details[0].xapi_file_name) {
+        if (
+          i.course_details[0].course_type == "xapi" &&
+          getCookie("xapi_result_name") === i.course_details[0].xapi_file_name
+        ) {
           var temp = {
             course_id: i.course_details[0].id,
             enroll_id: i.enroll_id,
@@ -71,18 +73,16 @@ export default function MyCourseMain() {
         }
       }
 
-      removeCookie("xapi_result_name")
+      removeCookie("xapi_result_name");
 
       // xapi
       getXapiData(xdata);
-
     } else {
-      setXapiu(true)
+      setXapiu(true);
     }
-  }
+  };
 
   var chkDuplicate = (arr, valu) => {
-
     for (var i of arr) {
       if (i.viewId == valu) {
         return false;
@@ -90,11 +90,9 @@ export default function MyCourseMain() {
     }
 
     return true;
-
-  }
+  };
 
   var chkDuplicate2 = (arr, valu) => {
-
     for (var i of arr) {
       var a = i.course_name.split("xapi_");
       var cn = a[1] ? a[1] : a[0];
@@ -104,22 +102,17 @@ export default function MyCourseMain() {
     }
 
     return true;
-
-  }
+  };
 
   var chkDuplicate3 = (arr, valu) => {
-
     for (var i of arr) {
-
       if (i.groupId == valu) {
         return false;
       }
     }
 
     return true;
-
-  }
-
+  };
 
   var getXapiData = async (totalCourse) => {
     // setShowLoader(true)
@@ -190,13 +183,33 @@ export default function MyCourseMain() {
         for (var singleRes of responce.data.statements) {
           // console.log(singleRes.object.definition.name);
 
-          console.log("--", chkDuplicate(tempArr, singleRes.context.extensions["ispring://view_id"]));
-          console.log("--", chkDuplicate2(tempArr, singleRes.object.definition.name.und));
+          console.log(
+            "--",
+            chkDuplicate(
+              tempArr,
+              singleRes.context.extensions["ispring://view_id"]
+            )
+          );
+          console.log(
+            "--",
+            chkDuplicate2(tempArr, singleRes.object.definition.name.und)
+          );
 
-          if (chkDuplicate(tempArr, singleRes.context.extensions["ispring://view_id"]) && chkDuplicate2(tempArr, singleRes.object.definition.name.und) &&
-            chkDuplicate3(tempArr, singleRes.context.contextActivities.grouping[0].id)) {
-
-            console.log("object ", singleRes.context.extensions["ispring://view_id"]);
+          if (
+            chkDuplicate(
+              tempArr,
+              singleRes.context.extensions["ispring://view_id"]
+            ) &&
+            chkDuplicate2(tempArr, singleRes.object.definition.name.und) &&
+            chkDuplicate3(
+              tempArr,
+              singleRes.context.contextActivities.grouping[0].id
+            )
+          ) {
+            console.log(
+              "object ",
+              singleRes.context.extensions["ispring://view_id"]
+            );
 
             if ("definition" in singleRes.object) {
               if ("name" in singleRes.object.definition) {
@@ -204,10 +217,7 @@ export default function MyCourseMain() {
                   item.course_name == singleRes.object.definition.name.und &&
                   Date.parse(singleRes.timestamp) > Date.parse(item.timestamp)
                 ) {
-
                   //  console.log("one");
-
-
 
                   //   console.log("sssss");
 
@@ -224,10 +234,12 @@ export default function MyCourseMain() {
                           item.failed = false;
                           item.total_number = singleRes.result.score.max;
                           item.score_number = singleRes.result.score.raw;
-                          item.updateTimestamp = singleRes.timestamp
-                          item.enrollment_status = "completed"
-                          item.viewId = singleRes.context.extensions["ispring://view_id"]
-                          item.groupId = singleRes.context.contextActivities.grouping[0].id;
+                          item.updateTimestamp = singleRes.timestamp;
+                          item.enrollment_status = "completed";
+                          item.viewId =
+                            singleRes.context.extensions["ispring://view_id"];
+                          item.groupId =
+                            singleRes.context.contextActivities.grouping[0].id;
                         }
 
                         // else {
@@ -249,9 +261,7 @@ export default function MyCourseMain() {
                 }
               }
             }
-
           }
-
         }
       }
     }
@@ -259,7 +269,6 @@ export default function MyCourseMain() {
     // --------------- failed
 
     if (xapiCourse[0].passed == false && xapiCourse[0].failed == false) {
-
       var data = {
         agent: '{"mbox": "mailto:' + agent + '"}',
         verb: `http://adlnet.gov/expapi/verbs/failed`,
@@ -274,13 +283,33 @@ export default function MyCourseMain() {
           for (var singleRes of responce.data.statements) {
             // console.log(singleRes.object.definition.name);
 
-            console.log("--", chkDuplicate(tempArr, singleRes.context.extensions["ispring://view_id"]));
-            console.log("--", chkDuplicate2(tempArr, singleRes.object.definition.name.und));
+            console.log(
+              "--",
+              chkDuplicate(
+                tempArr,
+                singleRes.context.extensions["ispring://view_id"]
+              )
+            );
+            console.log(
+              "--",
+              chkDuplicate2(tempArr, singleRes.object.definition.name.und)
+            );
 
-            if (chkDuplicate(tempArr, singleRes.context.extensions["ispring://view_id"]) && chkDuplicate2(tempArr, singleRes.object.definition.name.und) &&
-              chkDuplicate3(tempArr, singleRes.context.contextActivities.grouping[0].id)) {
-
-              console.log("object ", singleRes.context.extensions["ispring://view_id"]);
+            if (
+              chkDuplicate(
+                tempArr,
+                singleRes.context.extensions["ispring://view_id"]
+              ) &&
+              chkDuplicate2(tempArr, singleRes.object.definition.name.und) &&
+              chkDuplicate3(
+                tempArr,
+                singleRes.context.contextActivities.grouping[0].id
+              )
+            ) {
+              console.log(
+                "object ",
+                singleRes.context.extensions["ispring://view_id"]
+              );
 
               if ("definition" in singleRes.object) {
                 if ("name" in singleRes.object.definition) {
@@ -288,10 +317,7 @@ export default function MyCourseMain() {
                     item.course_name == singleRes.object.definition.name.und &&
                     Date.parse(singleRes.timestamp) > Date.parse(item.timestamp)
                   ) {
-
                     //  console.log("one");
-
-
 
                     //   console.log("sssss");
 
@@ -308,10 +334,12 @@ export default function MyCourseMain() {
                             item.failed = true;
                             item.total_number = singleRes.result.score.max;
                             item.score_number = singleRes.result.score.raw;
-                            item.updateTimestamp = singleRes.timestamp
-                            item.enrollment_status = "failed"
-                            item.viewId = singleRes.context.extensions["ispring://view_id"]
-                            item.groupId = singleRes.context.contextActivities.grouping[0].id;
+                            item.updateTimestamp = singleRes.timestamp;
+                            item.enrollment_status = "failed";
+                            item.viewId =
+                              singleRes.context.extensions["ispring://view_id"];
+                            item.groupId =
+                              singleRes.context.contextActivities.grouping[0].id;
                           }
 
                           // else {
@@ -324,7 +352,6 @@ export default function MyCourseMain() {
                           //   }
                           // }
 
-
                           tempArr.push(item);
                         }
                       }
@@ -334,28 +361,21 @@ export default function MyCourseMain() {
                   }
                 }
               }
-
             }
-
           }
         }
       }
-
     }
 
     // ----------------------------
 
     console.log("xapi data", xapiCourse);
 
-
-
     if (xapiCourse.length > 0) {
       // console.log(xapiCourse);
 
       // enrollment status updated  ------------------
-      await EnrollmentService.enrollmentStatusUpdate(
-        xapiCourse
-      );
+      await EnrollmentService.enrollmentStatusUpdate(xapiCourse);
 
       // result save----------
 
@@ -371,11 +391,7 @@ export default function MyCourseMain() {
               user_email: i.user_email,
             });
           }
-
         }
-
-
-
       }
     }
 
@@ -385,30 +401,20 @@ export default function MyCourseMain() {
     // mycourse
     // var responce = await UserService.enrollmentcourse(user.user_id, "");
     // setEnrollmentcourses(responce.data.data);
-
-
-
   };
-
 
   useEffect(() => {
     courseData();
-  }, [])
-
+  }, []);
 
   useEffect(() => {
-
-
     (async () => {
       try {
-
-
         var response = await UserService.getProfileData(users);
         if (response.data.status != false) {
           //console.log(response.data);
 
-          setUsers(response.data.data)
-
+          setUsers(response.data.data);
         } else {
           console.log(response);
         }
@@ -417,31 +423,58 @@ export default function MyCourseMain() {
         //    setCount(countRes.data.data);
         //     console.log(countRes.data)
         //    // console.log(count)
-
       } catch (error) {
         console.log(error);
       }
-    })()
-
+    })();
   }, []);
 
 
+  const { languageList } = useContext(LangContext);
+  const [langObj, setLangObj] = useState({});
+
+  useEffect(() => {
+    if (languageList.language_name === "1") {
+      setLangObj(English);
+    } else if (languageList.language_name === "2") {
+      setLangObj(SerbianCyrilic);
+    } else if (languageList.language_name === "3") {
+      setLangObj(SerbianLatin);
+    }
+  }, [languageList.language_name]);
+
   return (
     <>
-
       {/** loader */}
       {showLoader && <Loader />}
 
-      {xapiu &&
+      {xapiu && (
         <>
-          <InnerBanner title="My courses" name="My courses" linkName="Home" link="/" />
+          <div className="inner-banner">
+            <img src="/images/inner-banner.png" alt="" />
+            <div className="desc">
+              <div className="container">
+                <div className="text">
+                  <h1>{langObj.my_course}</h1>
+                  <div className="breadcrumb">
+                    <ul>
+                      <li>
+                        <Link to="/">{langObj.sub_courses_title}</Link>
+                      </li>
+                       
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <ProfileDetails userData={users} />
           <MyTask />
           <MyCourse />
           <MYAssignment />
         </>
-      }
-
+      )}
     </>
-  )
+  );
 }

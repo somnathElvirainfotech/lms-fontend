@@ -7,14 +7,24 @@ var SerbianCyrilic = {
     number_of_lesson:"Broj lekcija:",
     course_duration:"Trajanje:",
     quize:"Kvizova:",
+    home_course:"Курсеви",
+    enroll_btn:"Покрени курс",
+    view_btn:"Погледај курс",
+    Category_p:"Категорија",
+    Course_language:"Јеѕик курса",
+    Number_of_lessons:"Број лекција",
+    view_all:"Прикажи све",
+    add_qns_qns:"Додај питање и одговор",
+    add_comment:"Додај коментар",
 
     // main menu--------------
-    courses: "Курсеви",
+    courses: "КУРСЕВИ",
+    capital_courses:'КУРСЕВИ',
     profile: "Мој профил",
-    my_courses: "Моји курсеви",
+    my_courses: "МОЈИ КУРСЕВИ",
     login: "Улогуј се",
     logout: "Излаз",
-    about:"О систему",
+    about:"О СИСТЕМУ",
 
     // login form------------
     username: "Корисничко име",
@@ -36,7 +46,7 @@ var SerbianCyrilic = {
     lesson_description:"Опис лекције",
     featured_reviews:"Оцене и коментари",
     qns_ans:"Питања и одговори",
-
+    quiz_test:"Тест",
 
     // main search---------------
     main_search: "Претрага курсева",
@@ -62,6 +72,12 @@ var SerbianCyrilic = {
     number_of_finished_courses: "Завршени курсеви",
     number_of_certificates: "Сертификати",
     my_task:"Твоји задаци",
+    my_course:"Твоји курсеви",
+    sub_courses_title:"Почетна>Моји курсеви",
+    edit_profile:"Уреди профил",
+    start_date:"Почетак",
+    end_date:"Рок",
+    continue:"Nastavak",
 
     // footer language --------------------------
     copyright_item1:"Електропривреда Србије",

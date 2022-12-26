@@ -127,7 +127,7 @@ export default function RoutesList() {
     })();
   }, []);
 
-  const [lang, setLang] = useState("1");
+  const [lang, setLang] = useState("3");
   const [xapiName, setXapiName] = useState("");
   var languageFun = () => setLang();
 

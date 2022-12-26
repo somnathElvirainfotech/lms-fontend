@@ -99,7 +99,7 @@ export default function Create() {
             } else if (user.user_role == 2 || user.user_role == 1) {
                 setShowLoader(true)
                 var responce = await CourseService.getAll();
-                //console.log(responce.data.data)
+                console.log(responce.data.data)
                 setCourse([...responce.data.data])
                 getCreatorList();
                 getDataPagi(responce.data.data, 0 * PER_PAGE)
@@ -596,7 +596,8 @@ export default function Create() {
                                             {user.user_role == 2 || user.user_role == 1 ? <>
                                                 <td>{item.creator_name}</td>
                                                 <td>
-                                                    {item.approved_status == 'active' ? <button onClick={e => statusUpdate(item.id, item.approved_status)} className="btn btn-success">Approve</button> : <button onClick={e => statusUpdate(item.id, item.approved_status)} className="btn btn-danger">Dis-Approve</button>}
+                                                 {!item.total_enroll_status && <>   {item.approved_status == 'active' ? <button onClick={e => statusUpdate(item.id, item.approved_status)} className="btn btn-success">Approve</button> : <button onClick={e => statusUpdate(item.id, item.approved_status)} className="btn btn-danger">Dis-Approve</button>}
+                                                 </>}
                                                 </td>
                                             </> : ''}
                                             <td>{item.published_status == 'active' ? <span className="text-center" style={{ color: "white", backgroundColor: "green" }}>Active</span> : <span className="text-center" style={{ color: "white", backgroundColor: "red" }}>In-active</span>}</td>

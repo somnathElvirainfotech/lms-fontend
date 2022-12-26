@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import Header from "./Common/Header/Header";
 import Footer from "./Common/Footer/Footer";
@@ -64,6 +64,8 @@ export default function Course() {
 
   // to store selected hospital
   const [selectedCourse, setSelectedCourse] = useState("");
+
+  const cateBtn = useRef();
 
   // check coourse and user group
   var chkAllGroups = (courseGroup) => {
@@ -586,6 +588,9 @@ export default function Course() {
     // e.preventDefault();
     setShowLoader(true);
 
+    // console.log(cateBtn.current)
+    // cateBtn.current.style.backgroundColor = "blue";
+
     var data = {
       category_id: ctegoryId,
       group_id: "",
@@ -665,7 +670,7 @@ export default function Course() {
       </div>
 
       {/* filter */}
-      <div className="course">
+      <div className="">
         <div className="container">
           <div className="course-inner">
             {/**    
@@ -759,63 +764,71 @@ export default function Course() {
                 className="collapse navbar-collapse"
                 id="navbarSupportedContent"
               >
-                <ul className="navbar-nav mr-auto">
+                <ul className="navbar-nav mr-auto dropdown">
                   <div className="btn-group mr-2 mt-1">
                     <button
                       type="button"
-                      style={{ backgroundColor: "#023e86", color: "#fff" }}
-                      className="btn"
-                      onClick={() => FormSubmit("")}
+                      style={{
+                        backgroundColor: "#fff",
+                        color: "rgb(139 131 132 / 6)",
+                      }}
+                      className="btn active_category common_category "
+                      id="cateAll"
+                      
+                      onClick={() => {
+                        $(".btn").removeClass(" active_category");
+                        $("#cateAll").addClass("active_category");
+                        $(`.subcategory_menu`).hide()
+                        return FormSubmit("");
+                      }}
                     >
                       All
                     </button>
                   </div>
 
                   {category.length &&
-                    category.map((pitem) => (
+                    category.map((pitem, i) => (
                       <>
-                        <div className="btn-group mr-2 mt-1">
+                        <div className="btn-group mr-2 mt-1 category_menu">
                           <button
                             style={{
-                              backgroundColor: "#023e86",
-                              color: "#fff",
+                              backgroundColor: "#fff",
+                              color: "rgb(139 131 132 / 6)",
+                              
                             }}
                             type="button"
-                            className="btn nav-item "
-                            onClick={() => FormSubmit(pitem.id)}
+                            className="btn nav-item common_category "
+                            
+                            id={`p_cate_${i + 1}`}
+                            onClick={() => {
+                              $(".btn").removeClass(" active_category");
+                              $(`#p_cate_${i + 1}`).addClass("active_category");
+                              $(`.subcategory_menu`).hide()
+                              $(`#subcategory_menu${i}`).toggle()
+
+                              return FormSubmit(pitem.id);
+                            }}
                           >
                             {pitem.c_name.toUpperCase()}
                           </button>
-                          {pitem.sub_category.length > 0 && (
-                            <button
-                              type="button"
-                              className="btn   dropdown-toggle dropdown-toggle-split"
-                              data-toggle="dropdown"
-                              aria-expanded="false"
-                              style={{
-                                backgroundColor: "#023e86",
-                                color: "#fff",
-                              }}
-                            >
-                              <span className="sr-only">Toggle Dropdown</span>
-                            </button>
-                          )}
 
                           {pitem.sub_category.length > 0 && (
-                            <div className="dropdown-menu">
-                              {pitem.sub_category.map((subItem) => (
+                            <div id={`subcategory_menu${i}`} className="subcategory_menu">
+                              {pitem.sub_category.map((subItem, j) => (
                                 <>
                                   <small
                                     onClick={() => FormSubmit(subItem.id)}
-                                    className="dropdown-item"
+                                    className="dropdown-item "
+                                    style={{color: "rgb(139, 131, 132)",cursor:"pointer"}}
                                   >
                                     {subItem.c_name.toUpperCase()}
                                   </small>
-                                  {subItem.sub_category.map((child) => (
+                                  {subItem.sub_category.map((child, k) => (
                                     <>
                                       <small
                                         onClick={() => FormSubmit(child.id)}
                                         className="dropdown-item"
+                                        style={{color: "rgb(139, 131, 132)",cursor:"pointer"}}
                                       >
                                         {child.c_name.toUpperCase()}
                                       </small>
@@ -843,7 +856,7 @@ export default function Course() {
       <div className="courses-sec">
         <div className="container">
           <div className="courses-ttl">
-            <h2>{langObj.courses}</h2>
+            <h2>{langObj.home_course}</h2>
             {/**   <p>{noCourse} results on LMS</p> */}
           </div>
           <div className="courses-wrap">
@@ -906,7 +919,7 @@ export default function Course() {
                           <p
                             style={{ fontSize: "15px", fontFamily: "Calibri" }}
                           >
-                            {langObj.quize} {course.quize}
+                            {langObj.quiz_test}: {course.quize}
                           </p>
                         </div>
 

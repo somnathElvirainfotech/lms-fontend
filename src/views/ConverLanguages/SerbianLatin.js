@@ -7,14 +7,25 @@ var SerbianLatin = {
     number_of_lesson:"Broj lekcija:",
     course_duration:"Trajanje:",
     quize:"Kvizova:",
+    home_course:"Kursevi",
+    enroll_btn:"Pokreni kurs",
+    view_btn:"Pogledaj kurs",
+    Category_p:"Kategorija",
+    Course_language:"Jezik kursa",
+    Number_of_lessons:"Broj lekcija",
+    view_all:"Prikaži sve",
+    add_qns_qns:"Dodaj pitanje & odgovor",
+    add_comment:"Dodaj komentar",
+
 
     // main menu-----
-    courses: "Kursevi",
+    courses: "KURSEVI",
+    capital_courses:'KURSEVI',
     profile: "Moj profil",
-    my_courses: "Moji kursevi",
+    my_courses: "MOJI KURSEVI",
     login: "Uloguj se",
     logout: "Izlaz",
-    about:"O sistemu",
+    about:"O SISTEMU",
 
     // login form----------
     username: "Korisničko ime",
@@ -36,7 +47,7 @@ var SerbianLatin = {
     lesson_description:"Opis lekcije",
     featured_reviews:"Ocene i komentari",
     qns_ans:"Pitanja i odgovori",
-
+    quiz_test:"Test",
 
     // main search-----------
     main_search: "Pretraga kurseva",
@@ -62,6 +73,12 @@ var SerbianLatin = {
     number_of_finished_courses: "Završeni kursevi",
     number_of_certificates: "Sertifikati",
     my_task:"Tvoji zadaci",
+    my_course:"Tvoji kursevi",
+    sub_courses_title:"Početna>Moji kursevi",
+    edit_profile:"Uredi profil",
+    start_date:"Početak",
+    end_date:"Rok",
+    continue:"Nastavak",
 
     // footer language --------------------------
     copyright_item1:"Elektroprivreda Srbije",

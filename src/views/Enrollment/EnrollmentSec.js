@@ -449,15 +449,15 @@ export default function EnrollmentSec() {
     for (var item of custs) {
       var temp = {
         date: item.enrollment_create_date,
-        student_id: item.user_details[0].user_hr_no,
-        student_name: item.user_details[0].fullname,
-        student_email: item.user_details[0].email,
-        course_name: item.course_details[0].course_name,
-        course_type: item.course_details[0].course_type,
-        course_category: item.course_details[0].category_name,
+        student_id: item.user_details[0]?.user_hr_no,
+        student_name: item.user_details[0]?.fullname,
+        student_email: item.user_details[0]?.email,
+        course_name: item.course_details[0]?.course_name,
+        course_type: item.course_details[0]?.course_type,
+        course_category: item.course_details[0]?.category_name,
         user_progress: `${item.course_progress ? item.course_progress : 0}%`,
-        teacher_name: `${item.course_details[0].creator_name.toUpperCase()}`,
-        teacher_email: item.course_details[0].creator_email,
+        teacher_name: `${item.course_details[0]?.creator_name.toUpperCase()}`,
+        teacher_email: item.course_details[0]?.creator_email,
         points_won: 0,
         assignment_no: item.assignment_details
           ? item.assignment_details.length
@@ -1367,17 +1367,17 @@ export default function EnrollmentSec() {
                         <td style={{fontSize:"13px"}} >{item.enrollment_create_date}</td>
                         <td style={{fontSize:"13px"}} >{item.user_details[0].user_hr_no}</td>
                         <td style={{fontSize:"13px"}} >
-                          {item.user_details[0].fullname.toUpperCase()} (
-                          {item.user_details[0].email})
+                          {item.user_details[0]?.fullname.toUpperCase()} (
+                          {item.user_details[0]?.email})
                         </td>
                         <td style={{fontSize:"13px"}} >
-                          {item.course_details[0].course_name.toUpperCase()}
+                          {item.course_details[0]?.course_name.toUpperCase()}
                         </td>
                         <td style={{fontSize:"13px"}} >
-                          {item.course_details[0].course_type.toUpperCase()}
+                          {item.course_details[0]?.course_type.toUpperCase()}
                         </td>
                         <td style={{fontSize:"13px"}} >
-                          {item.course_details[0].category_name.toUpperCase()}
+                          {item.course_details[0]?.category_name.toUpperCase()}
                         </td>
                         {user.user_role == 2 && (
                           <td style={{fontSize:"13px"}} >{item.enrollment_status.toUpperCase()}</td>
@@ -1388,8 +1388,8 @@ export default function EnrollmentSec() {
                           {item.course_progress ? item.course_progress : 0}%
                         </td>
                         <td style={{fontSize:"13px"}} >
-                          {item.course_details[0].creator_name.toUpperCase()}{" "}
-                          ({item.course_details[0].creator_email}){" "}
+                          {item.course_details[0]?.creator_name.toUpperCase()}{" "}
+                          ({item.course_details[0]?.creator_email}){" "}
                         </td>
                         {/**  <td>0</td> 
                         <td style={{fontSize:"13px"}} >
@@ -1405,7 +1405,7 @@ export default function EnrollmentSec() {
                           {item.rating_number && (
                             <div>
                               {item.rating_number == 1 && (
-                                <ul className="rating">
+                                <ul className="rating d-flex">
                                   <li>
                                     <a href="">
                                       <i
@@ -1418,7 +1418,7 @@ export default function EnrollmentSec() {
                               )}
 
                               {item.rating_number == 2 && (
-                                <ul className="rating">
+                                <ul className="rating d-flex">
                                   <li>
                                     <a href="">
                                       <i
@@ -1439,7 +1439,7 @@ export default function EnrollmentSec() {
                               )}
 
                               {item.rating_number == 3 && (
-                                <ul className="rating">
+                                <ul className="rating d-flex">
                                   <li>
                                     <a href="">
                                       <i
@@ -1468,7 +1468,7 @@ export default function EnrollmentSec() {
                               )}
 
                               {item.rating_number == 4 && (
-                                <ul className="rating">
+                                <ul className="rating d-flex">
                                   <li>
                                     <a href="">
                                       <i
@@ -1505,7 +1505,7 @@ export default function EnrollmentSec() {
                               )}
 
                               {item.rating_number == 5 && (
-                                <ul className="rating">
+                                <ul className="rating d-flex">
                                   <li>
                                     <a href="">
                                       <i
@@ -1554,9 +1554,9 @@ export default function EnrollmentSec() {
                         <td style={{fontSize:"13px"}} >{item.comment ? item.comment : ""}</td>
                         <td style={{fontSize:"13px"}} >
                           <Link
-                            to={`/courses/${item.course_details[0].course_name}`}
+                            to={`/courses/${item.course_details[0]?.course_name}`}
                             state={{
-                              singleCourseId: item.course_details[0].id,
+                              singleCourseId: item.course_details[0]?.id,
                             }}
                             className="btn btn-info"
                           >
@@ -1566,7 +1566,7 @@ export default function EnrollmentSec() {
                         <td style={{fontSize:"13px"}} >
                           {" "}
                           {item.enrollment_status == "completed" &&
-                            item.course_details[0].course_type == "xapi" && (
+                            item.course_details[0]?.course_type == "xapi" && (
                               <Link
                               style={{fontSize:"13px"}}
                                 className="btn btn-success"
