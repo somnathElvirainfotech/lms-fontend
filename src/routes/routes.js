@@ -324,7 +324,7 @@ export default function RoutesList() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
 
-        <Route
+       <Route
           path="xapicourse"
           element={
             <RequireAuth>
@@ -351,7 +351,7 @@ export default function RoutesList() {
           }
         />
 
-        <Route path="/maintenance" element={<MaintenanceMode />} />
+       
 
         <Route path="/add-edit-chapter" element={<AddEditChapter />} />
         <Route path="/add-edit-group" element={<AddEditGroup />} />
@@ -367,8 +367,10 @@ export default function RoutesList() {
 
         <Route path="/allreviewtask" element={<AllRatingTask />} />
 
-        <Route path="/singletask" element={<SingleTask />} />
-        <Route path="/singlexapi" element={<SingleXapi />} />
+        <Route path="/singletask" element={<SingleTask />} />  
+        
+        <Route path="/maintenance" element={<MaintenanceMode />} />
+        <Route path="/singlexapi" element={<SingleXapi />} /> 
 
         {/** error page handler */}
         <Route path="*" element={<Navigate to="/" replace />} />
