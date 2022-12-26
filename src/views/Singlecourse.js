@@ -1431,7 +1431,7 @@ export default function Singlecourse() {
           <div className="single-course-bottom sec-bg">
             <div className="container-fluid">
               <div className="row">
-                <div className="col-lg-8 col-md-7">
+                <div className="col-lg-8 col-md-7" style={{paddingRight: 0}}>
                   {enrollment == false && user.user_role == 5 && (
                     <div className="image-course">
                       <img
@@ -1493,6 +1493,7 @@ export default function Singlecourse() {
                           controls={true}
                           width="100%"
                           height="100%"
+                          style={{backgroundColor:"black"}}
                         ></ReactPlayer>
                       </div>
                     </div>
