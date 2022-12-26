@@ -327,6 +327,25 @@
         margin-bottom: 30px;
         padding-left: 10px;
     }
+    
+    .subcategory_menu 
+    {
+        position: relative; 
+        z-index: 99; 
+        width: 100%;
+        background: #FFF;
+        left: 0;
+        margin: 0;
+        top: 0;
+    }
+
+    .category_menu {
+        position: relative;
+        flex-flow: wrap;
+    }
+
+    
+
 }
 
 

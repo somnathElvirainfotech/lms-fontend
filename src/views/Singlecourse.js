@@ -1778,7 +1778,7 @@ export default function Singlecourse() {
                       (course.course_type == "xapi" &&
                         user.user_role == 4 &&
                         user.user_id == creatorId) ? (
-                        <div className="mb-3">
+                        <div className="">
                           <a
                             href={`/singlexapi?link=${btoa(
                               course.xapi_attachment_file +
@@ -1820,7 +1820,7 @@ export default function Singlecourse() {
                           </p>
                         </div>
 
-                        <div className="course-avator-image">
+                     {course.short_description.length>0 &&   <div className="course-avator-image">
                           {/**    <img
                         src={
                           course.avatar_image
@@ -1836,7 +1836,7 @@ export default function Singlecourse() {
                               course.short_description
                             }`}
                           />
-                        </div>
+                        </div>}
 
                         <div className="course-details">
                           <p>
