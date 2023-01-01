@@ -11,11 +11,15 @@ export const RequireAuth = ({ children }) => {
   const token = TokenHelper.getToken();
   const location = useLocation();
 
-  console.log("hjgj", location.pathname);
+  // // console.log("cvv", Date.parse(TokenHelper.getExpireTime())/1000);
+  // var ss=moment().format("MM/DD/YYYY HH:mm:ss");
+  // console.log("cvv", Date.parse(ss))
 
   if (token) {
-    var currentDate = moment().format("DD/MM/YYYY HH:mm:ss");
-    var expireDate = TokenHelper.getExpireTime();
+    var currentDate = (Date.parse((moment().format("MM/DD/YYYY HH:mm:ss")))/1000);
+    var expireDate = (Date.parse(TokenHelper.getExpireTime())/1000);
+
+    console.log("currentDate " ,currentDate);
 
     if (currentDate > expireDate) {
         Logout();

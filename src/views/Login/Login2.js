@@ -63,9 +63,9 @@ export const Login2 = () => {
                     TokenHelper.setLastName(response.data.data.lastname);
                     TokenHelper.setLanguage(response.data.data.language_id);
                     TokenHelper.setLoginType(response.data.data.login_type);
-                    var startDate=moment().format('DD/MM/YYYY HH:mm:ss');
+                    var startDate=moment().format('MM/DD/YYYY HH:mm:ss');
                     // TokenHelper.setLoginTime(startDate);
-                    TokenHelper.setExpireTime(moment().startOf(startDate).add(5,"days").format('DD/MM/YYYY HH:mm:ss'));
+                    TokenHelper.setExpireTime(moment().startOf(startDate).add(5,"days").format('MM/DD/YYYY HH:mm:ss'));
 
 
                     // var cdata = {
@@ -90,7 +90,7 @@ export const Login2 = () => {
 
 
                    window.location.replace("/courses");
-                    // navigate("/courses",{ replace:true,refresh: true })
+                    // navigate("/courses",{ replace:false,refresh: false })
                      
                 } else {
                     setShowLoader(false);
@@ -188,9 +188,9 @@ export const Login2 = () => {
                 TokenHelper.setLanguage(response.data.data[0].language_id);
                 TokenHelper.setLoginType(response.data.data[0].login_type);
 
-                var startDate=moment().format('DD/MM/YYYY HH:mm:ss');
+                var startDate=moment().format('MM/DD/YYYY HH:mm:ss');
                 // TokenHelper.setLoginTime(startDate);
-                TokenHelper.setExpireTime(moment().startOf(startDate).add(5,"days").format('DD/MM/YYYY HH:mm:ss'));
+                TokenHelper.setExpireTime(moment().startOf(startDate).add(5,"days").format('MM/DD/YYYY HH:mm:ss'));
 
 
 
