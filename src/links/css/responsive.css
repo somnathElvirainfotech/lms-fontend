@@ -4,6 +4,14 @@
 
 @media screen and (max-width: 1367px) {
 
+    #lesson-description{
+        min-height: 300px;
+    }
+    
+    #course-description{
+        min-height: 300px;
+    }
+
     .header .header-wrap .logo {
         max-width: 200px;
     }
@@ -37,6 +45,7 @@
 
 @media screen and (max-width: 1920px) {
 
+    
 
     .sub_courses_2{
         font-size: 40px;
@@ -350,7 +359,59 @@
 
 
 
+@media screen and (min-width: 768px) and (max-width: 991px) {
+
+    /*********** activities **********/
+    .activites-table table thead tr th {
+        width: 20%;
+        font-size: 13px;
+    }
+
+    .activites-table table tbody tr td {
+        font-size: 11px;
+    }
+
+    .activites-table table tbody tr td span {
+        width: 70%;
+    }
+
+    .courses-sec .courses-ttl h2,
+    .inner-sec-head h2 {
+        font-size: 25px;
+    }
+
+    .my-course-content h4 {
+        font-size: 20px;
+    }
+
+    .inner-sec-head h4 {
+        font-size: 18px;
+    }
+    .start-journey-sec .start-journey-box h2 {
+      font-size: 30px;
+    }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1024px) {
+    .activites-table table tbody tr td {
+        font-size: 13px;
+    }
+
+    .activites-table table tbody tr td span {
+        width: 77%;
+    }
+}
+
 @media screen and (max-width: 767px) {
+
+    #lesson-description{
+        min-height: 100px;
+    }
+    
+    #course-description{
+        min-height: 100px;
+    }
+
     .mega-menu{
         display: none;
     }
@@ -458,6 +519,7 @@
     }
     .header .header-wrap .hd-sec .lt-side{
         margin-bottom: 10px;
+        align-items: initial;
     }
     .header .header-wrap .hd-sec .lt-side{
         justify-content: center;
@@ -474,6 +536,7 @@
     }
     .header .header-wrap .hd-sec .rt-side{
         justify-content: center;
+        /* padding: 0 8px; */
     }
     .header .header-wrap .hd-sec .lt-side .hd-src .form-control{
         font-size: 14px;
@@ -494,49 +557,42 @@
     .our-courses-sec h2, .most-popular-sec h2, .join-for-free-sec .text-block h2, .high-rated-cou .high-rated-ttl h2, .community-sec .community-ttl h2, .start-journey-sec .start-journey-box h2{
         font-size: 26px;
     }
+    .image-course{
+        height:auto;
+    }
+    .course-right {
+        padding-right: 15px;
+    }
+    .course-left {
+        padding-left: 15px;
+    }
+    .header .header-wrap .logo.desk{
+    display:none;
+    }
+   
+    .cat-menu ul {
+        text-align: left;
+        padding: 8px 24px;
+    }
+    .menu-sec2 {
+        margin-top: 27px;
+}
+.header .header-wrap .mobile-logo{
+    display: inline-block;
 }
 
-@media screen and (min-width: 768px) and (max-width: 991px) {
-
-    /*********** activities **********/
-    .activites-table table thead tr th {
-        width: 20%;
-        font-size: 13px;
-    }
-
-    .activites-table table tbody tr td {
-        font-size: 11px;
-    }
-
-    .activites-table table tbody tr td span {
-        width: 70%;
-    }
-
-    .courses-sec .courses-ttl h2,
-    .inner-sec-head h2 {
-        font-size: 25px;
-    }
-
-    .my-course-content h4 {
-        font-size: 20px;
-    }
-
-    .inner-sec-head h4 {
-        font-size: 18px;
-    }
-    .start-journey-sec .start-journey-box h2 {
-      font-size: 30px;
-    }
+.header .header-wrap .hd-sec .lt-side .cat-menu{
+    padding: 0;
+}
+.mobile-toggle {
+    display: inline-block;
+    background: #203787;
+    color: #FFF;
+    padding: 6px 15px;
+    /* margin: 4px 0px 0 31px; */
+    float: right;
 }
 
-@media screen and (min-width: 992px) and (max-width: 1024px) {
-    .activites-table table tbody tr td {
-        font-size: 13px;
-    }
-
-    .activites-table table tbody tr td span {
-        width: 77%;
-    }
 }
 
 @media screen and (max-width: 575px) {
@@ -546,15 +602,7 @@
         color: white;
         font-weight: 600
     }
-
-    .mobile-toggle{
-        display: block;
-    }
-    .cat-menu 
-    {
-        width: 100%;
-        text-align: right;
-    }
+   
     #myNav 
     {
         display: none;
@@ -563,13 +611,7 @@
         cursor: pointer;
     }
 
-    .mobile-toggle {
-        display: inline-block;
-        background: #203787;
-        color: #FFF;
-        padding: 6px 15px;
-        margin: 10px 0;
-    }
+    
     .cat-menu ul {
         text-align: left;
     }
@@ -579,6 +621,8 @@
         display: block;
         margin: 0;
     }
+
+   
 
 }
 

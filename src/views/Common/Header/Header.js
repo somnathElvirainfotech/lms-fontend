@@ -240,105 +240,115 @@ export default function Header() {
       <header className="header">
         <div className="container-fluid">
           <div className="header-wrap">
-            <div className="logo">
+            <div className="logo desk">
               <Link onClick={clerSearchText} to="/courses">
                 <img src="/images/logo.png" alt="header image" />
               </Link>
             </div>
+           
+
+
+            
             <div className="hd-sec">
-              <div className="lt-side">
-                <div className="cat-menu">
+              <div className="lt-side desk">
+              <div className="row">
+              <div className="col-md-12">
+              <div className="cat-menu">
 
-                {user.user_role==5 && user.token && <>
+              <Link to={"/"} className="mobile-logo"> <img src="/images/logo.png" alt="header image" /></Link>
 
-                  <span className="mobile-toggle" onClick={mobileToggle}>
-                <i class="fa fa-bars" aria-hidden="true"></i>
-                </span>
-                  
+              {user.user_role==5 && user.token && <>
 
-                  <div id="myNav" className="menu-sec2">
-                  
-                  <ul>
-                   
-                   
-
-                    {user.token && user.user_role == 5 ? (
-                      <>
-                        {" "}
-                        <li key={"list2"}>
-                          <Link style={{color:location.pathname=="/courses"?"#023e86":"",}}  onClick={clerSearchText} to="/courses">
-                            {langObj.courses}
-                          </Link>
-                        </li>{" "}
-                      </>
-                    ) : (
-                      ""
-                    )}
-
-                    {user.token && user.user_role == 5 ? (
-                      <li key={"list3"}>
-                        <NavLink style={{color:location.pathname=="/my-courses"?"#023e86":"",}} onClick={clerSearchText} to={"my-courses"}>
-                          {langObj.my_courses}
-                        </NavLink>
-                      </li>
-                    ) : (
-                      ""
-                    )}
-
-
-                    {user.token && (
-                      <li key={"list1"}>
-                        <Link style={{color:location.pathname=="/about-us"?"#023e86":"",}}  onClick={clerSearchText} to="/about-us">
-                          {langObj.about}
-                        </Link>
-                      </li>
-                    )}
+                <span className="mobile-toggle" onClick={mobileToggle}>
+              <i class="fa fa-bars" aria-hidden="true"></i>
+              </span>
                 
-                    
-                  </ul>
+
+                <div id="myNav" className="menu-sec2">
+                
+                <ul>
+                 
+                 
+
+                  {user.token && user.user_role == 5 ? (
+                    <>
+                      {" "}
+                      <li key={"list2"}>
+                        <Link style={{color:location.pathname=="/courses"?"#023e86":"",}}  onClick={clerSearchText} to="/courses">
+                          {langObj.courses}
+                        </Link>
+                      </li>{" "}
+                    </>
+                  ) : (
+                    ""
+                  )}
+
+                  {user.token && user.user_role == 5 ? (
+                    <li key={"list3"}>
+                      <NavLink style={{color:location.pathname=="/my-courses"?"#023e86":"",}} onClick={clerSearchText} to={"my-courses"}>
+                        {langObj.my_courses}
+                      </NavLink>
+                    </li>
+                  ) : (
+                    ""
+                  )}
+
+
+                  {user.token && (
+                    <li key={"list1"}>
+                      <Link style={{color:location.pathname=="/about-us"?"#023e86":"",}}  onClick={clerSearchText} to="/about-us">
+                        {langObj.about}
+                      </Link>
+                    </li>
+                  )}
+              
                   
-                </div>
-                  
-                  </>}
+                </ul>
+                
+              </div>
+                
+                </>}
 
 
-                  {/**      <ul className="menu-list" >
-                                        <li id="mega-menu-parent" ><a href="">Courses <i className="fa fa-angle-down"></i></a>
-                                            <div className="mega-menu">
-                                                <div className="row">
-                                                    <div className="col-md-12">
-                                                        <div id="mega-menu-fresher">
-                                                            <ul className="main-mega-menu-section" onChange={e => setSelectedCategory(e.target.value)}>
-                                                                {category.map(categoryi =>
-                                                                    <li className="vegies active-mega-menu" key={categoryi.id} >
-                                                                        <Link to={`/courses`} state={{ category_id: categoryi.id }} onMouseEnter={e => subcategoryid(categoryi.id)}  >{categoryi.c_name}</Link>
-                                                                        <ul className="vegies active-mega-menu" onChange={e => setSelectedSubcategory(e.target.value)}>
-                                                                            {subcategory.map(subcategoryi => (
-                                                                                <li className="one" key={subcategoryi.id}><Link to={`/courses`} state={{ category_id: subcategoryi.id }} onMouseEnter={e => setChildCtegory(subcategoryi.id)}>{subcategoryi.c_name}</Link>
-                                                                                    <ul className="vegies-submenu active-mega-menu">
-                                                                                        <li>
-                                                                                            <ul className="vegies-one" onChange={e => setChildCtegory(e.target.value)}>
-                                                                                                {child.map(sci => (
-                                                                                                    <li key={sci.id}><Link to={`/courses`} state={{ category_id: sci.id }} > {sci.c_name}</Link></li>
-                                                                                                ))}
-                                                                                            </ul>
-                                                                                        </li>
-                                                                                    </ul>
-                                                                                </li>
-                                                                            ))}
-                                                                        </ul>
-                                                                    </li>
-                                                                )}
-                                                            </ul>
+                {/**      <ul className="menu-list" >
+                                      <li id="mega-menu-parent" ><a href="">Courses <i className="fa fa-angle-down"></i></a>
+                                          <div className="mega-menu">
+                                              <div className="row">
+                                                  <div className="col-md-12">
+                                                      <div id="mega-menu-fresher">
+                                                          <ul className="main-mega-menu-section" onChange={e => setSelectedCategory(e.target.value)}>
+                                                              {category.map(categoryi =>
+                                                                  <li className="vegies active-mega-menu" key={categoryi.id} >
+                                                                      <Link to={`/courses`} state={{ category_id: categoryi.id }} onMouseEnter={e => subcategoryid(categoryi.id)}  >{categoryi.c_name}</Link>
+                                                                      <ul className="vegies active-mega-menu" onChange={e => setSelectedSubcategory(e.target.value)}>
+                                                                          {subcategory.map(subcategoryi => (
+                                                                              <li className="one" key={subcategoryi.id}><Link to={`/courses`} state={{ category_id: subcategoryi.id }} onMouseEnter={e => setChildCtegory(subcategoryi.id)}>{subcategoryi.c_name}</Link>
+                                                                                  <ul className="vegies-submenu active-mega-menu">
+                                                                                      <li>
+                                                                                          <ul className="vegies-one" onChange={e => setChildCtegory(e.target.value)}>
+                                                                                              {child.map(sci => (
+                                                                                                  <li key={sci.id}><Link to={`/courses`} state={{ category_id: sci.id }} > {sci.c_name}</Link></li>
+                                                                                              ))}
+                                                                                          </ul>
+                                                                                      </li>
+                                                                                  </ul>
+                                                                              </li>
+                                                                          ))}
+                                                                      </ul>
+                                                                  </li>
+                                                              )}
+                                                          </ul>
 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </li>
 
-                                    </ul>  */}
-                </div>
+                                  </ul>  */}
+              </div>
+              </div></div>
+              
 
                 {user.token && user.user_role != 5 && (
                   <div className="hd-src">
@@ -748,28 +758,29 @@ export default function Header() {
                   <div className="hd-src">
                     <form onSubmit={(e) => e.preventDefault()} action="#">
                     <div className="row" >
-                    <div className="col-10" >
-                      <input
-                        value={search.search_text}
-                        style={{ fontSize: "14px" }}
-                        onChange={searchhandler}
-                        type="text"
-                        name="search_text"
-                        placeholder={`${langObj.main_search}`}
-                        className="form-control"
-                        onKeyDown={(e) => eneterSearch(e)}
-                      />
+                    <div className="col-12">
+                    <div className="search-div">
+                    <input
+                    value={search.search_text}
+                    style={{ fontSize: "14px" }}
+                    onChange={searchhandler}
+                    type="text"
+                    name="search_text"
+                    placeholder={`${langObj.main_search}`}
+                    className="form-control"
+                    onKeyDown={(e) => eneterSearch(e)}
+                  />
+                  <button
+                  type="button"
+                  onClick={textSearch}
+                  className="btn"
+                >
+                  <i className="fa fa-search"></i>
+                </button>
+                    </div>
+                     
                       </div>
-                      <div className="col-2">
-                      <button
-                        style={{ marginLeft:"-20px" }}
-                        type="button"
-                        onClick={textSearch}
-                        className="btn"
-                      >
-                        <i className="fa fa-search"></i>
-                      </button>
-                      </div>
+                     
                       </div>
                     </form>
                   </div>

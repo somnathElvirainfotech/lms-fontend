@@ -770,7 +770,7 @@ export default function Course() {
                       type="button"
                       style={{
                         backgroundColor: "#fff",
-                        color: "rgb(139 131 132 / 6)",
+                        
                       }}
                       className="btn active_category common_category "
                       id="cateAll"
@@ -793,7 +793,7 @@ export default function Course() {
                           <button
                             style={{
                               backgroundColor: "#fff",
-                              color: "rgb(139 131 132 / 6)",
+                              
                               
                             }}
                             type="button"
@@ -819,7 +819,7 @@ export default function Course() {
                                   <small
                                     onClick={() => FormSubmit(subItem.id)}
                                     className="dropdown-item "
-                                    style={{color: "rgb(139, 131, 132)",cursor:"pointer"}}
+                                    style={{cursor:"pointer"}}
                                   >
                                     {subItem.c_name.toUpperCase()}
                                   </small>
@@ -828,7 +828,7 @@ export default function Course() {
                                       <small
                                         onClick={() => FormSubmit(child.id)}
                                         className="dropdown-item"
-                                        style={{color: "rgb(139, 131, 132)",cursor:"pointer"}}
+                                        style={{cursor:"pointer"}}
                                       >
                                         {child.c_name.toUpperCase()}
                                       </small>

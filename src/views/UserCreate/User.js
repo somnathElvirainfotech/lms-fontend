@@ -4,7 +4,7 @@ import UserService from "../../services/UserService";
 import { AuthContext } from "../../index";
 import UserCreateService from "../../services/UserCreateService";
 import sampleCsv from "./sample.csv";
-
+import { Markup } from "interweave";
 import Header from "../Common/Header/Header";
 import Footer from "../Common/Footer/Footer";
 import InnerBanner from "../Common/InnerBanner";
@@ -23,6 +23,12 @@ import Loader from "../Loader";
 export default function Create() {
   // loader
   const [showLoader, setShowLoader] = useState(false);
+  const [gpassword,setGpassword]=useState("");
+  const [emailText,setEmailText]=useState({
+    subject:`Sistem za obuku`,
+    text:`\nPoštovani,\n\nvaša šifra za pristup sistemu je ###password###\n\n\nSrdačan pozdrav,\n\nDUO`
+  });
+
 
   const [course, setCourse] = useState([]);
   const [courseList, setCourseList] = useState(true);
@@ -33,7 +39,10 @@ export default function Create() {
   const [language, setLanguage] = useState([]);
   const [group, setGroup] = useState([]);
   const [category, setCategory] = useState([]);
-  const [cinputs, setCInputs] = useState({});
+  const [cinputs, setCInputs] = useState({
+    email_subject:emailText.subject,
+    email_message:emailText.text
+  });
   const [qualification, setQualification] = useState([]);
 
   const [image, setImage] = useState({});
@@ -270,6 +279,8 @@ export default function Create() {
   var setEmail = (email) => {
     console.log(email);
     setFormemai(email);
+    var pass=passwordGenerator(12);
+    setGpassword(pass);
   };
 
   function passwordGenerator(length) {
@@ -288,17 +299,23 @@ export default function Create() {
   var generatePass = async (e) => {
     e.preventDefault();
 
+   
+
     if (cinputs.email_subject) {
       if (cinputs.email_message) {
         setShowLoader(true);
 
-        var passwords = passwordGenerator(12);
+       // var passwords = ""; //passwordGenerator(12);
+
+       var email_message=cinputs.email_message.replaceAll("###password###",gpassword)
+      //  const regex = /\\n|\\r\\n|\\n\\r|\\r/g;
+      //  email_message=email_message.replace(regex, '<br>');
 
         const form = new FormData();
         form.append("email", formemai);
-        form.append("password", passwords);
+        form.append("password", gpassword);
         form.append("email_subject", cinputs.email_subject);
-        form.append("email_message", cinputs.email_message);
+        form.append("email_message", email_message);
 
         var responce = await UserService.generatePassword(form);
         if (responce.data.status) {
@@ -326,8 +343,8 @@ export default function Create() {
     setCInputs({
       password1: "",
       password2: "",
-      email_subject: "",
-      email_message: "",
+      email_subject: emailText.subject,
+      email_message: emailText.text,
     });
   };
 
@@ -1009,7 +1026,7 @@ export default function Create() {
                             </td>
 
                             <td>
-                              <button
+                             {item.login_type==="local" &&  <button
                                 type="button"
                                 style={{ fontSize: "13px" }}
                                 onClick={(e) => setEmail(item.email)}
@@ -1018,7 +1035,7 @@ export default function Create() {
                                 data-target="#myModal2"
                               >
                                 <i class="fa fa-repeat" aria-hidden="true"></i>
-                              </button>
+                              </button> }
                             </td>
                           </tr>
                         ))}
@@ -1174,6 +1191,7 @@ export default function Create() {
                                     value={cinputs.email_subject}
                                     onChange={handleChange}
                                     required
+                                    defaultValue={emailText.subject}
                                   />
                                 </div>
                                 <div className="form-group">
@@ -1186,8 +1204,10 @@ export default function Create() {
                                     required
                                     className="form-control"
                                     id="exampleFormControlTextarea1"
-                                    rows="6"
+                                    rows="10"
+                                   defaultValue={emailText.text}
                                   />
+                                   
                                 </div>
                               </div>
                             </div>

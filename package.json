@@ -33,6 +33,7 @@
     "react-cookie": "^4.1.1",
     "react-csv": "^2.2.2",
     "react-dom": "^18.2.0",
+    "react-download-link": "^2.3.0",
     "react-firebase-hooks": "^5.1.1",
     "react-loader-spinner": "^5.3.4",
     "react-moment": "^1.1.2",

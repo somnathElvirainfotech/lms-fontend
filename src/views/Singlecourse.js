@@ -23,6 +23,9 @@ import SingleXapiModal from "./SingleXapiModal";
 import StaticRating from "./StaticRating";
 import ProgressBar from "@ramonak/react-progress-bar";
 
+// file download
+import DownloadLink from "react-download-link";
+
 // loader
 import Loader from "./Loader";
 
@@ -1431,7 +1434,7 @@ export default function Singlecourse() {
           <div className="single-course-bottom sec-bg">
             <div className="container-fluid">
               <div className="row">
-                <div className="col-lg-8 col-md-7" style={{paddingRight: 0}}>
+                <div className="col-lg-8 col-md-7 course-right">
                   {enrollment == false && user.user_role == 5 && (
                     <div className="image-course">
                       <img
@@ -1569,20 +1572,22 @@ export default function Singlecourse() {
                       </ul>
                       <div className="tab-content " id="myTabContent">
                    {((enrollment != false && course.course_type !=='xapi' && user.user_role != 2 ) || (course.course_type !=='xapi' && user.user_role==2)) &&   <div
-                          className="tab-pane fade active show"
+                          className="tab-pane fade active show "
                           id="lesson-description"
                           role="tabpanel"
                           aria-labelledby="lesson-description-tab"
+                          
                         >
                          {/**  <h3>{langObj.lesson_description}</h3> */}
                        {view.lesson_details && <Markup content={view.lesson_details} /> }  
                         </div> }
 
                         <div
-                          className={`tab-pane fade ${(((enrollment == false && user.user_role != 2) || (course.course_type ==='xapi' && user.user_role != 2) ) || ((course.course_type ==='xapi' && user.user_role==2)) )?'active show':''}`}
+                          className={`tab-pane  fade ${(((enrollment == false && user.user_role != 2) || (course.course_type ==='xapi' && user.user_role != 2) ) || ((course.course_type ==='xapi' && user.user_role==2)) )?'active show':''}`}
                           id="course-description"
                           role="tabpanel"
                           aria-labelledby="course-description-tab"
+                          
                         >
                         {/**  <h3>{langObj.course_description}</h3> */}
                           <Markup content={course.long_description} />
@@ -1738,7 +1743,7 @@ export default function Singlecourse() {
                   </div>
                 </div>
 
-                <div className="col-lg-4 col-md-5">
+                <div className="col-lg-4 col-md-5 course-left">
                   <div className="single-course-bottom-right">
                     <div className="catego-area">
                       <p
@@ -1998,7 +2003,9 @@ export default function Singlecourse() {
                                                         {user.token && (
                                                           <>
                                                             {less.lesson_file && (
-                                                              <a download
+                                                              <a  
+                                                              download={true}
+                                                              target="_blank"
                                                                 data-toggle="tooltip"
                                                                 title="file download"
                                                                 href={

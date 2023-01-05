@@ -520,8 +520,11 @@ export default function Create() {
         seterror('');
     }
 
-    const statusUpdate = async (id, status) => {
+    const statusUpdate = async (id, status,total_enroll_status) => {
         setShowLoader(true)
+
+        if(!total_enroll_status)
+        {
         var data = {
             id: id,
             status: status == 'active' ? 'inactive' : 'active'
@@ -540,6 +543,10 @@ export default function Create() {
 
 
         listCourse();
+    }else{
+        toast.error("You can't disapprove this course as already enrolled by user!");
+        setShowLoader(false)
+    }
 
     }
 
@@ -596,8 +603,8 @@ export default function Create() {
                                             {user.user_role == 2 || user.user_role == 1 ? <>
                                                 <td>{item.creator_name}</td>
                                                 <td>
-                                                 {!item.total_enroll_status && <>   {item.approved_status == 'active' ? <button onClick={e => statusUpdate(item.id, item.approved_status)} className="btn btn-success">Approve</button> : <button onClick={e => statusUpdate(item.id, item.approved_status)} className="btn btn-danger">Dis-Approve</button>}
-                                                 </>}
+                                                     {item.approved_status == 'active' ? <button onClick={e => statusUpdate(item.id, item.approved_status,item.total_enroll_status)} className="btn btn-success">Approve</button> : <button onClick={e => statusUpdate(item.id, item.approved_status,item.total_enroll_status)} className="btn btn-danger">Dis-Approve</button>}
+                                                
                                                 </td>
                                             </> : ''}
                                             <td>{item.published_status == 'active' ? <span className="text-center" style={{ color: "white", backgroundColor: "green" }}>Active</span> : <span className="text-center" style={{ color: "white", backgroundColor: "red" }}>In-active</span>}</td>
