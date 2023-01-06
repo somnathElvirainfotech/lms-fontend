@@ -1743,151 +1743,306 @@ export default function Singlecourse() {
                   </div>
                 </div>
 
+
+                <div className="col-lg-4 col-md-5 course-details-area-mobile">
+                <div className="">
+                <div className="catego-area">
+                <p
+                  style={{
+                    fontSize: "18px",
+                    fontWeight: "700",
+                    wordBreak: "break-all",
+                  }}
+                >
+                  {course.course_name && course.course_name.toUpperCase()}
+                </p>
+              </div>
+
+              <div className="enroll-full">
+                {user.token &&
+                  user.user_role == 5 &&
+                  chkGroups &&
+                  enrollment == false && (
+                    <button
+                      className="sec-btn enroll-btn"
+                      style={{ fontSize: "18px", fontWeight: "600" }}
+                      onClick={(e) =>
+                        enrollmentid(
+                          course.xapi_attachment_file,
+                          course.course_type
+                        )
+                      }
+                    >
+                      {langObj.enroll_btn}
+                    </button>
+                  )}
+
+                {(course.course_type == "xapi" &&
+                  enrollment != false &&
+                  user.user_role == 5) ||
+                (course.course_type == "xapi" && user.user_role == 1) ||
+                (course.course_type == "xapi" && user.user_role == 2) ||
+                (course.course_type == "xapi" &&
+                  user.user_role == 4 &&
+                  user.user_id == creatorId) ? (
+                  <div className="">
+                    <a
+                      href={`/singlexapi?link=${btoa(
+                        course.xapi_attachment_file +
+                          "?USER_ID=" +
+                          user.user_id +
+                          "&ENROLL_ID=" +
+                          enroll_id +
+                          "&TASK_ID=" +
+                          taskId +
+                          "&USER_ROLE=" +
+                          user.user_role +
+                          "&USER_EMAIL=" +
+                          user.email +
+                          "&USER_NAME=" +
+                          user.username
+                      )}`}
+                      target="__blank"
+                      className="sec-btn mt-4"
+                      style={{ fontSize: "18px", fontWeight: "600" }}
+                      onClick={taskAdd}
+                    >
+                      {langObj.view_btn}
+                    </a>
+                    
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+
+              {((enrollment==false) || (enrollment==true && course.course_type=="xapi")) && (
+                <>
+            
+                  <div className="catego-area">
+                    <p>
+                      <b>{langObj.Category_p} </b>:{" "}
+                      {course.category_name_list &&
+                        course.category_name_list}
+                    </p>
+                  </div>
+
+               {course.short_description.length>0 &&   <div className="course-avator-image">
+                    {/**    <img
+                  src={
+                    course.avatar_image
+                      ? course.avatar_image
+                      : "/images/my-course1.png"
+                  }
+                  alt=""
+                /> */}
+
+                    <Markup
+                      content={`${
+                        course.short_description &&
+                        course.short_description
+                      }`}
+                    />
+                  </div>}
+
+                  <div className="course-details">
+                    <p>
+                      <b> </b> {course.author_name && course.author_name}
+                    </p>
+                    <p>
+                      <b> </b>{" "}
+                      {course.author_email && course.author_email}
+                    </p>
+                    <div className="review-area">
+                      <ul className="review-stat rating ">
+                        <ReactStars
+                          value={TotalRating}
+                          {...thirdExample2}
+                        />
+
+                        <span
+                          style={{
+                            fontSize: "15px",
+                            color: "#707070",
+                            marginTop: "10px",
+                          }}
+                          className="ml-2"
+                        >
+                          {course.rating_details[0].rating_number} (
+                          {course.rating_details[0].total_rating})
+                        </span>
+                      </ul>
+                    </div>
+
+                    <p style={{ fontSize: "14px" }}>
+                      <b> {langObj.Course_language} </b>:{" "}
+                      {course.language_name && course.language_name}
+                    </p>
+                    <p style={{ fontSize: "14px" }}>
+                      <b> {langObj.Number_of_lessons} </b>:{" "}
+                      { (course.course_type=="regular" && course.total_lesson_vedio > 0 ) &&
+                        course.total_lesson_vedio}
+
+                        {course.course_type=="xapi" && "1"}
+                    </p>
+                  </div>
+                </>
+              )}
+                </div>
+                </div>
+             
+
                 <div className="col-lg-4 col-md-5 course-left">
+                <div className=" course-details-area-desk">
+                <div className="catego-area">
+                <p
+                  style={{
+                    fontSize: "18px",
+                    fontWeight: "700",
+                    wordBreak: "break-all",
+                  }}
+                >
+                  {course.course_name && course.course_name.toUpperCase()}
+                </p>
+              </div>
+
+              <div className="enroll-full">
+                {user.token &&
+                  user.user_role == 5 &&
+                  chkGroups &&
+                  enrollment == false && (
+                    <button
+                      className="sec-btn enroll-btn"
+                      style={{ fontSize: "18px", fontWeight: "600" }}
+                      onClick={(e) =>
+                        enrollmentid(
+                          course.xapi_attachment_file,
+                          course.course_type
+                        )
+                      }
+                    >
+                      {langObj.enroll_btn}
+                    </button>
+                  )}
+
+                {(course.course_type == "xapi" &&
+                  enrollment != false &&
+                  user.user_role == 5) ||
+                (course.course_type == "xapi" && user.user_role == 1) ||
+                (course.course_type == "xapi" && user.user_role == 2) ||
+                (course.course_type == "xapi" &&
+                  user.user_role == 4 &&
+                  user.user_id == creatorId) ? (
+                  <div className="">
+                    <a
+                      href={`/singlexapi?link=${btoa(
+                        course.xapi_attachment_file +
+                          "?USER_ID=" +
+                          user.user_id +
+                          "&ENROLL_ID=" +
+                          enroll_id +
+                          "&TASK_ID=" +
+                          taskId +
+                          "&USER_ROLE=" +
+                          user.user_role +
+                          "&USER_EMAIL=" +
+                          user.email +
+                          "&USER_NAME=" +
+                          user.username
+                      )}`}
+                      target="__blank"
+                      className="sec-btn mt-4"
+                      style={{ fontSize: "18px", fontWeight: "600" }}
+                      onClick={taskAdd}
+                    >
+                      {langObj.view_btn}
+                    </a>
+                    
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+
+              {((enrollment==false) || (enrollment==true && course.course_type=="xapi")) && (
+                <>
+            
+                  <div className="catego-area">
+                    <p>
+                      <b>{langObj.Category_p} </b>:{" "}
+                      {course.category_name_list &&
+                        course.category_name_list}
+                    </p>
+                  </div>
+
+               {course.short_description.length>0 &&   <div className="course-avator-image">
+                    {/**    <img
+                  src={
+                    course.avatar_image
+                      ? course.avatar_image
+                      : "/images/my-course1.png"
+                  }
+                  alt=""
+                /> */}
+
+                    <Markup
+                      content={`${
+                        course.short_description &&
+                        course.short_description
+                      }`}
+                    />
+                  </div>}
+
+                  <div className="course-details">
+                    <p>
+                      <b> </b> {course.author_name && course.author_name}
+                    </p>
+                    <p>
+                      <b> </b>{" "}
+                      {course.author_email && course.author_email}
+                    </p>
+                    <div className="review-area">
+                      <ul className="review-stat rating ">
+                        <ReactStars
+                          value={TotalRating}
+                          {...thirdExample2}
+                        />
+
+                        <span
+                          style={{
+                            fontSize: "15px",
+                            color: "#707070",
+                            marginTop: "10px",
+                          }}
+                          className="ml-2"
+                        >
+                          {course.rating_details[0].rating_number} (
+                          {course.rating_details[0].total_rating})
+                        </span>
+                      </ul>
+                    </div>
+
+                    <p style={{ fontSize: "14px" }}>
+                      <b> {langObj.Course_language} </b>:{" "}
+                      {course.language_name && course.language_name}
+                    </p>
+                    <p style={{ fontSize: "14px" }}>
+                      <b> {langObj.Number_of_lessons} </b>:{" "}
+                      { (course.course_type=="regular" && course.total_lesson_vedio > 0 ) &&
+                        course.total_lesson_vedio}
+
+                        {course.course_type=="xapi" && "1"}
+                    </p>
+                  </div>
+                </>
+              )}
+                </div>
                   <div className="single-course-bottom-right">
-                    <div className="catego-area">
-                      <p
-                        style={{
-                          fontSize: "14px",
-                          fontWeight: "700",
-                          wordBreak: "break-all",
-                        }}
-                      >
-                        {course.course_name && course.course_name.toUpperCase()}
-                      </p>
-                    </div>
 
-                    <div className="enroll-full">
-                      {user.token &&
-                        user.user_role == 5 &&
-                        chkGroups &&
-                        enrollment == false && (
-                          <button
-                            className="sec-btn enroll-btn"
-                            style={{ fontSize: "18px", fontWeight: "600" }}
-                            onClick={(e) =>
-                              enrollmentid(
-                                course.xapi_attachment_file,
-                                course.course_type
-                              )
-                            }
-                          >
-                            {langObj.enroll_btn}
-                          </button>
-                        )}
+                   
 
-                      {(course.course_type == "xapi" &&
-                        enrollment != false &&
-                        user.user_role == 5) ||
-                      (course.course_type == "xapi" && user.user_role == 1) ||
-                      (course.course_type == "xapi" && user.user_role == 2) ||
-                      (course.course_type == "xapi" &&
-                        user.user_role == 4 &&
-                        user.user_id == creatorId) ? (
-                        <div className="">
-                          <a
-                            href={`/singlexapi?link=${btoa(
-                              course.xapi_attachment_file +
-                                "?USER_ID=" +
-                                user.user_id +
-                                "&ENROLL_ID=" +
-                                enroll_id +
-                                "&TASK_ID=" +
-                                taskId +
-                                "&USER_ROLE=" +
-                                user.user_role +
-                                "&USER_EMAIL=" +
-                                user.email +
-                                "&USER_NAME=" +
-                                user.username
-                            )}`}
-                            target="__blank"
-                            className="sec-btn mt-4"
-                            style={{ fontSize: "18px", fontWeight: "600" }}
-                            onClick={taskAdd}
-                          >
-                            {langObj.view_btn}
-                          </a>
-                          
-                        </div>
-                      ) : (
-                        ""
-                      )}
-                    </div>
 
-                    {((enrollment==false) || (enrollment==true && course.course_type=="xapi")) && (
-                      <>
-                  
-                        <div className="catego-area">
-                          <p>
-                            <b>{langObj.Category_p} </b>:{" "}
-                            {course.category_name_list &&
-                              course.category_name_list}
-                          </p>
-                        </div>
-
-                     {course.short_description.length>0 &&   <div className="course-avator-image">
-                          {/**    <img
-                        src={
-                          course.avatar_image
-                            ? course.avatar_image
-                            : "/images/my-course1.png"
-                        }
-                        alt=""
-                      /> */}
-
-                          <Markup
-                            content={`${
-                              course.short_description &&
-                              course.short_description
-                            }`}
-                          />
-                        </div>}
-
-                        <div className="course-details">
-                          <p>
-                            <b> </b> {course.author_name && course.author_name}
-                          </p>
-                          <p>
-                            <b> </b>{" "}
-                            {course.author_email && course.author_email}
-                          </p>
-                          <div className="review-area">
-                            <ul className="review-stat rating ">
-                              <ReactStars
-                                value={TotalRating}
-                                {...thirdExample2}
-                              />
-
-                              <span
-                                style={{
-                                  fontSize: "15px",
-                                  color: "#707070",
-                                  marginTop: "10px",
-                                }}
-                                className="ml-2"
-                              >
-                                {course.rating_details[0].rating_number} (
-                                {course.rating_details[0].total_rating})
-                              </span>
-                            </ul>
-                          </div>
-
-                          <p style={{ fontSize: "14px" }}>
-                            <b> {langObj.Course_language} </b>:{" "}
-                            {course.language_name && course.language_name}
-                          </p>
-                          <p style={{ fontSize: "14px" }}>
-                            <b> {langObj.Number_of_lessons} </b>:{" "}
-                            { (course.course_type=="regular" && course.total_lesson_vedio > 0 ) &&
-                              course.total_lesson_vedio}
-
-                              {course.course_type=="xapi" && "1"}
-                          </p>
-                        </div>
-                      </>
-                    )}
-
+                    {/** ------------------------------------------------------- */}
                     {(user.token && enrollment && chap.length > 0) ||
                     (user.token &&
                       user.user_id == creatorId &&

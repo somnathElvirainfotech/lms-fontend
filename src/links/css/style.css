@@ -3623,3 +3623,10 @@ td {
     .search-div input{
         margin-right: 8px;
     }
+    .course-details-area-mobile{
+        display: none;
+    }
+
+    .course-details-area-desk{
+        display: block;
+    }

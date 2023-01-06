@@ -16,18 +16,22 @@ import ReactPaginate from "react-paginate";
 import { MultiSelect } from "react-multi-select-component";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import TextEditor from "../TextEditor";
+import { DefaultEditor } from 'react-simple-wysiwyg';
 
 // loader
 import Loader from "../Loader";
 
 export default function Create() {
+  
   // loader
   const [showLoader, setShowLoader] = useState(false);
   const [gpassword,setGpassword]=useState("");
   const [emailText,setEmailText]=useState({
     subject:`Sistem za obuku`,
-    text:`\nPoštovani,\n\nvaša šifra za pristup sistemu je ###password###\n\n\nSrdačan pozdrav,\n\nDUO`
   });
+
+  const [Text, setText] = useState(`<br/>Poštovani,<br/><br/>vaša šifra za pristup sistemu je ###password###<br/><br/><br/>Srdačan pozdrav,<br/><br/>DUO`);
 
 
   const [course, setCourse] = useState([]);
@@ -286,7 +290,7 @@ export default function Create() {
   function passwordGenerator(length) {
     var result = "";
     var characters =
-      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()<>,.?/[]{}-=_+|/0123456789";
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#$0123456789";
     var charactersLength = characters.length;
     for (var i = 0; i < length; i++) {
       result += characters.charAt(Math.floor(Math.random() * charactersLength));
@@ -302,15 +306,15 @@ export default function Create() {
    
 
     if (cinputs.email_subject) {
-      if (cinputs.email_message) {
+      if (Text) {
         setShowLoader(true);
 
        // var passwords = ""; //passwordGenerator(12);
 
-       var email_message=cinputs.email_message.replaceAll("###password###",gpassword)
+       var email_message=Text.replaceAll("###password###",gpassword)
       //  const regex = /\\n|\\r\\n|\\n\\r|\\r/g;
       //  email_message=email_message.replace(regex, '<br>');
-
+console.log("convert text",email_message);
         const form = new FormData();
         form.append("email", formemai);
         form.append("password", gpassword);
@@ -344,8 +348,8 @@ export default function Create() {
       password1: "",
       password2: "",
       email_subject: emailText.subject,
-      email_message: emailText.text,
     });
+    setText("<br/>Poštovani,<br/><br/>vaša šifra za pristup sistemu je ###password###<br/><br/><br/>Srdačan pozdrav,<br/><br/>DUO")
   };
 
   const updatePassword = async (e) => {
@@ -1197,7 +1201,7 @@ export default function Create() {
                                 <div className="form-group">
                                   <label>Email message</label>
 
-                                  <textarea
+                                {/**   <textarea
                                     onChange={handleChange}
                                     value={cinputs.email_message}
                                     name="email_message"
@@ -1206,7 +1210,11 @@ export default function Create() {
                                     id="exampleFormControlTextarea1"
                                     rows="10"
                                    defaultValue={emailText.text}
-                                  />
+                                  /> */}
+
+                               {/**    <TextEditor setText={setText} inialvalue={Text} /> */}
+                               
+                                  <DefaultEditor  value={Text} onChange={(e)=>setText(e.target.value)} />
                                    
                                 </div>
                               </div>

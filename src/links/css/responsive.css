@@ -403,7 +403,14 @@
 }
 
 @media screen and (max-width: 767px) {
+    .course-details-area-mobile{
+        display: block;
+        order: 1;
+    }
 
+    .course-details-area-desk{
+        display: none;
+    }
     #lesson-description{
         min-height: 100px;
     }
@@ -562,9 +569,11 @@
     }
     .course-right {
         padding-right: 15px;
+        order: 2;
     }
     .course-left {
         padding-left: 15px;
+        order: 3;
     }
     .header .header-wrap .logo.desk{
     display:none;
