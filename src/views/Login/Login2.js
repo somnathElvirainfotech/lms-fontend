@@ -309,7 +309,7 @@ export const Login2 = () => {
             {showLoader && <Loader />}
 
             <div className="center_screen" style={{ "backgroundColor": "#d4d6d5" }}>
-                <div className="card  mt-5" style={{ width: "28rem" }}>
+                <div className="card  mt-3" style={{ width: "28rem" }}>
                     <div className="card-body">
                         <div className="form-title text-center">
                             <div className="logo" style={{ paddingBottom: "40px" }}><NavLink to="/"><img src="images/logo.png" alt="header image" /></NavLink><h4 /></div>

@@ -5,11 +5,11 @@
 @media screen and (max-width: 1367px) {
 
     #lesson-description{
-        min-height: 300px;
+        min-height: 400px;
     }
     
     #course-description{
-        min-height: 300px;
+        min-height: 400px;
     }
 
     .header .header-wrap .logo {
@@ -403,6 +403,13 @@
 }
 
 @media screen and (max-width: 767px) {
+
+    .header .header-wrap .hd-sec .lt-side .hd-src form 
+    {
+        justify-content: center; 
+        margin: 10px 0 0 0;
+    }
+
     .course-details-area-mobile{
         display: block;
         order: 1;
@@ -547,6 +554,13 @@
     }
     .header .header-wrap .hd-sec .lt-side .hd-src .form-control{
         font-size: 14px;
+        max-width: 100%; 
+        width: 100%;
+    }
+    .respo-des 
+    {
+        margin: 0 !important;
+        margin-top: 10px !important;
     }
     .header .header-wrap .logo {
         max-width: 250px;
@@ -600,6 +614,10 @@
     padding: 6px 15px;
     /* margin: 4px 0px 0 31px; */
     float: right;
+}
+
+.my-course-content h5{
+    margin-top:  6px;
 }
 
 }

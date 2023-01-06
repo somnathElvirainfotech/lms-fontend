@@ -100,7 +100,7 @@ p {
 }
 
 .header .header-wrap .hd-sec .lt-side .cat-menu a {
-    font-size: 13px;
+    font-size: 18px;
     line-height: 1.2;
     color: #000;
     padding: 0;
@@ -3550,7 +3550,7 @@ td {
 }
 
 .lms-right-side-menu #accordion {
-    height: 550px;
+    height: 840px;
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -3630,3 +3630,7 @@ td {
     .course-details-area-desk{
         display: block;
     }
+
+.my-course-img .img{
+
+}

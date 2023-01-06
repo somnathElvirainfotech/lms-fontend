@@ -741,9 +741,10 @@ export const EditProfile = () => {
               )}
 
               {security && user.login_type=="local" && (
-                <div className="profile-edit-form-right  " id="security">
+                <div className="profile-edit-form-right" id="security">
                   <form id="securityForm" method="post" onSubmit={PasswordChange}>
-                    <div className="form-row">
+                    <div className="form-row ">
+                    <div className="col-md-2"></div>
                       <div className="col-md-8">
                         <div className="form-group">
                           <label>{langObj.enter_current_password}</label>
@@ -758,6 +759,8 @@ export const EditProfile = () => {
                           />
                         </div>
                       </div>
+                      <div className="col-md-2"></div>
+                      <div className="col-md-2"></div>
                       <div className="col-md-8">
                         <div className="form-group">
                           <label>{langObj.enter_new_password}</label>
@@ -772,9 +775,11 @@ export const EditProfile = () => {
                           />
                         </div>
                       </div>
+                      <div className="col-md-2"></div>
                     </div>
 
                     <div className="form-row">
+                    <div className="col-md-2"></div>
                       <div className="col-md-8">
                         <div className="form-group">
                           <label>{langObj.re_enter_new_password}</label>
@@ -789,9 +794,10 @@ export const EditProfile = () => {
                           />
                         </div>
                       </div>
+                      <div className="col-md-2"></div>
                     </div>
 
-                    <button style={{width:"20%"}} type="submit" className="btn">
+                    <button style={{width:"30%"}} type="submit" className="btn mt-3">
                       CHANGE
                     </button>
                   </form>

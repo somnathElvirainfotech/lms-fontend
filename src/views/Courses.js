@@ -745,7 +745,7 @@ export default function Course() {
               </div>
             </form>   */}
 
-            <nav className="navbar navbar-expand-lg navbar-light justify-content-end">
+            <nav className="navbar navbar-expand-lg navbar-light justify-content-start">
               <button
                 className="navbar-toggler"
                 type="button"

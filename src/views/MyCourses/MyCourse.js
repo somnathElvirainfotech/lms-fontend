@@ -413,7 +413,7 @@ export default function MyCourse() {
                                     .course_name,enrollmentcourse.course_details[0]
                                     .id)} >
                                     <img                                
-
+                                    
                                       src={enrollmentcourse.course_details.length>0 && enrollmentcourse.course_details[0].image}
 
                                       className="img-fluid"
