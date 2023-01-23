@@ -27,7 +27,9 @@ import ReactPaginate from "react-paginate";
 import Loader from "./Loader";
 import EnrollmentService from "../services/EnrollmentService";
 import XapiService from "../services/XapiService";
-import StaticRating from "./StaticRating";
+
+//-------------------------- static rating star ---------------------------------------
+import { Rating } from "react-simple-star-rating";
 
 import ProgressBar from "@ramonak/react-progress-bar";
 import $ from "jquery";
@@ -39,6 +41,8 @@ function useQuery() {
 export default function Course() {
   // loader
   const [showLoader, setShowLoader] = useState(false);
+
+  const [starChang, setStarChang] = useState(0);
 
   let query = useQuery();
   var location = useLocation();
@@ -421,6 +425,7 @@ export default function Course() {
       temp.push(item);
     });
     console.log("course all ====== ", temp);
+
     setCurrentPageData(temp);
     setShowLoader(false);
   }
@@ -441,6 +446,7 @@ export default function Course() {
 
     setNoCourse(temp.length);
     setCourses([...temp]);
+    setCurrentPageData([]);
     getDataPagi(temp, 0 * PER_PAGE);
 
     // -----------------------------------------------
@@ -503,6 +509,7 @@ export default function Course() {
       } else {
         setNoCourse(responce.data.data.length);
         setCourses([...responce.data.data]);
+        setCurrentPageData([]);
         getDataPagi(responce.data.data, 0 * PER_PAGE);
       }
     })();
@@ -610,6 +617,7 @@ export default function Course() {
     } else {
       setNoCourse(responce.data.data.length);
       setCourses([...responce.data.data]);
+      setCurrentPageData([]);
       getDataPagi(responce.data.data, 0 * PER_PAGE);
     }
   };
@@ -669,11 +677,12 @@ export default function Course() {
         </div>
       </div>
 
-      {/* filter */}
-      <div className="">
-        <div className="container">
-          <div className="course-inner">
-            {/**    
+      <div className="cover-area">
+        {/* filter */}
+        <div className="">
+          <div className="container">
+            <div className="course-inner">
+              {/**    
          <form onSubmit={FormSubmit} method="post">
               <div className="form-group">
                 <select
@@ -745,142 +754,142 @@ export default function Course() {
               </div>
             </form>   */}
 
-            <nav className="navbar navbar-expand-lg navbar-light justify-content-start">
-              <button
-                className="navbar-toggler"
-                type="button"
-                data-toggle="collapse"
-                data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent"
-                aria-expanded="false"
-                aria-label="Toggle navigation"
-              >
-                <span className="">
-                  {" "}
-                  <i class="fa fa-bars"></i>
-                </span>
-              </button>
-              <div
-                className="collapse navbar-collapse"
-                id="navbarSupportedContent"
-              >
-                <ul className="navbar-nav mr-auto dropdown">
-                  <div className="btn-group mr-2 mt-1">
-                    <button
-                      type="button"
-                      style={{
-                        backgroundColor: "#fff",
-                        
-                      }}
-                      className="btn active_category common_category "
-                      id="cateAll"
-                      
-                      onClick={() => {
-                        $(".btn").removeClass(" active_category");
-                        $("#cateAll").addClass("active_category");
-                        $(`.subcategory_menu`).hide()
-                        return FormSubmit("");
-                      }}
-                    >
-                      All
-                    </button>
-                  </div>
+              <nav className="navbar navbar-expand-lg navbar-light justify-content-end">
+                <button
+                  className="navbar-toggler"
+                  type="button"
+                  data-toggle="collapse"
+                  data-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation"
+                >
+                  <span className="">
+                    {" "}
+                    <i class="fa fa-bars"></i>
+                  </span>
+                </button>
+                <div
+                  className="collapse navbar-collapse"
+                  id="navbarSupportedContent"
+                >
+                  <ul className="navbar-nav mr-auto dropdown">
+                    <div className="btn-group mr-2 mt-1">
+                      <button
+                        type="button"
+                        style={{
+                          backgroundColor: "#fff",
+                        }}
+                        className="btn active_category common_category "
+                        id="cateAll"
+                        onClick={() => {
+                          $(".btn").removeClass(" active_category");
+                          $("#cateAll").addClass("active_category");
+                          $(`.subcategory_menu`).hide();
+                          return FormSubmit("");
+                        }}
+                      >
+                        All
+                      </button>
+                    </div>
 
-                  {category.length &&
-                    category.map((pitem, i) => (
-                      <>
-                        <div className="btn-group mr-2 mt-1 category_menu">
-                          <button
-                            style={{
-                              backgroundColor: "#fff",
-                              
-                              
-                            }}
-                            type="button"
-                            className="btn nav-item common_category "
-                            
-                            id={`p_cate_${i + 1}`}
-                            onClick={() => {
-                              $(".btn").removeClass(" active_category");
-                              $(`#p_cate_${i + 1}`).addClass("active_category");
-                              $(`.subcategory_menu`).hide()
-                              $(`#subcategory_menu${i}`).toggle()
+                    {category.length &&
+                      category.map((pitem, i) => (
+                        <>
+                          <div className="btn-group mr-2 mt-1 category_menu">
+                            <button
+                              style={{
+                                backgroundColor: "#fff",
+                              }}
+                              type="button"
+                              className="btn nav-item common_category "
+                              id={`p_cate_${i + 1}`}
+                              onClick={() => {
+                                $(".btn").removeClass(" active_category");
+                                $(`#p_cate_${i + 1}`).addClass(
+                                  "active_category"
+                                );
+                                $(`.subcategory_menu`).hide();
+                                $(`#subcategory_menu${i}`).toggle();
 
-                              return FormSubmit(pitem.id);
-                            }}
-                          >
-                            {pitem.c_name.toUpperCase()}
-                          </button>
+                                return FormSubmit(pitem.id);
+                              }}
+                            >
+                              {pitem.c_name.toUpperCase()}
+                            </button>
 
-                          {pitem.sub_category.length > 0 && (
-                            <div id={`subcategory_menu${i}`} className="subcategory_menu">
-                              {pitem.sub_category.map((subItem, j) => (
-                                <>
-                                  <small
-                                    onClick={() => FormSubmit(subItem.id)}
-                                    className="dropdown-item "
-                                    style={{cursor:"pointer"}}
-                                  >
-                                    {subItem.c_name.toUpperCase()}
-                                  </small>
-                                  {subItem.sub_category.map((child, k) => (
-                                    <>
-                                      <small
-                                        onClick={() => FormSubmit(child.id)}
-                                        className="dropdown-item"
-                                        style={{cursor:"pointer"}}
-                                      >
-                                        {child.c_name.toUpperCase()}
-                                      </small>
-                                    </>
-                                  ))}
-                                </>
-                              ))}
-                            </div>
-                          )}
-                        </div>
-                      </>
-                    ))}
-                </ul>
-              </div>
-            </nav>
+                            {pitem.sub_category.length > 0 && (
+                              <div
+                                id={`subcategory_menu${i}`}
+                                className="subcategory_menu"
+                              >
+                                {pitem.sub_category.map((subItem, j) => (
+                                  <>
+                                    <small
+                                      onClick={() => FormSubmit(subItem.id)}
+                                      className="dropdown-item "
+                                      style={{ cursor: "pointer" }}
+                                    >
+                                      {subItem.c_name.toUpperCase()}
+                                    </small>
+                                    {subItem.sub_category.map((child, k) => (
+                                      <>
+                                        <small
+                                          onClick={() => FormSubmit(child.id)}
+                                          className="dropdown-item"
+                                          style={{ cursor: "pointer" }}
+                                        >
+                                          {child.c_name.toUpperCase()}
+                                        </small>
+                                      </>
+                                    ))}
+                                  </>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </>
+                      ))}
+                  </ul>
+                </div>
+              </nav>
 
-            {/** filter card ------- */}
+              {/** filter card ------- */}
 
-            {/** end filter card ------------ */}
+              {/** end filter card ------------ */}
+            </div>
           </div>
         </div>
-      </div>
-      {/* end filter */}
+        {/* end filter */}
 
-      <div className="courses-sec">
-        <div className="container">
-          <div className="courses-ttl">
-            <h2>{langObj.home_course}</h2>
-            {/**   <p>{noCourse} results on LMS</p> */}
-          </div>
-          <div className="courses-wrap">
-            <div className="row">
-              {currentPageData.map((course) => (
-                <div
-                  className="col-lg-3 col-md-6 col-sm-12"
-                  onChange={(e) => setSelectedCourse(e.target.value)}
-                >
-                  <Link
-                    to={`/courses/${course.course_name.replaceAll(" ", "-")}`}
-                    state={{ singleCourseId: course.id }}
+        <div className="courses-sec">
+          <div className="container">
+            <div className="courses-ttl">
+              <h2>{langObj.home_course}</h2>
+              {/**   <p>{noCourse} results on LMS</p> */}
+            </div>
+            <div className="courses-wrap">
+              <div className="row">
+                {currentPageData.map((course) => (
+                  <div
+                    className="col-lg-3 col-md-6 col-sm-12"
+                    onChange={(e) => setSelectedCourse(e.target.value)}
                   >
-                    <div className="populer-box">
-                      <div className="img-tham">
-                        <img
-                          src={course.image}
-                          alt=""
-                          height="84px"
-                          width="97px"
-                        />
-                      </div>
-                      <div className="text-box">
-                        {/*    <div className="clg-box">
+                    <Link
+                      to={`/courses/${course.course_name.replaceAll(" ", "-")}`}
+                      state={{ singleCourseId: course.id }}
+                    >
+                      <div className="populer-box">
+                        <div className="img-tham">
+                          <img
+                            src={course.image}
+                            alt=""
+                            height="84px"
+                            width="97px"
+                          />
+                        </div>
+                        <div className="text-box">
+                          {/*    <div className="clg-box">
                           <img
                             src={course.avatar_image}
                             alt=""
@@ -888,146 +897,170 @@ export default function Course() {
                             height="72px"
                         /> 
                         </div> */}
-                        {/*    <p className="courseText mt-2">{course.creator_name}</p>  */}
-                        <h3 className="">
-                          {course.course_name && textShort2(course.course_name)}
-                        </h3>
+                          {/*    <p className="courseText mt-2">{course.creator_name}</p>  */}
+                          <h3 className="">
+                            {course.course_name &&
+                              textShort2(course.course_name)}
+                          </h3>
 
-                        <p className="courseText">
-                          <Markup
-                            content={`${
-                              course.short_description &&
-                              textShort(course.short_description)
-                            }`}
-                          />
-                        </p>
-
-                        <div className="courseText2">
-                          <p
-                            style={{ fontSize: "15px", fontFamily: "Calibri" }}
-                          >
-                            {langObj.number_of_lesson}{" "}
-                            {course.total_lesson_vedio}
+                          <p className="courseText">
+                            <Markup
+                              content={`${
+                                course.short_description &&
+                                textShort(course.short_description)
+                              }`}
+                            />
                           </p>
 
-                          <p
-                            style={{ fontSize: "15px", fontFamily: "Calibri" }}
-                          >
-                            {langObj.course_duration} {course.course_duration}
-                          </p>
+                          <div className="courseText2">
+                            <p
+                              style={{
+                                fontSize: "15px",
+                                fontFamily: "Calibri",
+                              }}
+                            >
+                              {langObj.number_of_lesson}{" "}
+                              {course.total_lesson_vedio}
+                            </p>
+
+                            <p
+                              style={{
+                                fontSize: "15px",
+                                fontFamily: "Calibri",
+                              }}
+                            >
+                              {langObj.course_duration} {course.course_duration}
+                            </p>
+
+                            <p
+                              style={{
+                                fontSize: "15px",
+                                fontFamily: "Calibri",
+                              }}
+                            >
+                              {langObj.quiz_test}: {course.quize}
+                            </p>
+                          </div>
+
+                          {course.certificate_id != 0 && (
+                            <span
+                              className="viwers"
+                              style={{
+                                display: "-webkit-box",
+                                marginLeft: "0%",
+                                marginTop: "5px",
+                              }}
+                            >
+                              {" "}
+                              <img
+                                style={{ width: "25px" }}
+                                src="/images/clogo.png"
+                                alt=""
+                              />{" "}
+                            </span>
+                          )}
+
+                          {course.rating_details &&
+                            course.rating_details.map((item) => (
+                              <div className="">
+                                <ul className="rating">
+                                  <li>
+                                  
+                                  <Rating
+                                    initialValue={item.rating_number}
+                                    iconsCount={5}
+                                    transition={true}
+                                    readonly={true}
+                                    size={25}
+                                    allowFraction={true}
+                                  />
+                                 
+                                    <span
+                                      style={{
+                                        fontSize: "15px",
+                                        color: "#707070",
+                                      }}
+                                      className="ml-2"
+                                    >
+                                      {item.rating_number} ({item.total_rating})
+                                    </span>
+                                  </li>
+                                </ul>
+                              </div>
+                            ))}
+
+                          
 
                           <p
-                            style={{ fontSize: "15px", fontFamily: "Calibri" }}
-                          >
-                            {langObj.quiz_test}: {course.quize}
-                          </p>
-                        </div>
-
-                        {course.certificate_id != 0 && (
-                          <span
-                            className="viwers"
-                            style={{
-                              display: "-webkit-box",
-                              marginLeft: "0%",
-                              marginTop: "5px",
-                            }}
+                            className="courseText"
+                            style={{ fontSize: "16px" }}
                           >
                             {" "}
-                            <img
-                              style={{ width: "25px" }}
-                              src="/images/clogo.png"
-                              alt=""
-                            />{" "}
-                          </span>
-                        )}
+                            {course.updated_at != null
+                              ? moment(course.updated_at).format("MM/YYYY")
+                              : moment(course.created_at).format("MM/YYYY")}
+                          </p>
 
-                        {course.rating_details &&
-                          course.rating_details.map((item) => (
-                            <div className="">
-                              <ul className="rating">
-                                <li>
-                                  <StaticRating value={item.rating_number} />
+                          {/** language */}
+                          {/**    <p className="courseText mt-1" style={{ fontSize: "13px" }}>{course.language_details.length > 0 && course.language_details[0].name}</p> */}
 
-                                  <span
-                                    style={{
-                                      fontSize: "15px",
-                                      color: "#707070",
-                                    }}
-                                    className="ml-2"
-                                  >
-                                    {item.rating_number} ({item.total_rating})
-                                  </span>
-                                </li>
-                              </ul>
-                            </div>
-                          ))}
+                          {/* <span className="viwers">{course.total_enroll_no} Viewers</span> */}
 
-                        <p className="courseText" style={{ fontSize: "16px" }}>
-                          {" "}
-                          {course.updated_at != null
-                            ? moment(course.updated_at).format("MM/YYYY")
-                            : moment(course.created_at).format("MM/YYYY")}
-                        </p>
-
-                        {/** language */}
-                        {/**    <p className="courseText mt-1" style={{ fontSize: "13px" }}>{course.language_details.length > 0 && course.language_details[0].name}</p> */}
-
-                        {/* <span className="viwers">{course.total_enroll_no} Viewers</span> */}
-
-                        {course.enrollment_details.length > 0 &&
-                          user.user_role == 5 && (
-                            <>
-                              {course.enrollment_details[0].course_progress !=
-                                0 && (
-                                <ProgressBar
-                                  className="progressBarPosition"
-                                  labelAlignment="center"
-                                  labelClassName="progressBarPosition-lable"
-                                  completed={
-                                    course.enrollment_details[0].course_progress
-                                  }
-                                  bgColor={
-                                    course.enrollment_details[0]
-                                      .course_progress == 100
-                                      ? "green"
-                                      : "#023e86"
-                                  }
-                                  borderRadius={"2px"}
-                                  height={"18px"}
-                                />
-                              )}
-                            </>
-                          )}
+                          {course.enrollment_details.length > 0 &&
+                            user.user_role == 5 && (
+                              <>
+                                {course.enrollment_details[0].course_progress !=
+                                  0 && (
+                                  <ProgressBar
+                                    className="progressBarPosition"
+                                    labelAlignment="center"
+                                    labelClassName="progressBarPosition-lable"
+                                    completed={
+                                      course.enrollment_details[0]
+                                        .course_progress
+                                    }
+                                    bgColor={
+                                      course.enrollment_details[0]
+                                        .course_progress == 100
+                                        ? "green"
+                                        : "#023e86"
+                                    }
+                                    borderRadius={"2px"}
+                                    height={"18px"}
+                                  />
+                                )}
+                              </>
+                            )}
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                </div>
-              ))}
-            </div>
-            {/* pagination */}
-            {course.length > PER_PAGE && (
-              <div className="pagination-sec">
-                <ReactPaginate
-                  previousLabel={"← Previous"}
-                  nextLabel={"Next →"}
-                  pageCount={pageCount}
-                  onPageChange={handlePageClick}
-                  breakLabel={"..."}
-                  marginPagesDisplayed={"2"}
-                  pageRangeDisplayed={"3"}
-                  previousClassName={"page-item"}
-                  previousLinkClassName={"page-link"}
-                  nextClassName={"page-item"}
-                  nextLinkClassName={"page-link"}
-                  activeClassName={"pagination_active"}
-                  containerClassName={"pagination justify-content-center"}
-                  pageClassName={"page-item"}
-                  pageLinkClassName={"page-link"}
-                  breakClassName={"page-item"}
-                  breakLinkClassName={"page-link"}
-                />
+                    </Link>
+                  </div>
+                ))}
+              </div>
+              {/* pagination */}
+              {course.length > PER_PAGE && (
+                <div className="pagination-sec">
+                  <ReactPaginate
+                    previousLabel={"← Previous"}
+                    nextLabel={"Next →"}
+                    pageCount={pageCount}
+                    onPageChange={handlePageClick}
+                    breakLabel={"..."}
+                    marginPagesDisplayed={"2"}
+                    pageRangeDisplayed={"3"}
+                    previousClassName={"page-item"}
+                    previousLinkClassName={"page-link"}
+                    nextClassName={"page-item"}
+                    nextLinkClassName={"page-link"}
+                    activeClassName={"pagination_active"}
+                    containerClassName={"pagination justify-content-center"}
+                    pageClassName={"page-item"}
+                    pageLinkClassName={"page-link"}
+                    breakClassName={"page-item"}
+                    breakLinkClassName={"page-link"}
+                  />
 
-                {/**      <nav data-pagination>
+                  {/**      <nav data-pagination>
                              <a href="#" disabled><i className="fa fa-chevron-left"></i></a>
                              <ul>
                                  <li className="current"><a href="#">1</a></li>
@@ -1039,9 +1072,10 @@ export default function Course() {
                              </ul>
                              <a href="#"><i className="fa fa-chevron-right"></i> </a>
                          </nav> */}
-              </div>
-            )}
-            {/* end pagination */}
+                </div>
+              )}
+              {/* end pagination */}
+            </div>
           </div>
         </div>
       </div>

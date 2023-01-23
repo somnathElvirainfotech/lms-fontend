@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactStars from "react-rating-stars-component";
-
+ 
 function StaticRating(props) {
 
     var thirdExample = {
@@ -11,12 +11,10 @@ function StaticRating(props) {
         color: "grey",
         activeColor: "#ebc934",
         edit:false
-
     };
 
-    return (
-        <ReactStars {...thirdExample} />
-    )
+    return <ReactStars {...thirdExample} />;
+    
 }
 
 export default StaticRating

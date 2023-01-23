@@ -228,7 +228,7 @@ export default function Singlecourse() {
       var reviews = await CommentRatingService.getByCourseId(
         singleCourseId,
         "",
-        5
+        10
       );
       setReview([...reviews.data.data]);
 
@@ -700,7 +700,7 @@ export default function Singlecourse() {
       var reviews = await CommentRatingService.getByCourseId(
         singleCourseId === 0 ? courseID : singleCourseId,
         "",
-        5
+        10
       );
       setReview([...reviews.data.data]);
       console.log("lllllllllllllllll:", reviews.data);
@@ -1069,7 +1069,7 @@ export default function Singlecourse() {
   var closeRating = async () => {
     setShowLoader(true);
 
-    var reviews = await CommentRatingService.getByCourseId(courseID, "", 5);
+    var reviews = await CommentRatingService.getByCourseId(courseID, "", 18);
     setReview([...reviews.data.data]);
     console.log("lllllllllllllllll:", reviews.data);
     var creviews = await CommentRatingService.getByCourseId(
@@ -1111,7 +1111,7 @@ export default function Singlecourse() {
       var reviews = await CommentRatingService.getByCourseId(
         singleCourseId === 0 ? courseID : singleCourseId,
         "",
-        5
+        10
       );
       setReview([...reviews.data.data]);
       console.log("lllllllllllllllll:", reviews.data);
@@ -1677,7 +1677,7 @@ export default function Singlecourse() {
                           <div className="tab-btnarea">
                             {chkComment && enrollment ? (
                               <button
-                                href="#"
+                    
                                 className="sec-btn comment-add-btn"
                                 data-toggle="modal"
                                 data-target=".raddgroupModal"
@@ -1698,7 +1698,7 @@ export default function Singlecourse() {
                               {langObj.view_all_reviews}
                             </Link> */}
 
-                            {!viewAllRating && (
+                            {(!viewAllRating ) && (
                               <button
                                 onClick={getReview}
                                 type="button"
@@ -1708,7 +1708,7 @@ export default function Singlecourse() {
                               </button>
                             )}
 
-                            {viewAllRating && (
+                            {(viewAllRating ) && (
                               <button
                                 onClick={closeRating}
                                 type="button"

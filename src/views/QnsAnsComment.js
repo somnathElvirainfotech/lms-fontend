@@ -30,7 +30,7 @@ function QnsAnsComment(props) {
   const [parent, setParent] = useState(false);
 
   useEffect(() => {
-    commentSearch(course_id, "",5);
+    commentSearch(course_id, "",10);
   }, []);
 
   var closeModal = () => {
@@ -71,7 +71,7 @@ function QnsAnsComment(props) {
       toast.error(responce.data.msg);
     }
 
-    commentSearch(course_id, "",5);
+    commentSearch(course_id, "",10);
   };
 
   const [reqload,setReqLoad]=useState(false);
@@ -103,7 +103,7 @@ function QnsAnsComment(props) {
       toast.error(responce.data.msg);
     }
 
-    commentSearch(course_id, "",5);
+    commentSearch(course_id, "",10);
   };
 
 
@@ -157,7 +157,7 @@ function QnsAnsComment(props) {
   }
 
   var closeQA=async()=>{
-    await commentSearch(course_id, "",5);
+    await commentSearch(course_id, "",10);
     $(".review-wrap").removeClass("review-wrap-scroll");
     setLimit(false)
    }
@@ -172,7 +172,7 @@ function QnsAnsComment(props) {
       setLangObj(SerbianCyrilic);
     } else if (languageList.language_name === "3") {
       setLangObj(SerbianLatin);
-    }
+    } 
   }, [languageList.language_name]);
 
   return (

@@ -7,6 +7,7 @@ body {
     padding: 0;
     margin: 0;
     font-family: 'Poppins', sans-serif;
+    /* padding-bottom: 130px; */
 }
 
 a,
@@ -2391,7 +2392,7 @@ select {
 }
 
 .tab-btnarea {
-    border-bottom: 1px solid #c1c1c1;
+    /* border-bottom: 1px solid #c1c1c1; */
     padding-top: 30px;
     margin-bottom: 30px;
 }
@@ -3354,9 +3355,10 @@ td {
     justify-content: flex-end;
 } */
 
+
 .review-wrap-scroll {
-    height: 587px;
-    max-height: 587px;
+    /* height: 2000px; */
+    max-height: 2000px;
     overflow-y: auto;
 }
 
@@ -3634,3 +3636,46 @@ td {
 .my-course-img .img{
 
 }
+
+.footer 
+{
+    position: relative; 
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 30px 0;
+}
+
+
+#lesson-description {
+    min-height: 600px;
+  }
+
+  #course-description {
+    min-height: 600px;
+  }
+
+  #reviews {
+    min-height: 600px;
+  }
+
+  #q-a {
+    min-height: 600px;
+  }
+
+  .cover-area {
+    height: auto;
+    clear: both;
+    min-height: 100vh;
+}
+
+.course-inner .navbar-nav 
+{
+    margin: 0 auto;
+} 
+
+.navbar-nav button 
+{
+    width: 100%;
+}
+
