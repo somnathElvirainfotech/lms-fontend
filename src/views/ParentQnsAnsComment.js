@@ -84,7 +84,7 @@ function ParentQnsAnsComment(props) {
     const value = event.target.value;
     setText((values) => ({ ...values, [name]: value }));
     // seterror('');
-    console.log(Text);
+    // console.log(Text);
   };
 
   const [c_reqload,setChildReqLoad]=useState(false)

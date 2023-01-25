@@ -38,7 +38,7 @@ export default function SingleTask() {
 
 
     var setLession = (e) => {
-        console.log(e)
+        // console.log(e)
         //   setLess()
     }
 
@@ -94,7 +94,7 @@ export default function SingleTask() {
         color: "grey",
         activeColor: "#ebc934",
         onChange: newValue => {
-            console.log(`Example 3: new value is ${newValue}`);
+            // console.log(`Example 3: new value is ${newValue}`);
             input.rating = newValue;
         }
     };
@@ -121,7 +121,7 @@ export default function SingleTask() {
 
         var responce = await CommentRatingService.createTask(data);
 
-        console.log(responce.data)
+        // console.log(responce.data)
 
         input.comment = '';
         input.rating = '';
@@ -145,7 +145,7 @@ export default function SingleTask() {
             task_id: task
         }
         var reviews = await CommentRatingService.statusTask(data)
-        console.log(333333, reviews.data)
+        // console.log(333333, reviews.data)
         setChkComment(reviews.data.status)
     }
 

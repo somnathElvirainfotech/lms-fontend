@@ -140,13 +140,13 @@ function SingleXapiModal() {
                 for (var singleRes of responce.data.statements) {
                     // console.log(singleRes.object.definition.name);
 
-                    console.log("--", chkDuplicate(tempArr, singleRes.context.extensions["ispring://view_id"]));
-                    console.log("--", chkDuplicate2(tempArr, singleRes.object.definition.name.und));
+                    // console.log("--", chkDuplicate(tempArr, singleRes.context.extensions["ispring://view_id"]));
+                    // console.log("--", chkDuplicate2(tempArr, singleRes.object.definition.name.und));
 
                     if (chkDuplicate(tempArr, singleRes.context.extensions["ispring://view_id"]) && chkDuplicate2(tempArr, singleRes.object.definition.name.und) &&
                         chkDuplicate3(tempArr, singleRes.context.contextActivities.grouping[0].id)) {
 
-                        console.log("object ", singleRes.context.extensions["ispring://view_id"]);
+                        // console.log("object ", singleRes.context.extensions["ispring://view_id"]);
 
                         if ("definition" in singleRes.object) {
                             if ("name" in singleRes.object.definition) {
@@ -225,15 +225,15 @@ function SingleXapiModal() {
 
         //         if (responce.data.statements.length > 0) {
         //             for (var singleRes of responce.data.statements) {
-        //                 // console.log(singleRes.object.definition.name);
+                        // console.log(singleRes.object.definition.name);
 
-        //                 console.log("--", chkDuplicate(tempArr, singleRes.context.extensions["ispring://view_id"]));
-        //                 console.log("--", chkDuplicate2(tempArr, singleRes.object.definition.name.und));
+                        // console.log("--", chkDuplicate(tempArr, singleRes.context.extensions["ispring://view_id"]));
+                        // console.log("--", chkDuplicate2(tempArr, singleRes.object.definition.name.und));
 
         //                 if (chkDuplicate(tempArr, singleRes.context.extensions["ispring://view_id"]) && chkDuplicate2(tempArr, singleRes.object.definition.name.und) &&
         //                     chkDuplicate3(tempArr, singleRes.context.contextActivities.grouping[0].id)) {
 
-        //                     console.log("object ", singleRes.context.extensions["ispring://view_id"]);
+                            // console.log("object ", singleRes.context.extensions["ispring://view_id"]);
 
         //                     if ("definition" in singleRes.object) {
         //                         if ("name" in singleRes.object.definition) {
@@ -242,11 +242,11 @@ function SingleXapiModal() {
         //                                 Date.parse(singleRes.timestamp) > Date.parse(item.timestamp)
         //                             ) {
 
-        //                                 //  console.log("one");
+                                         console.log("one");
 
 
 
-        //                                 //   console.log("sssss");
+                                          console.log("sssss");
 
         //                                 if ("result" in singleRes) {
         //                                     if (
@@ -254,7 +254,7 @@ function SingleXapiModal() {
         //                                         singleRes.result.completion == true
         //                                     ) {
         //                                         if ("success" in singleRes.result) {
-        //                                             // console.log("item  ", singleRes.result.success);
+                                                    // console.log("item  ", singleRes.result.success);
 
         //                                             if (singleRes.result.success==false) {
         //                                                 item.passed = false;
@@ -299,7 +299,7 @@ function SingleXapiModal() {
         // ----------------------------
 
 
-        console.log("xapi data", xapiCourse);
+        // console.log("xapi data", xapiCourse);
 
 
 
@@ -314,10 +314,10 @@ function SingleXapiModal() {
             // result save----------
 
             for (var i of xapiCourse) {
-                console.log("x course ", i.course_name);
+                // console.log("x course ", i.course_name);
                 if (i.passed && i.updateTimestamp > i.timestamp) {
                     if (i.enrollment_status == "completed") {
-                        console.log("sub one");
+                        // console.log("sub one");
                         await XapiService.saveResult({
                             enrollment_id: i.enrollment_id,
                             course_name: i.course_name,
@@ -357,7 +357,7 @@ function SingleXapiModal() {
 
 
             var xresponce = await EnrollmentService.getUserEnrollmentList();
-            console.log("xapi_result ", xapi_course_name)
+            // console.log("xapi_result ", xapi_course_name)
 
             var xdata = [];
             for (var i of xresponce.data.data) {

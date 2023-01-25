@@ -128,7 +128,7 @@ export default function EnrollmentSec() {
       xapiCourse.push(aa);
     }
 
-    // console.log(xapiCourse);
+    // // console.log(xapiCourse);
 
     // --------------------------------------------
 
@@ -151,15 +151,15 @@ export default function EnrollmentSec() {
 
       if (responce.data.statements.length > 0) {
         for (var singleRes of responce.data.statements) {
-          // console.log(singleRes.object.definition.name);
+          // // console.log(singleRes.object.definition.name);
 
-          console.log("--", chkDuplicate(tempArr, singleRes.context.extensions["ispring://view_id"]));
-          console.log("--", chkDuplicate2(tempArr, singleRes.object.definition.name.und));
+          // console.log("--", chkDuplicate(tempArr, singleRes.context.extensions["ispring://view_id"]));
+          // console.log("--", chkDuplicate2(tempArr, singleRes.object.definition.name.und));
 
           if (chkDuplicate(tempArr, singleRes.context.extensions["ispring://view_id"]) && chkDuplicate2(tempArr, singleRes.object.definition.name.und) &&
             chkDuplicate3(tempArr, singleRes.context.contextActivities.grouping[0].id)) {
 
-            console.log("object ", singleRes.context.extensions["ispring://view_id"]);
+            // console.log("object ", singleRes.context.extensions["ispring://view_id"]);
 
             if ("definition" in singleRes.object) {
               if ("name" in singleRes.object.definition) {
@@ -168,11 +168,11 @@ export default function EnrollmentSec() {
                   Date.parse(singleRes.timestamp) > Date.parse(item.timestamp)
                 ) {
 
-                  //  console.log("one");
+                  //  // console.log("one");
 
 
 
-                  //   console.log("sssss");
+                  //   // console.log("sssss");
 
                   if ("result" in singleRes) {
                     if (
@@ -180,7 +180,7 @@ export default function EnrollmentSec() {
                       singleRes.result.completion == true
                     ) {
                       if ("success" in singleRes.result) {
-                        console.log("item  ", singleRes.result.success);
+                        // console.log("item  ", singleRes.result.success);
 
                         if (singleRes.result.success) {
                           item.passed = true;
@@ -236,15 +236,15 @@ export default function EnrollmentSec() {
 
         if (responce.data.statements.length > 0) {
           for (var singleRes of responce.data.statements) {
-            // console.log(singleRes.object.definition.name);
+            // // console.log(singleRes.object.definition.name);
 
-            console.log("--", chkDuplicate(tempArr, singleRes.context.extensions["ispring://view_id"]));
-            console.log("--", chkDuplicate2(tempArr, singleRes.object.definition.name.und));
+            // console.log("--", chkDuplicate(tempArr, singleRes.context.extensions["ispring://view_id"]));
+            // console.log("--", chkDuplicate2(tempArr, singleRes.object.definition.name.und));
 
             if (chkDuplicate(tempArr, singleRes.context.extensions["ispring://view_id"]) && chkDuplicate2(tempArr, singleRes.object.definition.name.und) &&
               chkDuplicate3(tempArr, singleRes.context.contextActivities.grouping[0].id)) {
 
-              console.log("object ", singleRes.context.extensions["ispring://view_id"]);
+              // console.log("object ", singleRes.context.extensions["ispring://view_id"]);
 
               if ("definition" in singleRes.object) {
                 if ("name" in singleRes.object.definition) {
@@ -253,11 +253,11 @@ export default function EnrollmentSec() {
                     Date.parse(singleRes.timestamp) > Date.parse(item.timestamp)
                   ) {
 
-                    //  console.log("one");
+                    //  // console.log("one");
 
 
 
-                    //   console.log("sssss");
+                    //   // console.log("sssss");
 
                     if ("result" in singleRes) {
                       if (
@@ -265,7 +265,7 @@ export default function EnrollmentSec() {
                         singleRes.result.completion == true
                       ) {
                         if ("success" in singleRes.result) {
-                          // console.log("item  ", singleRes.result.success);
+                          // // console.log("item  ", singleRes.result.success);
 
                           if (singleRes.result.success == false) {
                             item.passed = false;
@@ -309,12 +309,12 @@ export default function EnrollmentSec() {
 
     // ----------------------------
 
-    console.log("xapi data", xapiCourse);
+    // console.log("xapi data", xapiCourse);
 
 
 
     if (xapiCourse.length > 0) {
-      // console.log(xapiCourse);
+      // // console.log(xapiCourse);
 
       // enrollment status updated  ------------------
       await EnrollmentService.enrollmentStatusUpdate(
@@ -324,10 +324,10 @@ export default function EnrollmentSec() {
       // result save----------
 
       for (var i of xapiCourse) {
-        console.log("x course ", i.course_name);
+        // console.log("x course ", i.course_name);
         if (i.passed && i.updateTimestamp > i.timestamp) {
           if (i.enrollment_status == "completed") {
-            console.log("sub one");
+            // console.log("sub one");
             await XapiService.saveResult({
               enrollment_id: i.enrollment_id,
               course_name: i.course_name,
@@ -410,7 +410,7 @@ export default function EnrollmentSec() {
 
   function getDataPagi(data, offset) {
     var temp = [];
-    console.log("offset", offset);
+    // console.log("offset", offset);
     data.slice(offset, offset + PER_PAGE).map((item) => {
       temp.push(item);
     });
@@ -443,7 +443,7 @@ export default function EnrollmentSec() {
       custs = responce.data.data;
     }
 
-    console.log(custs);
+    // console.log(custs);
 
     var data = [];
     for (var item of custs) {
@@ -475,7 +475,7 @@ export default function EnrollmentSec() {
       data.push(temp);
     }
 
-    console.log("csvvvvvvv", data);
+    // console.log("csvvvvvvv", data);
     setCsvData([...data]);
     // return data;
   }
@@ -497,12 +497,12 @@ export default function EnrollmentSec() {
         data.append("std_no", input.std_no != undefined ? input.std_no : "");
 
         var responce = await EnrollmentService.getAll(data);
-        console.log(responce.data.data);
+        // console.log(responce.data.data);
         setEnrollment(responce.data.data);
         getDataPagi(responce.data.data, 0 * PER_PAGE);
       } else if (user.user_role == 5) {
         var responce = await EnrollmentService.getUserEnrollmentList();
-        console.log("user enrollment", responce.data.data);
+        // console.log("user enrollment", responce.data.data);
         setEnrollment(responce.data.data);
         getDataPagi(responce.data.data, 0 * PER_PAGE);
 
@@ -512,7 +512,7 @@ export default function EnrollmentSec() {
 
 
           var xresponce = await EnrollmentService.getUserEnrollmentList();
-          console.log("xapi_result ", getCookie("xapi_result_name"))
+          // console.log("xapi_result ", getCookie("xapi_result_name"))
 
 
           var xdata = [];
@@ -555,7 +555,7 @@ export default function EnrollmentSec() {
         data.append("std_no", "");
 
         var responce = await EnrollmentService.getAll(data);
-        console.log("dddddddd", responce.data.data);
+        // console.log("dddddddd", responce.data.data);
         setEnrollment(responce.data.data);
         getDataPagi(responce.data.data, 0 * PER_PAGE);
       }
@@ -566,11 +566,11 @@ export default function EnrollmentSec() {
     setShowLoader(true);
     if (user.user_role == 4) {
       var responce = await UserService.allCourses();
-      //console.log(responce.data.data)
+      //// console.log(responce.data.data)
       setCourse([...responce.data.data]);
     } else if (user.user_role == 2 || user.user_role == 1) {
       var responce = await CourseService.getAll();
-      //console.log(responce.data.data)
+      //// console.log(responce.data.data)
       setCourse([...responce.data.data]);
     }
     setShowLoader(false);
@@ -581,7 +581,7 @@ export default function EnrollmentSec() {
     const value = event.target.value;
     setInput((values) => ({ ...values, [name]: value }));
     // seterror('');
-    console.log(input);
+    // console.log(input);
   };
 
   const FormSubmit = async (e) => {
@@ -597,7 +597,7 @@ export default function EnrollmentSec() {
       data.append("std_no", input.std_no != undefined ? input.std_no : "");
 
       var responce = await EnrollmentService.getAll(data);
-      console.log("search enroll api ",responce.data.data);
+      // console.log("search enroll api ",responce.data.data);
       setEnrollment(responce.data.data);
       getDataPagi(responce.data.data, 0 * PER_PAGE);
 
@@ -640,7 +640,7 @@ export default function EnrollmentSec() {
       data.append("std_no", input.std_no != undefined ? input.std_no : "");
 
       var responce = await EnrollmentService.getAll(data);
-      console.log(responce.data.data);
+      // console.log(responce.data.data);
       setEnrollment(responce.data.data);
       getDataPagi(responce.data.data, 0 * PER_PAGE);
 
@@ -674,7 +674,7 @@ export default function EnrollmentSec() {
 
     setShowLoader(false);
 
-    // console.log(input)
+    // // console.log(input)
   };
 
   var reset = async () => {
@@ -692,7 +692,7 @@ export default function EnrollmentSec() {
       data.append("std_no", input.std_no != undefined ? input.std_no : "");
 
       var responce = await EnrollmentService.getAll(data);
-      console.log(responce.data.data);
+      // console.log(responce.data.data);
       setEnrollment(responce.data.data);
       getDataPagi(responce.data.data, 0 * PER_PAGE);
 
@@ -735,7 +735,7 @@ export default function EnrollmentSec() {
       data.append("std_no", input.std_no != undefined ? input.std_no : "");
 
       var responce = await EnrollmentService.getAll(data);
-      console.log(responce.data.data);
+      // console.log(responce.data.data);
       setEnrollment(responce.data.data);
       getDataPagi(responce.data.data, 0 * PER_PAGE);
 

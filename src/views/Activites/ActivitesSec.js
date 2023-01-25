@@ -42,7 +42,7 @@ export default function ActivitesSec() {
 
     function getDataPagi(data, offset) {
         var temp = [];
-        console.log("offset", offset);
+        // console.log("offset", offset);
         data.slice(offset, offset + PER_PAGE).map((item) => {
             temp.push(item);
         })
@@ -64,7 +64,7 @@ export default function ActivitesSec() {
     var getActivity = async () => {
         setShowLoader(true)
         // payload.searchType = "course"
-        // console.log("search type",inputs);
+        // // console.log("search type",inputs);
         var responce = await ActivityService.search(inputs);
         setData([...responce.data.data])
         getDataPagi(responce.data.data, (0 * PER_PAGE))
@@ -73,14 +73,14 @@ export default function ActivitesSec() {
     var getCourseList = async () => {
         var responce = await CourseService.getAll();
         setCourse([...responce.data.data]);
-        console.log("all course", responce.data.data);
+        // console.log("all course", responce.data.data);
     }
 
     const handleChange = (event) => {
         const name = event.target.name;
         const value = event.target.value;
         setInputs(values => ({ ...values, [name]: value }))
-        console.log(inputs)
+        // console.log(inputs)
 
 
     }
@@ -176,7 +176,7 @@ export default function ActivitesSec() {
     async function commentRatingDel(id) {
         var responce = await CommentRatingService.delete(id);
         // showCommentList();
-        //console.log(inputs);
+        //// console.log(inputs);
 
         showCommentList()
 
@@ -228,14 +228,14 @@ export default function ActivitesSec() {
         color: "grey",
         activeColor: "#ebc934",
         onChange: newValue => {
-            console.log(`Example 3: new value is ${newValue}`);
+            // console.log(`Example 3: new value is ${newValue}`);
             input.rating = newValue;
         },
 
     };
 
     async function commentEdit(id, rating, comment) {
-        console.log("comment...", rating, comment, id);
+        // console.log("comment...", rating, comment, id);
 
         var payload = {
             rating: rating,
@@ -250,14 +250,14 @@ export default function ActivitesSec() {
     //     const name = event.target.name;
     //     const value = event.target.value;
     //     setInput(values => ({ ...values, [name]: value }))
-    //     console.log(input)
+    //     // console.log(input)
     // }
 
     var handler = (e) => {
         const name = e.target.name;
         const value = e.target.value;
         setInput(values => ({ ...values, [name]: value }))
-        console.log(input);
+        // console.log(input);
     }
 
     var closeModal = () => {
@@ -275,7 +275,7 @@ export default function ActivitesSec() {
 
     var ratingCreate = async () => {
 
-        console.log("ddddddddddddd");
+        // console.log("ddddddddddddd");
 
 
         var data = new FormData();
@@ -285,7 +285,7 @@ export default function ActivitesSec() {
 
         var responce = await CommentRatingService.update(data);
 
-        console.log(responce.data.data)
+        // console.log(responce.data.data)
 
         // input.comment = '';
         // input.rating = '';

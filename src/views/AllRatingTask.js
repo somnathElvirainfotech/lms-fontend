@@ -37,7 +37,7 @@ export default function AllRatingTask() {
         // get review task
         var reviews = await CommentRatingService.getByCourseIdTask(course_id, 0)
         setReview([...reviews.data.data])
-        console.log(reviews.data);
+        // console.log(reviews.data);
 
 
 

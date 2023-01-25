@@ -77,7 +77,7 @@ function TaskAdd() {
       flavors.push(item[i].value);
     }
     setSelectedGroup(flavors);
-    console.log(selectedGroup);
+    // console.log(selectedGroup);
   };
 
   const [course, setCourse] = useState([]);
@@ -113,7 +113,7 @@ function TaskAdd() {
       };
 
       var responce = await TaskService.search(data);
-      console.log(data);
+      // console.log(data);
       setAssignment([...responce.data.data]);
     } else if (user.user_role == 1 || user.user_role == 2) {
       var data = {
@@ -142,7 +142,7 @@ function TaskAdd() {
 
         var groupRes = await UserService.getGroupList();
         if (groupRes.data.status != false) {
-          // console.log(groupRes.data.data)
+          // // console.log(groupRes.data.data)
           let temp = [];
           for (var i of groupRes.data.data) {
             var aa = { label: i.g_name.toUpperCase(), value: i.id };
@@ -152,7 +152,7 @@ function TaskAdd() {
           setGroup([...temp]);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     })();
   }, []);
@@ -173,7 +173,7 @@ function TaskAdd() {
     const value = event.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
     // seterror('');
-    console.log(inputs);
+    // console.log(inputs);
 
     if (name === "course_id" && course.length > 0 && value != '') {
       for (var i of course) {
@@ -194,7 +194,7 @@ function TaskAdd() {
   };
 
   const FormSubmit = async (e) => {
-    console.log("ssss");
+    // console.log("ssss");
     e.preventDefault();
 
     var groupArr = [];
@@ -202,7 +202,7 @@ function TaskAdd() {
       groupArr.push(i.value);
     }
 
-    //  console.log("grouppppppp",groupArr)
+    //  // console.log("grouppppppp",groupArr)
 
     const data = new FormData();
     data.append("created_by", user.user_id);
@@ -215,7 +215,7 @@ function TaskAdd() {
 
     try {
       var response = await TaskService.create(data);
-      console.log(response.data.msg);
+      // console.log(response.data.msg);
       if (response.data.status != false) {
         toast.success(response.data.msg);
 
@@ -235,7 +235,7 @@ function TaskAdd() {
 
       listAssignment();
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 

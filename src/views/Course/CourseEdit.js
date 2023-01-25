@@ -76,7 +76,7 @@ function CourseEdit() {
 
   function getDataPagi(data, offset) {
     var temp = [];
-    console.log("offset", offset);
+    // console.log("offset", offset);
     data.slice(offset, offset + PER_PAGE).map((item) => {
       temp.push(item);
     });
@@ -99,12 +99,12 @@ function CourseEdit() {
 
       if (user.user_role == 4) {
         var responce = await UserService.allCourses();
-        //console.log(responce.data.data)
+        //// console.log(responce.data.data)
         setCourse([...responce.data.data]);
         getDataPagi(responce.data.data, 0 * PER_PAGE);
       } else if (user.user_role == 2 || user.user_role == 1) {
         var responce = await CourseService.getAll();
-        //console.log(responce.data.data)
+        //// console.log(responce.data.data)
         setCourse([...responce.data.data]);
         getCreatorList();
         getDataPagi(responce.data.data, 0 * PER_PAGE);
@@ -133,12 +133,12 @@ function CourseEdit() {
   var listCourse = async () => {
     if (user.user_role == 4) {
       var responce = await UserService.allCourses();
-      //console.log(responce.data.data)
+      //// console.log(responce.data.data)
       setCourse([...responce.data.data]);
       getDataPagi(responce.data.data, 0 * PER_PAGE);
     } else if (user.user_role == 2 || user.user_role == 1) {
       var responce = await CourseService.getAll();
-      console.log(responce.data.data);
+      // console.log(responce.data.data);
       setCourse([...responce.data.data]);
       getDataPagi(responce.data.data, 0 * PER_PAGE);
     }
@@ -151,7 +151,7 @@ function CourseEdit() {
         var languageRes = await UserService.languages();
         var categoryRes = await UserService.getAllCategory();
 
-        // console.log(categoryRes.data.data)
+        // // console.log(categoryRes.data.data)
 
         if (languageRes.data.status != false) {
           setLanguage([...languageRes.data.data]);
@@ -163,7 +163,7 @@ function CourseEdit() {
 
         var groupRes = await UserService.getGroupList();
         if (groupRes.data.status != false) {
-          // console.log(groupRes.data.data)
+          // // console.log(groupRes.data.data)
           let temp = [];
           for (var i of groupRes.data.data) {
             var aa = { label: i.g_name.toUpperCase(), value: i.id };
@@ -186,7 +186,7 @@ function CourseEdit() {
 
         // setCInputs(data);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     })();
   }, []);
@@ -203,7 +203,7 @@ function CourseEdit() {
   const VedioHandler = (e) => {
     const select = e.target.files[0];
     const name = e.target.name;
-    console.log(select.type);
+    // console.log(select.type);
     //setimageUpload(select);
     const Allow = ["video/mp4"];
     if (select && Allow.includes(select.type)) {
@@ -212,7 +212,7 @@ function CourseEdit() {
       seterror("file type not support, file will be mp4 format ");
     }
 
-    //console.log(vedio)
+    //// console.log(vedio)
   };
 
   const handleChange = (event) => {
@@ -238,7 +238,7 @@ function CourseEdit() {
       } else setSample_type("");
     }
 
-    console.log(cinputs);
+    // console.log(cinputs);
   };
 
   const ImageHAndler = (e) => {
@@ -257,7 +257,7 @@ function CourseEdit() {
       seterror("file type not support, file will be jpg,jpeg or png format ");
     }
 
-    console.log(cinputs);
+    // console.log(cinputs);
   };
 
   const FileHandler = (e) => {
@@ -268,29 +268,29 @@ function CourseEdit() {
       "application/msword",
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     ];
-    // console.log(select.type)
+    // // console.log(select.type)
     if (select && Allow.includes(select.type)) {
-      //console.log(22)
+      //// console.log(22)
       setAttachment_file(select);
     } else {
       seterror("file type not support, file will be doc,pdf or xls format ");
     }
 
-    console.log(cinputs);
+    // console.log(cinputs);
   };
 
   const FileHandler2 = (e) => {
     const select = e.target.files[0];
     const Allow = ["application/zip"];
-    // console.log(select.type)
+    // // console.log(select.type)
     if (select && Allow.includes(select.type)) {
-      //console.log(22)
+      //// console.log(22)
       setAttachment_file(select);
     } else {
       seterror("file type not support, file will be zip format ");
     }
 
-    console.log(cinputs);
+    // console.log(cinputs);
   };
 
   const EditBack = () => {
@@ -356,7 +356,7 @@ function CourseEdit() {
 
       if (response.data.status) {
         setShowLoader(false);
-        console.log(response.data);
+        // console.log(response.data);
         listCourse();
         getCreatorList();
         toast.success(response.data.msg);
@@ -367,13 +367,13 @@ function CourseEdit() {
   const courseEditForm = async (id) => {
     setShowLoader(true);
     var response = await UserService.singleCourseGet(id);
-    // console.log(response.data.data[0].course_languages_id)
+    // // console.log(response.data.data[0].course_languages_id)
     EditBack();
     if (response.data.status) {
       setShowLoader(false);
 
       setCourseId(id);
-      console.log("courseeeee", response.data);
+      // console.log("courseeeee", response.data);
       var item = response.data.data[0];
       cinputs.course_type = item.course_type;
       cinputs.course_name = item.course_name;
@@ -406,12 +406,12 @@ function CourseEdit() {
         cinputs.creator = item.user_id;
       }
 
-      //console.log(response.data.data[0]);
+      //// console.log(response.data.data[0]);
 
       setImage1(item.image);
       setImage2(item.avatar_image);
 
-      //    console.log("ssssssi",item.course_type)
+      //    // console.log("ssssssi",item.course_type)
 
       if (item.course_type == "regular") {
         setDfile(item.attachment_file);
@@ -448,11 +448,11 @@ function CourseEdit() {
       status: status == "active" ? "inactive" : "active",
     };
 
-    console.log(data);
+    // console.log(data);
 
     var responce = CourseService.statusChange(data);
 
-    console.log(responce.data);
+    // console.log(responce.data);
 
     listCourse();
   };

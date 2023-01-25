@@ -50,7 +50,7 @@ export default function UserGroup() {
 
     function getDataPagi(data, offset) {
         var temp = [];
-        console.log("offset", offset);
+        // // console.log("offset", offset);
         data.slice(offset, offset + PER_PAGE).map((item) => {
             temp.push(item);
         })
@@ -117,11 +117,11 @@ export default function UserGroup() {
     const [status, setStatus] = useState('');
 
     var getOne = async (id) => {
-        // console.log(3333333)
+        // // console.log(3333333)
         var responce = await GroupService.getOne(id);
         updateInput.g_name = responce.data.data[0].g_name;
         setStatus(responce.data.data[0].g_status)
-        //  console.log(responce.data.data[0].g_name);
+        //  // console.log(responce.data.data[0].g_name);
         setGid(id);
     }
 
@@ -132,7 +132,7 @@ export default function UserGroup() {
         data.append("g_status", status)
 
 
-        // console.log(gID)
+        // // console.log(gID)
 
         var responce = await GroupService.update(data);
 

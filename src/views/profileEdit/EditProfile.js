@@ -74,7 +74,7 @@ export const EditProfile = () => {
         // -------------------------------------------------------------------------
         var responcee = await UserService.enrollmentcourse(user.user_id, "");
 
-        console.log("all courses", responcee.data);
+        // console.log("all courses", responcee.data);
 
         var data = [];
         for (var i of responcee.data.data) {
@@ -99,10 +99,10 @@ export const EditProfile = () => {
         var groupRes = await UserService.getGroupList();
         var categoryRes = await UserService.getAllCategory();
 
-        // console.log(categoryRes.data.data)
+        // // console.log(categoryRes.data.data)
 
         if (response.data.status != false) {
-          console.log(languageRes.data.data);
+          // console.log(languageRes.data.data);
 
           setLanguage([...languageRes.data.data]);
           setQualification([...qualificationRes.data.data]);
@@ -141,11 +141,11 @@ export const EditProfile = () => {
             social_link_2: response.data.data.social_link_2,
           });
         } else {
-          console.log(response);
+          // console.log(response);
         }
         setShowLoader(false);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     })();
   }, []);
@@ -187,7 +187,7 @@ export const EditProfile = () => {
       xapiCourse.push(aa);
     }
 
-    // console.log(xapiCourse);
+    // // console.log(xapiCourse);
 
     // --------------------------------------------
 
@@ -208,12 +208,12 @@ export const EditProfile = () => {
 
       if (responce.data.statements.length > 0) {
         for (var singleRes of responce.data.statements) {
-          console.log(singleRes.object.definition.name);
+          // console.log(singleRes.object.definition.name);
 
           if ("definition" in singleRes.object) {
             if ("name" in singleRes.object.definition) {
               if (item.course_name == singleRes.object.definition.name.und) {
-                console.log("sss");
+                // console.log("sss");
 
                 if ("result" in singleRes) {
                   if (
@@ -248,36 +248,36 @@ export const EditProfile = () => {
       }
     }
 
-    console.log("xapi data", xapiCourse);
+    // console.log("xapi data", xapiCourse);
 
     if (xapiCourse.length > 0) {
-      console.log(xapiCourse);
+      // console.log(xapiCourse);
       // enrollment status updated  ------------------
       var updteEnrollStatus = await EnrollmentService.enrollmentStatusUpdate(
         xapiCourse
       );
-      // console.log(updteEnrollStatus.data)
+      // // console.log(updteEnrollStatus.data)
     }
 
     // setShowLoader(false)
   };
 
-  console.log(category);
+  // console.log(category);
 
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
     // seterror('');
-    // console.log(inputs)
+    // // console.log(inputs)
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // console.log(language)
+    // // console.log(language)
     try {
       setShowLoader(true);
-      //console.log(inputs)
+      //// console.log(inputs)
       var response = await UserService.updateUserProfile(inputs);
       if (response.data.status != false) {
         toast.success(response.data.msg);
@@ -288,7 +288,7 @@ export const EditProfile = () => {
       }
       setShowLoader(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -301,7 +301,7 @@ export const EditProfile = () => {
 
   const PasswordChange = async (event) => {
     event.preventDefault();
-    // console.log(pass)
+    // // console.log(pass)
     try {
       setShowLoader(true);
       var response = await UserService.changePassword(pass);
@@ -312,14 +312,14 @@ export const EditProfile = () => {
       }
       setShowLoader(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
   const ImageHAndler = (e) => {
     const select = e.target.files[0];
     setimageUpload(select);
-    console.log(imageUpload);
+    // console.log(imageUpload);
     const Allow = ["image/png", "image/jpg", "image/jpeg"];
     if (select && Allow.includes(select.type)) {
       let render = new FileReader();
@@ -340,7 +340,7 @@ export const EditProfile = () => {
     const data = new FormData();
     data.append("email", inputs.email);
     data.append("image", imageUpload);
-    // console.log("imageUpload ------- ",imageUpload)
+    // // console.log("imageUpload ------- ",imageUpload)
 
     try {
      if(imageUpload != null)
@@ -353,7 +353,7 @@ export const EditProfile = () => {
         document.getElementById("photoForm").reset();
         var response = await UserService.getProfileData(users);
         if (response.data.status != false) {
-          // console.log(response.data);
+          // // console.log(response.data);
 
           setUser(response.data.data);
           const data = {
@@ -383,7 +383,7 @@ export const EditProfile = () => {
             social_link_2: response.data.data.social_link_2,
           });
         } else {
-          console.log(response);
+          // console.log(response);
         }
       } else {
         toast.error(response.data.msg);
@@ -393,7 +393,7 @@ export const EditProfile = () => {
       toast.error("Please Select Image");
      }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

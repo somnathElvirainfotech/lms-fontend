@@ -68,22 +68,22 @@ export default function Header() {
       .auth()
       .signOut()
       .then((e) => {
-        console.log("Sign-out successful. ", e);
+        // console.log("Sign-out successful. ", e);
         TokenHelper.Logout();
         //  deleteCookies()
         removeCookie("user_info");
       })
       .catch((error) => {
-        console.log(" An error happened. ", error);
+        // console.log(" An error happened. ", error);
       });
   }
 
-  //console.log(ADMIN_URL)
+  //// console.log(ADMIN_URL)
 
   // token pass route
   const { user } = useContext(AuthContext);
 
-  //console.log(user.token)
+  //// console.log(user.token)
 
   // settoken(authToken);
 
@@ -131,7 +131,7 @@ export default function Header() {
 
   const setChildCtegory = async (id) => {
     var responce = await UserService.subcategory(id);
-    console.log(id);
+    // console.log(id);
     setChild(responce.data.data);
   };
 
@@ -146,7 +146,7 @@ export default function Header() {
   // // //        .then(res => res.json())
   // // //       .then(data => {
   // // //         setCourses(data.data);
-  // // //       //console.log(data);
+  // // //       //// console.log(data);
   // // //       });
   // //    }, []);
 
@@ -223,7 +223,7 @@ export default function Header() {
       setLangObj(SerbianLatin);
     }
 
-    // console.log(languageList.language_name);
+    // // console.log(languageList.language_name);
   }, [languageList.language_name]);
 
   var mobileToggle=()=>{
@@ -273,7 +273,7 @@ export default function Header() {
                   {user.token && user.user_role == 5 ? (
                     <>
                       {" "}
-                      <li key={"list2"}>
+                      <li key={"list222222"}>
                         <Link style={{color:location.pathname=="/courses"?"#023e86":"",}}  onClick={clerSearchText} to="/courses">
                           {langObj.courses}
                         </Link>
@@ -429,7 +429,7 @@ export default function Header() {
                       {user.token ? (
                         <>
                           {" "}
-                          <li key={"list2"}>
+                          <li key={"list22"}>
                             <Link style={{color:location.pathname=="/courses"?"#023e86":"",}}  onClick={clerSearchText} to="/courses">
                               HOME
                             </Link>
@@ -440,7 +440,7 @@ export default function Header() {
                       )}
 
                       {user.token && (
-                        <li key={"list1"}>
+                        <li key={"list11"}>
                           <Link style={{color:location.pathname=="/about-us"?"#023e86":"",}}  onClick={clerSearchText} to="/about-us">
                           {langObj.about}
                           </Link>
@@ -450,7 +450,7 @@ export default function Header() {
                       {user.token && user.user_role == 5 ? (
                         <>
                           {" "}
-                          <li key={"list2"}>
+                          <li key={"list222"}>
                             <Link style={{color:location.pathname=="/courses"?"#023e86":"",}}  onClick={clerSearchText} to="/courses">
                               {langObj.courses}
                             </Link>
@@ -472,7 +472,7 @@ export default function Header() {
                       {user.token && user.user_role != 5 ? (
                         <>
                           {" "}
-                          <li key={"list4"}>
+                          <li key={"list44"}>
                             <Link style={{color:location.pathname=="/profile"?"#023e86":"",}} onClick={clerSearchText} to="/profile">
                               {langObj.profile}
                             </Link>
@@ -573,7 +573,7 @@ export default function Header() {
                       (user.token && user.user_role == 1) ? (
                         <>
                           {" "}
-                          <li key={"list11"}>
+                          <li key={"list11-11"}>
                             <Link style={{color:location.pathname=="/qualification"?"#023e86":"",}}  onClick={clerSearchText} to="/qualification">
                               
                               QUALIFICATION
@@ -612,7 +612,7 @@ export default function Header() {
                   {user.token ? (
                     <>
                       {" "}
-                      <li key={"list2"}>
+                      <li key={"list2222"}>
                         <Link style={{color:location.pathname=="/courses"?"#023e86":"",}}  onClick={clerSearchText} to="/courses">
                           HOME
                         </Link>
@@ -624,7 +624,7 @@ export default function Header() {
                    
 
                     {user.token && (
-                      <li key={"list1"}>
+                      <li key={"list111"}>
                         <Link style={{color:location.pathname=="/about-us"?"#023e86":"",}}  onClick={clerSearchText} to="/about-us">
                         {langObj.about}
                         </Link>
@@ -634,7 +634,7 @@ export default function Header() {
                     {user.token && user.user_role == 5 ? (
                       <>
                         {" "}
-                        <li key={"list2"}>
+                        <li key={"list22222"}>
                           <Link style={{color:location.pathname=="/courses"?"#023e86":"",}}  onClick={clerSearchText} to="/courses">
                             {langObj.courses}
                           </Link>
@@ -669,7 +669,7 @@ export default function Header() {
                     
 
                     {user.token && user.user_role == 4 ? (
-                      <li key={"list6"}>
+                      <li key={"list66"}>
                         <NavLink style={{color:location.pathname=="/enrollments"?"#023e86":"",}} onClick={clerSearchText} to={"enrollments"}>
                           
                           ENROLLMENTS
@@ -702,7 +702,7 @@ export default function Header() {
                     { (user.token && user.user_role == 4) ? (
                       <>
                         {" "}
-                        <li key={"list12"}>
+                        <li key={"list12-12"}>
                           <Link style={{color:location.pathname=="/task"?"#023e86":"",}} onClick={clerSearchText} to="/task">
                             TASK
                           </Link>
@@ -735,7 +735,7 @@ export default function Header() {
                     )}
                     {user.token && (
                       <ul>
-                        <li key={"list14"}>
+                        <li key={"list14-14"}>
                           <Link to="#" onClick={Logout}>
                             {langObj.logout}
                           </Link>
@@ -829,7 +829,7 @@ export default function Header() {
 
                     {!user.token && (
                       <ul>
-                        <li key={"list13"}>
+                        <li key={"list13-13"}>
                           <a
                             data-toggle="modal"
                             data-target="#loginform"

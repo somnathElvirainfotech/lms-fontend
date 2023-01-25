@@ -923,7 +923,7 @@ export default function Singlecourse() {
           singleCourseId === 0 ? courseID : singleCourseId
         );
 
-        console.log("current enroll ", enrollRes.data);
+        // console.log("current enroll ", enrollRes.data);
 
         setShowLoader(false);
 
@@ -994,7 +994,7 @@ export default function Singlecourse() {
         previousID.chapter_id != 0 &&
         previousID.lesson_id != 0
       ) {
-        console.log("pre course set  ", previousID);
+        // console.log("pre course set  ", previousID);
         reloadLesson(previousID);
       }
     }
@@ -1005,7 +1005,7 @@ export default function Singlecourse() {
         less_id: lesson_id,
         enroll_id: enroll_id,
       };
-      console.log(payload);
+      // console.log(payload);
       setShowLoader(true);
       await CourseTrackService.lastLessonUpdate(payload);
 
@@ -1031,7 +1031,7 @@ export default function Singlecourse() {
         current_play_sec: Number(progress.playedSeconds).toFixed(2),
       };
 
-      console.log("set pre co", payload);
+      // console.log("set pre co", payload);
       setPreviousID(payload);
 
       setShowLoader(false);
@@ -1048,8 +1048,8 @@ export default function Singlecourse() {
     setCurrentChapter(chapter_id);
     setCurrentLesson(lesson_id);
     setVedioPlay(true);
-    console.log("chapter ", chapter_id);
-    console.log("lesson ", lesson_id);
+    // console.log("chapter ", chapter_id);
+    // console.log("lesson ", lesson_id);
     oneView({
       chapter_name: chapter_name,
       lesson_name: lesson_name,
@@ -1071,7 +1071,7 @@ export default function Singlecourse() {
 
     var reviews = await CommentRatingService.getByCourseId(courseID, "", 18);
     setReview([...reviews.data.data]);
-    console.log("lllllllllllllllll:", reviews.data);
+    // console.log("lllllllllllllllll:", reviews.data);
     var creviews = await CommentRatingService.getByCourseId(
       courseID,
       user.user_id,
@@ -1093,7 +1093,7 @@ export default function Singlecourse() {
       "",
       ""
     );
-    console.log(reviews.data);
+    // console.log(reviews.data);
     setReview([...reviews.data.data]);
     setViewAllRating(true);
     setShowLoader(false);
@@ -1114,7 +1114,7 @@ export default function Singlecourse() {
         10
       );
       setReview([...reviews.data.data]);
-      console.log("lllllllllllllllll:", reviews.data);
+      // console.log("lllllllllllllllll:", reviews.data);
       var creviews = await CommentRatingService.getByCourseId(
         singleCourseId === 0 ? courseID : singleCourseId,
         user.user_id,
@@ -1125,7 +1125,7 @@ export default function Singlecourse() {
         singleCourseId === 0 ? courseID : singleCourseId
       );
       var temp = responce.data.data;
-      console.log("course details3 ", responce.data);
+      // console.log("course details3 ", responce.data);
       setCourses(temp);
       setShowLoader(false);
       setChkComment(true);
@@ -1200,7 +1200,7 @@ export default function Singlecourse() {
 
     // setShowLoader(false)
 
-    console.log("complete data  ", payload);
+    // console.log("complete data  ", payload);
   };
 
   var playerPaused = () => {
@@ -1242,7 +1242,7 @@ export default function Singlecourse() {
     if (user.user_role == 5) {
       // setShowLoader(true)
       var dresponse = await CourseTrackService.regularCourseTrack(payload);
-      console.log("local course track updated -----  ", dresponse.data);
+      // console.log("local course track updated -----  ", dresponse.data);
 
       // reloadLesson();
       // setShowLoader(false)
@@ -1266,7 +1266,7 @@ export default function Singlecourse() {
     if (user.user_role == 5) {
       setShowLoader(true);
       var course_id = query.get("id");
-      console.log("courseID  ", singleCourseId);
+      // console.log("courseID  ", singleCourseId);
       var payload = {
         user_id: user.user_id,
         course_id: singleCourseId === 0 ? courseID : singleCourseId,
@@ -1274,7 +1274,7 @@ export default function Singlecourse() {
 
       var responce = await CourseTrackService.getTrackingLession(payload);
       setTrackLessions(responce.data.data);
-      console.log("tarack lesson ----- ", responce.data);
+      // console.log("tarack lesson ----- ", responce.data);
       setShowLoader(false);
     }
   };
@@ -1291,10 +1291,10 @@ export default function Singlecourse() {
         course_id: CId,
       };
 
-      console.log("payload ", payload);
+      // console.log("payload ", payload);
 
       var response = await CourseTrackService.getCurrentLession(payload);
-      console.log("getCurrentLesson ------  ", response.data);
+      // console.log("getCurrentLesson ------  ", response.data);
 
       if (response.data.data.length > 0) {
         var lesson_percentage = response.data.data[0].lesson_percentage;
@@ -1304,12 +1304,12 @@ export default function Singlecourse() {
           response.data.data[0].lesson_id
         );
 
-        console.log("Lessresponse ----- ", Lessresponse.data);
+        // console.log("Lessresponse ----- ", Lessresponse.data);
 
         var Chapterresponse = await ChapterService.getOne(
           Lessresponse.data.data[0].chapter_id
         );
-        console.log("Chapterresponse ---- ", Chapterresponse.data);
+        // console.log("Chapterresponse ---- ", Chapterresponse.data);
 
         // alert(Lessresponse.data.data[0].lesson_vedio_link)
         setVedioPlayer(Lessresponse.data.data[0].lesson_vedio_link);
@@ -1373,14 +1373,14 @@ export default function Singlecourse() {
   };
 
   var taskAdd = async () => {
-    console.log("noAttemp ----", noAttemp);
+    // console.log("noAttemp ----", noAttemp);
     if (user.user_role == 5) {
       var responce = await UserService.singlecourse(
         singleCourseId === 0 ? courseID : singleCourseId
       );
 
       await setTask(responce.data.data);
-      console.log("noAttemp ----", noAttemp);
+      // console.log("noAttemp ----", noAttemp);
       await UserTaskService.create({
         user_id: user.user_id,
         task_id: taskId,

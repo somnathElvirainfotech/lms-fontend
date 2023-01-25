@@ -39,7 +39,7 @@ export default function Qualification() {
 
     function getDataPagi(data, offset) {
         var temp = [];
-        console.log("offset", offset);
+        // console.log("offset", offset);
         data.slice(offset, offset + PER_PAGE).map((item) => {
             temp.push(item);
         })
@@ -138,11 +138,11 @@ export default function Qualification() {
     const [status, setStatus] = useState('');
 
     var getOne = async (id) => {
-        // console.log(3333333)
+        // // console.log(3333333)
         var responce = await QualificationService.getOne(id);
         updateInput.name = responce.data.data[0].name;
 
-        //  console.log(responce.data.data[0].g_name);
+        //  // console.log(responce.data.data[0].g_name);
         setGid(id);
     }
 
@@ -156,7 +156,7 @@ export default function Qualification() {
 
 
 
-        // console.log(gID)
+        // // console.log(gID)
 
         var responce = await QualificationService.update(data);
 

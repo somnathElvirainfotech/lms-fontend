@@ -55,7 +55,7 @@ export default function Chapter() {
 
     function getDataPagi(data, offset) {
         var temp = [];
-        console.log("offset", offset);
+        // console.log("offset", offset);
         data.slice(offset, offset + PER_PAGE).map((item) => {
             temp.push(item);
         })
@@ -71,13 +71,13 @@ export default function Chapter() {
         (async () => {
             if (user.user_role == 4) {
                 var responce = await UserService.allCourses();
-                console.log("course  ", responce.data.data)
+                // console.log("course  ", responce.data.data)
                 setCourse([...responce.data.data])
                 listChapter();
 
             } else if (user.user_role == 2 || user.user_role == 1) {
                 var responce = await CourseService.getAll();
-                //console.log(responce.data.data)
+                //// console.log(responce.data.data)
                 setCourse([...responce.data.data])
                 listChapter();
 
@@ -132,7 +132,7 @@ export default function Chapter() {
         const value = event.target.value;
         setInputs(values => ({ ...values, [name]: value }))
         // seterror('');
-        console.log(inputs)
+        // console.log(inputs)
 
 
     }
@@ -155,26 +155,26 @@ export default function Chapter() {
             seterror("file type not support, file will be jpg,jpeg or png format ")
         }
 
-        console.log(inputs)
+        // console.log(inputs)
     }
 
     const FileHandler = (e) => {
         const select = e.target.files[0];
         const Allow = [".doc", ".docx", "application/pdf", "application/vnd.ms-excel"];
-        // console.log(select.type)
+        // // console.log(select.type)
         if (select && Allow.includes(select.type)) {
-            //console.log(22)
+            //// console.log(22)
             setAttachment_file(select)
         } else {
             seterror("file type not support, file will be doc,pdf or xls format ")
         }
 
-        console.log(inputs)
+        // console.log(inputs)
     }
 
 
     const FormSubmit = async (e) => {
-        //console.log("ssss");
+        //// console.log("ssss");
         e.preventDefault();
 
         try {
@@ -190,7 +190,7 @@ export default function Chapter() {
                     data.append("course_id", inputs.course_id)
 
                     var response = await ChapterService.create(data);
-                    console.log(response.data.msg)
+                    // console.log(response.data.msg)
                     if (response.data.status != false) {
                         toast.success(response.data.msg)
 
@@ -199,7 +199,7 @@ export default function Chapter() {
                         inputs.chapter_no = '';
 
 
-                        console.log(response.data.msg)
+                        // console.log(response.data.msg)
 
                     } else {
                         toast.error(response.data.msg);
@@ -214,7 +214,7 @@ export default function Chapter() {
 
 
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 
@@ -275,7 +275,7 @@ export default function Chapter() {
         var response = await ChapterService.update(data);
 
         if (response.data.status) {
-            console.log(response.data)
+            // console.log(response.data)
             toast.success(response.data.msg)
             listChapter();
         }
@@ -285,12 +285,12 @@ export default function Chapter() {
 
     const courseEditForm = async (id) => {
         var response = await ChapterService.getOne(id);
-        // console.log(response.data.data[0].course_languages_id)
+        // // console.log(response.data.data[0].course_languages_id)
         EditBack();
         if (response.data.status) {
 
             setCourseId(id)
-            // console.log(response.data)
+            // // console.log(response.data)
             var item = response.data.data[0];
 
 
@@ -323,7 +323,7 @@ export default function Chapter() {
         const name = event.target.name;
         const value = event.target.value;
         setSearch(values => ({ ...values, [name]: value }));
-        console.log(search)
+        // console.log(search)
 
         // userSearch()
     }
@@ -332,7 +332,7 @@ export default function Chapter() {
         var course_name = search.course_name;
 
         var responce = await ChapterService.search(course_name);
-        console.log("eeeeee", responce.data.data);
+        // console.log("eeeeee", responce.data.data);
         setChapter([...responce.data.data])
         getDataPagi(responce.data.data, (0 * PER_PAGE))
     }
@@ -345,7 +345,7 @@ export default function Chapter() {
 
 
         var responce = await ChapterService.search(course_name);
-        console.log("eeeeee", responce.data.data);
+        // console.log("eeeeee", responce.data.data);
         setChapter([...responce.data.data])
         getDataPagi(responce.data.data, (0 * PER_PAGE))
     }

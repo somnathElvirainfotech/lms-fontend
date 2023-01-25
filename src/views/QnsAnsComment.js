@@ -44,7 +44,7 @@ function QnsAnsComment(props) {
     const value = event.target.value;
     setText((values) => ({ ...values, [name]: value }));
     // seterror('');
-    console.log(Text);
+    // console.log(Text);
   };
 
   var handelSubmit = async () => {

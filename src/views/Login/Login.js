@@ -53,7 +53,7 @@ export default function Login() {
                 inputs.password = '';
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 

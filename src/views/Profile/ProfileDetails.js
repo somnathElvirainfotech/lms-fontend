@@ -14,7 +14,7 @@ import { LangContext } from '../../routes/routes';
 export default function ProfileDetails(userData) {
     const [count, setCount] = useState({});
     const { users } = useContext(AuthContext);
-    // console.log(userData)
+    // // console.log(userData)
     const [target, setTarget] = useState();
     const user = userData.userData;
     const navigate = useNavigate();
@@ -27,9 +27,9 @@ export default function ProfileDetails(userData) {
         (async () => {
             var countRes = await UserService.courseCertificateCount();
             setCount(countRes.data.data);
-            console.log(countRes.data)
+            // console.log(countRes.data)
         })()
-        // console.log(count)
+        // // console.log(count)
     }, [])
 
 

@@ -88,7 +88,7 @@ export default function Task() {
       flavors.push(item[i].value);
     }
     setSelectedGroup(flavors);
-    console.log(selectedGroup);
+    // console.log(selectedGroup);
   };
 
   const [course, setCourse] = useState([]);
@@ -126,12 +126,12 @@ export default function Task() {
 
   function getDataPagi(data, offset) {
     var temp = [];
-    console.log("offset", offset);
+    // console.log("offset", offset);
     data.slice(offset, offset + PER_PAGE).map((item) => {
       temp.push(item);
     });
     setShowLoader(false);
-    console.log("all task ", temp);
+    // console.log("all task ", temp);
     setCurrentPageData(temp);
   }
 
@@ -147,7 +147,7 @@ export default function Task() {
       };
 
       var responce = await TaskService.search(data);
-      console.log("c_taskdata", data);
+      // console.log("c_taskdata", data);
       setAssignment([...responce.data.data]);
       getDataPagi(responce.data.data, 0 * PER_PAGE);
     } else if (user.user_role == 1 || user.user_role == 2) {
@@ -167,7 +167,7 @@ export default function Task() {
 
   // var downloadTask = async () => {
   //   var responce = await TaskService.download();
-  //   console.log("task download", responce.data);
+  //   // console.log("task download", responce.data);
 
   //  if(responce.data.status)
   //  {
@@ -189,7 +189,7 @@ export default function Task() {
   //     data.push(temp);
   //   }
 
-  //   console.log("csvvvvvvv", data);
+  //   // console.log("csvvvvvvv", data);
   //   setCsvData([...data]);
   //  }
   // };
@@ -209,7 +209,7 @@ export default function Task() {
 
         var groupRes = await UserService.getGroupList();
         if (groupRes.data.status != false) {
-          // console.log(groupRes.data.data)
+          // // console.log(groupRes.data.data)
           let temp = [];
           for (var i of groupRes.data.data) {
             var aa = { label: i.g_name.toUpperCase(), value: i.id };
@@ -219,7 +219,7 @@ export default function Task() {
           setGroup([...temp]);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     })();
   }, []);
@@ -254,25 +254,25 @@ export default function Task() {
     const value = event.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
     // seterror('');
-    console.log(inputs);
+    // console.log(inputs);
   };
 
   const FileHandler = (e) => {
     const select = e.target.files[0];
     const Allow = ["application/zip"];
-    console.log(select.type);
+    // console.log(select.type);
     if (select && Allow.includes(select.type)) {
-      //console.log(22)
+      //// console.log(22)
       setAttachment_file(select);
     } else {
       seterror("file type not support, file will be zip format ");
     }
 
-    console.log(inputs);
+    // console.log(inputs);
   };
 
   const FormSubmit = async (e) => {
-    console.log("ssss");
+    // console.log("ssss");
     e.preventDefault();
 
     var groupArr = [];
@@ -280,7 +280,7 @@ export default function Task() {
       groupArr.push(i.value);
     }
 
-    //  console.log("grouppppppp",groupArr)
+    //  // console.log("grouppppppp",groupArr)
 
     const data = new FormData();
     data.append("created_by", user.user_id);
@@ -293,7 +293,7 @@ export default function Task() {
 
     try {
       var response = await TaskService.create(data);
-      console.log(response.data.msg);
+      // console.log(response.data.msg);
       if (response.data.status != false) {
         setsuccess(response.data.msg);
 
@@ -306,7 +306,7 @@ export default function Task() {
         inputs.course_id = "";
         setSelected([]);
 
-        console.log(response.data.msg);
+        // console.log(response.data.msg);
         setsuccess(response.data.msg);
       } else {
         seterror(response.data.msg);
@@ -314,7 +314,7 @@ export default function Task() {
 
       listAssignment();
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 
@@ -372,7 +372,7 @@ export default function Task() {
   const FormUpdate = async (e) => {
     e.preventDefault();
 
-    //console.log(attachment_file.language)
+    //// console.log(attachment_file.language)
 
     var groupArr = [];
     for (var i of selected) {
@@ -391,7 +391,7 @@ export default function Task() {
 
     var response = await TaskService.update(data);
 
-    console.log(response.data);
+    // console.log(response.data);
     if (response.data.status) {
       setsuccess(response.data.msg);
       listAssignment();
@@ -400,11 +400,11 @@ export default function Task() {
 
   const courseEditForm = async (id) => {
     var response = await TaskService.getOne(id);
-    // console.log(response.data.data[0].course_languages_id)
+    // // console.log(response.data.data[0].course_languages_id)
     EditBack();
     if (response.data.status) {
       setCourseId(id);
-      // console.log(id)
+      // // console.log(id)
       var item = response.data.data[0];
 
       inputs.created_by = item.created_by;
@@ -417,7 +417,7 @@ export default function Task() {
 
       // // var aa = [1, 2];
       // setSelected([{value:2,label:""},]);
-      // // console.log("gggggggggg", selected)
+      // // // console.log("gggggggggg", selected)
 
       var temp = [];
       for (var item of item.group_details) {

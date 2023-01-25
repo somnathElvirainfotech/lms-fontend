@@ -103,7 +103,7 @@ export default function MyCourse() {
       xapiCourse.push(aa);
     }
 
-    // console.log(xapiCourse);
+    // // console.log(xapiCourse);
 
     // --------------------------------------------
 
@@ -125,7 +125,7 @@ export default function MyCourse() {
 
       if (responce.data.statements.length > 0) {
         for (var singleRes of responce.data.statements) {
-          // console.log(singleRes.object.definition.name);
+          // // console.log(singleRes.object.definition.name);
 
           if ("definition" in singleRes.object) {
             if ("name" in singleRes.object.definition) {
@@ -134,11 +134,11 @@ export default function MyCourse() {
                 Date.parse(singleRes.timestamp) > Date.parse(item.timestamp)
               ) {
 
-              //  console.log("one");
+              //  // console.log("one");
 
                 
 
-              //   console.log("sssss");
+              //   // console.log("sssss");
 
                 if ("result" in singleRes) {
                   if (
@@ -146,7 +146,7 @@ export default function MyCourse() {
                     singleRes.result.completion == true
                   ) {
                     if ("success" in singleRes.result) {
-                      console.log("item  ", singleRes.result.success);
+                      // console.log("item  ", singleRes.result.success);
 
                       if (singleRes.result.success) {
                         item.passed = true;
@@ -177,12 +177,12 @@ export default function MyCourse() {
       }
     }
 
-    console.log("xapi data", xapiCourse);
+    // console.log("xapi data", xapiCourse);
 
     
 
     if (xapiCourse.length > 0) {
-      // console.log(xapiCourse);
+      // // console.log(xapiCourse);
       
       // enrollment status updated  ------------------
       await EnrollmentService.enrollmentStatusUpdate(
@@ -193,11 +193,11 @@ export default function MyCourse() {
 
       for(var i of xapiCourse)
       {
-        console.log("x course ", i.course_name);
+        // console.log("x course ", i.course_name);
           if(i.passed && i.updateTimestamp > i.timestamp)
           {
             if (i.enrollment_status == "completed") {
-              console.log("sub one");
+              // console.log("sub one");
               await XapiService.saveResult({
                 enrollment_id: i.enrollment_id,
                 course_name: i.course_name,
@@ -236,7 +236,7 @@ export default function MyCourse() {
 
       
 
-      console.log("all courses", responce.data.data);
+      // console.log("all courses", responce.data.data);
       setShowLoader(false);
 
       var data = [];
@@ -277,7 +277,7 @@ export default function MyCourse() {
     } else if (user.user_role == 4) {
       setShowLoader(true);
       var responce = await UserService.allCourses();
-      console.log(responce.data);
+      // console.log(responce.data);
       setEnrollmentcourses(responce.data.data);
       setShowLoader(false);
     }
@@ -323,7 +323,7 @@ export default function MyCourse() {
 
     if(responce.data.status)
     {
-        // console.log("certificate link  ",responce.data.data[0].certificate)
+        // // console.log("certificate link  ",responce.data.data[0].certificate)
         toast.success(responce.data.msg)
      
         const link = document.createElement('a');

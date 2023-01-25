@@ -75,7 +75,7 @@ function TaskEdit() {
             flavors.push(item[i].value);
         }
         setSelectedGroup(flavors);
-        console.log(selectedGroup)
+        // console.log(selectedGroup)
     }
 
     const [course, setCourse] = useState([]);
@@ -118,7 +118,7 @@ function TaskEdit() {
             }
 
             var responce = await TaskService.search(data);
-            console.log(data)
+            // console.log(data)
             setAssignment([...responce.data.data])
         } else if (user.user_role == 1 || user.user_role == 2) {
 
@@ -161,7 +161,7 @@ function TaskEdit() {
 
                 var groupRes = await UserService.getGroupList();
                 if (groupRes.data.status != false) {
-                    // console.log(groupRes.data.data)
+                    // // console.log(groupRes.data.data)
                     let temp = [];
                     for (var i of groupRes.data.data) {
                         var aa = { label: i.g_name.toUpperCase(), value: i.id };
@@ -173,7 +173,7 @@ function TaskEdit() {
 
 
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         })()
     }, [])
@@ -208,7 +208,7 @@ function TaskEdit() {
         const value = event.target.value;
         setInputs(values => ({ ...values, [name]: value }))
         // seterror('');
-        console.log(inputs)
+        // console.log(inputs)
 
         if (name === "course_id" && course.length > 0 && value != '') {
             for (var i of course) {
@@ -237,7 +237,7 @@ function TaskEdit() {
         e.preventDefault();
 
 
-        //console.log(attachment_file.language)
+        //// console.log(attachment_file.language)
 
         var groupArr = [];
         for (var i of selected) {
@@ -260,7 +260,7 @@ function TaskEdit() {
         var response = await TaskService.update(data);
 
 
-        console.log(response.data)
+        // console.log(response.data)
         if (response.data.status) {
             toast.success(response.data.msg)
             listAssignment();
@@ -271,12 +271,12 @@ function TaskEdit() {
 
     const courseEditForm = async (id) => {
         var response = await TaskService.getOne(id);
-        console.log(response.data.data)
+        // console.log(response.data.data)
 
         if (response.data.status) {
 
             setCourseId(id)
-            // console.log(id)
+            // // console.log(id)
             var item = response.data.data[0];
 
             inputs.created_by = item.created_by
@@ -294,7 +294,7 @@ function TaskEdit() {
 
             // // var aa = [1, 2];
             // setSelected([{value:2,label:""},]);
-            // // console.log("gggggggggg", selected)
+            // // // console.log("gggggggggg", selected)
 
             var temp = [];
             for (var item of item.group_details) {

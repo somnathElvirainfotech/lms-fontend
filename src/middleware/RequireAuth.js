@@ -11,15 +11,15 @@ export const RequireAuth = ({ children }) => {
   const token = TokenHelper.getToken();
   const location = useLocation();
 
-  // // console.log("cvv", Date.parse(TokenHelper.getExpireTime())/1000);
+  // // // console.log("cvv", Date.parse(TokenHelper.getExpireTime())/1000);
   // var ss=moment().format("MM/DD/YYYY HH:mm:ss");
-  // console.log("cvv", Date.parse(ss))
+  // // console.log("cvv", Date.parse(ss))
 
   if (token) {
     var currentDate = (Date.parse((moment().format("MM/DD/YYYY HH:mm:ss")))/1000);
     var expireDate = (Date.parse(TokenHelper.getExpireTime())/1000);
 
-    console.log("currentDate " ,currentDate);
+    // console.log("currentDate " ,currentDate);
 
     if (currentDate > expireDate) {
         Logout();
@@ -57,7 +57,7 @@ export const CheckENV = ({ children }) => {
 };
 
 export const ActiveMaintenance = ({ children, data }) => {
-  console.log(data);
+  // console.log(data);
 
   if (data.status == "active") {
     return <Navigate to="/maintenance" state={{ data: data }} />;
@@ -82,12 +82,12 @@ async function Logout() {
     .auth()
     .signOut()
     .then((e) => {
-      console.log("Sign-out successful. ", e);
+      // console.log("Sign-out successful. ", e);
       TokenHelper.Logout();
       //  deleteCookies()
       removeCookie("user_info");
     })
     .catch((error) => {
-      console.log(" An error happened. ", error);
+      // console.log(" An error happened. ", error);
     });
 }

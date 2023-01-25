@@ -50,11 +50,11 @@ export default function CourseAssignment() {
         if (user.user_role == 4) {
 
             var responce = await AssignmentService.getAll();
-            console.log(responce.data)
+            // console.log(responce.data)
             setAssignment([...responce.data.data])
         } else if (user.user_role == 1 || user.user_role == 2) {
             var responce = await AssignmentService.getAllAssignment();
-            console.log(responce.data)
+            // console.log(responce.data)
             setAssignment([...responce.data.data])
         }
 
@@ -93,7 +93,7 @@ export default function CourseAssignment() {
 
 
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         })()
     }, [])
@@ -122,7 +122,7 @@ export default function CourseAssignment() {
         const value = event.target.value;
         setInputs(values => ({ ...values, [name]: value }))
         // seterror('');
-        console.log(inputs)
+        // console.log(inputs)
     }
 
 
@@ -130,20 +130,20 @@ export default function CourseAssignment() {
     const FileHandler = (e) => {
         const select = e.target.files[0];
         const Allow = ["application/pdf", "application/vnd.ms-excel", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
-        // console.log(select.type)
+        // // console.log(select.type)
         if (select && Allow.includes(select.type)) {
-            //console.log(22)
+            //// console.log(22)
             setAttachment_file(select)
         } else {
             seterror("file type not support, file will be doc,pdf or xls format ")
         }
 
-        console.log(inputs)
+        // console.log(inputs)
     }
 
 
     const FormSubmit = async (e) => {
-        console.log("ssss");
+        // console.log("ssss");
         e.preventDefault();
 
 
@@ -160,7 +160,7 @@ export default function CourseAssignment() {
 
         try {
             var response = await AssignmentService.create(data);
-            console.log(response.data.msg)
+            // console.log(response.data.msg)
             if (response.data.status != false) {
                 setsuccess(response.data.msg);
 
@@ -172,7 +172,7 @@ export default function CourseAssignment() {
                 inputs.course_id = 0;
                 setAttachment_file("")
 
-                console.log(response.data.msg)
+                // console.log(response.data.msg)
                 setsuccess(response.data.msg);
             } else {
                 seterror(response.data.msg);
@@ -181,7 +181,7 @@ export default function CourseAssignment() {
             listAssignment();
 
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 
@@ -240,7 +240,7 @@ export default function CourseAssignment() {
         e.preventDefault();
 
 
-        console.log(attachment_file.language)
+        // console.log(attachment_file.language)
 
         const data = new FormData();
         data.append("course_id", inputs.course_id)
@@ -257,7 +257,7 @@ export default function CourseAssignment() {
         var response = await AssignmentService.update(data);
 
         if (response.data.status) {
-            console.log(response.data)
+            // console.log(response.data)
             setsuccess(response.data.msg);
             listAssignment();
         }
@@ -267,12 +267,12 @@ export default function CourseAssignment() {
 
     const courseEditForm = async (id) => {
         var response = await AssignmentService.getOne(id);
-        // console.log(response.data.data[0].course_languages_id)
+        // // console.log(response.data.data[0].course_languages_id)
         EditBack();
         if (response.data.status) {
 
             setCourseId(id)
-            // console.log(response.data)
+            // // console.log(response.data)
             var item = response.data.data[0];
             inputs.assignment_name = item.assignment_name;
             inputs.user_group_id = item.user_group_id;

@@ -47,7 +47,7 @@ function ViewResult() {
         enrollment_id: enrollment_id,
       });
 
-      console.log("result lms ", responce.data);
+      // // console.log("result lms ", responce.data);
 
       if (responce.data.status) {
         setData(responce.data.data);

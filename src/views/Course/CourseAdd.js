@@ -78,7 +78,7 @@ function CourseAdd() {
 
   function getDataPagi(data, offset) {
     var temp = [];
-    console.log("offset", offset);
+    // console.log("offset", offset);
     data.slice(offset, offset + PER_PAGE).map((item) => {
       temp.push(item);
     });
@@ -101,12 +101,12 @@ function CourseAdd() {
 
       if (user.user_role == 4) {
         var responce = await UserService.allCourses();
-        //console.log(responce.data.data)
+        //// console.log(responce.data.data)
         setCourse([...responce.data.data]);
         getDataPagi(responce.data.data, 0 * PER_PAGE);
       } else if (user.user_role == 2 || user.user_role == 1) {
         var responce = await CourseService.getAll();
-        //console.log(responce.data.data)
+        //// console.log(responce.data.data)
         setCourse([...responce.data.data]);
         getCreatorList();
         getDataPagi(responce.data.data, 0 * PER_PAGE);
@@ -117,12 +117,12 @@ function CourseAdd() {
   var listCourse = async () => {
     if (user.user_role == 4) {
       var responce = await UserService.allCourses();
-      //console.log(responce.data.data)
+      //// console.log(responce.data.data)
       setCourse([...responce.data.data]);
       getDataPagi(responce.data.data, 0 * PER_PAGE);
     } else if (user.user_role == 2 || user.user_role == 1) {
       var responce = await CourseService.getAll();
-      console.log(responce.data.data);
+      // console.log(responce.data.data);
       setCourse([...responce.data.data]);
       getDataPagi(responce.data.data, 0 * PER_PAGE);
     }
@@ -134,7 +134,7 @@ function CourseAdd() {
         var languageRes = await UserService.languages();
         var categoryRes = await UserService.getAllCategory();
 
-        // console.log(categoryRes.data.data)
+        // // console.log(categoryRes.data.data)
 
         if (languageRes.data.status != false) {
           setLanguage([...languageRes.data.data]);
@@ -146,7 +146,7 @@ function CourseAdd() {
 
         var groupRes = await UserService.getGroupList();
         if (groupRes.data.status != false) {
-          // console.log(groupRes.data.data)
+          // // console.log(groupRes.data.data)
           let temp = [];
           for (var i of groupRes.data.data) {
             var aa = { label: i.g_name.toUpperCase(), value: i.id };
@@ -169,7 +169,7 @@ function CourseAdd() {
 
         // setCInputs(data);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     })();
   }, []);
@@ -186,7 +186,7 @@ function CourseAdd() {
   const VedioHandler = (e) => {
     const select = e.target.files[0];
     const name = e.target.name;
-    console.log(select.type);
+    // console.log(select.type);
     //setimageUpload(select);
     const Allow = ["video/mp4"];
     if (select && Allow.includes(select.type)) {
@@ -195,7 +195,7 @@ function CourseAdd() {
       seterror("file type not support, file will be mp4 format ");
     }
 
-    //console.log(vedio)
+    //// console.log(vedio)
   };
 
   const handleChange = (event) => {
@@ -226,7 +226,7 @@ function CourseAdd() {
       } else setSample_type("");
     }
 
-    console.log(cinputs);
+    // console.log(cinputs);
   };
 
   const ImageHAndler = (e) => {
@@ -245,7 +245,7 @@ function CourseAdd() {
       seterror("file type not support, file will be jpg,jpeg or png format ");
     }
 
-    console.log(cinputs);
+    // console.log(cinputs);
   };
 
   const FileHandler = (e) => {
@@ -256,29 +256,29 @@ function CourseAdd() {
       "application/msword",
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     ];
-    // console.log(select.type)
+    // // console.log(select.type)
     if (select && Allow.includes(select.type)) {
-      //console.log(22)
+      //// console.log(22)
       setAttachment_file(select);
     } else {
       seterror("file type not support, file will be doc,pdf or xls format ");
     }
 
-    console.log(cinputs);
+    // console.log(cinputs);
   };
 
   const FileHandler2 = (e) => {
     const select = e.target.files[0];
     const Allow = ["application/zip"];
-    // console.log(select.type)
+    // // console.log(select.type)
     if (select && Allow.includes(select.type)) {
-      //console.log(22)
+      //// console.log(22)
       setAttachment_file(select);
     } else {
       seterror("file type not support, file will be zip format ");
     }
 
-    console.log(cinputs);
+    // console.log(cinputs);
   };
 
   function countString(str) {
@@ -305,7 +305,7 @@ function CourseAdd() {
   const FormSubmit = async (e) => {
     e.preventDefault();
     
-    console.log("avatar_image  ",image);
+    // console.log("avatar_image  ",image);
     var groupArr = [];
     for (var i of selected) {
       groupArr.push(i.value);
@@ -357,7 +357,7 @@ function CourseAdd() {
 
         try {
           var response = await UserService.createCourse(data);
-          //console.log(response.data.msg)
+          //// console.log(response.data.msg)
           if (response.data.status != false) {
             setShowLoader(false);
             toast.success(response.data.msg);
@@ -390,7 +390,7 @@ function CourseAdd() {
 
             document.getElementById("myForm").reset();
 
-            // console.log(response.data.msg)
+            // // console.log(response.data.msg)
           } else {
             setShowLoader(false);
             toast.error(response.data.msg);
@@ -399,7 +399,7 @@ function CourseAdd() {
           listCourse();
           getCreatorList();
         } catch (err) {
-          console.log(err);
+          // console.log(err);
         }
       }
     } else {

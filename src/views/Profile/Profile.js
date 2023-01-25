@@ -23,15 +23,15 @@ export default function Profile() {
         try {
             var response = await UserService.getProfileData(user);
             if (response.data.status != false) {
-                //console.log(response.data);
+                //// console.log(response.data);
 
                 setUser(response.data.data)
 
             } else {
-                console.log(response);
+                // console.log(response);
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
 
     }, []);

@@ -121,7 +121,7 @@ export default function RoutesList() {
     (async () => {
       var responce = await MaintenanceService.getAll();
       if (responce.data.status) {
-        // console.log(responce.data.data);
+        // // console.log(responce.data.data);
         //if (responce.data.data[0].status == "active")
           setData(responce.data.data[0])
       }

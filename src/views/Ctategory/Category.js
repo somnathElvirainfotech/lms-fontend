@@ -73,7 +73,7 @@ export default function Category() {
 
     function getDataPagi(data, offset) {
         var temp = [];
-        console.log("offset", offset);
+        // console.log("offset", offset);
         data.slice(offset, offset + PER_PAGE).map((item) => {
             temp.push(item);
         })
@@ -140,14 +140,14 @@ export default function Category() {
     const [status, setStatus] = useState('');
 
     var getOne = async (id) => {
-        // console.log(3333333)
+        // // console.log(3333333)
         var responce = await CategoryService.getOne(id);
-        console.log(responce.data)
+        // console.log(responce.data)
         updateInput.c_name = responce.data.data[0].c_name;
         updateInput.c_description = responce.data.data[0].c_description==null?responce.data.data[0].c_description:'';
         updateInput.c_parent_id = responce.data.data[0].c_parent_id;
         setStatus(responce.data.data[0].c_status)
-        //  console.log(responce.data.data[0].g_name);
+        //  // console.log(responce.data.data[0].g_name);
         setGid(id);
     }
 
@@ -164,7 +164,7 @@ export default function Category() {
 
 
 
-        // console.log(gID)
+        // // console.log(gID)
 
         var responce = await CategoryService.update(data);
 

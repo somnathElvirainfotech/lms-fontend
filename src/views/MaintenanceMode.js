@@ -13,15 +13,15 @@ function MaintenanceMode() {
   const { user } = useContext(AuthContext);
 
   var location = useLocation();
-  console.log(location);
+  // console.log(location);
   var { maintenance_text, date, status, created_at } = location.state.data;
 
-  console.log(date);
+  // console.log(date);
 
   useEffect(() => {
     (async () => {
       var responce = await MaintenanceService.getAll();
-      console.log(responce.data);
+      // console.log(responce.data);
       if (responce.data.data[0].status == "deactive") {
         window.location.replace("/");
       } else {
@@ -36,13 +36,13 @@ function MaintenanceMode() {
           .auth()
           .signOut()
           .then((e) => {
-            console.log("Sign-out successful. ", e);
+            // console.log("Sign-out successful. ", e);
             TokenHelper.Logout();
             //  deleteCookies()
             removeCookie("user_info");
           })
           .catch((error) => {
-            console.log(" An error happened. ", error);
+            // console.log(" An error happened. ", error);
           });
 
         localStorage.clear();

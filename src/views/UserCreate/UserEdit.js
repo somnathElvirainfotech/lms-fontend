@@ -93,7 +93,7 @@ function UserEdit() {
 
   function getDataPagi(data, offset) {
     var temp = [];
-    console.log("offset", offset);
+    // console.log("offset", offset);
     data.slice(offset, offset + PER_PAGE).map((item) => {
       temp.push(item);
     });
@@ -132,7 +132,7 @@ function UserEdit() {
       data.push(temp);
     }
 
-    console.log("csvvvvvvv", data);
+    // console.log("csvvvvvvv", data);
     setCsvData([...data]);
     // return data;
   }
@@ -140,7 +140,7 @@ function UserEdit() {
   var listCourse = async () => {
     var responce = await UserCreateService.getAllUser();
     setCourse([...responce.data.data]);
-    console.log("userrrrrrrrrr", responce.data.data);
+    // console.log("userrrrrrrrrr", responce.data.data);
     customersData(responce.data.data);
     getDataPagi(responce.data.data, 0 * PER_PAGE);
   };
@@ -167,7 +167,7 @@ function UserEdit() {
         }
 
         // var languageRes = await UserService.languages();
-        // //console.log(languageRes.data)
+        //console.log(languageRes.data)
         // if (languageRes.data.status != false) {
         //    setLanguage([...languageRes.data.data]);
         // }
@@ -177,7 +177,7 @@ function UserEdit() {
           setQualification([...qualificationRes.data.data]);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     })();
   }, []);
@@ -187,7 +187,7 @@ function UserEdit() {
     const value = event.target.value;
     setCInputs((values) => ({ ...values, [name]: value }));
     // seterror('');
-    console.log(cinputs);
+    // console.log(cinputs);
   };
 
   const EditBack = () => {
@@ -230,7 +230,7 @@ function UserEdit() {
     var response = await UserCreateService.updateUser(data);
 
     if (response.data.status) {
-      console.log(response.data);
+      // console.log(response.data);
       listCourse();
       setShowLoader(false);
       toast.success(response.data.msg);

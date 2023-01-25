@@ -73,7 +73,7 @@ function LessonEdit() {
 
     function getDataPagi(data, offset) {
         var temp = [];
-        console.log("offset", offset);
+        // // console.log("offset", offset);
         data.slice(offset, offset + PER_PAGE).map((item) => {
             temp.push(item);
         })
@@ -93,7 +93,7 @@ function LessonEdit() {
             getDataPagi(responce.data.data, 0 * PER_PAGE)
         } else if (user.user_role == 1 || user.user_role == 2) {
             var responce = await LessonService.getAllLesson();
-            console.log(responce.data.data);
+            // // console.log(responce.data.data);
             setLesson([...responce.data.data])
             getDataPagi(responce.data.data, 0 * PER_PAGE)
         }
@@ -129,7 +129,7 @@ function LessonEdit() {
                     var groupRes = await UserService.getGroupList();
                     var categoryRes = await UserService.getAllCategory();
 
-                    // console.log(categoryRes.data.data)
+                    // // // console.log(categoryRes.data.data)
 
                     if (languageRes.data.status != false) {
                         setLanguage([...languageRes.data.data]);
@@ -172,7 +172,7 @@ function LessonEdit() {
                     var groupRes = await UserService.getGroupList();
                     var categoryRes = await UserService.getAllCategory();
 
-                    // console.log(categoryRes.data.data)
+                    // // // console.log(categoryRes.data.data)
 
                     if (languageRes.data.status != false) {
                         setLanguage([...languageRes.data.data]);
@@ -205,7 +205,7 @@ function LessonEdit() {
 
                 setShowLoader(false)
             } catch (error) {
-                console.log(error);
+                // // console.log(error);
             }
         })()
     }, [])
@@ -221,10 +221,10 @@ function LessonEdit() {
         const value = event.target.value;
         setInputs(values => ({ ...values, [name]: value }))
         // seterror('');
-        // console.log(inputs)
+        // // // console.log(inputs)
 
         if (name == "course_id") {
-            // console.log(value)
+            // // // console.log(value)
             getChapter(value)
         }
 
@@ -251,7 +251,7 @@ function LessonEdit() {
     const VedioHandler = (e) => {
         const select = e.target.files[0];
         const name = e.target.name;
-        console.log(select.type)
+        // // console.log(select.type)
         //setimageUpload(select);
         const Allow = ["video/mp4"];
         if (select && Allow.includes(select.type)) {
@@ -261,21 +261,21 @@ function LessonEdit() {
             toast.error("file type not support, file will be mp4 format ")
         }
 
-        //console.log(vedio)
+        //// // console.log(vedio)
     }
 
     const FileHandler = (e) => {
         const select = e.target.files[0];
         const Allow = ["application/pdf", "application/vnd.ms-excel", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
-        // console.log(select.type)
+        // // // console.log(select.type)
         if (select && Allow.includes(select.type)) {
-            //console.log(22)
+            //// // console.log(22)
             setAttachment_file(select)
         } else {
             toast.error("file type not support, file will be doc,pdf or xls format ")
         }
 
-        console.log(attachment_file)
+        // // console.log(attachment_file)
     }
 
 
@@ -303,7 +303,7 @@ function LessonEdit() {
 
         if (response.data.status) {
             setShowLoader(false)
-            console.log(response.data)
+            // // console.log(response.data)
             toast.success(response.data.msg)
             listLesson();
         }
@@ -322,7 +322,7 @@ function LessonEdit() {
         if (response.data.status) {
             setShowLoader(false)
             setCourseId(id)
-            // console.log(response.data)
+            // // // console.log(response.data)
             var item = response.data.data[0];
             inputs.course_id = item.course_id;
             getChapter(item.course_id)

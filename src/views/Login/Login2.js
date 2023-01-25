@@ -51,7 +51,7 @@ export const Login2 = () => {
 
             var response = await UserService.Login(inputs);
 
-            console.log("kkkkkkkkkkk", response.data);
+            // console.log("kkkkkkkkkkk", response.data);
             if (response.data.status != false) {
                 if (response.data.data.login_type == "local") {
                     TokenHelper.setToken(response.data.token);
@@ -104,7 +104,7 @@ export const Login2 = () => {
 
 
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 
@@ -131,13 +131,13 @@ export const Login2 = () => {
         setShowLoader(true);
         auth.signInWithPopup(gprovider)
             .then((res) => {
-                console.log(res.user.email)
+                // console.log(res.user.email)
                 //  window.Cookies.clear()
                 LoginType(res.user.email, "google")
                 setShowLoader(false);
             })
             .catch((err) => { 
-                console.log(err)
+                // console.log(err)
                 setShowLoader(false);
             })
 
@@ -150,7 +150,7 @@ export const Login2 = () => {
         setShowLoader(true);
         auth.signInWithPopup(mprovider)
             .then((res) => {
-                console.log('m success ', res)
+                // console.log('m success ', res)
 
                 if ("user" in res)
                     LoginType(res.user.email, "ms")
@@ -159,7 +159,7 @@ export const Login2 = () => {
 
             })
             .catch((err) => {
-                console.log('merr ', err.email)
+                // console.log('merr ', err.email)
 
                 if ("email" in err)
                     LoginType(err.email, "ms")
@@ -175,7 +175,7 @@ export const Login2 = () => {
         setShowLoader(true);
         var response = await UserService.loginType({ email: email,l_type:l_type });
         if (response.data.status != false) {
-            // console.log("kkkkkkkkkkk", response.data);
+            // // console.log("kkkkkkkkkkk", response.data);
             if (response.data.data[0].login_type == l_type) {
 
                 TokenHelper.setToken(response.data.token);
@@ -231,7 +231,7 @@ export const Login2 = () => {
             toast.error(response.data.msg);
         }
         setShowLoader(false);
-        console.log("login type ", response.data);
+        // console.log("login type ", response.data);
     }
 
 
@@ -270,7 +270,7 @@ export const Login2 = () => {
             }
             setInputs2({ email: "" })
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 

@@ -68,7 +68,7 @@ export default function Create() {
 
 
     function getDataPagi(data, offset) {
-        console.log("offset", offset);
+        // console.log("offset", offset);
         var temp = [];
         data.slice(offset, offset + PER_PAGE).map((item) => {
             temp.push(item);
@@ -88,18 +88,18 @@ export default function Create() {
 
         (async () => {
 
-            //  console.log("language type ",user.language_type)
+            //  // console.log("language type ",user.language_type)
            
             if (user.user_role == 4) {
                 setShowLoader(true)
                 var responce = await UserService.allCourses();
-                //console.log(responce.data.data)
+                //// console.log(responce.data.data)
                 setCourse([...responce.data.data])
                 getDataPagi(responce.data.data, 0 * PER_PAGE)
             } else if (user.user_role == 2 || user.user_role == 1) {
                 setShowLoader(true)
                 var responce = await CourseService.getAll();
-                console.log(responce.data.data)
+                // console.log(responce.data.data)
                 setCourse([...responce.data.data])
                 getCreatorList();
                 getDataPagi(responce.data.data, 0 * PER_PAGE)
@@ -132,12 +132,12 @@ export default function Create() {
         if (user.user_role == 4) {
 
             var responce = await UserService.allCourses();
-            //console.log(responce.data.data)
+            //// console.log(responce.data.data)
             setCourse([...responce.data.data])
             getDataPagi(responce.data.data, 0 * PER_PAGE)
         } else if (user.user_role == 2 || user.user_role == 1) {
             var responce = await CourseService.getAll();
-            console.log(responce.data.data)
+            // console.log(responce.data.data)
             setCourse([...responce.data.data])
             getDataPagi(responce.data.data, 0 * PER_PAGE)
         }
@@ -151,7 +151,7 @@ export default function Create() {
                 var languageRes = await UserService.languages();
                 var categoryRes = await UserService.getAllCategory();
 
-                // console.log(categoryRes.data.data)
+                // // console.log(categoryRes.data.data)
 
                 if (languageRes.data.status != false) {
                     setLanguage([...languageRes.data.data]);
@@ -164,7 +164,7 @@ export default function Create() {
 
                 var groupRes = await UserService.getGroupList();
                 if (groupRes.data.status != false) {
-                    // console.log(groupRes.data.data)
+                    // // console.log(groupRes.data.data)
                     let temp = [];
                     for (var i of groupRes.data.data) {
                         var aa = { label: i.g_name.toUpperCase(), value: i.id };
@@ -190,7 +190,7 @@ export default function Create() {
                 // setCInputs(data);
 
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         })()
 
@@ -215,7 +215,7 @@ export default function Create() {
                 setCourseType("xapi")
             }
         }
-        console.log(cinputs)
+        // console.log(cinputs)
     }
 
     const ImageHAndler = (e) => {
@@ -236,40 +236,40 @@ export default function Create() {
             seterror("file type not support, file will be jpg,jpeg or png format ")
         }
 
-        console.log(cinputs)
+        // console.log(cinputs)
     }
 
     const FileHandler = (e) => {
         const select = e.target.files[0];
         const Allow = ["application/pdf", "application/vnd.ms-excel", "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
-        // console.log(select.type)
+        // // console.log(select.type)
         if (select && Allow.includes(select.type)) {
-            //console.log(22)
+            //// console.log(22)
             setAttachment_file(select)
         } else {
             seterror("file type not support, file will be doc,pdf or xls format ")
         }
 
-        console.log(cinputs)
+        // console.log(cinputs)
     }
 
     const FileHandler2 = (e) => {
         const select = e.target.files[0];
         const Allow = ["application/zip"];
-        // console.log(select.type)
+        // // console.log(select.type)
         if (select && Allow.includes(select.type)) {
-            //console.log(22)
+            //// console.log(22)
             setAttachment_file(select)
         } else {
             seterror("file type not support, file will be zip format ")
         }
 
-        console.log(cinputs)
+        // console.log(cinputs)
     }
 
 
     const FormSubmit = async (e) => {
-        console.log("ssss");
+        // console.log("ssss");
         e.preventDefault();
 
         var groupArr = [];
@@ -305,7 +305,7 @@ export default function Create() {
 
         try {
             var response = await UserService.createCourse(data);
-            //console.log(response.data.msg)
+            //// console.log(response.data.msg)
             if (response.data.status != false) {
                 toast.success(response.data.msg)
 
@@ -323,7 +323,7 @@ export default function Create() {
                 setAttachment_file("");
 
                 setCourseType("");
-                // console.log(response.data.msg)
+                // // console.log(response.data.msg)
             } else {
                 toast.error(response.data.msg)
             }
@@ -332,7 +332,7 @@ export default function Create() {
             getCreatorList();
 
         } catch (err) {
-            console.log(err);
+            // console.log(err);
         }
     }
 
@@ -445,7 +445,7 @@ export default function Create() {
         var response = await UserService.courseUpdate(data);
 
         if (response.data.status) {
-            console.log(response.data)
+            // console.log(response.data)
             listCourse();
             getCreatorList();
             setsuccess(response.data.msg)
@@ -457,12 +457,12 @@ export default function Create() {
 
     const courseEditForm = async (id) => {
         var response = await UserService.singleCourseGet(id);
-        // console.log(response.data.data[0].course_languages_id)
+        // // console.log(response.data.data[0].course_languages_id)
         EditBack();
         if (response.data.status) {
 
             setCourseId(id)
-            console.log("courseeeee", response.data)
+            // console.log("courseeeee", response.data)
             var item = response.data.data[0];
             cinputs.course_type = item.course_type;
             cinputs.course_name = item.course_name;
@@ -482,12 +482,12 @@ export default function Create() {
                 cinputs.creator = item.user_id
             }
 
-            //console.log(response.data.data[0]);
+            //// console.log(response.data.data[0]);
 
             setImage1(item.image)
             setImage2(item.avatar_image)
 
-            //    console.log("ssssssi",item.course_type)
+            //    // console.log("ssssssi",item.course_type)
 
             if (item.course_type == "regular") {
                 setDfile(item.attachment_file)
@@ -531,7 +531,7 @@ export default function Create() {
 
         }
 
-        console.log(data)
+        // console.log(data)
 
         var responce =await CourseService.statusChange(data);
         if(responce.data.status)
@@ -539,7 +539,7 @@ export default function Create() {
         else
         toast.error("Status not change")
 
-        console.log(responce.data)
+        // console.log(responce.data)
 
 
         listCourse();

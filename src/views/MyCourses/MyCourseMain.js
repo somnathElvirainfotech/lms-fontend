@@ -46,7 +46,7 @@ export default function MyCourseMain() {
   var courseData = async () => {
     if (getCookie("xapi_result_name") && user.user_role == 5) {
       var xresponce = await EnrollmentService.getUserEnrollmentList();
-      console.log("xapi_result ", getCookie("xapi_result_name"));
+      // console.log("xapi_result ", getCookie("xapi_result_name"));
 
       var xdata = [];
       for (var i of xresponce.data.data) {
@@ -183,17 +183,17 @@ export default function MyCourseMain() {
         for (var singleRes of responce.data.statements) {
           // console.log(singleRes.object.definition.name);
 
-          console.log(
-            "--",
-            chkDuplicate(
-              tempArr,
-              singleRes.context.extensions["ispring://view_id"]
-            )
-          );
-          console.log(
-            "--",
-            chkDuplicate2(tempArr, singleRes.object.definition.name.und)
-          );
+          // console.log(
+          //   "--",
+          //   chkDuplicate(
+          //     tempArr,
+          //     singleRes.context.extensions["ispring://view_id"]
+          //   )
+          // );
+          // console.log(
+          //   "--",
+          //   chkDuplicate2(tempArr, singleRes.object.definition.name.und)
+          // );
 
           if (
             chkDuplicate(
@@ -206,10 +206,10 @@ export default function MyCourseMain() {
               singleRes.context.contextActivities.grouping[0].id
             )
           ) {
-            console.log(
-              "object ",
-              singleRes.context.extensions["ispring://view_id"]
-            );
+            // console.log(
+            //   "object ",
+            //   singleRes.context.extensions["ispring://view_id"]
+            // );
 
             if ("definition" in singleRes.object) {
               if ("name" in singleRes.object.definition) {
@@ -227,7 +227,7 @@ export default function MyCourseMain() {
                       singleRes.result.completion == true
                     ) {
                       if ("success" in singleRes.result) {
-                        console.log("item  ", singleRes.result.success);
+                        // console.log("item  ", singleRes.result.success);
 
                         if (singleRes.result.success) {
                           item.passed = true;
@@ -283,17 +283,17 @@ export default function MyCourseMain() {
           for (var singleRes of responce.data.statements) {
             // console.log(singleRes.object.definition.name);
 
-            console.log(
-              "--",
-              chkDuplicate(
-                tempArr,
-                singleRes.context.extensions["ispring://view_id"]
-              )
-            );
-            console.log(
-              "--",
-              chkDuplicate2(tempArr, singleRes.object.definition.name.und)
-            );
+            // console.log(
+            //   "--",
+            //   chkDuplicate(
+            //     tempArr,
+            //     singleRes.context.extensions["ispring://view_id"]
+            //   )
+            // );
+            // console.log(
+            //   "--",
+            //   chkDuplicate2(tempArr, singleRes.object.definition.name.und)
+            // );
 
             if (
               chkDuplicate(
@@ -306,10 +306,10 @@ export default function MyCourseMain() {
                 singleRes.context.contextActivities.grouping[0].id
               )
             ) {
-              console.log(
-                "object ",
-                singleRes.context.extensions["ispring://view_id"]
-              );
+              // console.log(
+              //   "object ",
+              //   singleRes.context.extensions["ispring://view_id"]
+              // );
 
               if ("definition" in singleRes.object) {
                 if ("name" in singleRes.object.definition) {
@@ -369,7 +369,7 @@ export default function MyCourseMain() {
 
     // ----------------------------
 
-    console.log("xapi data", xapiCourse);
+    // console.log("xapi data", xapiCourse);
 
     if (xapiCourse.length > 0) {
       // console.log(xapiCourse);
@@ -380,10 +380,10 @@ export default function MyCourseMain() {
       // result save----------
 
       for (var i of xapiCourse) {
-        console.log("x course ", i.course_name);
+        // console.log("x course ", i.course_name);
         if (i.passed && i.updateTimestamp > i.timestamp) {
           if (i.enrollment_status == "completed") {
-            console.log("sub one");
+            // console.log("sub one");
             await XapiService.saveResult({
               enrollment_id: i.enrollment_id,
               course_name: i.course_name,
@@ -416,7 +416,7 @@ export default function MyCourseMain() {
 
           setUsers(response.data.data);
         } else {
-          console.log(response);
+          // console.log(response);
         }
 
         //     var countRes = await UserService.courseCertificateCount();
@@ -424,7 +424,7 @@ export default function MyCourseMain() {
         //     console.log(countRes.data)
         //    // console.log(count)
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     })();
   }, []);

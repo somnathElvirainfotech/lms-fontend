@@ -95,7 +95,7 @@ function UserAdd() {
 
   function getDataPagi(data, offset) {
     var temp = [];
-    console.log("offset", offset);
+    // console.log("offset", offset);
     data.slice(offset, offset + PER_PAGE).map((item) => {
       temp.push(item);
     });
@@ -134,7 +134,7 @@ function UserAdd() {
       data.push(temp);
     }
 
-    console.log("csvvvvvvv", data);
+    // console.log("csvvvvvvv", data);
     setCsvData([...data]);
     // return data;
   }
@@ -142,7 +142,7 @@ function UserAdd() {
   var listCourse = async () => {
     var responce = await UserCreateService.getAllUser();
     setCourse([...responce.data.data]);
-    console.log("userrrrrrrrrr", responce.data.data);
+    // console.log("userrrrrrrrrr", responce.data.data);
     customersData(responce.data.data);
     getDataPagi(responce.data.data, 0 * PER_PAGE);
   };
@@ -166,7 +166,7 @@ function UserAdd() {
         }
 
         // var languageRes = await UserService.languages();
-        // //console.log(languageRes.data)
+        //console.log(languageRes.data)
         // if (languageRes.data.status != false) {
         //    setLanguage([...languageRes.data.data]);
         // }
@@ -184,7 +184,7 @@ function UserAdd() {
 
         setShowLoader(false);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     })();
   }, []);
@@ -194,11 +194,11 @@ function UserAdd() {
     const value = event.target.value;
     setCInputs((values) => ({ ...values, [name]: value }));
     // seterror('');
-    console.log(cinputs);
+    // console.log(cinputs);
   };
 
   var setEmail = (email) => {
-    console.log(email);
+    // console.log(email);
     setFormemai(email);
   };
 
@@ -259,11 +259,11 @@ function UserAdd() {
       seterror("file type not support, file will be jpg,jpeg or png format ");
     }
 
-    console.log(cinputs);
+    // console.log(cinputs);
   };
 
   const FormSubmit = async (e) => {
-    console.log("ssss");
+    // console.log("ssss");
     e.preventDefault();
     setShowLoader(true);
     var groupArr = [];
@@ -271,7 +271,7 @@ function UserAdd() {
       groupArr.push(i.value);
     }
 
-    console.log("selected... ",selected);
+    // console.log("selected... ",selected);
 
     const data = new FormData();
     data.append("firstname", cinputs.firstname);
@@ -291,7 +291,7 @@ function UserAdd() {
 
     try {
       var response = await UserCreateService.create(data);
-      //console.log(response.data.msg)
+      console.log(response.data.msg)
       if (response.data.status != false) {
         setShowLoader(false);
         toast.success(response.data.msg);
@@ -324,7 +324,7 @@ function UserAdd() {
 
       listCourse();
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 
@@ -370,7 +370,7 @@ function UserAdd() {
     var response = await UserCreateService.updateUser(data);
 
     if (response.data.status) {
-      console.log(response.data);
+      // console.log(response.data);
       listCourse();
       toast.success(response.data.msg);
     }
@@ -393,11 +393,11 @@ function UserAdd() {
       status: !ss,
     };
 
-    console.log(data);
+    // console.log(data);
 
     var responce = UserCreateService.statusChange(data);
 
-    console.log(responce.data);
+    // console.log(responce.data);
 
     listCourse();
   };
@@ -406,7 +406,7 @@ function UserAdd() {
     const name = event.target.name;
     const value = event.target.value;
     setSearch((values) => ({ ...values, [name]: value }));
-    console.log(search);
+    // console.log(search);
 
     // userSearch()
   };
@@ -416,7 +416,7 @@ function UserAdd() {
     var email = search.email;
     var hr_no = search.hr_no;
     var responce = await UserService.userSearch(name, email, hr_no);
-    console.log("eeeeee", responce.data.data);
+    // console.log("eeeeee", responce.data.data);
     setCourse([...responce.data.data]);
     customersData(responce.data.data);
     getDataPagi(responce.data.data, 0 * PER_PAGE);
@@ -432,7 +432,7 @@ function UserAdd() {
     search.hr_no = "";
 
     var responce = await UserService.userSearch(name, email, hr_no);
-    console.log("eeeeee", responce.data.data);
+    // console.log("eeeeee", responce.data.data);
     setCourse([...responce.data.data]);
     customersData(responce.data.data);
 
@@ -447,7 +447,7 @@ function UserAdd() {
 
     var response = await UserService.userCsvUpload(data);
 
-    //console.log("csv file uploadr", response.data)
+    console.log("csv file uploadr", response.data)
     if (response.data.status) {
       toast.success(response.data.msg);
     } else {
@@ -465,7 +465,7 @@ function UserAdd() {
     setAttachment_file(select);
 
     // if (select && Allow.includes(select.type)) {
-    //     //console.log(22)
+        //console.log(22)
     //     setAttachment_file(select)
 
     // } else {

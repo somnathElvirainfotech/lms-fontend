@@ -28,7 +28,7 @@ export default function CreatorLogin() {
                 seterror(response.data.msg);
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 

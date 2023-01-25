@@ -73,7 +73,7 @@ export default function Lesson() {
 
     function getDataPagi(data, offset) {
         var temp = [];
-        console.log("offset", offset);
+        // console.log("offset", offset);
         data.slice(offset, offset + PER_PAGE).map((item) => {
             temp.push(item);
         })
@@ -93,7 +93,7 @@ export default function Lesson() {
             getDataPagi(responce.data.data, 0 * PER_PAGE)
         } else if (user.user_role == 1 || user.user_role == 2) {
             var responce = await LessonService.getAllLesson();
-            console.log(responce.data.data);
+            // console.log(responce.data.data);
             setLesson([...responce.data.data])
             getDataPagi(responce.data.data, 0 * PER_PAGE)
         }
@@ -141,7 +141,7 @@ export default function Lesson() {
                     var groupRes = await UserService.getGroupList();
                     var categoryRes = await UserService.getAllCategory();
 
-                    // console.log(categoryRes.data.data)
+                    // // console.log(categoryRes.data.data)
 
                     if (languageRes.data.status != false) {
                         setLanguage([...languageRes.data.data]);
@@ -184,7 +184,7 @@ export default function Lesson() {
                     var groupRes = await UserService.getGroupList();
                     var categoryRes = await UserService.getAllCategory();
 
-                    // console.log(categoryRes.data.data)
+                    // // console.log(categoryRes.data.data)
 
                     if (languageRes.data.status != false) {
                         setLanguage([...languageRes.data.data]);
@@ -218,7 +218,7 @@ export default function Lesson() {
                 setShowLoader(false)
 
             } catch (error) {
-                console.log(error);
+                // console.log(error);
             }
         })()
     }, [])
@@ -245,7 +245,7 @@ export default function Lesson() {
         if (response.data.status) {
 
             setCourseId(id)
-            // console.log(response.data)
+            // // console.log(response.data)
             var item = response.data.data[0];
             inputs.course_id = item.course_id;
             getChapter(item.course_id)
@@ -287,7 +287,7 @@ export default function Lesson() {
         const name = event.target.name;
         const value = event.target.value;
         setSearch(values => ({ ...values, [name]: value }));
-        console.log(search)
+        // console.log(search)
 
         // userSearch()
     }
@@ -296,7 +296,7 @@ export default function Lesson() {
         var course_name = search.course_name;
 
         var responce = await LessonService.search(course_name);
-        console.log("eeeeee", responce.data.data);
+        // console.log("eeeeee", responce.data.data);
         setLesson([...responce.data.data])
         getDataPagi(responce.data.data, (0 * PER_PAGE))
     }
@@ -309,7 +309,7 @@ export default function Lesson() {
 
 
         var responce = await LessonService.search(course_name);
-        console.log("eeeeee", responce.data.data);
+        // console.log("eeeeee", responce.data.data);
         setLesson([...responce.data.data])
         getDataPagi(responce.data.data, (0 * PER_PAGE))
     }
@@ -387,7 +387,7 @@ export default function Lesson() {
                                 </thead>
                                 <tbody>
                                     {currentPageData.map((item, i) =>
-                                        <tr>
+                                        <tr key={`lesson${i}`} >
                                             <td>{i + 1}</td>
                                             <td>{item.course_name.toUpperCase()}</td>
                                             <td>{item.chapter_name && item.chapter_name.toUpperCase()}</td>

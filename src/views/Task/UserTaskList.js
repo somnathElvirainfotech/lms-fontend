@@ -91,7 +91,7 @@ export default function UserTaskList() {
       flavors.push(item[i].value);
     }
     setSelectedGroup(flavors);
-    console.log(selectedGroup);
+    // console.log(selectedGroup);
   };
 
   const [course, setCourse] = useState([]);
@@ -131,12 +131,12 @@ export default function UserTaskList() {
 
   function getDataPagi(data, offset) {
     var temp = [];
-    console.log("offset", offset);
+    // console.log("offset", offset);
     data.slice(offset, offset + PER_PAGE).map((item) => {
       temp.push(item);
     });
     setShowLoader(false);
-    console.log("all task ", temp);
+    // console.log("all task ", temp);
     setCurrentPageData(temp);
   }
 
@@ -147,7 +147,7 @@ export default function UserTaskList() {
   var downloadTask = async () => {
     
     var responce = await TaskService.download(TASKID);
-    console.log("task download", responce.data);
+    // console.log("task download", responce.data);
 
    if(responce.data.status)
    {
@@ -170,7 +170,7 @@ export default function UserTaskList() {
       data.push(temp);
     }
     getDataPagi(responce.data.data, 0 * PER_PAGE);
-    console.log("csvvvvvvv", data);
+    // console.log("csvvvvvvv", data);
     setCsvData([...data]);
    }
   };
@@ -188,7 +188,7 @@ export default function UserTaskList() {
 
          
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     })();
   }, []);

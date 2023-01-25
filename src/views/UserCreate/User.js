@@ -17,22 +17,22 @@ import { MultiSelect } from "react-multi-select-component";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import TextEditor from "../TextEditor";
-import { DefaultEditor } from 'react-simple-wysiwyg';
+import { DefaultEditor } from "react-simple-wysiwyg";
 
 // loader
 import Loader from "../Loader";
 
 export default function Create() {
-  
   // loader
   const [showLoader, setShowLoader] = useState(false);
-  const [gpassword,setGpassword]=useState("");
-  const [emailText,setEmailText]=useState({
-    subject:`Sistem za obuku`,
+  const [gpassword, setGpassword] = useState("");
+  const [emailText, setEmailText] = useState({
+    subject: `Sistem za obuku`,
   });
 
-  const [Text, setText] = useState(`<br/>Poštovani,<br/><br/>vaša šifra za pristup sistemu je ###password###<br/><br/><br/>Srdačan pozdrav,<br/><br/>DUO`);
-
+  const [Text, setText] = useState(
+    `<br/>Poštovani,<br/><br/>vaša šifra za pristup sistemu je ###password###<br/><br/><br/>Srdačan pozdrav,<br/><br/>DUO`
+  );
 
   const [course, setCourse] = useState([]);
   const [courseList, setCourseList] = useState(true);
@@ -44,8 +44,8 @@ export default function Create() {
   const [group, setGroup] = useState([]);
   const [category, setCategory] = useState([]);
   const [cinputs, setCInputs] = useState({
-    email_subject:emailText.subject,
-    email_message:emailText.text
+    email_subject: emailText.subject,
+    email_message: emailText.text,
   });
   const [qualification, setQualification] = useState([]);
 
@@ -134,7 +134,7 @@ export default function Create() {
 
   function getDataPagi(data, offset) {
     var temp = [];
-    console.log("offset", offset);
+    // console.log("offset", offset);
     data.slice(offset, offset + PER_PAGE).map((item) => {
       temp.push(item);
     });
@@ -177,7 +177,7 @@ export default function Create() {
       data.push(temp);
     }
 
-    console.log("csvvvvvvv", data);
+    // console.log("csvvvvvvv", data);
     setCsvData([...data]);
     // return data;
   }
@@ -225,7 +225,7 @@ export default function Create() {
     // language_id_details
     data[0].language_id_details = ` English=1  , Serbian Cyrilic =2 , Serbian Latin=3 `;
 
-    console.log("csv222vvvvvv", temp2);
+    // console.log("csv222vvvvvv", temp2);
     setCsvData2([...data]);
     // return data;
   }
@@ -234,7 +234,7 @@ export default function Create() {
     setShowLoader(true);
     var responce = await UserCreateService.getAllUser();
     setCourse([...responce.data.data]);
-    console.log("userrrrrrrrrr", responce.data.data);
+    // console.log("userrrrrrrrrr", responce.data.data);
     customersData(responce.data.data);
     customersData2(responce.data.data);
     getDataPagi(responce.data.data, 0 * PER_PAGE);
@@ -257,7 +257,7 @@ export default function Create() {
         }
 
         // var languageRes = await UserService.languages();
-        // //console.log(languageRes.data)
+        //console.log(languageRes.data)
         // if (languageRes.data.status != false) {
         //    setLanguage([...languageRes.data.data]);
         // }
@@ -267,7 +267,7 @@ export default function Create() {
           setQualification([...qualificationRes.data.data]);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     })();
   }, []);
@@ -277,13 +277,13 @@ export default function Create() {
     const value = event.target.value;
     setCInputs((values) => ({ ...values, [name]: value }));
     // seterror('');
-    console.log(cinputs);
+    // console.log(cinputs);
   };
 
   var setEmail = (email) => {
-    console.log(email);
+    // console.log(email);
     setFormemai(email);
-    var pass=passwordGenerator(12);
+    var pass = passwordGenerator(12);
     setGpassword(pass);
   };
 
@@ -303,18 +303,16 @@ export default function Create() {
   var generatePass = async (e) => {
     e.preventDefault();
 
-   
-
     if (cinputs.email_subject) {
       if (Text) {
         setShowLoader(true);
 
-       // var passwords = ""; //passwordGenerator(12);
+        // var passwords = ""; //passwordGenerator(12);
 
-       var email_message=Text.replaceAll("###password###",gpassword)
-      //  const regex = /\\n|\\r\\n|\\n\\r|\\r/g;
-      //  email_message=email_message.replace(regex, '<br>');
-console.log("convert text",email_message);
+        var email_message = Text.replaceAll("###password###", gpassword);
+        //  const regex = /\\n|\\r\\n|\\n\\r|\\r/g;
+        //  email_message=email_message.replace(regex, '<br>');
+        // console.log("convert text", email_message);
         const form = new FormData();
         form.append("email", formemai);
         form.append("password", gpassword);
@@ -349,7 +347,9 @@ console.log("convert text",email_message);
       password2: "",
       email_subject: emailText.subject,
     });
-    setText("<br/>Poštovani,<br/><br/>vaša šifra za pristup sistemu je ###password###<br/><br/><br/>Srdačan pozdrav,<br/><br/>DUO")
+    setText(
+      "<br/>Poštovani,<br/><br/>vaša šifra za pristup sistemu je ###password###<br/><br/><br/>Srdačan pozdrav,<br/><br/>DUO"
+    );
   };
 
   const updatePassword = async (e) => {
@@ -403,11 +403,11 @@ console.log("convert text",email_message);
       seterror("file type not support, file will be jpg,jpeg or png format ");
     }
 
-    console.log(cinputs);
+    // console.log(cinputs);
   };
 
   const FormSubmit = async (e) => {
-    console.log("ssss");
+    // console.log("ssss");
     e.preventDefault();
 
     var groupArr = [];
@@ -430,7 +430,7 @@ console.log("convert text",email_message);
 
     try {
       var response = await UserCreateService.create(data);
-      //console.log(response.data.msg)
+      console.log(response.data.msg)
       if (response.data.status != false) {
         toast.success(response.data.msg);
 
@@ -455,7 +455,7 @@ console.log("convert text",email_message);
 
       listCourse();
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 
@@ -539,7 +539,7 @@ console.log("convert text",email_message);
     var response = await UserCreateService.updateUser(data);
 
     if (response.data.status) {
-      console.log(response.data);
+      // console.log(response.data);
       listCourse();
       toast.success(response.data.msg);
     }
@@ -552,7 +552,7 @@ console.log("convert text",email_message);
     if (response.data.status) {
       setCourseId(id);
       var item = response.data.data[0];
-      console.log("apppppppppppp", response.data.data.group_details);
+      // console.log("apppppppppppp", response.data.data.group_details);
 
       cinputs.firstname = item.firstname;
       cinputs.lastname = item.lastname;
@@ -616,14 +616,14 @@ console.log("convert text",email_message);
       status: !ss,
     };
 
-    console.log(data);
+    // console.log(data);
 
     var responce = await UserCreateService.statusChange(data);
 
     if (responce.data.status) toast.success("Status change successfull");
     else toast.error("Status no Change");
 
-    console.log(responce.data);
+    // console.log(responce.data);
 
     listCourse();
   };
@@ -632,7 +632,7 @@ console.log("convert text",email_message);
     const name = event.target.name;
     const value = event.target.value;
     setSearch((values) => ({ ...values, [name]: value }));
-    console.log(search);
+    // console.log(search);
 
     // userSearch()
   };
@@ -643,7 +643,7 @@ console.log("convert text",email_message);
     var email = search.email;
     var hr_no = search.hr_no;
     var responce = await UserService.userSearch(name, email, hr_no);
-    console.log("eeeeee", responce.data.data);
+    // console.log("eeeeee", responce.data.data);
     setCourse([...responce.data.data]);
     customersData(responce.data.data);
     customersData2(responce.data.data);
@@ -661,7 +661,7 @@ console.log("convert text",email_message);
     search.hr_no = "";
 
     var responce = await UserService.userSearch(name, email, hr_no);
-    console.log("eeeeee", responce.data.data);
+    // console.log("eeeeee", responce.data.data);
     setCourse([...responce.data.data]);
     customersData(responce.data.data);
     customersData2(responce.data.data);
@@ -677,7 +677,7 @@ console.log("convert text",email_message);
 
     var response = await UserService.userCsvUpload(data);
 
-    //console.log("csv file uploadr", response.data)
+    console.log("csv file uploadr", response.data)
     if (response.data.status) {
       setShowLoader(false);
       toast.success(response.data.msg);
@@ -702,7 +702,7 @@ console.log("convert text",email_message);
     setAttachment_file(select);
 
     // if (select && Allow.includes(select.type)) {
-    //     //console.log(22)
+        //console.log(22)
     //     setAttachment_file(select)
 
     // } else {
@@ -1030,16 +1030,21 @@ console.log("convert text",email_message);
                             </td>
 
                             <td>
-                             {item.login_type==="local" &&  <button
-                                type="button"
-                                style={{ fontSize: "13px" }}
-                                onClick={(e) => setEmail(item.email)}
-                                class="btn btn-info btn-lg"
-                                data-toggle="modal"
-                                data-target="#myModal2"
-                              >
-                                <i class="fa fa-repeat" aria-hidden="true"></i>
-                              </button> }
+                              {item.login_type === "local" && (
+                                <button
+                                  type="button"
+                                  style={{ fontSize: "13px" }}
+                                  onClick={(e) => setEmail(item.email)}
+                                  class="btn btn-info btn-lg"
+                                  data-toggle="modal"
+                                  data-target="#myModal2"
+                                >
+                                  <i
+                                    class="fa fa-repeat"
+                                    aria-hidden="true"
+                                  ></i>
+                                </button>
+                              )}
                             </td>
                           </tr>
                         ))}
@@ -1086,11 +1091,16 @@ console.log("convert text",email_message);
                   </div>
 
                   {/** Modal */}
-                  <div class="modal fade raddgroupModal" id="myModal" role="dialog" aria-hidden="true"
-                  aria-labelledby="addgroupModalLabel"
-                  tabIndex={-1}
-                  data-keyboard="false" 
-                  data-backdrop="static" >
+                  <div
+                    class="modal fade raddgroupModal"
+                    id="myModal"
+                    role="dialog"
+                    aria-hidden="true"
+                    aria-labelledby="addgroupModalLabel"
+                    tabIndex={-1}
+                    data-keyboard="false"
+                    data-backdrop="static"
+                  >
                     <div class="modal-dialog">
                       {/** Modal content */}
                       <div class="modal-content">
@@ -1168,7 +1178,7 @@ console.log("convert text",email_message);
                     aria-hidden="true"
                     aria-labelledby="addgroupModalLabel"
                     tabIndex={-1}
-                    data-keyboard="false" 
+                    data-keyboard="false"
                     data-backdrop="static"
                   >
                     <div class="modal-dialog modal-lg">
@@ -1201,7 +1211,7 @@ console.log("convert text",email_message);
                                 <div className="form-group">
                                   <label>Email message</label>
 
-                                {/**   <textarea
+                                  {/**   <textarea
                                     onChange={handleChange}
                                     value={cinputs.email_message}
                                     name="email_message"
@@ -1212,10 +1222,12 @@ console.log("convert text",email_message);
                                    defaultValue={emailText.text}
                                   /> */}
 
-                               {/**    <TextEditor setText={setText} inialvalue={Text} /> */}
-                               
-                                  <DefaultEditor  value={Text} onChange={(e)=>setText(e.target.value)} />
-                                   
+                                  {/**    <TextEditor setText={setText} inialvalue={Text} /> */}
+
+                                  <DefaultEditor
+                                    value={Text}
+                                    onChange={(e) => setText(e.target.value)}
+                                  />
                                 </div>
                               </div>
                             </div>

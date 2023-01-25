@@ -48,7 +48,7 @@ export default function Course() {
   var location = useLocation();
   var search_text = location.state != null ? location.state.search_text : "";
   // var course = query.get("id");
-  // console.log( query.get("c"))
+  // console.log(query.get("c"));
   const [xapiu, setXapiu] = useState(false);
 
   const [category, setCategory] = useState([]);
@@ -162,7 +162,7 @@ export default function Course() {
       xapiCourse.push(aa);
     }
 
-    // console.log(xapiCourse);
+    console.log(xapiCourse);
 
     // --------------------------------------------
 
@@ -185,19 +185,19 @@ export default function Course() {
 
       if (responce.data.statements.length > 0) {
         for (var singleRes of responce.data.statements) {
-          // console.log(singleRes.object.definition.name);
+          console.log(singleRes.object.definition.name);
 
-          console.log(
-            "--",
-            chkDuplicate(
-              tempArr,
-              singleRes.context.extensions["ispring://view_id"]
-            )
-          );
-          console.log(
-            "--",
-            chkDuplicate2(tempArr, singleRes.object.definition.name.und)
-          );
+          // console.log(
+          //   "--",
+          //   chkDuplicate(
+          //     tempArr,
+          //     singleRes.context.extensions["ispring://view_id"]
+          //   )
+          // );
+          // console.log(
+          //   "--",
+          //   chkDuplicate2(tempArr, singleRes.object.definition.name.und)
+          // );
 
           if (
             chkDuplicate(
@@ -210,10 +210,10 @@ export default function Course() {
               singleRes.context.contextActivities.grouping[0].id
             )
           ) {
-            console.log(
-              "object ",
-              singleRes.context.extensions["ispring://view_id"]
-            );
+            // console.log(
+            //   "object ",
+            //   singleRes.context.extensions["ispring://view_id"]
+            // );
 
             if ("definition" in singleRes.object) {
               if ("name" in singleRes.object.definition) {
@@ -287,17 +287,17 @@ export default function Course() {
           for (var singleRes of responce.data.statements) {
             // console.log(singleRes.object.definition.name);
 
-            console.log(
-              "--",
-              chkDuplicate(
-                tempArr,
-                singleRes.context.extensions["ispring://view_id"]
-              )
-            );
-            console.log(
-              "--",
-              chkDuplicate2(tempArr, singleRes.object.definition.name.und)
-            );
+            // console.log(
+            //   "--",
+            //   chkDuplicate(
+            //     tempArr,
+            //     singleRes.context.extensions["ispring://view_id"]
+            //   )
+            // );
+            // console.log(
+            //   "--",
+            //   chkDuplicate2(tempArr, singleRes.object.definition.name.und)
+            // );
 
             if (
               chkDuplicate(
@@ -310,10 +310,10 @@ export default function Course() {
                 singleRes.context.contextActivities.grouping[0].id
               )
             ) {
-              console.log(
-                "object ",
-                singleRes.context.extensions["ispring://view_id"]
-              );
+              // console.log(
+              //   "object ",
+              //   singleRes.context.extensions["ispring://view_id"]
+              // );
 
               if ("definition" in singleRes.object) {
                 if ("name" in singleRes.object.definition) {
@@ -373,7 +373,7 @@ export default function Course() {
 
     // ----------------------------
 
-    console.log("xapi data", xapiCourse);
+    // console.log("xapi data", xapiCourse);
 
     if (xapiCourse.length > 0) {
       // console.log(xapiCourse);
@@ -384,10 +384,10 @@ export default function Course() {
       // result save----------
 
       for (var i of xapiCourse) {
-        console.log("x course ", i.course_name);
+        // console.log("x course ", i.course_name);
         if (i.passed && i.updateTimestamp > i.timestamp) {
           if (i.enrollment_status == "completed") {
-            console.log("sub one");
+            // console.log("sub one");
             await XapiService.saveResult({
               enrollment_id: i.enrollment_id,
               course_name: i.course_name,
@@ -420,11 +420,11 @@ export default function Course() {
 
   function getDataPagi(data, offset) {
     var temp = [];
-    console.log("offset", offset);
+    // console.log("offset", offset);
     data.slice(offset, offset + PER_PAGE).map((item) => {
       temp.push(item);
     });
-    console.log("course all ====== ", temp);
+    // console.log("course all ====== ", temp);
 
     setCurrentPageData(temp);
     setShowLoader(false);
@@ -453,7 +453,7 @@ export default function Course() {
 
     if (getCookie("xapi_result_name") && user.user_role == 5) {
       var xresponce = await EnrollmentService.getUserEnrollmentList();
-      console.log("xapi_result ", getCookie("xapi_result_name"));
+      // console.log("xapi_result ", getCookie("xapi_result_name"));
 
       var xdata = [];
       for (var i of xresponce.data.data) {
@@ -556,7 +556,7 @@ export default function Course() {
     const value = event.target.value;
     setInput((values) => ({ ...values, [name]: value }));
     // seterror('');
-    console.log(input);
+    // console.log(input);
   };
 
   var getAllCategory = async () => {
@@ -577,7 +577,7 @@ export default function Course() {
 
   const setChildCtegory = async (id) => {
     var responce = await UserService.subcategory(id);
-    console.log(id);
+    // console.log(id);
     setChild(responce.data.data);
   };
 
@@ -595,7 +595,7 @@ export default function Course() {
     // e.preventDefault();
     setShowLoader(true);
 
-    // console.log(cateBtn.current)
+    // console.log(cateBtn.current);
     // cateBtn.current.style.backgroundColor = "blue";
 
     var data = {
@@ -607,10 +607,10 @@ export default function Course() {
       user_id: user.user_id,
     };
 
-    console.log(data);
+    // console.log(data);
 
     var responce = await CourseService.courseSearch(data);
-    console.log("filter data  ", responce.data.data);
+    // console.log("filter data  ", responce.data.data);
 
     if (user.user_role == 5) {
       groupChkCourseShow(responce.data.data);
@@ -965,16 +965,15 @@ export default function Course() {
                               <div className="">
                                 <ul className="rating">
                                   <li>
-                                  
-                                  <Rating
-                                    initialValue={item.rating_number}
-                                    iconsCount={5}
-                                    transition={true}
-                                    readonly={true}
-                                    size={25}
-                                    allowFraction={true}
-                                  />
-                                 
+                                    <Rating
+                                      initialValue={item.rating_number}
+                                      iconsCount={5}
+                                      transition={true}
+                                      readonly={true}
+                                      size={25}
+                                      allowFraction={true}
+                                    />
+
                                     <span
                                       style={{
                                         fontSize: "15px",
@@ -988,8 +987,6 @@ export default function Course() {
                                 </ul>
                               </div>
                             ))}
-
-                          
 
                           <p
                             className="courseText"

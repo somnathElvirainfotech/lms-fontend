@@ -36,7 +36,7 @@ export const EditProfile = () => {
         try {
             var response = await UserService.getProfileData(user);
             if (response.data.status != false) {
-                // console.log(response.data);
+                // // console.log(response.data);
 
                 setUser(response.data.data);
                 const data = {
@@ -59,10 +59,10 @@ export const EditProfile = () => {
                 })
 
             } else {
-                console.log(response);
+                // console.log(response);
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
 
     }, []);
@@ -75,10 +75,10 @@ export const EditProfile = () => {
         const value = event.target.value;
         setInputs(values => ({ ...values, [name]: value }))
         seterror('');
-        console.log(inputs)
+        // // console.log(inputs)
     }
 
-    // console.log(inputs.date)
+    // // console.log(inputs.date)
 
     const Passwordhandle = (event) => {
         const name = event.target.name;
@@ -89,7 +89,7 @@ export const EditProfile = () => {
 
     const PasswordChange = async (event) => {
         event.preventDefault();
-        // console.log(pass)
+        // // console.log(pass)
         try {
             var response = await UserService.changePassword(pass);
             if (response.data.status != false) {
@@ -98,7 +98,7 @@ export const EditProfile = () => {
                 seterror(response.data.msg);
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 
@@ -112,7 +112,7 @@ export const EditProfile = () => {
 
     const socialLinkSubmit = async (event) => {
         event.preventDefault();
-        // console.log(pass)
+        // // console.log(pass)
         try {
             var response = await UserService.updateUserProfile(socalLink);
             if (response.data.status != false) {
@@ -121,7 +121,7 @@ export const EditProfile = () => {
                 seterror(response.data.msg);
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
     }
 
@@ -146,7 +146,7 @@ export const EditProfile = () => {
         const data = new FormData();
         data.append("email", inputs.email);
         data.append("image", imageUpload);
-        console.log(imageUpload)
+        // console.log(imageUpload)
 
         try {
             var response = await UserService.updateUserProfileImage(data);
@@ -156,11 +156,12 @@ export const EditProfile = () => {
                 seterror(response.data.msg);
             }
         } catch (error) {
-            console.log(error);
+            // console.log(error);
         }
 
     }
 
+    const handleSubmit=()=>{}
   
 
     return (
